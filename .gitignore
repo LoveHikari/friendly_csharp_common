@@ -1,0 +1,12 @@
+﻿################################################################################
+# 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
+################################################################################
+
+/FSLib.Extension/.vs
+/FSLib.Extension/packages
+/FSLib.Extension/ConsoleTest01/obj
+/FSLib.Extension/ConsoleTest01/bin
+/FSLib.Extension/FsLib.Common/obj
+/FSLib.Extension/FsLib.Common/bin
+
+*.user

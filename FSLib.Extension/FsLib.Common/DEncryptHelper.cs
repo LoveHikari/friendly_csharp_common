@@ -437,5 +437,24 @@ namespace System
             return pwd.ToLower();
         }
         #endregion
+
+        /// <summary>
+        /// SHA1加密
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
+        public static string SHA1Encrypt(string content, string encoding = "utf-8")
+        {
+            SHA1 sha1 = new SHA1CryptoServiceProvider();
+            //SHA1 sha1 = System.Security.Cryptography.SHA1.Create();
+            byte[] bytesIn = System.Text.Encoding.GetEncoding(encoding).GetBytes(content);
+            byte[] bytesOut = sha1.ComputeHash(bytesIn);
+            sha1.Clear();
+            sha1.Dispose();
+            string result = BitConverter.ToString(bytesOut);
+            result = result.Replace("-", "");
+            return result;
+        }
     }
 }

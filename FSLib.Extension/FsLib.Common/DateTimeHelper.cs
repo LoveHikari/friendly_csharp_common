@@ -273,7 +273,8 @@ namespace System
         /// <returns>Unix时间戳</returns>
         public static long ConvertDateTimeInt(System.DateTime time)
         {
-            System.DateTime startTime = TimeZoneInfo.ConvertTime(new System.DateTime(1970, 1, 1),TimeZoneInfo.Local);
+            //System.DateTime startTime = TimeZoneInfo.ConvertTime(new System.DateTime(1970, 1, 1), TimeZoneInfo.Local);
+            System.DateTime startTime = System.TimeZoneInfo.ConvertTime(new System.DateTime(1970, 1, 1, 0, 0, 0, 0), TimeZoneInfo.Utc, TimeZoneInfo.Local);
             return (long)(time - startTime).TotalSeconds;
         }
         /// <summary>

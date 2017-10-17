@@ -515,5 +515,22 @@ namespace System
             }
             return str;
         }
+        /// <summary>
+        /// 将指定的位置的替换为密码字符，包含两端字符
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="startIndex">开始下标，从0开始</param>
+        /// <param name="endIndex">结束下标</param>
+        /// <param name="passwordValue">密码字符</param>
+        /// <returns>替换后的字符串</returns>
+        public static string HideChar(this string str,int startIndex,int endIndex,string passwordValue = "*")
+        {
+            string nv = passwordValue;
+            for (int i = 0; i < endIndex-startIndex; i++)
+            {
+                nv += nv;
+            }
+            return str.Replace(str.SubBetween(startIndex, endIndex), nv);
+        }
     }
 }

@@ -415,7 +415,7 @@ namespace System
             return t2.Replace("-", "").ToLower();
         }
         /// <summary>
-        /// MD5加密(返回16位加密串)
+        /// MD5加密(返回32位加密串)
         /// </summary>
         /// <param name="input">需要加密的字符串</param>
         /// <param name="encoding">编码</param>
@@ -431,7 +431,7 @@ namespace System
             for (int i = 0; i < s.Length; i++)
             {
                 // 将得到的字符串使用十六进制类型格式。格式后的字符是小写的字母，如果使用大写（X）则格式后的字符是大写字符
-                pwd = pwd + i.ToString("X");
+                pwd = pwd + s[i].ToString("X");
 
             }
             return pwd.ToLower();

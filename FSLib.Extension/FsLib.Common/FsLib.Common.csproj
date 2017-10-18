@@ -17,8 +17,8 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-    <PackageReference Include="Spire.XLS" Version="7.12.43" />
     <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="Npgsql" Version="3.2.5" />
   </ItemGroup>
   
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
@@ -33,12 +33,13 @@
   
   <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' ">
     
-    <PackageReference Include="MySql.Data" Version="6.9.9" />
+    <PackageReference Include="MySql.Data" Version="8.0.9-dmr" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.105.2" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.105.2" />
     <PackageReference Include="System.Data.SQLite.Linq" Version="1.0.105.2" />
     <PackageReference Include="ThoughtWorks.QRCode" Version="1.1.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.4.4" />
+    <PackageReference Include="Spire.XLS" Version="7.12.90" />
   
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Runtime.Caching" />
@@ -62,11 +63,11 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
-    <PackageReference Include="System.ValueTuple" Version="4.3.1" />
+    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <PackageReference Include="System.ValueTuple" Version="4.3.1" />
+    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
   
 </Project>

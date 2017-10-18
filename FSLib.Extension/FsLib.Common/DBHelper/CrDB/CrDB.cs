@@ -73,11 +73,14 @@ namespace System.DBHelper.CrDB
                 case "System.Data.SQLite":
                     f = DbProviderFactories.GetFactory("System.Data.SQLite");
                     break;
+                case "Npgsql":
+                    f = DbProviderFactories.GetFactory("Npgsql");
+                    break;
                 default:
                     f = DbProviderFactories.GetFactory("System.Data.SqlClient");
                     break;
 #else
-                    case "System.Data.SqlClient":
+                case "System.Data.SqlClient":
                     f = System.Data.SqlClient.SqlClientFactory.Instance;
                     break;
                 //case "System.Data.OracleClient":
@@ -92,6 +95,9 @@ namespace System.DBHelper.CrDB
                 //case "System.Data.SQLite":
                 //    f = DbProviderFactories.GetFactory("System.Data.SQLite");
                 //    break;
+                case "Npgsql":
+                    f = Npgsql.NpgsqlFactory.Instance;
+                    break;
                 default:
                     f = System.Data.SqlClient.SqlClientFactory.Instance;
                     break;

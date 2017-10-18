@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Net;
@@ -29,7 +31,7 @@ namespace System
         #region GetHttp
 
         /// <summary>
-        /// GetHttpWebRequest方式获得html，推荐
+        /// GetHttpWebRequest方式获得html
         /// </summary>
         /// <param name="url">网址</param>
         /// <param name="chareset">编码</param>
@@ -39,12 +41,12 @@ namespace System
         /// <returns>html代码</returns>
         public static string GetHttpWebRequest(string url, string chareset, WebProxy proxy)
         {
-            return HttpRequest(url, "GET", "", chareset, null, proxy, null, "").retHtml;
+            return HttpRequest(url, "GET", null, chareset, null, proxy, null, "").retHtml;
         }
 
 
         /// <summary>
-        /// PostHttpWebRequest方式获得html，推荐
+        /// PostHttpWebRequest方式获得html
         /// </summary>
         /// <param name="url">网址</param>
         /// <param name="chareset">编码</param>
@@ -53,7 +55,7 @@ namespace System
         /// <returns>html代码</returns>
         public static string PostHttpWebRequest(string url, string chareset = "utf-8", WebProxy proxy = null)
         {
-            return HttpRequest(url, "POST", "", chareset, null, proxy, null, "").retHtml;
+            return HttpRequest(url, "POST", null, chareset, null, proxy, null, "").retHtml;
         }
 
         /// <summary>
@@ -104,31 +106,42 @@ namespace System
         /// http POST 请求
         /// </summary>
         /// <param name="url">请求地址</param>
-        /// <param name="postDataStr">请求主体</param>
+        /// <param name="postData">请求主体</param>
         /// <param name="chareset">编码，默认utf-8</param>
         /// <param name="headerItem"></param>
         /// <param name="cookies">cookie容器</param>
         /// <returns>响应的页面, 响应的cookie</returns>
-        public static (string retHtml, string cookies) HttpPostRequest(string url, string postDataStr, string chareset = "utf-8", Hashtable headerItem = null, CookieContainer cookies = null)
+        public static (string retHtml, string cookies) HttpPostRequest(string url, IDictionary<string, object> postData, string chareset = "utf-8", Hashtable headerItem = null, CookieContainer cookies = null)
         {
-            return HttpRequest(url, "POST", postDataStr, chareset, headerItem, null, cookies, "");
+            return HttpRequest(url, "POST", postData, chareset, headerItem, null, cookies, "");
         }
 
         /// <summary>
         /// http POST 请求
         /// </summary>
         /// <param name="url">请求地址</param>
-        /// <param name="postDataStr">请求主体</param>
+        /// <param name="postData">请求主体</param>
         /// <param name="chareset">编码，默认utf-8</param>
         /// <param name="headerItem"></param>
         /// <param name="cookie">cookie容器</param>
         /// <returns>响应的页面, 响应的cookie</returns>
-        public static (string retHtml, string cookies) PostHttpWebRequest(string url, string postDataStr, string chareset = "utf-8", Hashtable headerItem = null, string cookie = "")
+        public static (string retHtml, string cookies) PostHttpWebRequest2(string url, IDictionary<string, object> postData, string chareset = "utf-8", Hashtable headerItem = null, string cookie = "")
         {
-            return HttpRequest(url, "POST", postDataStr, chareset, headerItem, null, null, cookie);
+            return HttpRequest(url, "POST", postData, chareset, headerItem, null, null, cookie);
         }
-
-
+        /// <summary>
+        /// http POST 请求
+        /// </summary>
+        /// <param name="url">请求地址</param>
+        /// <param name="postData">请求主体</param>
+        /// <param name="chareset">编码，默认utf-8</param>
+        /// <param name="headerItem"></param>
+        /// <param name="cookie">cookie容器</param>
+        /// <returns>响应的页面, 响应的cookie</returns>
+        public static string PostHttpWebRequest(string url, IDictionary<string, object> postData, string chareset = "utf-8", Hashtable headerItem = null, string cookie = "")
+        {
+            return HttpRequest(url, "POST", postData, chareset, headerItem, null, null, cookie).retHtml;
+        }
         /// <summary>
         /// http GET 请求
         /// </summary>
@@ -139,10 +152,8 @@ namespace System
         /// <returns>响应的页面, 响应的cookie</returns>
         public static (string retHtml, string cookies) GetHttpWebRequest(string url, string chareset, Hashtable headerItem, CookieContainer cookies)
         {
-            return HttpRequest(url, "GET", "", chareset, headerItem, null, cookies, "");
+            return HttpRequest(url, "GET", null, chareset, headerItem, null, cookies, "");
         }
-
-
 
         /// <summary>
         /// http GET 请求
@@ -152,11 +163,22 @@ namespace System
         /// <param name="headerItem">请求头</param>
         /// <param name="cookie">cookie容器</param>
         /// <returns>响应的页面</returns>
-        public static (string retHtml, string cookies) GetHttpWebRequest(string url, string chareset = "utf-8", Hashtable headerItem = null, string cookie = "")
+        public static string GetHttpWebRequest(string url, string chareset = "utf-8", Hashtable headerItem = null, string cookie = "")
         {
-            return HttpRequest(url, "GET", "", chareset, headerItem, null, null, cookie);
+            return HttpRequest(url, "GET", null, chareset, headerItem, null, null, cookie).retHtml;
         }
-
+        /// <summary>
+        /// http GET 请求
+        /// </summary>
+        /// <param name="url">请求地址</param>
+        /// <param name="chareset">编码，默认utf-8</param>
+        /// <param name="headerItem">请求头</param>
+        /// <param name="cookie">cookie容器</param>
+        /// <returns>响应的页面</returns>
+        public static Stream GetHttpWebRequest2(string url, string chareset = "utf-8", Hashtable headerItem = null, string cookie = "")
+        {
+            return HttpRequestStream(url, "GET", null, chareset, headerItem, null, null, cookie).responseStream;
+        }
 
 
         #endregion
@@ -209,46 +231,55 @@ namespace System
             return htmlstring;
         }
         /// <summary> 
-        /// 上传图片文件 
+        /// 上传文件 
         /// </summary> 
-        /// <param name="url">提交的地址</param> 
-        /// <param name="fileformname">文本域的名称  比如：name="file"，那么fileformname=file  </param> 
-        /// <param name="filepath">上传的文件路径  比如： c:\12.jpg </param> 
-        /// <param name="headerItem">header</param> 
+        /// <param name="url">提交的地址</param>
+        /// <param name="param">请求body</param>
+        /// <param name="localStream">文本流</param> 
+        /// <param name="fileName">文件名称 </param>
+        /// <param name="offset"></param>
+        /// <param name="sliceSize">切片大小（字节）</param>
+        /// <param name="headerItem">header</param>
+        /// <param name="fileKey"></param> 
         /// <param name="cookie">cookie数据</param> 
         /// <returns>响应源码</returns> 
-        public static string HttpUploadFile(string url, string fileformname, string filepath, Hashtable headerItem, string cookie)
+        public static string HttpUploadFile(string url, IDictionary<string, object> param, Stream localStream, string fileName, long offset = -1, int sliceSize = 0, Hashtable headerItem = null, string fileKey = "filecontent", string cookie = "")
         {
-            string fileName = System.IO.Path.GetFileName(filepath);
             // 这个可以是改变的，也可以是下面这个固定的字符串 
             string boundary = DateTime.Now.Ticks.ToString("x");//元素分割标记
 
-            // 创建request对象 
+            // 创建request对象
             HttpWebRequest webrequest = (HttpWebRequest)WebRequest.Create(url);
             webrequest.Method = "POST";
             webrequest.CookieContainer = GetCookieContainer(url, cookie);
-            SetHeaderValue(ref webrequest, headerItem);
+            SetHeaderValue(webrequest, headerItem);
             webrequest.ContentType = $"multipart/form-data; boundary=---------------------------{boundary}";
 
             // 构造发送数据 
             StringBuilder sb = new StringBuilder();
+            if (param != null)
+            {
+                foreach (KeyValuePair<string, object> pair in param)
+                {
+                    sb.AppendLine("-----------------------------" + boundary);
+                    sb.AppendLine($"Content-Disposition: form-data; name=\"{pair.Key}\"");
+                    sb.AppendLine();
+                    sb.AppendLine(pair.Value.ToString());
+                }
+            }
+
             sb.AppendLine("-----------------------------" + boundary);
-            sb.AppendLine("Content-Disposition: form-data; name=\"localUrl\"");
-            sb.AppendLine();
-            sb.AppendLine(filepath);
-            sb.AppendLine("-----------------------------" + boundary);
-            sb.AppendLine($"Content-Disposition: form-data; name=\"{fileformname}\"; filename=\"{fileName}\"");
-            sb.AppendLine("Content-Type: image/png");
+            sb.AppendLine($"Content-Disposition: form-data; name=\"{fileKey}\"; filename=\"{fileName}\"");
+            sb.AppendLine("Content-Type: application/octet-stream");
             sb.AppendLine();
 
             string postHeader = sb.ToString();
-            byte[] postHeaderBytes = Encoding.GetEncoding("gb2312").GetBytes(postHeader);
+            byte[] postHeaderBytes = Encoding.GetEncoding("utf-8").GetBytes(postHeader);
 
             //构造尾部数据 
-            byte[] boundaryBytes = Encoding.GetEncoding("gb2312").GetBytes("\r\n-----------------------------" + boundary + "--\r\n");
+            byte[] boundaryBytes = Encoding.GetEncoding("utf-8").GetBytes("\r\n-----------------------------" + boundary + "--\r\n");
 
-            FileStream fileStream = new FileStream(filepath, FileMode.Open, FileAccess.Read);
-            long length = postHeaderBytes.Length + fileStream.Length + boundaryBytes.Length;
+            long length = postHeaderBytes.Length + localStream.Length + boundaryBytes.Length;
             webrequest.ContentLength = length;
 
             Stream requestStream = webrequest.GetRequestStream();
@@ -257,15 +288,42 @@ namespace System
             requestStream.Write(postHeaderBytes, 0, postHeaderBytes.Length);
 
             // 输入文件流数据 
-            byte[] buffer = new Byte[checked((uint)Math.Min(4096, (int)fileStream.Length))];
-            int bytesRead = 0;
-            while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
+            if (offset == -1)
+            {
+                var buffer = new byte[1024];
+                int bytesRead;
+                localStream.Seek(0, SeekOrigin.Begin);
+                while ((bytesRead = localStream.Read(buffer, 0, buffer.Length)) != 0)
+                {
+                    requestStream.Write(buffer, 0, bytesRead);
+                }
+            }
+            else
+            {
+                var buffer = new Byte[sliceSize];
+                int bytesRead;
+                localStream.Seek(offset, SeekOrigin.Begin);
+                bytesRead = localStream.Read(buffer, 0, buffer.Length);
                 requestStream.Write(buffer, 0, bytesRead);
+            }
+            localStream.Close();
+
 
             // 输入尾部数据 
             requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
-            WebResponse responce = webrequest.GetResponse();
-            Stream s = responce.GetResponseStream();
+
+            Stream s;
+            try
+            {
+                WebResponse responce = webrequest.GetResponse();
+                s = responce.GetResponseStream();
+            }
+            catch (WebException wex)
+            {
+                s = wex.Response.GetResponseStream();
+            }
+
+
             StreamReader sr = new StreamReader(s);
 
             // 返回数据流(源码) 
@@ -297,13 +355,55 @@ namespace System
         #endregion
 
         #region 私有方法
+        private static string GetFormData(IDictionary<string, object> param, Hashtable headerItem)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (param != null && headerItem != null)
+            {
+                if (headerItem["Content-Type"].ToString().Equals("multipart/form-data"))
+                {
+                    string boundary = DateTime.Now.Ticks.ToString("x");//元素分割标记
+                    headerItem["Content-Type"] = $"multipart/form-data; boundary=---------------------------{boundary}";
+
+                    foreach (KeyValuePair<string, object> pair in param)
+                    {
+                        sb.AppendLine("-----------------------------" + boundary);
+                        sb.AppendLine($"Content-Disposition: form-data; name=\"{pair.Key}\"");
+                        sb.AppendLine();
+                        sb.AppendLine(pair.Value.ToString());
+                    }
+                    sb.AppendLine("-----------------------------" + boundary + "--");
+
+                }
+                else if (headerItem["Content-Type"].ToString().Contains("json"))
+                {
+                    sb.Append(JsonConvert.SerializeObject(param));
+                }
+                else
+                {
+                    if (param.Count > 0)
+                    {
+                        sb.Append("?");
+                        foreach (KeyValuePair<string, object> pair in param)
+                        {
+                            sb.Append(pair.Key + "=" + pair.Value + "&");
+                        }
+                        sb.Remove(sb.Length - 1, 1);
+                    }
+
+                }
+            }
+
+
+            return sb.ToString();
+        }
         /// <summary>
         /// 设置请求头
         /// </summary>
         /// <param name="request">HttpWebRequest对象</param>
         /// <param name="headerItem">header的属性对象</param>
         /// <example>调用说明：SetHeaderValue(request.Headers, headerItem);</example>
-        private static void SetHeaderValue(ref HttpWebRequest request, Hashtable headerItem)
+        private static void SetHeaderValue(HttpWebRequest request, Hashtable headerItem)
         {
             request.ContentType = "text/html";
             request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36";
@@ -391,7 +491,7 @@ namespace System
         /// </summary>
         /// <param name="url">请求地址</param>
         /// <param name="qequest">请求方法，GET、POST</param>
-        /// <param name="dataStr">请求主体</param>
+        /// <param name="param">请求主体</param>
         /// <param name="chareset">编码，默认utf-8</param>
         /// <param name="headerItem"></param>
         /// <param name="proxy">http代理设置</param>
@@ -400,17 +500,82 @@ namespace System
         /// <returns>响应的页面, 响应的cookie</returns>
         /// <c>！注意：有时候请求会重定向，但我们就需要从重定向url获取东西，像QQ登录成功后获取sid，但上面的会自动根据重定向地址跳转。我们可以用:
         ///     request.AllowAutoRedirect = false;设置重定向禁用，你就可以从headers的Location属性中获取重定向地址</c>
-        private static (string retHtml, string cookies) HttpRequest(string url, string qequest, string dataStr, string chareset, Hashtable headerItem, WebProxy proxy, CookieContainer cookies, string cookie)
+        private static (string retHtml, string cookies) HttpRequest(string url, string qequest, IDictionary<string, object> param, string chareset, Hashtable headerItem, WebProxy proxy, CookieContainer cookies, string cookie)
         {
-            HttpWebRequest request;
-            if (qequest == "GET")
-                request = (HttpWebRequest)WebRequest.Create(url + (dataStr == "" ? "" : "?") + dataStr);
-            else
-                request = (HttpWebRequest)WebRequest.Create(url);
+            //HttpWebRequest request;
+            //if (qequest == "GET")
+            //    request = (HttpWebRequest)WebRequest.Create(url + (dataStr == "" ? "" : "?") + dataStr);
+            //else
+            //    request = (HttpWebRequest)WebRequest.Create(url);
+            //request.Method = qequest;
+            //if (qequest == "POST")
+            //    request.ContentLength = Encoding.GetEncoding(chareset).GetByteCount(dataStr);
+            //SetHeaderValue(request, headerItem);
+            //request.Proxy = proxy;  //将其默认代理设置为空
+            ////CookieContainer cookie = new CookieContainer();
+
+            //request.CookieContainer = cookies ?? GetCookieContainer(url, cookie);
+            //request.Timeout = 90000;
+            //if (qequest == "POST")
+            //{
+            //    Stream myRequestStream = request.GetRequestStream();
+            //    myRequestStream.Write(Encoding.GetEncoding(chareset).GetBytes(dataStr), 0, Encoding.GetEncoding(chareset).GetByteCount(dataStr));
+            //    myRequestStream.Close();
+            //}
+            //request.ServicePoint.Expect100Continue = false;  //这个在Post的时候，一定要加上，如果服务器返回错误，他还会继续再去请求，不会使用之前的错误数据，做返回数据
+
+            //HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            //response.Cookies = request.CookieContainer?.GetCookies(response.ResponseUri);
+            //cookie = request.CookieContainer?.GetCookieHeader(response.ResponseUri);
+
+            var v = HttpRequestStream(url, qequest, param, chareset, headerItem, proxy, cookies, cookie);
+            using (Stream myResponseStream = v.responseStream)
+            {
+                if (v.request.Headers[HttpRequestHeader.AcceptEncoding]?.IndexOf("gzip", StringComparison.CurrentCultureIgnoreCase) > -1)
+                {
+                    string retString = System.Text.Encoding.GetEncoding(chareset).GetString(Decompress(myResponseStream));
+                    v.request.Abort();
+                    return (retString, cookie);
+                }
+                else
+                {
+                    using (StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding(chareset)))
+                    {
+                        string retString = myStreamReader.ReadToEnd();
+                        v.request.Abort();
+                        return (retString, cookie);
+                    }
+                }
+
+            }
+
+
+        }
+
+        /// <summary>
+        /// http 请求
+        /// </summary>
+        /// <param name="url">请求地址</param>
+        /// <param name="qequest">请求方法，GET、POST</param>
+        /// <param name="param">请求主体</param>
+        /// <param name="chareset">编码，默认utf-8</param>
+        /// <param name="headerItem"></param>
+        /// <param name="proxy">http代理设置</param>
+        /// <param name="cookies">cookie容器</param>
+        /// <param name="cookie">cookie</param>
+        /// <returns>响应的页面, 响应的cookie</returns>
+        /// <c>！注意：有时候请求会重定向，但我们就需要从重定向url获取东西，像QQ登录成功后获取sid，但上面的会自动根据重定向地址跳转。我们可以用:
+        ///     request.AllowAutoRedirect = false;设置重定向禁用，你就可以从headers的Location属性中获取重定向地址</c>
+        private static (HttpWebRequest request, Stream responseStream, string cookies) HttpRequestStream(string url, string qequest, IDictionary<string, object> param, string chareset, Hashtable headerItem, WebProxy proxy, CookieContainer cookies, string cookie)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = qequest;
+
+            string dataStr = GetFormData(param, headerItem);
             if (qequest == "POST")
                 request.ContentLength = Encoding.GetEncoding(chareset).GetByteCount(dataStr);
-            SetHeaderValue(ref request, headerItem);
+            SetHeaderValue(request, headerItem);
             request.Proxy = proxy;  //将其默认代理设置为空
             //CookieContainer cookie = new CookieContainer();
 
@@ -424,35 +589,26 @@ namespace System
             }
             request.ServicePoint.Expect100Continue = false;  //这个在Post的时候，一定要加上，如果服务器返回错误，他还会继续再去请求，不会使用之前的错误数据，做返回数据
 
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-            response.Cookies = request.CookieContainer?.GetCookies(response.ResponseUri);
-            cookie = request.CookieContainer?.GetCookieHeader(response.ResponseUri);
-
-
-            using (Stream myResponseStream = response.GetResponseStream())
+            HttpWebResponse response;
+            Stream myResponseStream;
+            try
             {
-                if (request.Headers[HttpRequestHeader.AcceptEncoding]?.IndexOf("gzip", StringComparison.CurrentCultureIgnoreCase) > -1)
-                {
-                    string retString = System.Text.Encoding.GetEncoding(chareset).GetString(Decompress(myResponseStream));
-                    request.Abort();
-                    return (retString, cookie);
-                }
-                else
-                {
-                    using (StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding(chareset)))
-                    {
-                        string retString = myStreamReader.ReadToEnd();
-                        request.Abort();
-                        return (retString, cookie);
-                    }
-                }
-
+                response = (HttpWebResponse)request.GetResponse();
+                response.Cookies = request.CookieContainer?.GetCookies(response.ResponseUri);
+                cookie = request.CookieContainer?.GetCookieHeader(response.ResponseUri);
+                myResponseStream = response.GetResponseStream();
+            }
+            catch (WebException wex)
+            {
+                myResponseStream = wex.Response.GetResponseStream();
             }
 
 
-        }
 
+
+
+            return (request, myResponseStream, cookie);
+        }
         #endregion
     }
 

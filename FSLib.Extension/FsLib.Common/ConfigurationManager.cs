@@ -12,8 +12,16 @@ namespace System
         static ConfigurationManager()
         {
             // Microsoft.Extensions.Configuration扩展包提供的
-            var builder = new ConfigurationBuilder()
-                .Add(new JsonConfigurationSource {Path = "appsettings.json", Optional = false, ReloadOnChange = true});
+            var builder = new ConfigurationBuilder();
+            builder.Add(IsDevelopment()
+                ? new JsonConfigurationSource
+                {
+                    Path = "appsettings.Development.json",
+                    Optional = false,
+                    ReloadOnChange = true
+                }
+                : new JsonConfigurationSource {Path = "appsettings.json", Optional = false, ReloadOnChange = true});
+
             Config = builder.Build();
         }
         public static T GetAppSettings<T>(string key) where T : class, new()
@@ -33,6 +41,11 @@ namespace System
         public static string Get(string key)
         {
             return Config[key];
+        }
+
+        private static bool IsDevelopment()
+        {
+            return System.Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
         }
     }
 }

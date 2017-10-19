@@ -239,7 +239,7 @@ namespace System
 
             string[] dotNetTypes = {"int", "int", "string","bool" ,"DateTime","Decimal","Double","Byte[]","Decimal",
                 "string","string","DateTime","Int16","string","Int64","Byte[]","string","string","Decimal",
-                "Single","Single", "Object","Byte[]","Byte","Guid","Byte[]","int","string"};
+                "Single","Single", "Object","DateTime","Byte","Guid","Byte[]","int","string"};
             int i = Array.IndexOf(sqlTypeNames, sqlTypeString.ToLower());
             if (i > -1)
             {
@@ -264,7 +264,7 @@ namespace System
 
             string[] dotNetTypes = {"Int32", "Int32", "String","Boolean" ,"DateTime","Decimal","Double","Byte[]","Single",
                 "String","String","DateTime","Int16","String","Int64","Byte[]","String","String","Decimal",
-                "Single","Single", "Object","Byte[]","Byte","Guid","Byte[]"};
+                "Single","Single", "Object","DateTime","Byte","Guid","Byte[]"};
             int i = Array.IndexOf(sqlTypeNames, sqlTypeString.ToLower());
             if (i > -1)
             {

@@ -485,6 +485,10 @@ namespace System
         /// <returns></returns>
         public static string ToFirstUpper(this string str, CultureInfo culture = null)
         {
+            if (string.IsNullOrEmpty(str))
+            {
+                return str;
+            }
             if (culture == null)
             {
                 str = str.Substring(0, 1).ToUpper() + str.Substring(1);
@@ -505,6 +509,10 @@ namespace System
         /// <returns></returns>
         public static string ToFirstLower(this string str, CultureInfo culture = null)
         {
+            if (string.IsNullOrEmpty(str))
+            {
+                return str;
+            }
             if (culture == null)
             {
                 str = str.Substring(0, 1).ToLower() + str.Substring(1);

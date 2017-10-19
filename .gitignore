@@ -4,10 +4,8 @@
 
 /FSLib.Extension/.vs
 /FSLib.Extension/packages
-/FSLib.Extension/ConsoleTest01/obj
-/FSLib.Extension/ConsoleTest01/bin
-/FSLib.Extension/ConsoleTest02/obj
-/FSLib.Extension/ConsoleTest02/bin
+/FSLib.Extension/ConsoleApp1
+/FSLib.Extension/ConsoleApp2
 /FSLib.Extension/FsLib.Common/obj
 /FSLib.Extension/FsLib.Common/bin
 

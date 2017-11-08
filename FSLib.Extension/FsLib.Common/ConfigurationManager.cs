@@ -1,5 +1,4 @@
-﻿#if NETSTANDARD2_0
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -12,15 +11,9 @@ namespace System
         static ConfigurationManager()
         {
             // Microsoft.Extensions.Configuration扩展包提供的
-            var builder = new ConfigurationBuilder();
-            builder.Add(IsDevelopment()
-                ? new JsonConfigurationSource
-                {
-                    Path = "appsettings.Development.json",
-                    Optional = false,
-                    ReloadOnChange = true
-                }
-                : new JsonConfigurationSource {Path = "appsettings.json", Optional = false, ReloadOnChange = true});
+            var builder = new ConfigurationBuilder()
+                .Add(new JsonConfigurationSource { Path = "appsettings.json", Optional = false, ReloadOnChange = true })
+                .Add(new JsonConfigurationSource { Path = "appsettings.Development.json", Optional = true, ReloadOnChange = true });
 
             Config = builder.Build();
         }
@@ -42,11 +35,5 @@ namespace System
         {
             return Config[key];
         }
-
-        private static bool IsDevelopment()
-        {
-            return System.Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
-        }
     }
 }
-#endif

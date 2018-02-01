@@ -309,5 +309,36 @@ namespace System
             bool result = temp1 == temp2;
             return result;
         }
+        /// <summary>
+        /// 计算时间距离当前时间的时间差
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        public static string GetTimeInterval(DateTime dateTime)
+        {
+            DateTime nowTime = DateTime.Now;
+            var timeSpan = nowTime - dateTime;
+            if (timeSpan.TotalDays > 30)
+            {
+                return dateTime.ToString("yyyy-MM-dd HH:mm:ss");
+            }
+            if (timeSpan.TotalHours > 24)
+            {
+                return timeSpan.Days + "天前";
+            }
+            if (timeSpan.TotalMinutes > 60)
+            {
+                return timeSpan.Hours + "小时前";
+            }
+            if (timeSpan.TotalSeconds > 60)
+            {
+                return timeSpan.Minutes + "分钟前";
+            }
+            else
+            {
+                return timeSpan.Seconds + "秒前";
+            }
+
+        }
     }
 }

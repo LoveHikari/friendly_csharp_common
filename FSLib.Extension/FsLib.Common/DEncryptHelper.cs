@@ -431,7 +431,7 @@ namespace System
             for (int i = 0; i < s.Length; i++)
             {
                 // 将得到的字符串使用十六进制类型格式。格式后的字符是小写的字母，如果使用大写（X）则格式后的字符是大写字符
-                pwd = pwd + s[i].ToString("X");
+                pwd = pwd + s[i].ToString("X2");
 
             }
             return pwd.ToLower();

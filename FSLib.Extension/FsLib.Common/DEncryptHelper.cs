@@ -141,7 +141,7 @@ namespace System
         /// <returns></returns>
         public static string Decrypt3DES(string Value)
         {
-            string sKey = "63DFFECEEB54C0511B6A39B4F6C376DD";//32个字符
+            string sKey = "xhVs6DRXLfUGxw+AhtfQdpQGoa+8SA9d";//32个字符
             string sIV = "4vHKRj3yfzU=";//12个字符  
             SymmetricAlgorithm mCSP = new TripleDESCryptoServiceProvider();
             ICryptoTransform ct;

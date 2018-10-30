@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
@@ -10,25 +10,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="MongoDB\**" />
-    <EmbeddedResource Remove="MongoDB\**" />
-    <None Remove="MongoDB\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Npgsql" Version="3.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
-    <PackageReference Include="ServiceStack.Redis.Core" Version="5.0.2" />
+    <PackageReference Include="ServiceStack.Redis.Core" Version="5.1.0" />
     <PackageReference Include="System.Data.Common" Version="4.3.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.4.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.0.0" />
-    <PackageReference Include="SixLabors.ImageSharp.Drawing">
-      <Version>1.0.0-beta0001</Version>
-    </PackageReference>
   </ItemGroup>
   
 </Project>

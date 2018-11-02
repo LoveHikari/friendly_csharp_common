@@ -270,50 +270,6 @@ namespace System
         }
         #endregion
 
-        #region Base64加密解密
-        /// <summary>
-        /// Base64加密
-        /// </summary>
-        /// <param name="input">需要加密的字符串</param>
-        /// <returns></returns>
-        public static string Base64Encrypt(string input)
-        {
-            return Base64Encrypt(input, new UTF8Encoding());
-        }
-
-        /// <summary>
-        /// Base64加密
-        /// </summary>
-        /// <param name="input">需要加密的字符串</param>
-        /// <param name="encode">字符编码</param>
-        /// <returns></returns>
-        public static string Base64Encrypt(string input, Encoding encode)
-        {
-            return Convert.ToBase64String(encode.GetBytes(input));
-        }
-
-        /// <summary>
-        /// Base64解密
-        /// </summary>
-        /// <param name="input">需要解密的字符串</param>
-        /// <returns></returns>
-        public static string Base64Decrypt(string input)
-        {
-            return Base64Decrypt(input, new UTF8Encoding());
-        }
-
-        /// <summary>
-        /// Base64解密
-        /// </summary>
-        /// <param name="input">需要解密的字符串</param>
-        /// <param name="encode">字符的编码</param>
-        /// <returns></returns>
-        public static string Base64Decrypt(string input, Encoding encode)
-        {
-            return encode.GetString(Convert.FromBase64String(input));
-        }
-        #endregion
-
         #region DES加密解密
         /// <summary>
         /// DES加密
@@ -367,74 +323,6 @@ namespace System
             CryptoStream cst = new CryptoStream(ms, cryptoProvider.CreateDecryptor(byKey, byIV), CryptoStreamMode.Read);
             StreamReader sr = new StreamReader(cst);
             return sr.ReadToEnd();
-        }
-        #endregion
-
-        #region MD5加密
-        /// <summary>
-        /// MD5加密
-        /// </summary>
-        /// <param name="input">需要加密的字符串</param>
-        /// <param name="encoding">字符的编码</param>
-        /// <returns></returns>
-        public static string MD5Encrypt(string input, string encoding="utf-8")
-        {
-            MD5 md5 = new MD5CryptoServiceProvider();
-            byte[] t = md5.ComputeHash(Encoding.GetEncoding(encoding).GetBytes(input));
-            StringBuilder sb = new StringBuilder(32);
-            for (int i = 0; i < t.Length; i++)
-                sb.Append(t[i].ToString("x").PadLeft(2, '0'));
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// MD5对文件流加密
-        /// </summary>
-        /// <param name="stream">文件流</param>
-        /// <returns></returns>
-        public static string MD5Encrypt(Stream stream)
-        {
-            MD5 md5serv = MD5CryptoServiceProvider.Create();
-            byte[] buffer = md5serv.ComputeHash(stream);
-            StringBuilder sb = new StringBuilder();
-            foreach (byte var in buffer)
-                sb.Append(var.ToString("x2"));
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// MD5加密(返回16位加密串)
-        /// </summary>
-        /// <param name="input">需要加密的字符串</param>
-        /// <param name="encoding">编码</param>
-        /// <returns></returns>
-        public static string MD5Encrypt16(string input, string encoding = "utf-8")
-        {
-            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
-            string t2 = BitConverter.ToString(md5.ComputeHash(Encoding.GetEncoding(encoding).GetBytes(input)), 4, 8);
-            return t2.Replace("-", "").ToLower();
-        }
-        /// <summary>
-        /// MD5加密(返回32位加密串)
-        /// </summary>
-        /// <param name="input">需要加密的字符串</param>
-        /// <param name="encoding">编码</param>
-        /// <returns></returns>
-        public static string MD5Encrypt32(string input, string encoding = "utf-8")
-        {
-            string cl = input;
-            string pwd = "";
-            MD5 md5 = MD5.Create();//实例化一个md5对像
-            // 加密后是一个字节类型的数组，这里要注意编码UTF8/Unicode等的选择　
-            byte[] s = md5.ComputeHash(Encoding.GetEncoding(encoding).GetBytes(cl));
-            // 通过使用循环，将字节类型的数组转换为字符串，此字符串是常规字符格式化所得
-            for (int i = 0; i < s.Length; i++)
-            {
-                // 将得到的字符串使用十六进制类型格式。格式后的字符是小写的字母，如果使用大写（X）则格式后的字符是大写字符
-                pwd = pwd + s[i].ToString("X2");
-
-            }
-            return pwd.ToLower();
         }
         #endregion
 

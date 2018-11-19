@@ -383,7 +383,6 @@ namespace System
                 {
                     if (param.Count > 0)
                     {
-                        sb.Append("?");
                         foreach (KeyValuePair<string, object> pair in param)
                         {
                             sb.Append(pair.Key + "=" + pair.Value + "&");

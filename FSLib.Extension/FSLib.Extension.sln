@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27009.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FsLib.Common", "FsLib.Common\FsLib.Common.csproj", "{1802A27F-1CDE-4D5C-BB7F-3F4FD388CFF3}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTestProject1", "XUnitTestProject1\XUnitTestProject1.csproj", "{2D5CB179-895D-46DE-A4E4-57F3A85DBA51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EfCore.IQueryableExtensions.ToSql", "EfCore.IQueryableExtensions.ToSql\EfCore.IQueryableExtensions.ToSql.csproj", "{FE3B4F21-32F3-4260-B0EC-A383FB149B13}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{1802A27F-1CDE-4D5C-BB7F-3F4FD388CFF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1802A27F-1CDE-4D5C-BB7F-3F4FD388CFF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1802A27F-1CDE-4D5C-BB7F-3F4FD388CFF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D5CB179-895D-46DE-A4E4-57F3A85DBA51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D5CB179-895D-46DE-A4E4-57F3A85DBA51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D5CB179-895D-46DE-A4E4-57F3A85DBA51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D5CB179-895D-46DE-A4E4-57F3A85DBA51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE3B4F21-32F3-4260-B0EC-A383FB149B13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE3B4F21-32F3-4260-B0EC-A383FB149B13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE3B4F21-32F3-4260-B0EC-A383FB149B13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE3B4F21-32F3-4260-B0EC-A383FB149B13}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

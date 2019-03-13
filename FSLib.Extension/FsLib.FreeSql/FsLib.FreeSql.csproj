@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>FsLib.FreeSql-netstandard</PackageId>
+    <Authors>Yu XiaoWei</Authors>
+    <Product>FsLib.FreeSql-netstandard</Product>
+    <Company>5cm R &amp; D department</Company>
+    <Description>sql依赖注入类</Description>
+    <PackageVersion>1.0.3</PackageVersion>
+    <Language>zh-CN</Language>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\FsLib.FreeSql.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.3" />
+    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.3" />
+  </ItemGroup>
+
+</Project>

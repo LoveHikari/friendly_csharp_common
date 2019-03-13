@@ -1,30 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FsLib.FreeSql.Infrastructure
+namespace System.NetCore.Extensions.EntityFrameworkCore
 {
     /// <summary>
     /// <see cref="ServiceCollection"/> 扩展类
     /// </summary>
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), System.ComponentModel.Browsable(false)]
-    public static class EntityFrameworkCoreExtensions
+    public static class ServiceCollectionExtensions
     {
         /// <summary>
-        /// 注入efCore
+        /// 设置数据库配置
         /// </summary>
-        /// <param name="services">服务集合</param>
-        /// <param name="connectionString">数据库连接字符串</param>
-        /// <param name="dbTypeName">数据库类型，SqlServer，MySql</param>
-        public static IServiceCollection AddEntityFrameworkCore(this IServiceCollection services, string connectionString, string dbTypeName)
-        {
-            services.AddDbContextPool<AppDbContext>(options => SetOptionsBuilder(options, connectionString, dbTypeName));
-            services.AddTransient(typeof(IDbContext), typeof(AppDbContext));
-            services.AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork));
-
-            return services;
-        }
-
-        private static DbContextOptionsBuilder SetOptionsBuilder(DbContextOptionsBuilder options, string connectionString, string dbTypeName)
+        /// <param name="options">数据上下文选项构建器</param>
+        /// <param name="connectionString">连接字符串</param>
+        /// <param name="dbTypeName">数据库类型名称</param>
+        /// <returns></returns>
+        public static DbContextOptionsBuilder SetOptionsBuilder(this DbContextOptionsBuilder options, string connectionString, string dbTypeName)
         {
             DbContextOptionsBuilder optionsBuilder = null;
             switch (dbTypeName.ToLower())

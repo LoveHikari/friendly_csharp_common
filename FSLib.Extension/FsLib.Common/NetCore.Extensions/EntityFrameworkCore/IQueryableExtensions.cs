@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Query;
@@ -7,8 +6,11 @@ using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Remotion.Linq.Parsing.Structure;
 
-namespace EfCore.IQueryableExtensions.ToSql
+namespace System.NetCore.Extensions.EntityFrameworkCore
 {
+    /// <summary>
+    /// <see cref="IQueryable"/> 扩展类
+    /// </summary>
     public static class IQueryableExtensions
     {
         private static readonly TypeInfo QueryCompilerTypeInfo = typeof(QueryCompiler).GetTypeInfo();
@@ -24,7 +26,12 @@ namespace EfCore.IQueryableExtensions.ToSql
         private static readonly FieldInfo DataBaseField = QueryCompilerTypeInfo.DeclaredFields.Single(x => x.Name == "_database");
 
         private static readonly PropertyInfo DatabaseDependenciesField = typeof(Database).GetTypeInfo().DeclaredProperties.Single(x => x.Name == "Dependencies");
-
+        /// <summary>
+        /// efCore转sql
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public static string ToSql<TEntity>(this IQueryable<TEntity> query) where TEntity : class
         {
             if (!(query is EntityQueryable<TEntity>) && !(query is InternalDbSet<TEntity>))

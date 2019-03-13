@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <RootNamespace>System</RootNamespace>
+    <PackageId>FsLib.Common-netstandard</PackageId>
     <Authors>Yu XiaoWei</Authors>
     <Product>FsLib.Common-netstandard</Product>
     <Company>5cm R &amp; D department</Company>
@@ -27,6 +28,10 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
     <PackageReference Include="ZXing.Net.Bindings.CoreCompat.System.Drawing" Version="0.16.5-beta" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.3" />
+    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.3" />
   </ItemGroup>
   
 </Project>

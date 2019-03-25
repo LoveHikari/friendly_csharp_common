@@ -4,10 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 namespace System.NetCore.Extensions.EntityFrameworkCore
 {
     /// <summary>
-    /// <see cref="ServiceCollection"/> 扩展类
+    /// <see cref="DbContextOptionsBuilder"/> 扩展类
     /// </summary>
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), System.ComponentModel.Browsable(false)]
-    public static class ServiceCollectionExtensions
+    public static class DbContextOptionsBuilderExtensions
     {
         /// <summary>
         /// 设置数据库配置

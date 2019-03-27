@@ -35,13 +35,14 @@ namespace System
         /// <returns>二进制</returns>  
         public static byte[] GetPictureData(string imagePath)
         {
+            byte[] byData;
             //根据图片文件的路径使用文件流打开，并保存为byte[]
             using (FileStream fs = new FileStream(imagePath, FileMode.Open))  //可以是其他重载方法
             {
-                byte[] byData = new byte[fs.Length];
+                byData = new byte[fs.Length];
                 fs.Read(byData, 0, byData.Length);
-                return byData;
             }
+            return byData;
         }
         /// <summary>
         /// 获取Image对象
@@ -73,12 +74,13 @@ namespace System
         {
             if (bytes == null)
                 return null;
+            Image image;
             using (MemoryStream ms = new MemoryStream(bytes))
             {
-                Image image = Image.FromStream(ms);
+                image = Image.FromStream(ms);
                 ms.Flush();
-                return image;
             }
+            return image;
         }
         /// <summary>
         /// 图片转二进制
@@ -87,16 +89,17 @@ namespace System
         /// <returns>二进制</returns>  
         public static byte[] ImageToBytes(Image image)
         {
+            byte[] byData;
             //将Image转换成流数据，并保存为byte[]   
             using (MemoryStream mstream = new MemoryStream())
             {
                 image.Save(mstream, ImageFormat.Bmp);
-                byte[] byData = new Byte[mstream.Length];
+                byData = new Byte[mstream.Length];
                 mstream.Position = 0;
                 mstream.Read(byData, 0, byData.Length);
                 mstream.Flush();
-                return byData;
             }
+            return byData;
 
         }
         /// <summary>
@@ -129,13 +132,14 @@ namespace System
         /// <returns></returns>
         public static Image BitmapToImage(Bitmap bitmap)
         {
+            Image image;
             using (MemoryStream ms = new MemoryStream())
             {
                 bitmap.Save(ms, ImageFormat.Png);
-                Image image = Image.FromStream(ms);
+                image = Image.FromStream(ms);
                 ms.Flush();
-                return image;
             }
+            return image;
         }
         /// <summary>
         /// byte[] 转换 Bitmap
@@ -144,10 +148,13 @@ namespace System
         /// <returns></returns>
         public static Bitmap BytesToBitmap(byte[] bytes)
         {
+            Bitmap bitmap;
             using (MemoryStream stream = new MemoryStream(bytes))
             {
-                return new Bitmap((Image)new Bitmap(stream));
+                bitmap = new Bitmap((Image)new Bitmap(stream));
             }
+
+            return bitmap;
         }
         /// <summary>
         /// Bitmap转byte[]
@@ -156,15 +163,45 @@ namespace System
         /// <returns></returns>
         public static byte[] BitmapToBytes(Bitmap bitmap)
         {
+            byte[] byteImage;
             using (MemoryStream ms = new MemoryStream())
             {
                 bitmap.Save(ms, ImageFormat.Png);
-                byte[] byteImage = ms.ToArray();
+                byteImage = ms.ToArray();
                 ms.Flush();
-                return byteImage;
             }
+            return byteImage;
         }
+        /// <summary>
+        /// base64转Bitmap
+        /// </summary>
+        /// <param name="imgStr">data:image/png;base64,iVBORw0KG</param>
+        /// <returns></returns>
+        public static (Bitmap bitmap, ImageFormat imageFormat) Base64ToBitmap(string imgStr)
+        {
+            string[] ss = imgStr.Split(',');
+            string base64 = ss[1];
+            //转图片
+            byte[] bit = Convert.FromBase64String(base64);
+            Bitmap bmp;
+            using (MemoryStream ms = new MemoryStream(bit))
+            {
+                bmp = new Bitmap(ms);
+            }
 
+            string ifs = ss[0];
+            ImageFormat imageFormat;
+            if (ifs.Contains("image/png"))
+            {
+                imageFormat = ImageFormat.Png;
+            }
+            else
+            {
+                imageFormat = ImageFormat.Jpeg;
+            }
+
+            return (bmp, imageFormat);
+        }
         #endregion
 
         #region 旋转 http://blog.csdn.net/jayzai/article/details/50332913 

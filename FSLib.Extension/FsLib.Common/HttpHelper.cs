@@ -28,79 +28,7 @@ namespace System
     /// </summary>
     public class HttpHelper
     {
-        #region GetHttp
-
-        /// <summary>
-        /// GetHttpWebRequest方式获得html
-        /// </summary>
-        /// <param name="url">网址</param>
-        /// <param name="chareset">编码</param>
-        /// <param name="proxy">http代理设置</param>
-        /// <c>！注意：有时候请求会重定向，但我们就需要从重定向url获取东西，像QQ登录成功后获取sid，但上面的会自动根据重定向地址跳转。我们可以用:
-        ///     request.AllowAutoRedirect = false;设置重定向禁用，你就可以从headers的Location属性中获取重定向地址</c>
-        /// <returns>html代码</returns>
-        public static string GetHttpWebRequest(string url, string chareset, WebProxy proxy)
-        {
-            return HttpRequest(url, "GET", null, chareset, null, proxy, null, "").retHtml;
-        }
-
-
-        /// <summary>
-        /// PostHttpWebRequest方式获得html
-        /// </summary>
-        /// <param name="url">网址</param>
-        /// <param name="chareset">编码</param>
-        /// <param name="proxy">http代理设置</param>
-        /// <c>在post的时候有时也用的到cookie，像登录163发邮件时候就需要发送cookie，所以在外部一个cookie属性随时保存 CookieContainer cookie = new CookieContainer();</c>
-        /// <returns>html代码</returns>
-        public static string PostHttpWebRequest(string url, string chareset = "utf-8", WebProxy proxy = null)
-        {
-            return HttpRequest(url, "POST", null, chareset, null, proxy, null, "").retHtml;
-        }
-
-        /// <summary>
-        /// GetWebRequest方式获得html
-        /// </summary>
-        /// <param name="url">网址</param>
-        /// <param name="chareset">编码</param>
-        /// <returns>html代码</returns>
-        public static string GetWebRequest(string url, string chareset = "utf-8")
-        {
-            Uri uri = new Uri(url);
-            WebRequest myReq = WebRequest.Create(uri);
-            WebResponse result = myReq.GetResponse();
-            Stream receviceStream = result.GetResponseStream();
-            StreamReader readerOfStream = new StreamReader(receviceStream, System.Text.Encoding.GetEncoding(chareset));
-            string strHTML = readerOfStream.ReadToEnd();
-            readerOfStream.Close();
-            receviceStream.Close();
-            result.Close();
-            myReq.Abort();
-            return strHTML;
-        }
-        /// <summary>
-        /// GetWebClient方式获得html
-        /// </summary>
-        /// <param name="url">网址</param>
-        /// <param name="chareset">编码</param>
-        /// <returns>html代码</returns>
-        public static string GetWebClient(string url, string chareset = "utf-8")
-        {
-            string strHTML = "";
-            WebClient myWebClient = new WebClient();
-            myWebClient.Proxy = null;  //将其默认代理设置为空
-            Stream myStream = myWebClient.OpenRead(url);
-            StreamReader sr = new StreamReader(myStream, System.Text.Encoding.GetEncoding(chareset));
-            strHTML = sr.ReadToEnd();
-            sr.Close();
-            myStream.Close();
-            myWebClient.Dispose();
-            return strHTML;
-        }
-
-        #endregion
-
-        #region http请求
+        #region http POST 请求
 
         /// <summary>
         /// http POST 请求
@@ -111,7 +39,7 @@ namespace System
         /// <param name="headerItem"></param>
         /// <param name="cookies">cookie容器</param>
         /// <returns>响应的页面, 响应的cookie</returns>
-        public static (string retHtml, string cookies) HttpPostRequest(string url, IDictionary<string, object> postData, string chareset = "utf-8", Hashtable headerItem = null, CookieContainer cookies = null)
+        public static (string retHtml, string cookies) PostHttpWebRequest(string url, IDictionary<string, string> postData, string chareset = "utf-8", Hashtable headerItem = null, CookieContainer cookies = null)
         {
             return HttpRequest(url, "POST", postData, chareset, headerItem, null, cookies, "");
         }
@@ -125,7 +53,7 @@ namespace System
         /// <param name="headerItem"></param>
         /// <param name="cookie">cookie容器</param>
         /// <returns>响应的页面, 响应的cookie</returns>
-        public static (string retHtml, string cookies) PostHttpWebRequest2(string url, IDictionary<string, object> postData, string chareset = "utf-8", Hashtable headerItem = null, string cookie = "")
+        public static (string retHtml, string cookies) PostHttpWebRequest2(string url, IDictionary<string, string> postData, string chareset = "utf-8", Hashtable headerItem = null, string cookie = "")
         {
             return HttpRequest(url, "POST", postData, chareset, headerItem, null, null, cookie);
         }
@@ -138,10 +66,30 @@ namespace System
         /// <param name="headerItem"></param>
         /// <param name="cookie">cookie容器</param>
         /// <returns>响应的页面, 响应的cookie</returns>
-        public static string PostHttpWebRequest(string url, IDictionary<string, object> postData, string chareset = "utf-8", Hashtable headerItem = null, string cookie = "")
+        public static string PostHttpWebRequest(string url, IDictionary<string, string> postData, string chareset = "utf-8", Hashtable headerItem = null, string cookie = "")
         {
             return HttpRequest(url, "POST", postData, chareset, headerItem, null, null, cookie).retHtml;
         }
+        /// <summary>
+        /// PostHttpWebRequest方式获得html
+        /// </summary>
+        /// <param name="url">网址</param>
+        /// <param name="chareset">编码</param>
+        /// <param name="proxy">http代理设置</param>
+        /// <c>在post的时候有时也用的到cookie，像登录163发邮件时候就需要发送cookie，所以在外部一个cookie属性随时保存 CookieContainer cookie = new CookieContainer();</c>
+        /// <returns>html代码</returns>
+        public static string PostHttpWebRequest(string url, string chareset = "utf-8", WebProxy proxy = null)
+        {
+            return HttpRequest(url, "POST", null, chareset, null, proxy, null, "").retHtml;
+        }
+
+
+
+
+        #endregion
+
+        #region http GET 请求
+
         /// <summary>
         /// http GET 请求
         /// </summary>
@@ -179,7 +127,19 @@ namespace System
         {
             return HttpRequestStream(url, "GET", null, chareset, headerItem, null, null, cookie).responseStream;
         }
-
+        /// <summary>
+        /// GetHttpWebRequest方式获得html
+        /// </summary>
+        /// <param name="url">网址</param>
+        /// <param name="chareset">编码</param>
+        /// <param name="proxy">http代理设置</param>
+        /// <c>！注意：有时候请求会重定向，但我们就需要从重定向url获取东西，像QQ登录成功后获取sid，但上面的会自动根据重定向地址跳转。我们可以用:
+        ///     request.AllowAutoRedirect = false;设置重定向禁用，你就可以从headers的Location属性中获取重定向地址</c>
+        /// <returns>html代码</returns>
+        public static string GetHttpWebRequest(string url, string chareset, WebProxy proxy)
+        {
+            return HttpRequest(url, "GET", null, chareset, null, proxy, null, "").retHtml;
+        }
 
         #endregion
 
@@ -243,7 +203,7 @@ namespace System
         /// <param name="fileKey"></param> 
         /// <param name="cookie">cookie数据</param> 
         /// <returns>响应源码</returns> 
-        public static string HttpUploadFile(string url, IDictionary<string, object> param, Stream localStream, string fileName, long offset = -1, int sliceSize = 0, Hashtable headerItem = null, string fileKey = "filecontent", string cookie = "")
+        public static string HttpUploadFile(string url, IDictionary<string, string> param, Stream localStream, string fileName, long offset = -1, int sliceSize = 0, Hashtable headerItem = null, string fileKey = "filecontent", string cookie = "")
         {
             // 这个可以是改变的，也可以是下面这个固定的字符串 
             string boundary = DateTime.Now.Ticks.ToString("x");//元素分割标记
@@ -259,12 +219,12 @@ namespace System
             StringBuilder sb = new StringBuilder();
             if (param != null)
             {
-                foreach (KeyValuePair<string, object> pair in param)
+                foreach (KeyValuePair<string, string> pair in param)
                 {
                     sb.AppendLine("-----------------------------" + boundary);
                     sb.AppendLine($"Content-Disposition: form-data; name=\"{pair.Key}\"");
                     sb.AppendLine();
-                    sb.AppendLine(pair.Value.ToString());
+                    sb.AppendLine(pair.Value);
                 }
             }
 
@@ -355,7 +315,7 @@ namespace System
         #endregion
 
         #region 私有方法
-        private static string GetFormData(IDictionary<string, object> param, Hashtable headerItem)
+        private static string GetFormData(IDictionary<string, string> param, Hashtable headerItem)
         {
             StringBuilder sb = new StringBuilder();
             if (param != null && headerItem != null)
@@ -365,12 +325,12 @@ namespace System
                     string boundary = DateTime.Now.Ticks.ToString("x");//元素分割标记
                     headerItem["Content-Type"] = $"multipart/form-data; boundary=---------------------------{boundary}";
 
-                    foreach (KeyValuePair<string, object> pair in param)
+                    foreach (KeyValuePair<string, string> pair in param)
                     {
                         sb.AppendLine("-----------------------------" + boundary);
                         sb.AppendLine($"Content-Disposition: form-data; name=\"{pair.Key}\"");
                         sb.AppendLine();
-                        sb.AppendLine(pair.Value.ToString());
+                        sb.AppendLine(pair.Value);
                     }
                     sb.AppendLine("-----------------------------" + boundary + "--");
 
@@ -383,7 +343,7 @@ namespace System
                 {
                     if (param.Count > 0)
                     {
-                        foreach (KeyValuePair<string, object> pair in param)
+                        foreach (KeyValuePair<string, string> pair in param)
                         {
                             sb.Append(pair.Key + "=" + pair.Value + "&");
                         }
@@ -429,10 +389,9 @@ namespace System
                     System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
                 if (property != null)
                 {
-                    var collection = property.GetValue(request.Headers, null) as System.Collections.Specialized.NameValueCollection;
                     foreach (var pair in headerItem.Keys)
                     {
-                        if (collection != null) collection[pair.ToString()] = headerItem[pair].ToString();
+                        if (property.GetValue(request.Headers, null) is Collections.Specialized.NameValueCollection collection) collection[pair.ToString()] = headerItem[pair].ToString();
                     }
                 }
             }
@@ -499,7 +458,7 @@ namespace System
         /// <returns>响应的页面, 响应的cookie</returns>
         /// <c>！注意：有时候请求会重定向，但我们就需要从重定向url获取东西，像QQ登录成功后获取sid，但上面的会自动根据重定向地址跳转。我们可以用:
         ///     request.AllowAutoRedirect = false;设置重定向禁用，你就可以从headers的Location属性中获取重定向地址</c>
-        private static (string retHtml, string cookies) HttpRequest(string url, string qequest, IDictionary<string, object> param, string chareset, Hashtable headerItem, WebProxy proxy, CookieContainer cookies, string cookie)
+        private static (string retHtml, string cookies) HttpRequest(string url, string qequest, IDictionary<string, string> param, string chareset, Hashtable headerItem, WebProxy proxy, CookieContainer cookies, string cookie)
         {
             //HttpWebRequest request;
             //if (qequest == "GET")
@@ -566,7 +525,7 @@ namespace System
         /// <returns>响应的页面, 响应的cookie</returns>
         /// <c>！注意：有时候请求会重定向，但我们就需要从重定向url获取东西，像QQ登录成功后获取sid，但上面的会自动根据重定向地址跳转。我们可以用:
         ///     request.AllowAutoRedirect = false;设置重定向禁用，你就可以从headers的Location属性中获取重定向地址</c>
-        private static (HttpWebRequest request, Stream responseStream, string cookies) HttpRequestStream(string url, string qequest, IDictionary<string, object> param, string chareset, Hashtable headerItem, WebProxy proxy, CookieContainer cookies, string cookie)
+        private static (HttpWebRequest request, Stream responseStream, string cookies) HttpRequestStream(string url, string qequest, IDictionary<string, string> param, string chareset, Hashtable headerItem, WebProxy proxy, CookieContainer cookies, string cookie)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = qequest;

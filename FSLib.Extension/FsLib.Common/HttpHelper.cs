@@ -39,7 +39,7 @@ namespace System
         /// <param name="headerItem"></param>
         /// <param name="cookies">cookie容器</param>
         /// <returns>响应的页面, 响应的cookie</returns>
-        public static (string retHtml, string cookies) PostHttpWebRequest(string url, IDictionary<string, string> postData, string chareset = "utf-8", Hashtable headerItem = null, CookieContainer cookies = null)
+        public static (string retHtml, string cookies) PostHttpWebRequest(string url, IDictionary<string, object> postData, string chareset = "utf-8", Hashtable headerItem = null, CookieContainer cookies = null)
         {
             return HttpRequest(url, "POST", postData, chareset, headerItem, null, cookies, "");
         }
@@ -53,7 +53,7 @@ namespace System
         /// <param name="headerItem"></param>
         /// <param name="cookie">cookie容器</param>
         /// <returns>响应的页面, 响应的cookie</returns>
-        public static (string retHtml, string cookies) PostHttpWebRequest2(string url, IDictionary<string, string> postData, string chareset = "utf-8", Hashtable headerItem = null, string cookie = "")
+        public static (string retHtml, string cookies) PostHttpWebRequest2(string url, IDictionary<string, object> postData, string chareset = "utf-8", Hashtable headerItem = null, string cookie = "")
         {
             return HttpRequest(url, "POST", postData, chareset, headerItem, null, null, cookie);
         }
@@ -66,7 +66,7 @@ namespace System
         /// <param name="headerItem"></param>
         /// <param name="cookie">cookie容器</param>
         /// <returns>响应的页面, 响应的cookie</returns>
-        public static string PostHttpWebRequest(string url, IDictionary<string, string> postData, string chareset = "utf-8", Hashtable headerItem = null, string cookie = "")
+        public static string PostHttpWebRequest(string url, IDictionary<string, object> postData, string chareset = "utf-8", Hashtable headerItem = null, string cookie = "")
         {
             return HttpRequest(url, "POST", postData, chareset, headerItem, null, null, cookie).retHtml;
         }
@@ -315,22 +315,22 @@ namespace System
         #endregion
 
         #region 私有方法
-        private static string GetFormData(IDictionary<string, string> param, Hashtable headerItem)
+        private static string GetFormData(IDictionary<string, object> param, Hashtable headerItem)
         {
             StringBuilder sb = new StringBuilder();
-            if (param != null && headerItem != null)
+            if (param != null && headerItem != null && headerItem.ContainsKey("Content-Type"))
             {
                 if (headerItem["Content-Type"].ToString().Equals("multipart/form-data"))
                 {
                     string boundary = DateTime.Now.Ticks.ToString("x");//元素分割标记
                     headerItem["Content-Type"] = $"multipart/form-data; boundary=---------------------------{boundary}";
 
-                    foreach (KeyValuePair<string, string> pair in param)
+                    foreach (KeyValuePair<string, object> pair in param)
                     {
                         sb.AppendLine("-----------------------------" + boundary);
                         sb.AppendLine($"Content-Disposition: form-data; name=\"{pair.Key}\"");
                         sb.AppendLine();
-                        sb.AppendLine(pair.Value);
+                        sb.AppendLine(pair.Value.ToString());
                     }
                     sb.AppendLine("-----------------------------" + boundary + "--");
 
@@ -343,7 +343,7 @@ namespace System
                 {
                     if (param.Count > 0)
                     {
-                        foreach (KeyValuePair<string, string> pair in param)
+                        foreach (KeyValuePair<string, object> pair in param)
                         {
                             sb.Append(pair.Key + "=" + pair.Value + "&");
                         }
@@ -372,17 +372,14 @@ namespace System
                 if (headerItem.ContainsKey("Content-Type"))
                 {
                     request.ContentType = headerItem["Content-Type"].ToString();
-                    headerItem.Remove("Content-Type");
                 }
                 if (headerItem.ContainsKey("User-Agent"))
                 {
                     request.UserAgent = headerItem["User-Agent"].ToString();
-                    headerItem.Remove("User-Agent");
                 }
                 if (headerItem.ContainsKey("Accept"))
                 {
                     request.Accept = headerItem["Accept"].ToString();
-                    headerItem.Remove("Accept");
                 }
 
                 var property = typeof(WebHeaderCollection).GetProperty("InnerCollection",
@@ -391,7 +388,10 @@ namespace System
                 {
                     foreach (var pair in headerItem.Keys)
                     {
-                        if (property.GetValue(request.Headers, null) is Collections.Specialized.NameValueCollection collection) collection[pair.ToString()] = headerItem[pair].ToString();
+                        if (pair.ToString() != "Content-Type" && pair.ToString() != "User-Agent" && pair.ToString() != "Accept")
+                        {
+                            if (property.GetValue(request.Headers, null) is Collections.Specialized.NameValueCollection collection) collection[pair.ToString()] = headerItem[pair].ToString();
+                        }
                     }
                 }
             }
@@ -458,7 +458,7 @@ namespace System
         /// <returns>响应的页面, 响应的cookie</returns>
         /// <c>！注意：有时候请求会重定向，但我们就需要从重定向url获取东西，像QQ登录成功后获取sid，但上面的会自动根据重定向地址跳转。我们可以用:
         ///     request.AllowAutoRedirect = false;设置重定向禁用，你就可以从headers的Location属性中获取重定向地址</c>
-        private static (string retHtml, string cookies) HttpRequest(string url, string qequest, IDictionary<string, string> param, string chareset, Hashtable headerItem, WebProxy proxy, CookieContainer cookies, string cookie)
+        private static (string retHtml, string cookies) HttpRequest(string url, string qequest, IDictionary<string, object> param, string chareset, Hashtable headerItem, WebProxy proxy, CookieContainer cookies, string cookie)
         {
             //HttpWebRequest request;
             //if (qequest == "GET")
@@ -525,7 +525,7 @@ namespace System
         /// <returns>响应的页面, 响应的cookie</returns>
         /// <c>！注意：有时候请求会重定向，但我们就需要从重定向url获取东西，像QQ登录成功后获取sid，但上面的会自动根据重定向地址跳转。我们可以用:
         ///     request.AllowAutoRedirect = false;设置重定向禁用，你就可以从headers的Location属性中获取重定向地址</c>
-        private static (HttpWebRequest request, Stream responseStream, string cookies) HttpRequestStream(string url, string qequest, IDictionary<string, string> param, string chareset, Hashtable headerItem, WebProxy proxy, CookieContainer cookies, string cookie)
+        private static (HttpWebRequest request, Stream responseStream, string cookies) HttpRequestStream(string url, string qequest, IDictionary<string, object> param, string chareset, Hashtable headerItem, WebProxy proxy, CookieContainer cookies, string cookie)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = qequest;

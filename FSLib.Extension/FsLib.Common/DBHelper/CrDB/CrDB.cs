@@ -92,9 +92,9 @@ namespace System.DBHelper.CrDB
                 //case "MySql.Data.MySqlClient":
                 //    f = DbProviderFactories.GetFactory("MySql.Data.MySqlClient");
                 //    break;
-                //case "System.Data.SQLite":
-                //    f = DbProviderFactories.GetFactory("System.Data.SQLite");
-                //    break;
+                case "System.Data.SQLite":
+                    f = System.Data.SQLite.SQLiteFactory.Instance;
+                    break;
                 case "Npgsql":
                     f = Npgsql.NpgsqlFactory.Instance;
                     break;

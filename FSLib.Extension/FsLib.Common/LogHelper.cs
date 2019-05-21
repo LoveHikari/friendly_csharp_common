@@ -132,14 +132,14 @@ namespace System
         /// <returns></returns>
         private static string GetLogger(string logType)
         {
-            string logDir = "";
+            string logDir;
             if (logType == "loginfo")
             {
-                logDir = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Log", "LogInfo");  //如果日志文件为空，则默认在Debug目录下新建 Log\LogInfo目录
+                logDir = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs", "LogInfo");  //如果日志文件为空，则默认在Debug目录下新建 Log\LogInfo目录
             }
             else
             {
-                logDir = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Log", "LogError");  //如果日志文件为空，则默认在Debug目录下新建 Log\LogError目录
+                logDir = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs", "LogError");  //如果日志文件为空，则默认在Debug目录下新建 Log\LogError目录
             }
 
             if (!System.IO.Directory.Exists(logDir))   //判断文件夹是否存在，如果不存在则创建

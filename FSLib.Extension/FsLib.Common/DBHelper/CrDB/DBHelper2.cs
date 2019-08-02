@@ -47,7 +47,9 @@ namespace System.DBHelper.CrDB
             set
             {
                 _dbName = value;
+#if !NETSTANDARD2_1
                 GetConnStr(_dbName);
+#endif
             }
         }
 

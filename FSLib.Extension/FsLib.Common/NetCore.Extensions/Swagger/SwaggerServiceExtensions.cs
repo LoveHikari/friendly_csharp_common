@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
@@ -51,7 +52,7 @@ namespace System.NetCore.Extensions.Swagger
                 }); // 添加httpHeader参数
 
                 //Set the comments path for the swagger json and ui.
-                System.IO.Directory.GetFiles(AppContext.BaseDirectory, "*.xml").ToList().ForEach(file =>
+                System.IO.Directory.GetFiles(PlatformServices.Default.Application.ApplicationBasePath, "*.xml").ToList().ForEach(file =>
                 {
                     options.IncludeXmlComments(file);
                 });

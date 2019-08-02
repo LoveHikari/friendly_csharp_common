@@ -1,40 +1,49 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1</TargetFrameworks>
     <RootNamespace>System</RootNamespace>
     <PackageId>FsLib.Common-netstandard</PackageId>
     <Authors>Yu XiaoWei</Authors>
     <Product>FsLib.Common-netstandard</Product>
     <Company>5cm R &amp; D department</Company>
     <Description>公共库</Description>
-    <Version>1.0.10</Version>
+    <Version>2.1.0.1</Version>
     <Language>zh-CN</Language>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard2.0\FsLib.Common.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netstandard2.1\FsLib.Common.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="NetCore.Extensions\Swagger\SwaggerServiceExtensions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="Npgsql" Version="4.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="ServiceStack.Redis.Core" Version="5.5.0" />
     <PackageReference Include="System.Data.Common" Version="4.3.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.6.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.110" />
-    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.4" />
-    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.16" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="3.2.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-beta" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.7.0-preview7.19362.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.0.0-preview7.19362.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0-preview7.19362.4" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.0.0-preview7.19362.4" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.111" />
+    <PackageReference Include="System.Drawing.Common" Version="4.6.0-preview7.19362.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.0.0-preview7.19362.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.0.0-preview7.19362.6" />
+    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.17" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0-preview7.19362.6" />
+    <!--<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="3.2.0" />-->
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc2" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.0.0-preview7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="NetCore.Extensions\Swagger\" />
   </ItemGroup>
   
 </Project>

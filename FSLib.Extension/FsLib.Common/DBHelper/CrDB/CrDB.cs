@@ -220,7 +220,7 @@ namespace System.DBHelper.CrDB
 
             return da;
         }
-#if !NETSTANDARD2_0
+#if !NETSTANDARD2_1
         /// <summary>
         /// 从XML文件获取数据库连接
         /// </summary>
@@ -320,7 +320,7 @@ namespace System.DBHelper.CrDB
         /// <returns></returns>
         protected void GetConnectionString(string configString)
         {
-#if !NETSTANDARD2_0
+#if !NETSTANDARD2_1
             System.Configuration.ConnectionStringSettingsCollection configStringCollention = System.Configuration.ConfigurationManager.ConnectionStrings;
             if (configStringCollention == null || configStringCollention.Count <= 0)
             {
@@ -370,7 +370,7 @@ if (configString == string.Empty)
 
                     break;
                 case "System.Data.SQLite":
-#if !NETSTANDARD2_0
+#if !NETSTANDARD2_1
                     System.Data.SQLite.SQLiteConnection.ClearAllPools();//清除連接池之後，數據庫文件才能使用
 #endif
 

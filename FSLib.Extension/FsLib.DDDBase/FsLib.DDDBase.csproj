@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <PackageId>FsLib.DDDBase-netstandard</PackageId>
+    <Authors>Yu XiaoWei</Authors>
+    <Product>FsLib.DDDBase-netstandard</Product>
+    <Company>5cm R &amp; D department</Company>
+    <Description>DDD模式基础类</Description>
+    <Version>2.1.1.0</Version>
+    <Language>zh-CN</Language>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.1\FsLib.DDDBase.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.0.0" />
+  </ItemGroup>
+
+</Project>

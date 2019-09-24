@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using MySql.Data.EntityFrameworkCore.Extensions;
 
 namespace System.NetCore.Extensions.EntityFrameworkCore
 {
@@ -17,31 +19,31 @@ namespace System.NetCore.Extensions.EntityFrameworkCore
         /// <param name="dbTypeName">数据库类型名称SqlServer，MySql，Sqlite，Npgsql</param>
         /// <param name="assemblyName">数据模型所在的程序集名称</param>
         /// <returns></returns>
-        public static DbContextOptionsBuilder SetOptionsBuilder(this DbContextOptionsBuilder options, string connectionString, string dbTypeName,string assemblyName)
+        public static DbContextOptionsBuilder SetOptionsBuilder(this DbContextOptionsBuilder options, string connectionString, DbTypeEnum dbTypeName, string assemblyName)
         {
             DbContextOptionsBuilder optionsBuilder = null;
-            switch (dbTypeName.ToLower())
+            switch (dbTypeName)
             {
-                case "SqlServer":
+                case DbTypeEnum.SqlServer:
                     optionsBuilder = options.UseSqlServer(connectionString, builder =>
                         {
                             builder.MigrationsAssembly(assemblyName).UseRelationalNulls().UseRowNumberForPaging();
                         });
                     break;
-                case "MySql":
+                case DbTypeEnum.MySql:
                     optionsBuilder = options.UseMySQL(connectionString, builder =>
                     {
                         builder.MigrationsAssembly(assemblyName).UseRelationalNulls();
                         //builder.ServerVersion(new Version(5, 7, 17), ServerType.MySql);
                     });
                     break;
-                case "Sqlite":
+                case DbTypeEnum.Sqlite:
                     optionsBuilder = options.UseSqlite(connectionString, builder =>
                     {
                         builder.MigrationsAssembly(assemblyName).UseRelationalNulls();
                     });
                     break;
-                case "Npgsql":
+                case DbTypeEnum.Npgsql:
                     optionsBuilder = options.UseNpgsql(connectionString, builder =>
                     {
                         builder.MigrationsAssembly(assemblyName).UseRelationalNulls();

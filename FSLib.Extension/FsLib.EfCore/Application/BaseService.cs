@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FsLib.DDDBase.Domain;
+using FsLib.EfCore.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace FsLib.DDDBase.Application
+namespace FsLib.EfCore.Application
 {
     /// <summary>
     /// 业务基类

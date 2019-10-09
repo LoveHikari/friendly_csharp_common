@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Common;
-using System.Data.SqlClient;
 using System.Xml;
 
-namespace System.DBHelper.CrDB
+namespace FsLib.DbCore.CrDB
 {
     /// <summary>
     /// 跨数据库的操作类，父类，不可new
@@ -338,9 +339,9 @@ namespace System.DBHelper.CrDB
             _providerName = stringSettings.ProviderName;
             _connectionString = stringSettings.ConnectionString;
 #else
-if (configString == string.Empty)
+            if (configString == string.Empty)
             {
-                _connectionString = ConfigurationManager.Get("ConnectionString");
+                _connectionString = ConfigurationManager.AppSettings["ConnectionString"];
             }
             else
             {

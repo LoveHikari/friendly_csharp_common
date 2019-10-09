@@ -1,6 +1,6 @@
-﻿using FsLib.DDDBase.Domain;
+﻿using FsLib.EfCore.Domain;
 
-namespace FsLib.DDDBase.Application
+namespace FsLib.EfCore.Application
 {
     /// <summary>
     /// 业务接口基类

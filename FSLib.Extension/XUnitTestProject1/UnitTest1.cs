@@ -1,9 +1,12 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Sockets;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using Xunit;
 
@@ -84,6 +87,55 @@ namespace XUnitTestProject1
                 }
 
             }
+        }
+
+        [Fact]
+        public void Test2()
+        {
+            string ids = "";
+            for (int i = 1; i < 69; i++)
+            {
+                string url = "http://ku.iszoc.com/index/search.html?is_find=&is_audio=&uid=&keyword=&page=" + i;
+                string html = HttpHelper.GetHttpWebRequest(url);
+                NSoup.Nodes.Document htmlDoc = NSoup.NSoupClient.Parse(html);
+                var div = htmlDoc.Select(".layui-card .layui-card-body .layui-card");
+                foreach (var element in div)
+                {
+                    string href = element.Select("a").Attr("href");
+                    string s = Regex.Match(href, "\\d+").Groups[0].Value;
+                    System.Diagnostics.Debug.WriteLine(s);
+                    ids += s + ",";
+
+
+                    //string cookie = "PHPSESSID=c9c44562ba90cb7d0f8f9164cee8e2d4; Hm_lvt_ea5e026ac2ed0205ce7a6417bbd1dcef=1569398402; Hm_lpvt_ea5e026ac2ed0205ce7a6417bbd1dcef=1569399569";
+                    //Hashtable hashtable = new Hashtable()
+                    //{
+                    //    {"Content-Type", "application/x-www-form-urlencoded" }
+                    //};
+                    //var data = new Dictionary<string, object>()
+                    //{
+                    //    {"id", s },
+                    //    {"type","yes" }
+                    //};
+                    //string html1 = HttpHelper.PostHttpWebRequest("http://ku.iszoc.com/index/sign.html", data, headerItem: hashtable, cookie: cookie);
+                    ////System.Diagnostics.Debug.WriteLine(html1);
+                }
+            }
+
+            ids = ids.TrimEnd(',');
+
+            string cookie = "PHPSESSID=c9c44562ba90cb7d0f8f9164cee8e2d4; Hm_lvt_ea5e026ac2ed0205ce7a6417bbd1dcef=1569398402; Hm_lpvt_ea5e026ac2ed0205ce7a6417bbd1dcef=1569399569";
+            Hashtable hashtable = new Hashtable()
+            {
+                {"Content-Type", "application/x-www-form-urlencoded" }
+            };
+            var data = new Dictionary<string, object>()
+            {
+                {"id", ids },
+            };
+            string html1 = HttpHelper.PostHttpWebRequest("http://ku.iszoc.com/user/Favorites/export.html", data, headerItem: hashtable, cookie: cookie);
+            System.Diagnostics.Debug.WriteLine(html1);
+
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace System.NetCore.Extensions.EntityFrameworkCore
+﻿namespace FsLib.EfCore.EntityFrameworkCore
 {
     /// <summary>
     /// 数据库类型

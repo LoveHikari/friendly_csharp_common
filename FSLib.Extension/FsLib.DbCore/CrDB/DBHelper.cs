@@ -5,7 +5,7 @@
  * 参考：http://www.cnblogs.com/Relict/archive/2011/12/19/2293460.html
  * 备注：<connectionStrings><add name="ConnectionString" connectionString="SERVER=(local);uid=sa;pwd=123456;DATABASE=ESSoft" providerName="System.Data.SqlClient" /></connectionStrings>
  ***/
-namespace System.DBHelper.CrDB
+namespace FsLib.DbCore.CrDB
 {
     /// <summary>
     /// 数据工厂类,实现了跨数据库的操作

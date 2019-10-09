@@ -1,9 +1,6 @@
-﻿using System.Reflection;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using MySql.Data.EntityFrameworkCore.Extensions;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace System.NetCore.Extensions.EntityFrameworkCore
+namespace FsLib.EfCore.EntityFrameworkCore
 {
     /// <summary>
     /// <see cref="DbContextOptionsBuilder"/> 扩展类
@@ -31,7 +28,7 @@ namespace System.NetCore.Extensions.EntityFrameworkCore
                         });
                     break;
                 case DbTypeEnum.MySql:
-                    optionsBuilder = options.UseMySQL(connectionString, builder =>
+                    optionsBuilder = options.UseMySql(connectionString, builder =>
                     {
                         builder.MigrationsAssembly(assemblyName).UseRelationalNulls();
                         //builder.ServerVersion(new Version(5, 7, 17), ServerType.MySql);

@@ -23,12 +23,12 @@
  *
  * 
  * ***************************************************************************************************************/
-namespace System.DBHelper.CrDB
+namespace FsLib.DbCore.CrDB
 {
     /// <summary>
     /// 数据工厂类,实现了跨数据库的操作
     /// </summary>
-    public class DBHelper2 : CrDB
+    public class DBHelper2 : FsLib.DbCore.CrDB.CrDB
     {
         /// <summary>
         /// dell.xml 关键字

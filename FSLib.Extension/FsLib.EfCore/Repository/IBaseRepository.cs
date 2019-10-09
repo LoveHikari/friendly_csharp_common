@@ -3,9 +3,9 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using FsLib.DDDBase.Domain;
+using FsLib.EfCore.Domain;
 
-namespace FsLib.DDDBase.Repository
+namespace FsLib.EfCore.Repository
 {
     /// <summary>
     /// 仓储接口基类
@@ -78,21 +78,6 @@ namespace FsLib.DDDBase.Repository
         /// <returns>数据,数据总数,总页数,上一页,下一页</returns>
         (IQueryable<TAggregateRoot> list, int totalRecord, int pageCount, int prevPage, int nextPage) FindPageList2(int pageIndex, int pageSize,
             Expression<Func<TAggregateRoot, bool>> whereLamdba = null, string orderName = "", bool isAsc = false);
-
-        /// <summary>
-        /// 执行非查询语句,并返回受影响的记录行数
-        /// </summary>
-        /// <param name="sql">SQL语句</param>
-        /// <param name="parameters">参数</param>
-        /// <returns>受影响记录行数</returns>
-        int ExecuteNonQuery(string sql, params object[] parameters);
-        /// <summary>
-        /// 执行非查询语句,并返回受影响的记录行数
-        /// </summary>
-        /// <param name="sql">SQL语句</param>
-        /// <param name="parameters">参数</param>
-        /// <returns>受影响记录行数</returns>
-        Task<int> ExecuteNonQueryAsync(string sql, params object[] parameters);
         /// <summary>
         /// 执行查询，并以DataTable返回结果集
         /// </summary>
@@ -107,19 +92,5 @@ namespace FsLib.DDDBase.Repository
         /// <param name="parameters">参数</param>
         /// <returns>DataTable</returns>
         Task<DataTable> ExecuteDataTableAsync(string sql, params object[] parameters);
-        /// <summary>
-        /// 执行非查询语句,并返回首行首列的值
-        /// </summary>
-        /// <param name="sql">SQL语句</param>
-        /// <param name="parameters">参数</param>
-        /// <returns>Object</returns>
-        object ExecuteScalar(string sql, params object[] parameters);
-        /// <summary>
-        /// 执行非查询语句,并返回首行首列的值
-        /// </summary>
-        /// <param name="sql">SQL语句</param>
-        /// <param name="parameters">参数</param>
-        /// <returns>Object</returns>
-        Task<object> ExecuteScalarAsync(string sql, params object[] parameters);
     }
 }

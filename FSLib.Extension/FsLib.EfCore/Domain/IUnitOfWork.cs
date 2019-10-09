@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace FsLib.DDDBase.Domain
+namespace FsLib.EfCore.Domain
 {
     /// <summary>
     /// Unit of Work：维护受业务事务影响的对象列表，并协调变化的写入和并发问题的解决
@@ -18,7 +18,14 @@ namespace FsLib.DDDBase.Domain
         /// <param name="sql">SQL语句</param>
         /// <param name="parameters">参数</param>
         /// <returns>受影响记录行数</returns>
-        Task<int> ExecuteSqlCommandAsync(string sql, params object[] parameters);
+        Task<int> ExecuteNonQueryAsync(string sql, params object[] parameters);
+        /// <summary>
+        /// 执行非查询语句,并返回首行首列的值
+        /// </summary>
+        /// <param name="sql">SQL语句</param>
+        /// <param name="parameters">参数</param>
+        /// <returns>Object</returns>
+        Task<object> ExecuteScalarAsync(string sql, params object[] parameters);
         /// <summary>
         /// 添加
         /// </summary>
@@ -31,7 +38,12 @@ namespace FsLib.DDDBase.Domain
         /// <param name="entity">数据实体</param>
         /// <returns>是否成功</returns>
         Task<bool> UpdateAsync<TEntity>(TEntity entity) where TEntity : class;
-
+        /// <summary>
+        /// 清理
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         Task<bool> CleanAsync<TEntity>(TEntity entity) where TEntity : class;
         /// <summary>
         /// 删除

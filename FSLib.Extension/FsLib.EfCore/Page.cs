@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FsLib.DDDBase
+namespace FsLib.EfCore
 {
     /// <summary>
     /// 分页

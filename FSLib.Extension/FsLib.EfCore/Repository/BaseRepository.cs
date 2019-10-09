@@ -3,10 +3,10 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using FsLib.DDDBase.Domain;
+using FsLib.EfCore.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace FsLib.DDDBase.Repository
+namespace FsLib.EfCore.Repository
 {
     /// <summary>
     /// 仓储基类
@@ -186,26 +186,6 @@ namespace FsLib.DDDBase.Repository
             return list;
         }
         /// <summary>
-        /// 执行非查询语句,并返回受影响的记录行数
-        /// </summary>
-        /// <param name="sql">SQL语句</param>
-        /// <param name="parameters">参数</param>
-        /// <returns>受影响记录行数</returns>
-        public int ExecuteNonQuery(string sql, params object[] parameters)
-        {
-            return NContext.Database.ExecuteSqlRaw(sql, parameters);
-        }
-        /// <summary>
-        /// 执行非查询语句,并返回受影响的记录行数
-        /// </summary>
-        /// <param name="sql">SQL语句</param>
-        /// <param name="parameters">参数</param>
-        /// <returns>受影响记录行数</returns>
-        public async Task<int> ExecuteNonQueryAsync(string sql, params object[] parameters)
-        {
-            return await NContext.Database.ExecuteSqlRawAsync(sql, parameters);
-        }
-        /// <summary>
         /// 执行查询，并以DataTable返回结果集
         /// </summary>
         /// <param name="sql">SQL语句</param>
@@ -227,26 +207,7 @@ namespace FsLib.DDDBase.Repository
             DataTable dt = await SqlQueryAsync(sql, CommandType.Text, parameters);
             return dt;
         }
-        /// <summary>
-        /// 执行非查询语句,并返回首行首列的值
-        /// </summary>
-        /// <param name="sql">SQL语句</param>
-        /// <param name="parameters">参数</param>
-        /// <returns>Object</returns>
-        public object ExecuteScalar(string sql, params object[] parameters)
-        {
-            return ExecuteScalar(sql, CommandType.Text, parameters);
-        }
-        /// <summary>
-        /// 执行非查询语句,并返回首行首列的值
-        /// </summary>
-        /// <param name="sql">SQL语句</param>
-        /// <param name="parameters">参数</param>
-        /// <returns>Object</returns>
-        public async Task<object> ExecuteScalarAsync(string sql, params object[] parameters)
-        {
-            return await ExecuteScalarAsync(sql, CommandType.Text, parameters);
-        }
+
         #region 私有方法
 
         //public IList<T> SqlQuery<T>(string sql, params object[] parameters) where T : new()
@@ -372,64 +333,6 @@ namespace FsLib.DDDBase.Repository
 
                     }
                     return objDataTable;
-                }
-            }
-            finally
-            {
-                conn.Close();
-            }
-        }
-        /// <summary>
-        /// 执行非查询语句,并返回首行首列的值
-        /// </summary>
-        /// <param name="sql">SQL语句</param>
-        /// <param name="cmdtype">命令类型</param>
-        /// <param name="parameters">参数</param>
-        /// <returns>Object</returns>
-        private object ExecuteScalar(string sql, CommandType cmdtype, params object[] parameters)
-        {
-            var conn = NContext.Database.GetDbConnection();
-            try
-            {
-                conn.Open();
-                using (var command = conn.CreateCommand())
-                {
-                    command.CommandType = cmdtype;
-                    command.CommandText = sql;
-                    command.Parameters.AddRange(parameters);
-
-                    return command.ExecuteScalar();
-
-
-                }
-            }
-            finally
-            {
-                conn.Close();
-            }
-        }
-        /// <summary>
-        /// 执行非查询语句,并返回首行首列的值
-        /// </summary>
-        /// <param name="sql">SQL语句</param>
-        /// <param name="cmdtype">命令类型</param>
-        /// <param name="parameters">参数</param>
-        /// <returns>Object</returns>
-        private async Task<object> ExecuteScalarAsync(string sql, CommandType cmdtype, params object[] parameters)
-        {
-            var conn = NContext.Database.GetDbConnection();
-            try
-            {
-                conn.Open();
-                using (var command = conn.CreateCommand())
-                {
-                    command.CommandType = cmdtype;
-                    command.CommandText = sql;
-                    command.Parameters.AddRange(parameters);
-
-                    return await command.ExecuteScalarAsync();
-
-
                 }
             }
             finally

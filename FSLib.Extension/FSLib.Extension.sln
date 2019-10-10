@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTestProject1", "XUnitT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FsLib.EfCore", "FsLib.EfCore\FsLib.EfCore.csproj", "{22F7927D-6CC4-45F7-9856-A875808FFC22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FsLib.DbCore", "FsLib.DbCore\FsLib.DbCore.csproj", "{A7AEF1B7-DAEB-4C1F-A461-4DCE7D7E78DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FsLib.DbCore", "FsLib.DbCore\FsLib.DbCore.csproj", "{A7AEF1B7-DAEB-4C1F-A461-4DCE7D7E78DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

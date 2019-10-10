@@ -137,5 +137,15 @@ namespace XUnitTestProject1
             System.Diagnostics.Debug.WriteLine(html1);
 
         }
+        [Fact]
+        public void Test3()
+        {
+            DateTime d = DateTime.Now;
+            System.Diagnostics.Debug.WriteLine(d);
+            long l = DateTimeHelper.ConvertDateTimeInt(d, "s");
+            System.Diagnostics.Debug.WriteLine(l);
+            DateTime dd = DateTimeHelper.ConvertDateTime(l.ToString(), "s");
+            System.Diagnostics.Debug.WriteLine(dd);
+        }
     }
 }

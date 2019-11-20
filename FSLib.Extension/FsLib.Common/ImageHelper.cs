@@ -166,8 +166,10 @@ namespace System
             byte[] byteImage;
             using (MemoryStream ms = new MemoryStream())
             {
-                bitmap.Save(ms, ImageFormat.Png);
-                byteImage = ms.ToArray();
+                Bitmap bm2 = new Bitmap(bitmap);
+                
+                bm2.Save(ms, ImageFormat.Png);
+                byteImage = ms.GetBuffer();
                 ms.Flush();
             }
             return byteImage;
@@ -177,7 +179,7 @@ namespace System
         /// </summary>
         /// <param name="imgStr">data:image/png;base64,iVBORw0KG</param>
         /// <returns></returns>
-        public static (Bitmap bitmap, ImageFormat imageFormat) Base64ToBitmap(string imgStr)
+        public static Bitmap Base64ToBitmap(string imgStr)
         {
             string[] ss = imgStr.Split(',');
             string base64 = ss[1];
@@ -190,17 +192,8 @@ namespace System
             }
 
             string ifs = ss[0];
-            ImageFormat imageFormat;
-            if (ifs.Contains("image/png"))
-            {
-                imageFormat = ImageFormat.Png;
-            }
-            else
-            {
-                imageFormat = ImageFormat.Jpeg;
-            }
 
-            return (bmp, imageFormat);
+            return bmp;
         }
         #endregion
 

@@ -258,7 +258,7 @@ namespace System
         /// 时间戳转为C#格式时间
         /// </summary>
         /// <param name="timeStamp">Unix时间戳</param>
-        /// <param name="unit">时间精度，秒(s) 毫秒(s)</param>
+        /// <param name="unit">时间精度，秒(s) 毫秒(ms)</param>
         /// <returns>时间</returns>
         public static DateTime ConvertDateTime(string timeStamp, string unit = "s")
         {
@@ -280,7 +280,7 @@ namespace System
         /// DateTime时间格式转换为Unix时间戳格式
         /// </summary>
         /// <param name="time">时间</param>
-        /// <param name="unit">时间精度，秒(s) 毫秒(s)</param>
+        /// <param name="unit">时间精度，秒(s) 毫秒(ms)</param>
         /// <returns>Unix时间戳</returns>
         public static long ConvertDateTimeInt(System.DateTime time, string unit = "s")
         {

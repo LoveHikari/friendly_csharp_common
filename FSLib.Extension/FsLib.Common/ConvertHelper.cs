@@ -249,5 +249,55 @@ namespace System
 
             return (T)obj;
         }
+        /// <summary>
+        /// 解密base64,解决了base64长度不是4的倍数的问题
+        /// </summary>
+        /// <param name="s">待解密字符串</param>
+        /// <param name="encode">编码</param>
+        /// <returns></returns>
+        public static string FromBase64String(string s, string encode)
+        {
+            var bytes = FromBase64String(s);
+            return System.Text.Encoding.GetEncoding(encode).GetString(bytes);
+        }
+        /// <summary>
+        /// 解密base64,解决了base64长度不是4的倍数的问题
+        /// </summary>
+        /// <param name="s">待解密字符串</param>
+        /// <returns></returns>
+        public static byte[] FromBase64String(string s)
+        {
+            int length = s.Length;
+            if (length % 4 != 0)
+            {
+                s += "=";
+            }
+
+            var bytes = Convert.FromBase64String(s);
+            return bytes;
+        }
+        /// <summary>
+        /// 加密为base64，去掉了最后一个‘=’补位
+        /// </summary>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static string ToBase64String(byte[] b)
+        {
+            string s = Convert.ToBase64String(b);
+            s = s.TrimEnd('=');
+            return s;
+        }
+
+        /// <summary>
+        /// 加密为base64，去掉了最后一个‘=’补位
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="encode"></param>
+        /// <returns></returns>
+        public static string ToBase64String(string s, string encode)
+        {
+            byte[] b = System.Text.Encoding.GetEncoding(encode).GetBytes(s);
+            return ToBase64String(b);
+        }
     }
 }

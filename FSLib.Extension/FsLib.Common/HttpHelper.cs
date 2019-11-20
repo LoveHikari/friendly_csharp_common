@@ -494,7 +494,7 @@ namespace System
                 {
                     string retString = System.Text.Encoding.GetEncoding(chareset).GetString(Decompress(myResponseStream));
                     v.request.Abort();
-                    return (retString, cookie);
+                    return (retString, v.cookies);
                 }
                 else
                 {
@@ -502,7 +502,7 @@ namespace System
                     {
                         string retString = myStreamReader.ReadToEnd();
                         v.request.Abort();
-                        return (retString, cookie);
+                        return (retString, v.cookies);
                     }
                 }
 

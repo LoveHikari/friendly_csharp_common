@@ -1,13 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Sockets;
 using System.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using ThoughtWorks.QRCode.Codec;
 using Xunit;
 
 namespace XUnitTestProject1
@@ -140,12 +145,51 @@ namespace XUnitTestProject1
         [Fact]
         public void Test3()
         {
-            DateTime d = DateTime.Now;
-            System.Diagnostics.Debug.WriteLine(d);
-            long l = DateTimeHelper.ConvertDateTimeInt(d, "s");
-            System.Diagnostics.Debug.WriteLine(l);
-            DateTime dd = DateTimeHelper.ConvertDateTime(l.ToString(), "s");
-            System.Diagnostics.Debug.WriteLine(dd);
+            // var q = QRCodeHelper.EncodeQrCode2("https://www.fczbl.vip/",20,3);
+
+            //string url = "https://tutut.ml/tool/free_ssr";
+            //Hashtable headerItem = new Hashtable();
+            //var cookies = HttpHelper.GetHttpWebRequest(url, "utf-8", headerItem, cookies: default);
+            //url = "https://tutut.ml/tool/api/free_ssr?page=1&limit=10";
+            //string html = HttpHelper.GetHttpWebRequest(url, cookie: "__cfduid=dfe25745309f7c3c2116016a77e9ef8d81574224344; JSESSIONID=E0E81E4F56B0241C5CA809A3E209F106;");
+            //var i = ImageHelper.GetImage("d:/обть.png");
+            //var ss = QRCodeHelper.DecodeQrCode((Bitmap)i);
+
+            //System.Diagnostics.Debug.WriteLine(ss);
+            CookieContainer cookieContainer = new CookieContainer();
+            var handler = new HttpClientHandler();
+            handler.CookieContainer = cookieContainer;
+            handler.UseCookies = true;
+
+            using (var client = new HttpClient(handler))
+            {
+                client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36");
+                
+                var uri = new Uri("https://tutut.ml/tool/free_ssr");
+                var message = new HttpRequestMessage(HttpMethod.Get, uri);
+                var v = client.SendAsync(message).Result;
+                var cookies = cookieContainer.GetCookieHeader(uri);
+
+                uri = new Uri("https://tutut.ml/tool/api/free_ssr?page=1&limit=10");
+                message = new HttpRequestMessage(HttpMethod.Get, uri);
+                message.Headers.Add("Cookie", cookies);
+                var result = client.SendAsync(message).Result;
+
+                var cc = result.Content.ReadAsStringAsync().Result;
+            }
+        }
+
+        [Fact]
+        public async void Test4()
+        {
+            HttpClientHelper client = new HttpClientHelper();
+            IDictionary<string, string> param = new Dictionary<string, string>()
+            {
+                {"pageIndex", "1" },
+                {"pageSize", "10" },
+                {"groups", "freess" }
+            };
+            string html = await client.SendAsync("https://api.prprpr.ml/api/v1/Ssr", param);
         }
     }
 }

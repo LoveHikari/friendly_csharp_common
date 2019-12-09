@@ -26,7 +26,7 @@ namespace System
     public class HttpClientHelper
     {
         private readonly HttpClient _client;
-        private readonly string[] _wellKnownContentHeaders =  // 属于Content的请求头
+        private readonly string[] _wellKnownContentHeaders =  // 这些是属于内容的标头
         {
             "Content-Disposition", "Content-Encoding", "Content-Language", "Content-Length", "Content-Location",
             "Content-MD5", "Content-Range", "Content-Type", "Expires", "Last-Modified"

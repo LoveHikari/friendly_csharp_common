@@ -182,14 +182,7 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            HttpClientHelper client = new HttpClientHelper();
-            IDictionary<string, string> param = new Dictionary<string, string>()
-            {
-                {"pageIndex", "1" },
-                {"pageSize", "10" },
-                {"groups", "freess" }
-            };
-            string html = await client.SendAsync("https://api.prprpr.ml/api/v1/Ssr", param);
+            var v = DateTimeHelper.WeekToCulture(DayOfWeek.Monday, "ja-JP");
         }
     }
 }

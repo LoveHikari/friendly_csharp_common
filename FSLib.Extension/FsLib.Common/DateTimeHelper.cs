@@ -24,84 +24,47 @@ namespace System
         /// 获取当日所在的周的开始日期和结束日期
         /// </summary>
         /// <param name="dtNow">当前日期（年月日）</param>
-        /// <param name="dtWeekSt">开始日期</param>
-        /// <param name="dtWeekEd">结束日期</param>
-        public static void ReturnDateWeek(DateTime dtNow, out DateTime dtWeekSt, out DateTime dtWeekEd)
+        /// <returns>开始日期,结束日期</returns>
+        public static (DateTime weekSt, DateTime weekEd) GetDateWeek(DateTime dtNow)
         {
             //今天是星期几
             int iNowOfWeek = (int)dtNow.DayOfWeek;
-            dtWeekSt = dtNow.AddDays(0 - iNowOfWeek);
-            dtWeekEd = dtNow.AddDays(6 - iNowOfWeek);
+            DateTime dtWeekSt = dtNow.AddDays(0 - iNowOfWeek);
+            DateTime dtWeekEd = dtNow.AddDays(6 - iNowOfWeek);
+            return (dtWeekSt, dtWeekEd);
         }
 
         /// <summary>
-        /// 返回当月的第一天和最后一天
+        /// 返回指定日期所在月的第一天和最后一天
         /// </summary>
-        /// <param name="month">当前月份</param>
-        /// <param name="firstDay">第一天</param>
-        /// <param name="lastDay">最后一天</param>
-        public static void ReturnDateMonth(int month, out string firstDay, out string lastDay)
+        /// <param name="dtNow">当前日期</param>
+        /// <returns>第一天,最后一天</returns>
+        public static (DateTime firstDay, DateTime lastDay) GetDateMonth(DateTime dtNow)
         {
+            DateTime lastDay;
+            int year = dtNow.Year;
+            int month = dtNow.Month;
 
-            int year = DateTime.Now.Year + month / 12;
-            if (month != 12)
+            DateTime firstDay = new DateTime(year, month, 1);
+            var mold = month % 2;  //为0为偶数
+            if (month == 2)  // 如果为2月
             {
-                month = month % 12;
+
+                if (DateTime.IsLeapYear(year))  // 是闰年
+                    lastDay = new DateTime(year, month, 29);
+                else
+                    lastDay = new DateTime(year, month, 28);
             }
-            switch (month)
+            else if ((month <= 7 && mold == 0) || (month > 7 && mold != 0))
             {
-                case 1:
-                    firstDay = DateTime.Now.ToString(year + "-0" + month + "-01");
-                    lastDay = DateTime.Now.ToString(year + "-0" + month + "-31");
-                    break;
-                case 2:
-                    firstDay = DateTime.Now.ToString(year + "-0" + month + "-01");
-                    if (DateTime.IsLeapYear(DateTime.Now.Year))
-                        lastDay = DateTime.Now.ToString(year + "-0" + month + "-29");
-                    else
-                        lastDay = DateTime.Now.ToString(year + "-0" + month + "-28");
-                    break;
-                case 3:
-                    firstDay = DateTime.Now.ToString(year + "-0" + month + "-01");
-                    lastDay = DateTime.Now.ToString("yyyy-0" + month + "-31");
-                    break;
-                case 4:
-                    firstDay = DateTime.Now.ToString(year + "-0" + month + "-01");
-                    lastDay = DateTime.Now.ToString(year + "-0" + month + "-30");
-                    break;
-                case 5:
-                    firstDay = DateTime.Now.ToString(year + "-0" + month + "-01");
-                    lastDay = DateTime.Now.ToString(year + "-0" + month + "-31");
-                    break;
-                case 6:
-                    firstDay = DateTime.Now.ToString(year + "-0" + month + "-01");
-                    lastDay = DateTime.Now.ToString(year + "-0" + month + "-30");
-                    break;
-                case 7:
-                    firstDay = DateTime.Now.ToString(year + "-0" + month + "-01");
-                    lastDay = DateTime.Now.ToString(year + "-0" + month + "-31");
-                    break;
-                case 8:
-                    firstDay = DateTime.Now.ToString(year + "-0" + month + "-01");
-                    lastDay = DateTime.Now.ToString(year + "-0" + month + "-31");
-                    break;
-                case 9:
-                    firstDay = DateTime.Now.ToString(year + "-0" + month + "-01");
-                    lastDay = DateTime.Now.ToString(year + "-0" + month + "-30");
-                    break;
-                case 10:
-                    firstDay = DateTime.Now.ToString(year + "-" + month + "-01");
-                    lastDay = DateTime.Now.ToString(year + "-" + month + "-31");
-                    break;
-                case 11:
-                    firstDay = DateTime.Now.ToString(year + "-" + month + "-01");
-                    lastDay = DateTime.Now.ToString(year + "-" + month + "-30");
-                    break;
-                default:
-                    firstDay = DateTime.Now.ToString(year + "-" + month + "-01");
-                    lastDay = DateTime.Now.ToString(year + "-" + month + "-31");
-                    break;
+                lastDay = new DateTime(year, month, 30);
             }
+            else
+            {
+                lastDay = new DateTime(year, month, 31);
+            }
+
+            return (firstDay, lastDay);
         }
 
         /// <summary>
@@ -164,93 +127,61 @@ namespace System
         /// 某日期是当月的第几周,并返回该周的第一天和最后一天
         /// </summary>
         /// <param name="day">给定日期（年月日）</param>
-        /// <returns>GetWeekOfDay[0]=周次;GetWeekOfDay[1]=该周第一天;GetWeekOfDay[2]=该周最后一天</returns>
-        public static string[] GetWeekOfDay(DateTime day)
+        /// <returns>周次,该周第一天,该周最后一天</returns>
+        public static (int week, DateTime weekSt, DateTime weekEd) GetWeekOfDay(DateTime day)
         {
-            string[] inti = new string[3];
-            DateTime dtWeekSt, dtWeekEd;
-            inti[0] = GetWeekOfMonth(day).ToString();
-            ReturnDateWeek(day, out dtWeekSt, out dtWeekEd);
-            inti[1] = dtWeekSt.ToString();
-            inti[2] = dtWeekEd.ToString();
-            return inti;
+            int week = GetWeekOfMonth(day);
+            var dt = GetDateWeek(day);
+            
+            return (week, dt.weekSt, dt.weekEd);
 
         }
-        ///// <summary>
-        //      /// 获取当日所在的周的开始日期和结束日期
-        //      /// </summary>
-        //      /// <param name="dtNow">当前日期</param>
-        //      /// <param name="dtWeekSt">开始日期（星期日）</param>
-        //      /// <param name="dtWeekEd">结束日期（星期六）</param>
-        //      public static void ReturnDateWeek(DateTime dtNow, out DateTime dtWeekSt, out DateTime dtWeekEd)
-        //      {
-        //          dtWeekSt = dtNow.AddDays(0 - Convert.ToInt32(dtNow.DayOfWeek.ToString("d")));  //本周周日
-        //          dtWeekEd = dtWeekSt.AddDays(6);  //本周周六
-        //      }
 
         /// <summary>
-        /// 获取当日所在的月的开始日期和结束日期
+        /// 获取当日所在的月的月初日期和月末日期
         /// </summary>
         /// <param name="dtNow">当前日期</param>
-        /// <param name="dtMonthSt">月初</param>
-        /// <param name="dtMonthEd">月末</param>
-        public static void ReturnDatetMonth(DateTime dtNow, out DateTime dtMonthSt, out DateTime dtMonthEd)
+        /// <returns>月初,月末</returns>
+        public static ( DateTime monthSt,  DateTime monthEd) GetDatetMonth(DateTime dtNow)
         {
-            dtMonthSt = dtNow.AddDays(1 - dtNow.Day);  //本月月初  
-            dtMonthEd = dtMonthSt.AddMonths(1).AddDays(-1);  //本月月末  
+            DateTime dtMonthSt = dtNow.AddDays(1 - dtNow.Day);  //本月月初
+            DateTime dtMonthEd = dtMonthSt.AddMonths(1).AddDays(-1);  //本月月末
             //dtMonthEd = dtMonthSt.AddDays((dtNow.AddMonths(1) - dtNow).Days - 1);  //本月月末
+            return (dtMonthSt, dtMonthEd);
         }
         /// <summary>
         /// 获取当日所在的季度的开始日期和结束日期
         /// </summary>
         /// <param name="dtNow">当前日期</param>
-        /// <param name="dtQuarterSt">本季度初</param>
-        /// <param name="dtQuarterEd">本季度末</param>
-        public static void ReturnDatetQuarter(DateTime dtNow, out DateTime dtQuarterSt, out DateTime dtQuarterEd)
+        /// <returns>本季度初,本季度末</returns>
+        public static (DateTime quarterSt, DateTime quarterEd) GetDatetQuarter(DateTime dtNow)
         {
-            dtQuarterSt = dtNow.AddMonths(0 - (dtNow.Month - 1) % 3).AddDays(1 - dtNow.Day);  //本季度初  
-            dtQuarterEd = dtQuarterSt.AddMonths(3).AddDays(-1);  //本季度末
+            var dtQuarterSt = dtNow.AddMonths(0 - (dtNow.Month - 1) % 3).AddDays(1 - dtNow.Day);  //本季度初  
+            var dtQuarterEd = dtQuarterSt.AddMonths(3).AddDays(-1);  //本季度末
+            return (dtQuarterSt, dtQuarterEd);
         }
-        /// <summary>
-        /// 获取当日所在的年的开始日期和结束日期
-        /// </summary>
-        /// <param name="dtNow">当前日期</param>
-        /// <param name="dtYearSt">年初</param>
-        /// <param name="dtYearEd">年末</param>
-        public static void ReturnDatetYear(DateTime dtNow, out DateTime dtYearSt, out DateTime dtYearEd)
-        {
-            dtYearSt = new DateTime(dtNow.Year, 1, 1);  //本年年初  
-            dtYearEd = new DateTime(dtNow.Year, 12, 31);  //本年年末
-        }
+        ///// <summary>
+        ///// 获取当日所在的年的开始日期和结束日期
+        ///// </summary>
+        ///// <param name="dtNow">当前日期</param>
+        ///// <param name="dtYearSt">年初</param>
+        ///// <param name="dtYearEd">年末</param>
+        //public static void ReturnDatetYear(DateTime dtNow, out DateTime dtYearSt, out DateTime dtYearEd)
+        //{
+        //    dtYearSt = new DateTime(dtNow.Year, 1, 1);  //本年年初  
+        //    dtYearEd = new DateTime(dtNow.Year, 12, 31);  //本年年末
+        //}
 
         #region 英文转化为中文的星期几
         /// <summary>
         /// 英文转化为中文的星期几
         /// </summary>
         /// <param name="week">星期</param>
+        /// <param name="cultureName">地区限制匹配规范</param>
         /// <returns></returns>
-        public static string ChineseByEnWeek(DayOfWeek week)
+        public static string WeekToCulture(DayOfWeek week, string cultureName = "zh-CN")
         {
-            switch (week.ToString())
-            {
-                case "Monday": return "星期一";
-                case "Tuesday": return "星期二";
-                case "Wednesday": return "星期三";
-                case "Thursday": return "星期四";
-                case "Friday": return "星期五";
-                case "Saturday": return "星期六";
-                case "Sunday": return "星期日";
-                default: return "";
-            }
-        }
-        /// <summary>
-        /// 英文转化为数字的星期（1~7）
-        /// </summary>
-        /// <param name="week"></param>
-        /// <returns></returns>
-        public static int NumberByEnWeek(DayOfWeek week)
-        {
-            return week == 0 ? 7 : (int)week;
+            return System.Globalization.CultureInfo.GetCultureInfo(cultureName).DateTimeFormat.GetDayName(week);
         }
         #endregion
 
@@ -294,7 +225,7 @@ namespace System
             {
                 return (long)(time - startTime).TotalMilliseconds;
             }
-            
+
         }
         /// <summary>
         /// 判断两个时间是否是在同一周

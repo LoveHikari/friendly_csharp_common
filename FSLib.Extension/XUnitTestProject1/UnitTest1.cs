@@ -182,7 +182,7 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            var v = DateTimeHelper.WeekToCulture(DayOfWeek.Monday, "ja-JP");
+            var v = DateTime.Now.ToString("DD");
         }
     }
 }

@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FsLib.Common\FsLib.Common.csproj" />
+    <ProjectReference Include="..\FsLib.CreditCardUtils\FsLib.CreditCardUtils.csproj" />
   </ItemGroup>
 
 </Project>

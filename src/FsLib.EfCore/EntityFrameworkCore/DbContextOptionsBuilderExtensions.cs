@@ -24,7 +24,7 @@ namespace FsLib.EfCore.EntityFrameworkCore
                 case DbTypeEnum.SqlServer:
                     optionsBuilder = options.UseSqlServer(connectionString, builder =>
                         {
-                            builder.MigrationsAssembly(assemblyName).UseRelationalNulls().UseRowNumberForPaging();
+                            builder.MigrationsAssembly(assemblyName).UseRelationalNulls();
                         });
                     break;
                 case DbTypeEnum.MySql:

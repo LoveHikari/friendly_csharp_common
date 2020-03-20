@@ -7,8 +7,9 @@
     <Product>FsLib.EfCore-netstandard</Product>
     <Company>5cm R &amp; D department</Company>
     <Description>efcore基础类</Description>
-    <Version>3.0.0</Version>
+    <Version>5.0.0</Version>
     <Language>zh-CN</Language>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -16,11 +17,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.0.0" />
-    <!--<PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.17" />-->
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.0.1" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.0.0-rc1.final" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.2" />
+    <!--<PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.19" />-->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.2" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.0-preview.20120.3" />
   </ItemGroup>
 
 </Project>

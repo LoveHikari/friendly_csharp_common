@@ -69,8 +69,22 @@ namespace System.Collection
                 return ls;
             }
         }
+        /// <summary>
+        /// 转换成为Dynamic对象
+        /// </summary>
+        /// <param name="dict"></param>
+        /// <returns></returns>
+        public static dynamic ToDynamic(this IEnumerable<KeyValuePair<string, object>> dict)
+        {
+            dynamic result = new System.Dynamic.ExpandoObject();
 
+            foreach (var entry in dict)
+            {
+                (result as ICollection<KeyValuePair<string, object>>).Add(new KeyValuePair<string, object>(entry.Key, entry.Value));
+            }
 
+            return result;
+        }
 
 
         /// <summary>

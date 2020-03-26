@@ -177,7 +177,27 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            var v = DateTime.Now.ToString("DD");
+            string ip = "127.0.0.1";
+            long ipInt = IpToInt(ip);
+            //Console.WriteLine(ipInt);
+            //Console.WriteLine(IntToIp(ipInt));
+
+            ////使用long ulong int 会溢出，使用uint就没问题
+            //uint netInt = (uint)IPAddress.HostToNetworkOrder((Int32)ipInt);
+            //IPAddress ipaddr = new IPAddress((long)netInt);
+            //IPAddress ipaddr1 = IPAddress.Parse(ip);
+            //Console.WriteLine(ipaddr.ToString());
+            //Console.WriteLine(ipaddr1.ToString());
+        }
+
+        public static long IpToInt(string ip)
+        {
+            char[] separator = new char[] { '.' };
+            string[] items = ip.Split(separator);
+            return long.Parse(items[0]) << 24
+                   | long.Parse(items[1]) << 16
+                   | long.Parse(items[2]) << 8
+                   | long.Parse(items[3]);
         }
     }
 }

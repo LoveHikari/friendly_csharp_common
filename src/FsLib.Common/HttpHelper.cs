@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -26,6 +25,7 @@ namespace System
     /// <summary>
     /// 获得http信息
     /// </summary>
+    [Obsolete("弃用，请使用HttpClientHelper类", true)]
     public class HttpHelper
     {
         #region http POST 请求
@@ -337,7 +337,7 @@ namespace System
                 }
                 else if (headerItem["Content-Type"].ToString().Contains("json"))
                 {
-                    sb.Append(JsonConvert.SerializeObject(param));
+                    sb.Append(System.Text.Json.JsonSerializer.Serialize(param));
                 }
                 else
                 {

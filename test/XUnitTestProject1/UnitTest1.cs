@@ -199,5 +199,12 @@ namespace XUnitTestProject1
                    | long.Parse(items[2]) << 8
                    | long.Parse(items[3]);
         }
+
+        [Fact]
+        public async void Test5()
+        {
+            IdcardValidatorHelper helper = new IdcardValidatorHelper();
+            var a =  helper.IsValidIdNo("330122199206120034");
+        }
     }
 }

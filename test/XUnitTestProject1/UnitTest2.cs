@@ -1,4 +1,8 @@
-﻿using FsLib.CreditCardUtils;
+﻿using System;
+using System.Linq;
+using FsLib.CreditCardUtils;
+using Miko.Domain;
+using Miko.Domain.Entity;
 using Xunit;
 
 namespace XUnitTestProject1
@@ -73,5 +77,14 @@ namespace XUnitTestProject1
         //    });
         //    Assert.IsTrue(result.CardNumberFormat == CardNumberFormat.Valid_BINTest && result.CardTypes.Contains("Wells Fargo Bank"));
         //}
+        [Fact]
+        public void Test1()
+        {
+            var options = JsonHelper.JsonFormat("{\"id\":1,\"dataId\":1532613,\"type\":\"contract\",\"operate\":\"archived\"}");
+            
+
+            Assert.True(true);
+        }
+
     }
 }

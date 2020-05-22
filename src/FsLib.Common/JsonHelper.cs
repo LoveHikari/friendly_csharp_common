@@ -4,7 +4,8 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Newtonsoft.Json;
+using System.Text.Json;
+
 /******************************************************************************************************************
  * 
  * 
@@ -32,29 +33,16 @@ namespace System
         /// <param name="str"></param>
         /// <returns></returns>
         /// <remarks>http://www.cnblogs.com/unintersky/p/3884712.html</remarks>
-        public static string ConvertJsonString(string str)
+        public static string JsonFormat(string str)
         {
+            var obj = System.Text.Json.JsonSerializer.Deserialize<object>(str);
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
             //格式化json字符串
-            JsonSerializer serializer = new JsonSerializer();
-            TextReader tr = new StringReader(str);
-            JsonTextReader jtr = new JsonTextReader(tr);
-            object obj = serializer.Deserialize(jtr);
-            if (obj != null)
-            {
-                StringWriter textWriter = new StringWriter();
-                JsonTextWriter jsonWriter = new JsonTextWriter(textWriter)
-                {
-                    Formatting = Newtonsoft.Json.Formatting.Indented,
-                    Indentation = 4,
-                    IndentChar = ' '
-                };
-                serializer.Serialize(jsonWriter, obj);
-                return textWriter.ToString();
-            }
-            else
-            {
-                return str;
-            }
+            str = System.Text.Json.JsonSerializer.Serialize(obj, options);
+            return str;
         }
         /// <summary>
         /// url参数序列化
@@ -75,7 +63,7 @@ namespace System
                 var ss = p.Split('=');
                 dictionary.Add(ss[0], ss[1]);
             }
-            return JsonConvert.SerializeObject(dictionary);
+            return System.Text.Json.JsonSerializer.Serialize(dictionary);
         }
 
         /// <summary>
@@ -160,10 +148,7 @@ namespace System
             return json.ToString();
         }
 
-        public static T ToEntity<T>(string jsonStr) where T : class, new()
-        {
-            return JsonConvert.DeserializeObject<T>(jsonStr);
-        }
+        
 
         /// <summary>
         /// 过滤特殊字符
@@ -216,7 +201,17 @@ namespace System
         /// <returns>json字符串</returns>
         public static string ToJson(this object obj)
         {
-            return JsonConvert.SerializeObject(obj);
+            return System.Text.Json.JsonSerializer.Serialize(obj);
+        }
+        /// <summary>
+        /// json字符串反序列化为对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="jsonStr"></param>
+        /// <returns></returns>
+        public static T ToEntity<T>(this string jsonStr) where T : class, new()
+        {
+            return System.Text.Json.JsonSerializer.Deserialize<T>(jsonStr);
         }
     }
 }

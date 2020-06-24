@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
 using FsLib.CreditCardUtils;
-using Miko.Domain;
-using Miko.Domain.Entity;
+using FsLib.TuChuangUtils;
 using Xunit;
 
 namespace XUnitTestProject1
@@ -80,7 +79,8 @@ namespace XUnitTestProject1
         [Fact]
         public void Test1()
         {
-            var options = JsonHelper.JsonFormat("{\"id\":1,\"dataId\":1532613,\"type\":\"contract\",\"operate\":\"archived\"}");
+            TuChuangClient client = new TuChuangClient();
+            var s = client.UploadFile().GetAwaiter().GetResult();
             
 
             Assert.True(true);

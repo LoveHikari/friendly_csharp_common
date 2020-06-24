@@ -93,10 +93,11 @@ namespace XUnitTestProject1
         public void Test2()
         {
             string ids = "";
+            HttpClientHelper httpClient = new HttpClientHelper();
             for (int i = 1; i < 69; i++)
             {
                 string url = "http://ku.iszoc.com/index/search.html?is_find=&is_audio=&uid=&keyword=&page=" + i;
-                string html = HttpHelper.GetHttpWebRequest(url);
+                string html = httpClient.GetAsync(url).Result;
                 NSoup.Nodes.Document htmlDoc = NSoup.NSoupClient.Parse(html);
                 var div = htmlDoc.Select(".layui-card .layui-card-body .layui-card");
                 foreach (var element in div)
@@ -125,7 +126,7 @@ namespace XUnitTestProject1
             ids = ids.TrimEnd(',');
 
             string cookie = "PHPSESSID=c9c44562ba90cb7d0f8f9164cee8e2d4; Hm_lvt_ea5e026ac2ed0205ce7a6417bbd1dcef=1569398402; Hm_lpvt_ea5e026ac2ed0205ce7a6417bbd1dcef=1569399569";
-            Hashtable hashtable = new Hashtable()
+            IDictionary<string, string> hashtable = new Dictionary<string, string>()
             {
                 {"Content-Type", "application/x-www-form-urlencoded" }
             };
@@ -133,7 +134,8 @@ namespace XUnitTestProject1
             {
                 {"id", ids },
             };
-            string html1 = HttpHelper.PostHttpWebRequest("http://ku.iszoc.com/user/Favorites/export.html", data, headerItem: hashtable, cookie: cookie);
+            httpClient.SetCookies(cookie);
+            string html1 = httpClient.PostAsync("http://ku.iszoc.com/user/Favorites/export.html", data, headerItem: hashtable).Result;
             System.Diagnostics.Debug.WriteLine(html1);
 
         }

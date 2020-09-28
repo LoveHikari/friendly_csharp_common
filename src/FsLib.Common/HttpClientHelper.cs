@@ -8,6 +8,8 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+
 /******************************************************************************************************************
  * 
  * 
@@ -211,6 +213,15 @@ namespace System
                 else if (contentType.Contains("json"))
                 {
                     var value = System.Text.Json.JsonSerializer.Serialize(param);
+                    var data = new StringContent(value);
+                    content = data;
+                }
+                else if (contentType.Contains("xml"))
+                {
+                    var value = new XElement("xml",
+                        from keyValue in param
+                        select new XElement(keyValue.Key, keyValue.Value)
+                    ).ToString();
                     var data = new StringContent(value);
                     content = data;
                 }

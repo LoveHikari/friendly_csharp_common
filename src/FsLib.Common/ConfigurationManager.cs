@@ -9,18 +9,31 @@ namespace System
     /// 配置管理器
     /// </summary>
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), System.ComponentModel.Browsable(false)]
-    public class ConfigurationManager
+    public static class ConfigurationManager
     {
-        private static readonly IConfiguration Config;
+        private static IConfiguration _configuration;
         static ConfigurationManager()
         {
-            // Microsoft.Extensions.Configuration扩展包提供的
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(System.Environment.CurrentDirectory)
-                .Add(new JsonConfigurationSource { Path = "appsettings.json", Optional = false, ReloadOnChange = true })
-                .Add(new JsonConfigurationSource { Path = "appsettings.Development.json", Optional = true, ReloadOnChange = true });
+            if (_configuration == null)
+            {
+                // Microsoft.Extensions.Configuration扩展包提供的
+                var builder = new ConfigurationBuilder()
+                    .SetBasePath(System.Environment.CurrentDirectory)
+                    .Add(new JsonConfigurationSource { Path = "appsettings.json", Optional = false, ReloadOnChange = true })
+                    .Add(new JsonConfigurationSource { Path = "appsettings.Development.json", Optional = true, ReloadOnChange = true });
 
-            Config = builder.Build();
+                _configuration = builder.Build();
+            }
+            
+        }
+        /// <summary>
+        /// 依赖注入添加配置
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
+        public static void AddConfiguration(this IServiceCollection services, IConfiguration configuration)
+        {
+            _configuration = configuration;
         }
         /// <summary>
         /// 获取应用设置
@@ -30,22 +43,26 @@ namespace System
         /// <returns></returns>
         public static T GetAppSettings<T>(string key) where T : class, new()
         {
-            var appconfig = OptionsConfigurationServiceCollectionExtensions.Configure<T>(new ServiceCollection()
-                    .AddOptions(), Config.GetSection(key))
+            var appConfig = new ServiceCollection()
+                .AddOptions().Configure<T>(_configuration.GetSection(key))
                 .BuildServiceProvider()
                 .GetService<IOptions<T>>()
-                .Value;
+                ?.Value;
 
-            return appconfig;
+            return appConfig;
         }
         /// <summary>
         /// 应用设置
         /// </summary>
-        public static IConfiguration AppSettings => Config;
-
+        public static IConfiguration AppSettings => _configuration;
+        /// <summary>
+        /// 获取应用设置
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public static string Get(string key)
         {
-            return Config[key];
+            return _configuration[key];
         }
     }
 }

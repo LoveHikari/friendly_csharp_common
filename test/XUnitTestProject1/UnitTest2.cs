@@ -80,7 +80,7 @@ namespace XUnitTestProject1
         public void Test1()
         {
             TuChuangClient client = new TuChuangClient();
-            var s = client.UploadFile().GetAwaiter().GetResult();
+            var s = client.UploadFile("").GetAwaiter().GetResult();
             
 
             Assert.True(true);

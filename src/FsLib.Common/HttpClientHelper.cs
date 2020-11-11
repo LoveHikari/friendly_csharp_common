@@ -48,7 +48,7 @@ namespace System
             var handler = new HttpClientHandler
             {
                 CookieContainer = _cookieContainer,
-                UseCookies = true,
+                UseCookies = false,
             };
             this._client = new HttpClient(handler);
         }
@@ -153,6 +153,14 @@ namespace System
             return cookies;
         }
         /// <summary>
+        /// 获得cookies
+        /// </summary>
+        /// <returns></returns>
+        public void SetCookies(string cookieHeader)
+        {
+            _cookieContainer.SetCookies(_client.BaseAddress, cookieHeader);
+        }
+        /// <summary>
         /// 设置请求内容
         /// </summary>
         /// <param name="request">请求对象</param>
@@ -161,16 +169,25 @@ namespace System
         private void SetHttpContent(HttpRequestMessage request, IDictionary<string, string> headerItem, IDictionary<string, object> param)
         {
             var contentType = headerItem?["Content-Type"] ?? "";
-            HttpContent content = new ByteArrayContent(Array.Empty<byte>());
+            HttpContent content = null;
             if (param != null)
             {
                 if (contentType.Contains("form-data"))
                 {
                     var data = new MultipartFormDataContent();
-
+                    
                     foreach (KeyValuePair<string, object> pair in param)
                     {
-                        data.Add(new StringContent(pair.Value.ToString()), pair.Key);
+                        if (pair.Key.ToLower().Contains("file"))
+                        {
+                            string fileName = Path.GetFileName(pair.Value.ToString());
+                            // 读文件流
+                            data.Add(new ByteArrayContent(System.IO.File.ReadAllBytes(pair.Value.ToString())), pair.Key, fileName);
+                        }
+                        else
+                        {
+                            data.Add(new StringContent(pair.Value.ToString()));
+                        }
 
                     }
                     content = data;
@@ -180,7 +197,7 @@ namespace System
                     HttpContent data = null;
                     foreach (KeyValuePair<string, object> pair in param)
                     {
-                        if (pair.Key.Contains("file"))
+                        if ( pair.Key.ToLower().Contains("file"))
                         {
                             // 读文件流
                             FileStream fs = new FileStream(pair.Value.ToString(), FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -214,29 +231,29 @@ namespace System
         /// <param name="headerItem">请求头</param>
         private void SetHeaders(HttpRequestMessage request, IDictionary<string, string> headerItem)
         {
-            request.Content.Headers.Clear();
-            request.Headers.Clear();
+            //request.Content.Headers.Clear();
+            //request.Headers.Clear();
             headerItem ??= new Dictionary<string, string>();
 
-            if (!headerItem.ContainsKey("User-Agent"))
-            {
-                headerItem.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36");
-            }
-            if (!headerItem.ContainsKey("Content-Type"))
-            {
-                headerItem.Add("Content-Type", "text/plain; charset=utf-8");
-            }
-            if (!headerItem.ContainsKey("Accept"))
-            {
-                headerItem.Add("Accept", "*/*");
-            }
+            //if (!headerItem.ContainsKey("User-Agent"))
+            //{
+            //    headerItem.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36");
+            //}
+            //if (!headerItem.ContainsKey("Content-Type"))
+            //{
+            //    headerItem.Add("Content-Type", "text/plain; charset=utf-8");
+            //}
+            //if (!headerItem.ContainsKey("Accept"))
+            //{
+            //    headerItem.Add("Accept", "*/*");
+            //}
             foreach (KeyValuePair<string, string> pair in headerItem)
             {
-                if (_wellKnownContentHeaders.Contains(pair.Key))
+                if (_wellKnownContentHeaders.Contains(pair.Key) && !request.Content.Headers.Contains(pair.Key))
                 {
                     request.Content.Headers.Add(pair.Key, pair.Value);
                 }
-                else
+                else if(!_wellKnownContentHeaders.Contains(pair.Key) && !request.Headers.Contains(pair.Key))
                 {
                     request.Headers.Add(pair.Key, pair.Value);
                 }

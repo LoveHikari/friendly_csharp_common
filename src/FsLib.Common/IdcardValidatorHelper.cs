@@ -25,8 +25,8 @@ namespace System
         private IDictionary<string, string> GetAddressCode()
         {
             string url = "http://www.mca.gov.cn/article/sj/xzqh/2020/2020/202003301019.html";
-            HttpClientHelper clientHelper = new HttpClientHelper();
-            string html = clientHelper.GetAsync(url).Result;
+            HttpClientHelper httpClient = new HttpClientHelper();
+            string html = httpClient.GetAsync(url).GetAwaiter().GetResult();
             NSoup.Nodes.Document doc = NSoup.NSoupClient.Parse(html);
             IDictionary<string, string> hashtable = new Dictionary<string, string>();
             var trs = doc.Select("tr[height=19]");

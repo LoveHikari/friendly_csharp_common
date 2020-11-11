@@ -43,7 +43,7 @@ namespace System
         /// <summary>
         /// HttpClient封装
         /// </summary>
-        public HttpClientHelper1()
+        public HttpClientHelper()
         {
             var handler = new HttpClientHandler
             {

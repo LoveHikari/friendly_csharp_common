@@ -9,7 +9,6 @@ using ZXing;
 using ZXing.QrCode;
 using ZXing.QrCode.Internal;
 using ZXing.Windows.Compatibility;
-using BarcodeReader = ZXing.BarcodeReader;
 
 namespace System
 {

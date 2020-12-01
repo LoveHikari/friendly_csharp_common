@@ -28,7 +28,7 @@ namespace FsLib.EfCore.EntityFrameworkCore
                         });
                     break;
                 case DbTypeEnum.MySql:
-                    optionsBuilder = options.UseMySQL(connectionString, builder =>
+                    optionsBuilder = options.UseMySql(connectionString, builder =>
                     {
                         builder.MigrationsAssembly(assemblyName).UseRelationalNulls();
                         //builder.ServerVersion(new Version(5, 7, 17), ServerType.MySql);

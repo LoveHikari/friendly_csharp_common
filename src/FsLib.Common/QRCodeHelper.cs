@@ -35,7 +35,7 @@ namespace System
         /// <returns>扫码结果</returns>
         public static string DecodeQrCode(Bitmap barcodeBitmap)
         {
-            var barcodeReader = new BarcodeReader()
+            var barcodeReader = new ZXing.BarcodeReader()
             {
                 Options = { CharacterSet = "utf-8" }
             };
@@ -193,7 +193,7 @@ namespace System
         /// <returns></returns>
         public static System.Drawing.Image EncodeQrCode2(string content, int size = 10, int margin = 2, string errorCorrection = "L")
         {
-            BarcodeWriter barCodeWriter = new BarcodeWriter();
+            ZXing.BarcodeWriter barCodeWriter = new ZXing.BarcodeWriter();
             barCodeWriter.Format = BarcodeFormat.QR_CODE;
             QrCodeEncodingOptions options = new QrCodeEncodingOptions()
             {

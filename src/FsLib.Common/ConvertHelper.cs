@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -248,6 +249,27 @@ namespace System
             }
 
             return (T)obj;
+        }
+        /// <summary>
+        /// 以最大的可能性返回一个指定类型的对象列表，该对象的值等效于指定的对象列表。
+        /// </summary>
+        /// <typeparam name="T">转化后的类型</typeparam>
+        /// <param name="value">需要转化的对象</param>
+        /// <returns>转化后的对象</returns>
+        public static List<T> ChangeType<T>(IEnumerable<object> value)
+        {
+            if (value == null)
+            {
+                return default;
+            }
+
+            List<T> list = new List<T>();
+            foreach (object t in value)
+            {
+                list.Add(ChangeType<T>(t));
+            }
+
+            return list;
         }
         /// <summary>
         /// 解密base64,解决了base64长度不是4的倍数的问题

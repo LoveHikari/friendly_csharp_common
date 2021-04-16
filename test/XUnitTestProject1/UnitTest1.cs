@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -207,6 +208,19 @@ namespace XUnitTestProject1
         {
             IdcardValidatorHelper helper = new IdcardValidatorHelper();
             var a =  helper.IsValidIdNo("330122199206120034");
+        }
+        [Fact]
+        public void Test6()
+        {
+            List<Peo> peos = new List<Peo>();
+            peos.Add(new Peo(){Name = "222"});
+
+            var v = ConvertHelper.ChangeType<People>(peos);
+
+            //// PropertyValue<People> propertyValue = new PropertyValue<People>(people);
+            //var v = people.GetValue("Name");
+            //people.SetValue("Name", "1111");
+            ////aa("1111");
         }
     }
 }

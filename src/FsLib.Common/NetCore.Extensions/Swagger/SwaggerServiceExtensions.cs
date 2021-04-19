@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.NetCore.Extensions.Swagger.Filter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -65,6 +66,7 @@ namespace System.NetCore.Extensions.Swagger
                         new string[] { }
                     }
                 });
+                options.OperationFilter<SwaggerHeaderFilter>();
                 //Set the comments path for the swagger json and ui.
                 System.IO.Directory.GetFiles(PlatformServices.Default.Application.ApplicationBasePath, "*.xml").ToList().ForEach(file =>
                 {

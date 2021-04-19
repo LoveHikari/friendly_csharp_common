@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8594F782-B98
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FsLib.TuChuangUtils", "src\FsLib.TuChuangUtils\FsLib.TuChuangUtils.csproj", "{AA8D10A9-5A9A-4F96-BE74-AD5088998BAD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{6CB34E39-7FCB-49EF-B842-E3DF0FC51B6D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{AA8D10A9-5A9A-4F96-BE74-AD5088998BAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA8D10A9-5A9A-4F96-BE74-AD5088998BAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA8D10A9-5A9A-4F96-BE74-AD5088998BAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CB34E39-7FCB-49EF-B842-E3DF0FC51B6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CB34E39-7FCB-49EF-B842-E3DF0FC51B6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CB34E39-7FCB-49EF-B842-E3DF0FC51B6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CB34E39-7FCB-49EF-B842-E3DF0FC51B6D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 		{A7AEF1B7-DAEB-4C1F-A461-4DCE7D7E78DA} = {8594F782-B980-46E4-B45F-5673AC4D7862}
 		{0A7350A7-324D-4F97-B2C3-FB5F0655EA8B} = {8594F782-B980-46E4-B45F-5673AC4D7862}
 		{AA8D10A9-5A9A-4F96-BE74-AD5088998BAD} = {8594F782-B980-46E4-B45F-5673AC4D7862}
+		{6CB34E39-7FCB-49EF-B842-E3DF0FC51B6D} = {E7E1B92C-69E3-4919-8844-AEF4E5C325C8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B9842A58-6189-4D06-8F5D-789267C22712}

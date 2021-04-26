@@ -1,12 +1,12 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace System.Cryptography
+namespace System.Security
 {
     /// <summary>
     /// sha256加密类
     /// </summary>
-    public class Sha256Crypto : CryptoBase
+    public class Sha256Encrypt
     {
         /// <summary>
         /// 加密
@@ -43,15 +43,6 @@ namespace System.Cryptography
             }
 
             return builder.ToString();
-        }
-        public override byte[] EncryptEx(byte[] data, string pass, string encoding = "utf-8")
-        {
-            throw new NotImplementedException();
-        }
-
-        public override byte[] DecryptEx(byte[] data, string pass, string encoding = "utf-8")
-        {
-            throw new NotImplementedException();
         }
     }
 }

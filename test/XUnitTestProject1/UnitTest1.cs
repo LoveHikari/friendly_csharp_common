@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Cryptography;
 using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Security;
 using System.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -212,11 +214,9 @@ namespace XUnitTestProject1
         [Fact]
         public void Test6()
         {
-            List<Peo> peos = new List<Peo>();
-            peos.Add(new Peo(){Name = "222"});
-
-            var v = ConvertHelper.ChangeType<People>(peos);
-
+            Sha1Encrypt crypto = new Sha1Encrypt();
+            string s = crypto.Encrypt("SHA‘⁄œﬂº”√‹");
+            int i = 1;
             //// PropertyValue<People> propertyValue = new PropertyValue<People>(people);
             //var v = people.GetValue("Name");
             //people.SetValue("Name", "1111");

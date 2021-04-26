@@ -2,12 +2,12 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace System.Cryptography
+namespace System.Security
 {
     /// <summary>
     /// MD5加密类
     /// </summary>
-    public class MD5Crypto : CryptoBase
+    public class MD5Encrypt
     {
         /// <summary>
         /// 加密
@@ -35,14 +35,6 @@ namespace System.Cryptography
             string t2 = BitConverter.ToString(t);
             t2 = t2.Replace("-", "").ToLower();
             return t2;
-        }
-        public override byte[] DecryptEx(byte[] data, string pass, string encoding = "utf-8")
-        {
-            throw new NotImplementedException();
-        }
-        public override byte[] EncryptEx(byte[] data, string pass, string encoding = "utf-8")
-        {
-            throw new NotImplementedException();
         }
     }
 }

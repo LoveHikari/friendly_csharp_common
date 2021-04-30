@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<OutputType>Library</OutputType>
+		<AssemblyName>GalaSoft.MvvmLight.Platform</AssemblyName>
+		<RootNamespace>GalaSoft.MvvmLight.Platform</RootNamespace>
+		<Description>.NET 6.0. A lightweight framework to implement Model-View-ViewModel applications in WPF, Windows Store, Windows Phone, Silverlight, Xamarin.</Description>
+		<Product></Product>
+		<Company>GalaSoft Laurent Bugnion @ http://www.galasoft.ch</Company>
+		<Authors>Laurent Bugnion (GalaSoft)</Authors>
+		<Version>5.4.1.0</Version>
+		<AssemblyVersion>5.4.1.0</AssemblyVersion>
+		<PackageId>MvvmLight.Threading</PackageId>
+		<Copyright>Copyright @ GalaSoft Laurent Bugnion 2009-2018</Copyright>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<License>https://mvvmlight.codeplex.com/license</License>
+		<PackageProjectUrl>http://www.mvvmlight.net</PackageProjectUrl>
+		<PackageIconUrl></PackageIconUrl>
+		<RepositoryUrl>https://mvvmlight.codeplex.com</RepositoryUrl>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+</Project>

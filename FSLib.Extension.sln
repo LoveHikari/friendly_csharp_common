@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FsLib.TuChuangUtils", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "test\WebApplication1\WebApplication1.csproj", "{E4208D18-3A1D-4C40-AB32-5217D7FDD096}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GalaSoft.MvvmLight", "GalaSoft.MvvmLight\GalaSoft.MvvmLight.csproj", "{403F8466-F734-471C-BC9D-78339E90C21F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{E4208D18-3A1D-4C40-AB32-5217D7FDD096}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4208D18-3A1D-4C40-AB32-5217D7FDD096}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4208D18-3A1D-4C40-AB32-5217D7FDD096}.Release|Any CPU.Build.0 = Release|Any CPU
+		{403F8466-F734-471C-BC9D-78339E90C21F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{403F8466-F734-471C-BC9D-78339E90C21F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{403F8466-F734-471C-BC9D-78339E90C21F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{403F8466-F734-471C-BC9D-78339E90C21F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +73,7 @@ Global
 		{0A7350A7-324D-4F97-B2C3-FB5F0655EA8B} = {8594F782-B980-46E4-B45F-5673AC4D7862}
 		{AA8D10A9-5A9A-4F96-BE74-AD5088998BAD} = {8594F782-B980-46E4-B45F-5673AC4D7862}
 		{E4208D18-3A1D-4C40-AB32-5217D7FDD096} = {E7E1B92C-69E3-4919-8844-AEF4E5C325C8}
+		{403F8466-F734-471C-BC9D-78339E90C21F} = {8594F782-B980-46E4-B45F-5673AC4D7862}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B9842A58-6189-4D06-8F5D-789267C22712}

@@ -7,7 +7,7 @@
     <Product>FsLib.EfCore-netstandard</Product>
     <Company>5cm R &amp; D department</Company>
     <Description>efcore基础类</Description>
-    <Version>6.0.0-preview3.0.0</Version>
+    <Version>6.0.0-preview3.0.1</Version>
     <Language>zh-CN</Language>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
@@ -22,6 +22,7 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.0-preview3" />
     <!--<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-alpha.1" />-->
     <PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.3" />
+    <PackageReference Include="System.Linq.Async.Queryable" Version="5.0.0" />
   </ItemGroup>
 
 </Project>

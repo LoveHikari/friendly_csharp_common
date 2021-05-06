@@ -214,13 +214,14 @@ namespace XUnitTestProject1
         [Fact]
         public void Test6()
         {
-            Sha1Encrypt crypto = new Sha1Encrypt();
-            string s = crypto.Encrypt("SHA‘⁄œﬂº”√‹");
-            int i = 1;
-            //// PropertyValue<People> propertyValue = new PropertyValue<People>(people);
-            //var v = people.GetValue("Name");
-            //people.SetValue("Name", "1111");
-            ////aa("1111");
+            ZipLibHelper helper = new ZipLibHelper();
+            //helper.CreateTarGzArchive("E:\\Program\\regextester", "D:\\Program\\regextester");
+            //helper.UnzipTgz("E:\\Program\\regextester\\regextester.tar.gz", "D:\\");
+            // helper.CreateTarArchive("E:\\Program\\regextester", "D:\\Program\\regextester");
+            //helper.CreatTarArchive(new List<string>() { "D:\\1.xlsx", "D:\\2" },"D:\\");
+            // helper.UnzipTar("D:\\temp.tar", "D:\\1");
+            helper.PackFiles("D:\\1.xlsx", "D:\\");
+            Assert.True(true);
         }
     }
 }

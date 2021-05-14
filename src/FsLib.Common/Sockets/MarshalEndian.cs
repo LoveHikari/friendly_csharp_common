@@ -24,7 +24,7 @@ namespace System.Sockets
 
         public MarshalEndian(string encoding = "utf-8")
         {
-            _lBuff = _lBuff ?? new List<byte>();
+            _lBuff ??= new List<byte>();
             _encoding = System.Text.Encoding.GetEncoding(encoding);
         }
 

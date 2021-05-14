@@ -70,7 +70,7 @@ namespace System.NetCore.Extensions.Swagger
                 //Set the comments path for the swagger json and ui.
                 System.IO.Directory.GetFiles(PlatformServices.Default.Application.ApplicationBasePath, "*.xml").ToList().ForEach(file =>
                 {
-                    options.IncludeXmlComments(file);
+                    options.IncludeXmlComments(file, true);
                 });
             });
 

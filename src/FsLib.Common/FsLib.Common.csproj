@@ -8,7 +8,7 @@
     <Product>FsLib.Common-netstandard</Product>
     <Company>5cm R &amp; D department</Company>
     <Description>公共库</Description>
-    <Version>6.0.0-preview.3.0.2</Version>
+    <Version>6.0.0-preview.3.0.3</Version>
     <Language>zh-CN</Language>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>

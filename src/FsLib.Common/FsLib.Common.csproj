@@ -31,5 +31,9 @@
     <PackageReference Include="ThoughtWorks.QRCode.Core" Version="1.0.1.2" />
     <PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.7" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="NetCore\Attributes\" />
+  </ItemGroup>
   
 </Project>

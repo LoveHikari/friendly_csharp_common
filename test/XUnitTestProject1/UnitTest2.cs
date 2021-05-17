@@ -86,5 +86,15 @@ namespace XUnitTestProject1
             Assert.True(true);
         }
 
+        [Fact]
+        public void Test2()
+        {
+            HttpClientHelper clientHelper = new HttpClientHelper();
+            string html = clientHelper.GetAsync("https://dotnet.microsoft.com/download/intellisense").Result;
+
+
+            Assert.True(true);
+        }
+
     }
 }

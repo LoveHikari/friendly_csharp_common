@@ -145,7 +145,7 @@ namespace System
         /// <summary>
         /// tar文件解压
         /// </summary>
-        /// <param name="zipPath">压缩文件路径***.tar.gz</param>
+        /// <param name="zipPath">压缩文件路径***.tar</param>
         /// <param name="goalDir">解压到的目录</param>
         /// <param name="encoding">编码</param>
         /// <returns></returns>
@@ -157,163 +157,150 @@ namespace System
 
             return true;
         }
-        ///// <summary>  
-        ///// zip压缩文件  
-        ///// </summary>  
-        ///// <param name="filename">filename生成的文件的名称，如：C\123\123.zip</param>  
-        ///// <param name="directory">directory要压缩的文件夹路径</param>  
-        ///// <returns></returns>  
-        //public string PackFiles(string sourceFolderPath, string zipFileDir, string zipFileName = "temp", string encoding = "utf-8")
+
+        /// <summary>  
+        /// zip压缩文件  
+        /// </summary>  
+        /// <param name="directory">要压缩的文件夹路径</param>
+        /// <param name="zipFileDir">生成的文件路径</param>
+        /// <param name="zipFileName">生成的文件名称，不带扩展名</param>
+        /// <returns></returns>  
+        public bool CreateZipArchive(string directory, string zipFileDir, string zipFileName = "")
+        {
+            if (string.IsNullOrEmpty(zipFileName))
+            {
+                zipFileName = new DirectoryInfo(directory).Name;
+            }
+
+            zipFileName = Path.Combine(zipFileDir, zipFileName + ".zip");
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+            if (File.Exists(zipFileName))
+            {
+                File.Delete(zipFileName);
+            }
+
+            FastZip fz = new FastZip();
+            fz.CreateEmptyDirectories = true;
+            fz.CreateZip(zipFileName, directory, true, "");
+
+            return true;
+        }
+        /// <summary>  
+        /// zip解压文件  
+        /// </summary>  
+        /// <param name="strFilePath">压缩文件的名称，如：*.zip</param>
+        /// <param name="dir">dir要解压的文件夹路径, 会自动带上文件名</param>
+        /// <returns></returns>  
+        public bool UnzipZip(string strFilePath, string dir)
+        {
+            if (!File.Exists(strFilePath))
+                return false;
+
+            dir = Path.Combine(dir, Path.GetFileNameWithoutExtension(strFilePath));
+
+            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+
+            using FileStream fr = new FileStream(strFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            using ICSharpCode.SharpZipLib.Zip.ZipInputStream s = new ICSharpCode.SharpZipLib.Zip.ZipInputStream(fr);
+            ICSharpCode.SharpZipLib.Zip.ZipEntry theEntry;
+            while ((theEntry = s.GetNextEntry()) != null)
+            {
+                string directoryName = Path.GetDirectoryName(theEntry.Name);
+                string fileName = Path.GetFileName(theEntry.Name);
+
+                if (directoryName != String.Empty)
+                    Directory.CreateDirectory(Path.Combine(dir, directoryName));
+
+                if (fileName != String.Empty)
+                {
+                    using FileStream streamWriter = File.Create(Path.Combine(dir, theEntry.Name));
+
+                    int size = 2048;
+                    byte[] data = new byte[2048];
+                    while (true)
+                    {
+                        size = s.Read(data, 0, data.Length);
+                        if (size > 0)
+                        {
+                            streamWriter.Write(data, 0, size);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+
+                }
+            }
+
+            return true;
+        }
+        ///// <summary>
+        ///// 压缩文件夹
+        ///// </summary>
+        ///// <param name="DirectoryToZip">需要压缩的文件夹（绝对路径)</param>
+        ///// <param name="ZipedPath">压缩后的文件路径（绝对路径）</param>
+        ///// <param name="ZipedFileName">>压缩后的文件名称（文件名，默认 同源文件夹同名）</param>
+        //public static void ZipDirectory(string DirectoryToZip, string ZipedPath, string ZipedFileName = "")
         //{
-        //    if (!System.IO.Directory.Exists(zipFileDir))
+        //    //如果目录不存在，则报错
+        //    if (!System.IO.Directory.Exists(DirectoryToZip))
         //    {
-        //        System.IO.Directory.CreateDirectory(zipFileDir);
+        //        throw new System.IO.FileNotFoundException("指定的目录: " + DirectoryToZip + " 不存在!");
         //    }
-
-        //    zipFileName = Path.Combine(zipFileDir, zipFileName + ".zip");
-
-        //    using Stream outTmpStream = new FileStream(zipFileName, FileMode.OpenOrCreate);
-
-        //    //注意此处源文件大小大于4096KB  
-        //    using Stream outStream = new ZipOutputStream(outTmpStream);
-        //    new ZipEntry()
-        //    using ZipArchive archive = new ZipArchive().CreateEntry(outStream, TarBuffer.DefaultBlockFactor, Encoding.GetEncoding(encoding)).Archive;
-        //    archive.RootPath = Path.GetDirectoryName(sourceFolderPath);
-        //    TarEntry entry = TarEntry.CreateEntryFromFile(sourceFolderPath);
-        //    archive.WriteEntry(entry, true);
-
-        //    FastZip fz = new() {CreateEmptyDirectories = true};
-
-        //    fz.CreateZip(zipFileName, sourceFolderPath, true, "");
-
-        //    return zipFileName;
+        //    //文件名称（默认同源文件名称相同）
+        //    string ZipFileName = string.IsNullOrEmpty(ZipedFileName) ? ZipedPath + "\\" + new DirectoryInfo(DirectoryToZip).Name + ".zip" : ZipedPath + "\\" + ZipedFileName + ".zip";
+        //    using (System.IO.FileStream ZipFile = System.IO.File.Create(ZipFileName))
+        //    {
+        //        using (ZipOutputStream s = new ZipOutputStream(ZipFile))
+        //        {
+        //            ZipSetp(DirectoryToZip, s, "");
+        //        }
+        //    }
         //}
-        /////// <summary>  
-        /////// zip解压文件  
-        /////// </summary>  
-        /////// <param name="file">压缩文件的名称，如：C:\123\123.zip</param>  
-        /////// <param name="dir">dir要解压的文件夹路径</param>  
-        /////// <returns></returns>  
-        ////public static bool UnpackFiles(string file, string dir)
-        ////{
-        ////    try
-        ////    {
-        ////        if (!File.Exists(file))
-        ////            return false;
-
-        ////        dir = dir.Replace("/", "\\");
-        ////        if (!dir.EndsWith("\\"))
-        ////            dir += "\\";
-
-        ////        if (!Directory.Exists(dir))
-        ////            Directory.CreateDirectory(dir);
-
-        ////        FileStream fr = new FileStream(strFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-        ////        ICSharpCode.SharpZipLib.Zip.ZipInputStream s = new ICSharpCode.SharpZipLib.Zip.ZipInputStream(fr);
-        ////        ICSharpCode.SharpZipLib.Zip.ZipEntry theEntry;
-        ////        while ((theEntry = s.GetNextEntry()) != null)
-        ////        {
-        ////            string directoryName = Path.GetDirectoryName(theEntry.Name);
-        ////            string fileName = Path.GetFileName(theEntry.Name);
-
-        ////            if (directoryName != String.Empty)
-        ////                Directory.CreateDirectory(dir + directoryName);
-
-        ////            if (fileName != String.Empty)
-        ////            {
-        ////                FileStream streamWriter = File.Create(dir + theEntry.Name);
-
-        ////                int size = 2048;
-        ////                byte[] data = new byte[2048];
-        ////                while (true)
-        ////                {
-        ////                    size = s.Read(data, 0, data.Length);
-        ////                    if (size > 0)
-        ////                    {
-        ////                        streamWriter.Write(data, 0, size);
-        ////                    }
-        ////                    else
-        ////                    {
-        ////                        break;
-        ////                    }
-        ////                }
-
-        ////                streamWriter.Close();
-        ////            }
-        ////        }
-        ////        s.Close();
-        ////        fr.Close();
-
-        ////        return true;
-        ////    }
-        ////    catch (Exception)
-        ////    {
-        ////        return false;
-        ////    }
-        ////}
-        /////// <summary>
-        /////// 压缩文件夹
-        /////// </summary>
-        /////// <param name="DirectoryToZip">需要压缩的文件夹（绝对路径)</param>
-        /////// <param name="ZipedPath">压缩后的文件路径（绝对路径）</param>
-        /////// <param name="ZipedFileName">>压缩后的文件名称（文件名，默认 同源文件夹同名）</param>
-        ////public static void ZipDirectory(string DirectoryToZip, string ZipedPath, string ZipedFileName = "")
-        ////{
-        ////    //如果目录不存在，则报错
-        ////    if (!System.IO.Directory.Exists(DirectoryToZip))
-        ////    {
-        ////        throw new System.IO.FileNotFoundException("指定的目录: " + DirectoryToZip + " 不存在!");
-        ////    }
-        ////    //文件名称（默认同源文件名称相同）
-        ////    string ZipFileName = string.IsNullOrEmpty(ZipedFileName) ? ZipedPath + "\\" + new DirectoryInfo(DirectoryToZip).Name + ".zip" : ZipedPath + "\\" + ZipedFileName + ".zip";
-        ////    using (System.IO.FileStream ZipFile = System.IO.File.Create(ZipFileName))
-        ////    {
-        ////        using (ZipOutputStream s = new ZipOutputStream(ZipFile))
-        ////        {
-        ////            ZipSetp(DirectoryToZip, s, "");
-        ////        }
-        ////    }
-        ////}
-        /////// <summary>
-        /////// 递归遍历目录        
-        /////// </summary>
-        ////private static void ZipSetp(string strDirectory, ZipOutputStream s, string parentPath)
-        ////{
-        ////    if (strDirectory[strDirectory.Length - 1] != Path.DirectorySeparatorChar)
-        ////    {
-        ////        strDirectory += Path.DirectorySeparatorChar;
-        ////    }
-        ////    Crc32 crc = new Crc32();
-        ////    string[] filenames = Directory.GetFileSystemEntries(strDirectory);
-        ////    foreach (string file in filenames)// 遍历所有的文件和目录
-        ////    {
-        ////        if (Directory.Exists(file))// 先当作目录处理如果存在这个目录就递归Copy该目录下面的文件
-        ////        {
-        ////            string pPath = parentPath;
-        ////            pPath += file.Substring(file.LastIndexOf("\\") + 1);
-        ////            pPath += "\\";
-        ////            ZipSetp(file, s, pPath);
-        ////        }
-        ////        else // 否则直接压缩文件
-        ////        {
-        ////            //打开压缩文件
-        ////            using (FileStream fs = File.OpenRead(file))
-        ////            {
-        ////                byte[] buffer = new byte[fs.Length];
-        ////                fs.Read(buffer, 0, buffer.Length);
-        ////                string fileName = parentPath + file.Substring(file.LastIndexOf("\\") + 1);
-        ////                ZipEntry entry = new ZipEntry(fileName);
-        ////                entry.DateTime = DateTime.Now;
-        ////                entry.Size = fs.Length;
-        ////                fs.Close();
-        ////                crc.Reset();
-        ////                crc.Update(buffer);
-        ////                entry.Crc = crc.Value;
-        ////                s.PutNextEntry(entry);
-        ////                s.Write(buffer, 0, buffer.Length);
-        ////            }
-        ////        }
-        ////    }
-        ////}
+        ///// <summary>
+        ///// 递归遍历目录        
+        ///// </summary>
+        //private static void ZipSetp(string strDirectory, ZipOutputStream s, string parentPath)
+        //{
+        //    if (strDirectory[strDirectory.Length - 1] != Path.DirectorySeparatorChar)
+        //    {
+        //        strDirectory += Path.DirectorySeparatorChar;
+        //    }
+        //    Crc32 crc = new Crc32();
+        //    string[] filenames = Directory.GetFileSystemEntries(strDirectory);
+        //    foreach (string file in filenames)// 遍历所有的文件和目录
+        //    {
+        //        if (Directory.Exists(file))// 先当作目录处理如果存在这个目录就递归Copy该目录下面的文件
+        //        {
+        //            string pPath = parentPath;
+        //            pPath += file.Substring(file.LastIndexOf("\\") + 1);
+        //            pPath += "\\";
+        //            ZipSetp(file, s, pPath);
+        //        }
+        //        else // 否则直接压缩文件
+        //        {
+        //            //打开压缩文件
+        //            using (FileStream fs = File.OpenRead(file))
+        //            {
+        //                byte[] buffer = new byte[fs.Length];
+        //                fs.Read(buffer, 0, buffer.Length);
+        //                string fileName = parentPath + file.Substring(file.LastIndexOf("\\") + 1);
+        //                ZipEntry entry = new ZipEntry(fileName);
+        //                entry.DateTime = DateTime.Now;
+        //                entry.Size = fs.Length;
+        //                fs.Close();
+        //                crc.Reset();
+        //                crc.Update(buffer);
+        //                entry.Crc = crc.Value;
+        //                s.PutNextEntry(entry);
+        //                s.Write(buffer, 0, buffer.Length);
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

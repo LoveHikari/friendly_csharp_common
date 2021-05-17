@@ -220,7 +220,11 @@ namespace XUnitTestProject1
             // helper.CreateTarArchive("E:\\Program\\regextester", "D:\\Program\\regextester");
             //helper.CreatTarArchive(new List<string>() { "D:\\1.xlsx", "D:\\2" },"D:\\");
             // helper.UnzipTar("D:\\temp.tar", "D:\\1");
-            helper.PackFiles("D:\\1.xlsx", "D:\\");
+            
+            helper.CreateZipArchive(@"E:\Application\DKProCloudMusic", @"D:\新建文件夹");
+            //bool b = helper.UnzipZip("D:\\1.zip", @"D:\新建文件夹");
+
+
             Assert.True(true);
         }
     }

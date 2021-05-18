@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -23,7 +24,7 @@ using System.Xml.Linq;
  * 
  * 
  * ***************************************************************************************************************/
-namespace System
+namespace System.Net.Http
 {
     /// <summary>
     /// HttpClient帮助类
@@ -271,6 +272,52 @@ namespace System
 
 
             }
+        }
+
+        /// <summary>
+        /// 下载文件
+        /// </summary>
+        /// <param name="requestUri">请求地址</param>
+        /// <param name="path">保持文件路径带文件名</param>
+        /// <param name="progress">下载进度通知</param>
+        /// <param name="cancellationToken">线程取消令牌</param>
+        /// <remarks>https://www.cnblogs.com/h82258652/p/10950580.html</remarks>
+        /// <returns></returns>
+        public async Task DownloadAsync(string requestUri, string path, IProgress<HttpDownloadProgress> progress, CancellationToken cancellationToken)
+        {
+
+            using var responseMessage = await _client.GetAsync(new Uri(requestUri), HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+            responseMessage.EnsureSuccessStatusCode();
+
+            var content = responseMessage.Content;
+
+            var headers = content.Headers;
+            var contentLength = headers.ContentLength;
+            await using var responseStream = await content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+
+            int bufferSize = 1024;
+            var buffer = new byte[bufferSize];
+            int bytesRead;
+
+            var downloadProgress = new HttpDownloadProgress();
+            if (contentLength.HasValue)
+            {
+                downloadProgress.TotalBytesToReceive = (ulong)contentLength.Value;
+            }
+            progress?.Report(downloadProgress);
+
+            await using FileStream fileStream = File.Open(path, FileMode.Create);
+
+            while ((bytesRead = await responseStream.ReadAsync(buffer, 0, bufferSize, cancellationToken).ConfigureAwait(false)) > 0)
+            {
+
+                await fileStream.WriteAsync(buffer.Take(bytesRead).ToArray(), cancellationToken);
+
+                downloadProgress.BytesReceived += (ulong)bytesRead;
+                progress?.Report(downloadProgress);
+            }
+
+            await fileStream.FlushAsync(cancellationToken);
         }
     }
 }

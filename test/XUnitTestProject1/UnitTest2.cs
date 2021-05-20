@@ -1,14 +1,23 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using FsLib.CreditCardUtils;
 using FsLib.TuChuangUtils;
 using Xunit;
+using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace XUnitTestProject1
 {
     public class UnitTest2
     {
+        private ITestOutputHelper _output;
 
+        public UnitTest2(ITestOutputHelper output)
+        {
+            _output = output;
+        }
         //public static IEnumerable<TestCaseData> InvalidCardNumbersData
         //{
         //    get
@@ -89,9 +98,21 @@ namespace XUnitTestProject1
         [Fact]
         public void Test2()
         {
-            HttpClientHelper clientHelper = new HttpClientHelper();
-            string html = clientHelper.GetAsync("https://dotnet.microsoft.com/download/intellisense").Result;
+            DateTime dt = DateTime.Now; //DateTime.Parse("令和5-10-1");
+            _output.WriteLine("今天是：" + dt.ToString("ggyy-MM-dd"));
+            _output.WriteLine("今天是"  + dt.Year + "年的第" + dt.WeekOfYear() + "周");
+            _output.WriteLine("今天是" + dt.Month + "月的第" + dt.WeekOfMonth() + "周");
+            _output.WriteLine($"今天是第{dt.QuarterOfYear()}季度的第 {dt.WeekOfQuarter()} 周");
+            _output.WriteLine($"今天是第{dt.QuarterOfYear()}季度的第 {dt.DayOfQuarter()} 天");
+            _output.WriteLine($"今天是第{dt.QuarterOfYear()}季度的第 {dt.MonthOfQuarter()} 月");
+            _output.WriteLine($"今天是第{dt.QuarterOfYear()}季度, 共 {dt.WeeksOfQuarter()} 周");
+            _output.WriteLine($"今天是{dt.Month}月, 共 {dt.WeeksOfMonth()} 周");
 
+            _output.WriteLine("今年共" + dt.WeeksOfYear() + "周");
+
+            _output.WriteLine($"这周{DateTimeHelper.GetDateWeek(dt)}");
+            _output.WriteLine($"{dt.Year}第{dt.WeekOfYear()}周{DateTimeHelper.GetDateWeek(dt.Year, dt.WeekOfYear())}");
+            _output.WriteLine(dt.DayNameOfWeek());
 
             Assert.True(true);
         }

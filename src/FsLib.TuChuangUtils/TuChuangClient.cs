@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Hikari.Common.Net.Http;
 
 namespace FsLib.TuChuangUtils
 {

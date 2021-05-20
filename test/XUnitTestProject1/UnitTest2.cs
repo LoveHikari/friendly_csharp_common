@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using FsLib.CreditCardUtils;
 using FsLib.TuChuangUtils;
+using Hikari.Common;
 using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;

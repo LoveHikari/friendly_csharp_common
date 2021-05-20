@@ -10,8 +10,8 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.NetCore.Extensions.Swagger;
 using System.Threading.Tasks;
+using Hikari.Common.NetCore.Extensions.Swagger;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace WebApplication1

@@ -1,16 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Cryptography;
 using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Security;
-using System.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Hikari.Common;
+using Hikari.Common.Net.Http;
+using Hikari.Common.Sockets;
 using Xunit;
 
 namespace XUnitTestProject1

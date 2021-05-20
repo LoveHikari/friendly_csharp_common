@@ -3,8 +3,8 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.NetCore.Extensions.Swagger.Filter;
 using System.Threading.Tasks;
+using Hikari.Common.NetCore.Extensions.Swagger.Filter;
 
 namespace WebApplication1.Controllers
 {

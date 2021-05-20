@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FsLib.Common\FsLib.Common.csproj" />
+    <ProjectReference Include="..\..\src\FsLib.Common\Hikari.Common.csproj" />
     <ProjectReference Include="..\..\src\FsLib.CreditCardUtils\FsLib.CreditCardUtils.csproj" />
     <ProjectReference Include="..\..\src\FsLib.EfCore\FsLib.EfCore.csproj" />
     <ProjectReference Include="..\..\src\FsLib.TuChuangUtils\FsLib.TuChuangUtils.csproj" />

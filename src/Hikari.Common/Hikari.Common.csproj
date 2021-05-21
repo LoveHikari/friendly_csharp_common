@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <PackageId>Hikari.Common</PackageId>
-    <Authors>Asame</Authors>
+    <Authors>Asanoame</Authors>
     <Product>Hikari.Common</Product>
     <Company>5cm R &amp; D department</Company>
     <Description>公共库</Description>
@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\net6.0\FsLib.Common.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\net6.0\Hikari.Common.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

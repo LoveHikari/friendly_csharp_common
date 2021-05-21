@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "test\Web
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GalaSoft.MvvmLight", "src\GalaSoft.MvvmLight\GalaSoft.MvvmLight.csproj", "{403F8466-F734-471C-BC9D-78339E90C21F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hikari.WPF", "src\Hikari.WPF\Hikari.WPF.csproj", "{66D205F3-EF14-43DD-AAA3-9DA1296DB983}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{403F8466-F734-471C-BC9D-78339E90C21F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{403F8466-F734-471C-BC9D-78339E90C21F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{403F8466-F734-471C-BC9D-78339E90C21F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66D205F3-EF14-43DD-AAA3-9DA1296DB983}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66D205F3-EF14-43DD-AAA3-9DA1296DB983}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66D205F3-EF14-43DD-AAA3-9DA1296DB983}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66D205F3-EF14-43DD-AAA3-9DA1296DB983}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{AA8D10A9-5A9A-4F96-BE74-AD5088998BAD} = {8594F782-B980-46E4-B45F-5673AC4D7862}
 		{E4208D18-3A1D-4C40-AB32-5217D7FDD096} = {E7E1B92C-69E3-4919-8844-AEF4E5C325C8}
 		{403F8466-F734-471C-BC9D-78339E90C21F} = {8594F782-B980-46E4-B45F-5673AC4D7862}
+		{66D205F3-EF14-43DD-AAA3-9DA1296DB983} = {8594F782-B980-46E4-B45F-5673AC4D7862}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B9842A58-6189-4D06-8F5D-789267C22712}

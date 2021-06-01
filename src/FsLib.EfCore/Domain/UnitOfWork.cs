@@ -109,7 +109,7 @@ namespace FsLib.EfCore.Domain
             if (_dbTransaction == null)
                 return await _dbContext.SaveChangesAsync() > 0;
             else
-                _dbTransaction.Commit();
+                await _dbTransaction.CommitAsync();
             return true;
         }
         /// <summary>

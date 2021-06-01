@@ -27,20 +27,9 @@ namespace Hikari.Common
         /// 获取字符串 不返回null值
         /// </summary>
         /// <param name="value"></param>
-        /// <returns></returns>
-        public static string ToString2(this object value)
-        {
-            if (value == null || value == System.DBNull.Value)
-                return string.Empty;
-            return value.ToString();
-        }
-        /// <summary>
-        /// 获取字符串 不返回null值
-        /// </summary>
-        /// <param name="value"></param>
         /// <param name="s">指定为null时返回的值</param>
         /// <returns></returns>
-        public static string ToString2(this object value, string s)
+        public static string ToNotNullString(this object value, string s = "")
         {
             if (value == null || value == System.DBNull.Value)
                 return s;
@@ -54,10 +43,9 @@ namespace Hikari.Common
         /// <returns></returns>
         public static int ToInt32(this object input, int i = 0)
         {
-            int result;
             if (input == null || string.IsNullOrEmpty(input.ToString()))
                 return 0;
-            if (int.TryParse(input.ToString(), out result))
+            if (int.TryParse(input.ToString(), out int result))
                 return result;
             return i;
         }
@@ -125,67 +113,25 @@ namespace Hikari.Common
             }
             return d;
         }
-        /// <summary>
-        /// 转换为Boolean类型
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="defaultValue">指定转换失败时返回的值</param>
-        /// <returns></returns>
-        public static bool ToBoolean(this object source, bool defaultValue)
-        {
-            bool result;
-            if (source == null || string.IsNullOrEmpty(source.ToString()))
-                return defaultValue;
-            if (!bool.TryParse(source.ToString(), out result))
-                result = defaultValue;
-            return result;
-        }
+
         /// <summary>
         /// 转换为Boolean类型，遵循非0即真原则
         /// </summary>
-        /// <param name="source"></param>
+        /// <param name="this"></param>
         /// <returns></returns>
-        public static bool ToBoolean(this object source)
+        public static bool ToBoolean(this object @this)
         {
-            bool result;
-            int i;
-            if (source == null || string.IsNullOrEmpty(source.ToString()))
-                return false;
-            if (!bool.TryParse(source.ToString(), out result))  //转化失败
+            if (@this is not string source) return @this != null;
+            if (string.IsNullOrWhiteSpace(source)) return false;
+
+            if (bool.TryParse(source, out var result)) return result;
+            if (int.TryParse(source, out var i))  //如果是int
             {
-                if (int.TryParse(source.ToString(), out i))  //如果是int
-                {
-                    return i != 0;  //非0即真
-                }
-                result = true;
+                return i != 0;  //非0即真
             }
 
-            return result;
-        }
-        /// <summary>
-        /// 转换成时间类型，失败则得到最小时间
-        /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        public static DateTime ToDateTime(this object s)
-        {
-            return (DateTime)s.ToDateTime(DateTime.MaxValue);
-        }
-        /// <summary>
-        /// 转换成时间类型，失败则得到最小时间
-        /// </summary>
-        /// <param name="s"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static DateTime? ToDateTime(this object s, DateTime? value)
-        {
-            if (s == null || string.IsNullOrEmpty(s.ToString())) return value;
-            DateTime result;
-            if (DateTime.TryParse(s.ToString(), out result))
-            {
-                return result;
-            }
-            return value;
+            return true;
+
         }
     }
 }

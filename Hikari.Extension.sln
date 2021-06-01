@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTestProject1", "test\X
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FsLib.EfCore", "src\FsLib.EfCore\FsLib.EfCore.csproj", "{22F7927D-6CC4-45F7-9856-A875808FFC22}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FsLib.DbCore", "src\FsLib.DbCore\FsLib.DbCore.csproj", "{A7AEF1B7-DAEB-4C1F-A461-4DCE7D7E78DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hikari.DbCore", "src\Hikari.DbCore\Hikari.DbCore.csproj", "{A7AEF1B7-DAEB-4C1F-A461-4DCE7D7E78DA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FsLib.CreditCardUtils", "src\FsLib.CreditCardUtils\FsLib.CreditCardUtils.csproj", "{0A7350A7-324D-4F97-B2C3-FB5F0655EA8B}"
 EndProject
@@ -23,7 +23,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "test\Web
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GalaSoft.MvvmLight", "src\GalaSoft.MvvmLight\GalaSoft.MvvmLight.csproj", "{403F8466-F734-471C-BC9D-78339E90C21F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hikari.WPF", "src\Hikari.WPF\Hikari.WPF.csproj", "{66D205F3-EF14-43DD-AAA3-9DA1296DB983}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hikari.WPF", "src\Hikari.WPF\Hikari.WPF.csproj", "{66D205F3-EF14-43DD-AAA3-9DA1296DB983}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hikari.Common.Redis", "src\Hikari.Common.Redis\Hikari.Common.Redis.csproj", "{C18A3883-09F3-478E-94F5-BFB980A975EF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hikari.Common.Web.AspNetCore", "src\Hikari.Common.Swagger\Hikari.Common.Web.AspNetCore.csproj", "{61ACA6CA-B3E7-4C42-BD56-00E46961A579}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +71,14 @@ Global
 		{66D205F3-EF14-43DD-AAA3-9DA1296DB983}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66D205F3-EF14-43DD-AAA3-9DA1296DB983}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66D205F3-EF14-43DD-AAA3-9DA1296DB983}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C18A3883-09F3-478E-94F5-BFB980A975EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C18A3883-09F3-478E-94F5-BFB980A975EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C18A3883-09F3-478E-94F5-BFB980A975EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C18A3883-09F3-478E-94F5-BFB980A975EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61ACA6CA-B3E7-4C42-BD56-00E46961A579}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61ACA6CA-B3E7-4C42-BD56-00E46961A579}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61ACA6CA-B3E7-4C42-BD56-00E46961A579}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61ACA6CA-B3E7-4C42-BD56-00E46961A579}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +93,8 @@ Global
 		{E4208D18-3A1D-4C40-AB32-5217D7FDD096} = {E7E1B92C-69E3-4919-8844-AEF4E5C325C8}
 		{403F8466-F734-471C-BC9D-78339E90C21F} = {8594F782-B980-46E4-B45F-5673AC4D7862}
 		{66D205F3-EF14-43DD-AAA3-9DA1296DB983} = {8594F782-B980-46E4-B45F-5673AC4D7862}
+		{C18A3883-09F3-478E-94F5-BFB980A975EF} = {8594F782-B980-46E4-B45F-5673AC4D7862}
+		{61ACA6CA-B3E7-4C42-BD56-00E46961A579} = {8594F782-B980-46E4-B45F-5673AC4D7862}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B9842A58-6189-4D06-8F5D-789267C22712}

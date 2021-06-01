@@ -84,49 +84,6 @@ namespace Hikari.Common
             return (dtYearSt, dtYearEd);
         }
 
-        /// <summary>
-        /// 时间戳转为C#格式时间
-        /// </summary>
-        /// <param name="timeStamp">Unix时间戳</param>
-        /// <param name="unit">时间精度，秒(s) 毫秒(ms)</param>
-        /// <returns>时间</returns>
-        public static DateTime ConvertDateTime(string timeStamp, string unit = "s")
-        {
-            // DateTime dtStart = TimeZoneInfo.ConvertTime(new System.DateTime(1970, 1, 1), TimeZoneInfo.Local);
-            System.DateTime dtStart = System.TimeZoneInfo.ConvertTime(new System.DateTime(1970, 1, 1, 0, 0, 0, 0), TimeZoneInfo.Utc, TimeZoneInfo.Local);
-            long lTime;
-            if (unit == "s")
-            {
-                lTime = long.Parse(timeStamp + "0000000");
-            }
-            else
-            {
-                lTime = long.Parse(timeStamp + "0000");
-            }
-            TimeSpan toNow = new TimeSpan(lTime); return dtStart.Add(toNow);
-        }
-
-        /// <summary>
-        /// DateTime时间格式转换为Unix时间戳格式
-        /// </summary>
-        /// <param name="time">时间</param>
-        /// <param name="unit">时间精度，秒(s) 毫秒(ms)</param>
-        /// <returns>Unix时间戳</returns>
-        public static long ConvertDateTimeInt(System.DateTime time, string unit = "s")
-        {
-            //System.DateTime startTime = TimeZoneInfo.ConvertTime(new System.DateTime(1970, 1, 1), TimeZoneInfo.Local);
-            System.DateTime startTime = System.TimeZoneInfo.ConvertTime(new System.DateTime(1970, 1, 1, 0, 0, 0, 0), TimeZoneInfo.Utc, TimeZoneInfo.Local);
-            if (unit.ToLower() == "s")
-            {
-                return (long)(time - startTime).TotalSeconds;
-            }
-            else
-            {
-                return (long)(time - startTime).TotalMilliseconds;
-            }
-
-        }
-
 
         /// <summary>
         /// 判断两个时间是否是在同一周

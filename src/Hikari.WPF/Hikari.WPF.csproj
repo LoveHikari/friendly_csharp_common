@@ -7,7 +7,7 @@
 	  <Authors>Asanoame</Authors>
 	  <Product>Hikari.WPF</Product>
 	  <Company>5cm R &amp; D department</Company>
-	  <Description>公共库</Description>
+	  <Description>WPF MVVM</Description>
 	  <Version>6.0.0-preview.3.1.0</Version>
 	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
 	  <PackageProjectUrl>https://github.com/LoveHikari/friendly_csharp_common</PackageProjectUrl>
@@ -16,7 +16,7 @@
   </PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DocumentationFile>bin\Debug\net6.0\Hikari.WPF.xml</DocumentationFile>
+		<DocumentationFile>bin\Debug\net6.0-windows\Hikari.WPF.xml</DocumentationFile>
 	</PropertyGroup>
 
 </Project>

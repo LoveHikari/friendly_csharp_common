@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Hikari.Common.NetCore.Extensions.Swagger.Filter
+namespace Hikari.Common.Web.AspNetCore.Swagger.Filter
 {
     /// <summary>
     /// SwaggerHeader拦截器

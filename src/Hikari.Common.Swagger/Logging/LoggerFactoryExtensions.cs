@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 
-namespace Hikari.Common.NetCore.Extensions.Logging
+namespace Hikari.Common.Web.AspNetCore.Logging
 {
     /// <summary>
     /// nlog扩展

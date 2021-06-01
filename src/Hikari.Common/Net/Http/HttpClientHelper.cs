@@ -259,16 +259,18 @@ namespace Hikari.Common.Net.Http
             //}
             foreach (KeyValuePair<string, string> pair in headerItem)
             {
-                if (_wellKnownContentHeaders.Contains(pair.Key) && !request.Content.Headers.Contains(pair.Key))
+                if (!string.IsNullOrWhiteSpace(pair.Value))
                 {
-                    request.Content.Headers.Add(pair.Key, pair.Value);
-                }
-                else if(!_wellKnownContentHeaders.Contains(pair.Key) && !request.Headers.Contains(pair.Key))
-                {
-                    request.Headers.Add(pair.Key, pair.Value);
-                }
+                    if (_wellKnownContentHeaders.Contains(pair.Key) && !request.Content.Headers.Contains(pair.Key))
+                    {
+                        request.Content.Headers.Add(pair.Key, pair.Value);
+                    }
+                    else if (!_wellKnownContentHeaders.Contains(pair.Key) && !request.Headers.Contains(pair.Key))
+                    {
 
-
+                        request.Headers.Add(pair.Key, pair.Value);
+                    }
+                }
             }
         }
 

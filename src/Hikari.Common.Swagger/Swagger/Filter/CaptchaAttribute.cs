@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hikari.Common.NetCore.Extensions.Swagger.Filter
+namespace Hikari.Common.Web.AspNetCore.Swagger.Filter
 {
     /// <summary>
     /// 验证码过滤器

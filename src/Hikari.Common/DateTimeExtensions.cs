@@ -128,7 +128,7 @@ namespace Hikari.Common
         /// <returns>本年的天数</returns>
         public static int DaysOfYear(this in DateTime @this)
         {
-            return @this.IsRuYear() ? 366 : 365;
+            return DateTime.IsLeapYear(@this.Year) ? 366 : 365;
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace Hikari.Common
             return @this.Month switch
             {
                 1 => 31,
-                2 => (@this.IsRuYear() ? 29 : 28),
+                2 => (DateTime.IsLeapYear(@this.Year) ? 29 : 28),
                 3 => 31,
                 4 => 30,
                 5 => 31,
@@ -172,18 +172,24 @@ namespace Hikari.Common
         }
 
 
-
         /// <summary>
-        /// 判断当前年份是否是闰年
+        /// Unix时间戳格式
         /// </summary>
-        /// <param name="this">时间</param>
-        /// <returns>是闰年：True ，不是闰年：False</returns>
-        public static bool IsRuYear(this in DateTime @this)
+        /// <param name="this"></param>
+        /// <param name="unit">时间精度，秒(s) 毫秒(ms)</param>
+        /// <returns></returns>
+        public static long ToUnixTimestamp(this in DateTime @this, string unit = "s")
         {
-            //形式参数为年份
-            //例如：2003
-            var n = @this.Year;
-            return n % 400 == 0 || n % 4 == 0 && n % 100 != 0;
+            //System.DateTime startTime = TimeZoneInfo.ConvertTime(new System.DateTime(1970, 1, 1), TimeZoneInfo.Local);
+            System.DateTime startTime = System.TimeZoneInfo.ConvertTime(new System.DateTime(1970, 1, 1, 0, 0, 0, 0), TimeZoneInfo.Utc, TimeZoneInfo.Local);
+            if (unit.ToLower() == "s")
+            {
+                return (long)(@this - startTime).TotalSeconds;
+            }
+            else
+            {
+                return (long)(@this - startTime).TotalMilliseconds;
+            }
         }
 
     }

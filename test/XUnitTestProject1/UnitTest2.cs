@@ -1,13 +1,10 @@
-﻿using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using FsLib.CreditCardUtils;
+﻿using FsLib.CreditCardUtils;
 using FsLib.TuChuangUtils;
-using Hikari.Common;
+using Hikari.Common.Net.Http;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Xunit;
 using Xunit.Abstractions;
-using Xunit.Sdk;
 
 namespace XUnitTestProject1
 {
@@ -99,24 +96,38 @@ namespace XUnitTestProject1
         [Fact]
         public void Test2()
         {
-            DateTime dt = DateTime.Now; //DateTime.Parse("令和5-10-1");
-            _output.WriteLine("今天是：" + dt.ToString("ggyy-MM-dd"));
-            _output.WriteLine("今天是"  + dt.Year + "年的第" + dt.WeekOfYear() + "周");
-            _output.WriteLine("今天是" + dt.Month + "月的第" + dt.WeekOfMonth() + "周");
-            _output.WriteLine($"今天是第{dt.QuarterOfYear()}季度的第 {dt.WeekOfQuarter()} 周");
-            _output.WriteLine($"今天是第{dt.QuarterOfYear()}季度的第 {dt.DayOfQuarter()} 天");
-            _output.WriteLine($"今天是第{dt.QuarterOfYear()}季度的第 {dt.MonthOfQuarter()} 月");
-            _output.WriteLine($"今天是第{dt.QuarterOfYear()}季度, 共 {dt.WeeksOfQuarter()} 周");
-            _output.WriteLine($"今天是{dt.Month}月, 共 {dt.WeeksOfMonth()} 周");
+            //System.Globalization.CultureInfo.CurrentCulture = new CultureInfo("zh-CN");
+            // var mow = DateTime.Parse("1949-6-4");
+            //System.Globalization.ChineseLunisolarCalendar cc = new System.Globalization.ChineseLunisolarCalendar();
+            //var s1 = cc.IsLeapYear(mow.Year).ToString();//;False
+            //var s2 = cc.GetLeapMonth(mow.Year).ToString();//;0，注意：表示所闰月份。如果返回5，表示闰4月。
+            string url = "https://translate.google.cn/_/TranslateWebserverUi/data/batchexecute";
+            Dictionary<string, object> p = new Dictionary<string, object>()
+                {{"f.req", "[[[\"MkEWBc\",\"[[\\\"公司\\\",\\\"auto\\\",\\\"en\\\",true],[null]]\",null,\"generic\"]]]"}};
 
-            _output.WriteLine("今年共" + dt.WeeksOfYear() + "周");
+            Dictionary<string, string> h = new Dictionary<string, string>()
+                {{"Content-Type", "application/x-www-form-urlencoded"}};
 
-            _output.WriteLine($"这周{DateTimeHelper.GetDateWeek(dt)}");
-            _output.WriteLine($"{dt.Year}第{dt.WeekOfYear()}周{DateTimeHelper.GetDateWeek(dt.Year, dt.WeekOfYear())}");
-            _output.WriteLine(dt.DayNameOfWeek());
+            HttpClientHelper helper = new HttpClientHelper();
+            var  v = helper.PostAsync(url, p, "utf-8", h).Result;
+            
+            Regex regex = new Regex("\\\\\"(.+?)\\\\\"");
+            var ms = regex.Matches(v);
+
+            var v1 = ms[2].Groups[1].Value;
 
             Assert.True(true);
         }
-
+        [Fact]
+        public async void Test3()
+        {
+            string connectionString = "Persist Security Info=False;User ID=sa;Password=Atkj89715326;Initial Catalog=ANTOINE_DATABASE;Server=192.168.1.140";
+            CrDB db = new CrDB(connectionString);
+           //await db.BeginTransactionAsync();
+            var v = db.ExecuteDataTable("SELECT * FROM dbo.dt_air_quality");
+            await db.RollbackAsync();
+            _output.WriteLine(v.ToString());
+            Assert.True(true);
+        }
     }
 }

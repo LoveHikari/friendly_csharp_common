@@ -1,7 +1,7 @@
-﻿using System;
-using ServiceStack.Redis;
+﻿using ServiceStack.Redis;
+using System;
 
-namespace Hikari.Common
+namespace Hikari.Common.Redis
 {
     public class RedisCacheHelper
     {

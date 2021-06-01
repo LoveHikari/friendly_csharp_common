@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Hikari.Common.NetCore.Extensions.Swagger.Filter;
+using Hikari.Common.Web.AspNetCore.Swagger.Filter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
 
-namespace Hikari.Common.NetCore.Extensions.Swagger
+namespace Hikari.Common.Web.AspNetCore.Swagger
 {
     /// <summary>
     /// Swagger文档扩展类
@@ -21,8 +21,9 @@ namespace Hikari.Common.NetCore.Extensions.Swagger
         /// 添加Swagger
         /// </summary>
         /// <param name="services"></param>
+        /// <param name="openApiInfo"></param>
         /// <returns></returns>
-        public static IServiceCollection AddSwaggerCustom(this IServiceCollection services)
+        public static IServiceCollection AddSwaggerCustom(this IServiceCollection services, OpenApiInfo openApiInfo = null)
         {
             services.AddApiVersioning(options =>
             {
@@ -37,7 +38,7 @@ namespace Hikari.Common.NetCore.Extensions.Swagger
                 var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
                 foreach (var description in provider.ApiVersionDescriptions)
                 {
-                    options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
+                    options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description, openApiInfo));
                 }
 
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
@@ -98,25 +99,34 @@ namespace Hikari.Common.NetCore.Extensions.Swagger
         /// 创建版本信息
         /// </summary>
         /// <param name="description">版本描述</param>
+        /// <param name="openApiInfo">标题</param>
         /// <returns></returns>
-        private static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)
+        private static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description, OpenApiInfo openApiInfo)
         {
-            var info = new OpenApiInfo()
+            if (openApiInfo == null)
             {
-                Title = $"Sample API {description.ApiVersion}",
-                Version = description.ApiVersion.ToString(),
-                Description = "A sample application with Swagger, Swashbuckle, and API versioning.",
-                Contact = new OpenApiContact() { Name = "Bill Mei", Email = "bill.mei@somewhere.com" },
-                //TermsOfService = "Shareware",
-                License = new OpenApiLicense() { Name = "MIT", Url = new Uri("https://opensource.org/licenses/MIT") }
-            };
+                openApiInfo = new OpenApiInfo()
+                {
+                    Title = $"Sample API {description.ApiVersion}",
+                    Version = description.ApiVersion.ToString(),
+                    Description = "A sample application with Swagger, Swashbuckle, and API versioning.",
+                    Contact = new OpenApiContact() { Name = "Bill Mei", Email = "bill.mei@somewhere.com" },
+                    // TermsOfService = "Shareware",
+                    License = new OpenApiLicense() { Name = "MIT", Url = new Uri("https://opensource.org/licenses/MIT") }
+                };
+            }
+            else
+            {
+                openApiInfo.Title = openApiInfo.Title + " " + description.ApiVersion;
+                openApiInfo.Version = description.ApiVersion.ToString();
+            }
 
             if (description.IsDeprecated)
             {
-                info.Description += " This API version has been deprecated.";
+                openApiInfo.Description += " This API version has been deprecated.";
             }
 
-            return info;
+            return openApiInfo;
         }
     }
 }

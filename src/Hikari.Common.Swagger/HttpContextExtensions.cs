@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Http;
 
-namespace Hikari.Common
+namespace Hikari.Common.Web.AspNetCore
 {
     public static class HttpContextExtensions
     {

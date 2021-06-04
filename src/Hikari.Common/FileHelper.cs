@@ -293,41 +293,69 @@ namespace Hikari.Common
         }
         #endregion
         /// <summary>
-        /// 指定文件夹下面的所有内容copy到目标文件夹下面，目标文件夹为只读属性就会报错。
+        /// 指定文件夹下面的所有内容copy到目标文件夹下面，目标文件夹为只读属性就会报错。适合重命名复制
         /// </summary>
         /// <param name="srcPath">原始路径</param>
         /// <param name="aimPath">目标文件夹</param>
         public static void CopyDir(string srcPath, string aimPath)
         {
-            try
+            // 检查目标目录是否以目录分割字符结束如果不是则添加之
+            if (aimPath[^1] != System.IO.Path.DirectorySeparatorChar)
+                aimPath += System.IO.Path.DirectorySeparatorChar;
+            // 判断目标目录是否存在如果不存在则新建之
+            if (!System.IO.Directory.Exists(aimPath))
+                System.IO.Directory.CreateDirectory(aimPath);
+            // 得到源目录的文件列表，该里面是包含文件以及目录路径的一个数组
+            //如果你指向copy目标文件下面的文件而不包含目录请使用下面的方法
+            //string[] fileList = Directory.GetFiles(srcPath);
+            string[] fileList = System.IO.Directory.GetFileSystemEntries(srcPath);
+            //遍历所有的文件和目录
+            foreach (string file in fileList)
             {
-                // 检查目标目录是否以目录分割字符结束如果不是则添加之
-                if (aimPath[aimPath.Length - 1] != System.IO.Path.DirectorySeparatorChar)
-                    aimPath += System.IO.Path.DirectorySeparatorChar;
-                // 判断目标目录是否存在如果不存在则新建之
-                if (!System.IO.Directory.Exists(aimPath))
-                    System.IO.Directory.CreateDirectory(aimPath);
-                // 得到源目录的文件列表，该里面是包含文件以及目录路径的一个数组
-                //如果你指向copy目标文件下面的文件而不包含目录请使用下面的方法
-                //string[] fileList = Directory.GetFiles(srcPath);
-                string[] fileList = System.IO.Directory.GetFileSystemEntries(srcPath);
-                //遍历所有的文件和目录
-                foreach (string file in fileList)
-                {
-                    //先当作目录处理如果存在这个目录就递归Copy该目录下面的文件
+                //先当作目录处理如果存在这个目录就递归Copy该目录下面的文件
 
-                    if (System.IO.Directory.Exists(file))
-                        CopyDir(file, aimPath + System.IO.Path.GetFileName(file));
-                    //否则直接Copy文件
-                    else
-                        System.IO.File.Copy(file, aimPath + System.IO.Path.GetFileName(file), true);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw;
+                if (System.IO.Directory.Exists(file))
+                    CopyDir(file, aimPath + System.IO.Path.GetFileName(file));
+                //否则直接Copy文件
+                else
+                    System.IO.File.Copy(file, aimPath + System.IO.Path.GetFileName(file), true);
             }
         }
+        /// <summary>
+        /// 复制包括了原文件的根目录名称，适合直接复制
+        /// </summary>
+        /// <param name="sourceFolder">原文件路径</param>
+        /// <param name="destFolder">目标文件路径</param>
+        /// <remarks>https://www.cnblogs.com/wangjianhui008/p/3234519.html?ivk_sa=1024320u</remarks>
+        public static void CopyDir2(string sourceFolder, string destFolder)
+        {
+            string folderName = System.IO.Path.GetFileName(sourceFolder);
+            string destfolderdir = System.IO.Path.Combine(destFolder, folderName);
+            string[] filenames = System.IO.Directory.GetFileSystemEntries(sourceFolder);
+            foreach (string file in filenames)// 遍历所有的文件和目录
+            {
+                if (System.IO.Directory.Exists(file))
+                {
+                    string currentdir = System.IO.Path.Combine(destfolderdir, System.IO.Path.GetFileName(file));
+                    if (!System.IO.Directory.Exists(currentdir))
+                    {
+                        System.IO.Directory.CreateDirectory(currentdir);
+                    }
+                    CopyDir2(file, destfolderdir);
+                }
+                else
+                {
+                    string srcfileName = System.IO.Path.Combine(destfolderdir, System.IO.Path.GetFileName(file));
+                    if (!System.IO.Directory.Exists(destfolderdir))
+                    {
+                        System.IO.Directory.CreateDirectory(destfolderdir);
+                    }
+                    System.IO.File.Copy(file, srcfileName);
+                }
+            }
+
+        }
+
         #region 创建文件
         /// <summary>
         /// 创建文件

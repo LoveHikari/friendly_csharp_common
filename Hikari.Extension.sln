@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hikari.WPF", "src\Hikari.WP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hikari.Common.Redis", "src\Hikari.Common.Redis\Hikari.Common.Redis.csproj", "{C18A3883-09F3-478E-94F5-BFB980A975EF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hikari.Common.Web.AspNetCore", "src\Hikari.Common.Swagger\Hikari.Common.Web.AspNetCore.csproj", "{61ACA6CA-B3E7-4C42-BD56-00E46961A579}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hikari.Common.Web.AspNetCore", "src\Hikari.Common.Web.AspNetCore\Hikari.Common.Web.AspNetCore.csproj", "{61ACA6CA-B3E7-4C42-BD56-00E46961A579}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

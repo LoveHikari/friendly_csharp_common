@@ -2,6 +2,7 @@
 using FsLib.TuChuangUtils;
 using Hikari.Common.Net.Http;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using Xunit;
 using Xunit.Abstractions;
@@ -121,12 +122,8 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test3()
         {
-            string connectionString = "Persist Security Info=False;User ID=sa;Password=Atkj89715326;Initial Catalog=ANTOINE_DATABASE;Server=192.168.1.140";
-            CrDB db = new CrDB(connectionString);
-           //await db.BeginTransactionAsync();
-            var v = db.ExecuteDataTable("SELECT * FROM dbo.dt_air_quality");
-            await db.RollbackAsync();
-            _output.WriteLine(v.ToString());
+            HttpClient client = new HttpClient();
+            client.ge
             Assert.True(true);
         }
     }

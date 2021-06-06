@@ -3,9 +3,11 @@ using FsLib.CreditCardUtils;
 using FsLib.TuChuangUtils;
 using Hikari.Common.Net.Http;
 using System.Collections.Generic;
+using System.Data;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using Hikari.Common;
+using Hikari.Common.Office;
 using ServiceStack.Text;
 using Xunit;
 using Xunit.Abstractions;
@@ -125,15 +127,32 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test3()
         {
-            var d = DateTime.Now;
-            var v = d.ToUnixTime();
-            var v1 = d.ToUnixTimeMsAlt();
-            //var v2 = d.ToStableUniversalTime();
-            var v3 = d.ToUnixTimeSeconds();
 
-            var d1 = v3.FromUnixTimeSeconds();
-            var d2 = v1.FromUnixTimeMs();
-            var d3 = v1.FromUnixTimeMillisecondsToUtc();
+            DataTable dt = new DataTable("cart");
+            DataColumn dc1 = new DataColumn("prizename", Type.GetType("System.String"));
+            DataColumn dc2 = new DataColumn("point", Type.GetType("System.Int16"));
+            DataColumn dc3 = new DataColumn("number", Type.GetType("System.Int16"));
+            DataColumn dc4 = new DataColumn("totalpoint", Type.GetType("System.Int64"));
+            DataColumn dc5 = new DataColumn("prizeid", Type.GetType("System.String"));
+            dt.Columns.Add(dc1);
+            dt.Columns.Add(dc2);
+            dt.Columns.Add(dc3);
+            dt.Columns.Add(dc4);
+            dt.Columns.Add(dc5);
+            //以上代码完成了DataTable的构架，但是里面是没有任何数据的
+            for (int i = 0; i < 10; i++)
+            {
+                DataRow dr = dt.NewRow();
+                dr["prizename"] = "娃娃";
+                dr["point"] = 10;
+                dr["number"] = 1;
+                dr["totalpoint"] = 10;
+                dr["prizeid"] = "001";
+                dt.Rows.Add(dr);
+
+            }
+
+            ExcelHelper.DataTableToExcel("E:\\e.xlsx", dt, "Sheel1", true);
 
             Assert.True(true);
         }

@@ -495,5 +495,25 @@ namespace Hikari.Common
             
             return DateTime.TryParse(@this, out var result) ? result : value;
         }
+        /// <summary>
+        /// 转换成日期类型，失败则得到最小日期
+        /// </summary>
+        /// <param name="this"></param>
+        /// <returns></returns>
+        public static DateOnly ToDateOnly(this string @this)
+        {
+            return @this.ToDateOnly(DateOnly.MinValue);
+        }
+        /// <summary>
+        /// 转换成日期类型
+        /// </summary>
+        /// <param name="this"></param>
+        /// <param name="value">失败时间</param>
+        /// <returns></returns>
+        public static DateOnly ToDateOnly(this string @this, DateOnly value)
+        {
+            if (string.IsNullOrWhiteSpace(@this)) return value;
+            return DateTime.TryParse(@this, out var result) ? DateOnly.FromDateTime(result) : value;
+        }
     }
 }

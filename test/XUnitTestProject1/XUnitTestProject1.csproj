@@ -21,7 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FsLib.DbCore\Hikari.DbCore.csproj" />
+    <ProjectReference Include="..\..\src\Hikari.Common.Redis\Hikari.Common.Redis.csproj" />
+    <ProjectReference Include="..\..\src\Hikari.DbCore\Hikari.DbCore.csproj" />
     <ProjectReference Include="..\..\src\Hikari.Common\Hikari.Common.csproj" />
     <ProjectReference Include="..\..\src\FsLib.CreditCardUtils\FsLib.CreditCardUtils.csproj" />
     <ProjectReference Include="..\..\src\FsLib.EfCore\FsLib.EfCore.csproj" />

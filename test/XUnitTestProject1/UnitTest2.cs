@@ -1,9 +1,12 @@
-﻿using FsLib.CreditCardUtils;
+﻿using System;
+using FsLib.CreditCardUtils;
 using FsLib.TuChuangUtils;
 using Hikari.Common.Net.Http;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.RegularExpressions;
+using Hikari.Common;
+using ServiceStack.Text;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -122,8 +125,16 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test3()
         {
-            HttpClient client = new HttpClient();
-            client.ge
+            var d = DateTime.Now;
+            var v = d.ToUnixTime();
+            var v1 = d.ToUnixTimeMsAlt();
+            //var v2 = d.ToStableUniversalTime();
+            var v3 = d.ToUnixTimeSeconds();
+
+            var d1 = v3.FromUnixTimeSeconds();
+            var d2 = v1.FromUnixTimeMs();
+            var d3 = v1.FromUnixTimeMillisecondsToUtc();
+
             Assert.True(true);
         }
     }

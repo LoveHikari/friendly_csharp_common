@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FsLib.Common\Hikari.Common.csproj" />
+    <ProjectReference Include="..\..\src\Hikari.Common\Hikari.Common.csproj" />
   </ItemGroup>
 
 </Project>

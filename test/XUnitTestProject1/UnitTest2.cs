@@ -1,14 +1,8 @@
-﻿using System;
-using FsLib.CreditCardUtils;
+﻿using FsLib.CreditCardUtils;
 using FsLib.TuChuangUtils;
 using Hikari.Common.Net.Http;
 using System.Collections.Generic;
-using System.Data;
-using System.Net.Http;
 using System.Text.RegularExpressions;
-using Hikari.Common;
-using Hikari.Common.Office;
-using ServiceStack.Text;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -128,31 +122,14 @@ namespace XUnitTestProject1
         public async void Test3()
         {
 
-            DataTable dt = new DataTable("cart");
-            DataColumn dc1 = new DataColumn("prizename", Type.GetType("System.String"));
-            DataColumn dc2 = new DataColumn("point", Type.GetType("System.Int16"));
-            DataColumn dc3 = new DataColumn("number", Type.GetType("System.Int16"));
-            DataColumn dc4 = new DataColumn("totalpoint", Type.GetType("System.Int64"));
-            DataColumn dc5 = new DataColumn("prizeid", Type.GetType("System.String"));
-            dt.Columns.Add(dc1);
-            dt.Columns.Add(dc2);
-            dt.Columns.Add(dc3);
-            dt.Columns.Add(dc4);
-            dt.Columns.Add(dc5);
-            //以上代码完成了DataTable的构架，但是里面是没有任何数据的
-            for (int i = 0; i < 10; i++)
+            string url = "https://api.github.com/repos/LoveHikari/DkProCloudMusic/releases/latest";
+            HttpClientHelper helper = new HttpClientHelper();
+            var h = new Dictionary<string, string>()
             {
-                DataRow dr = dt.NewRow();
-                dr["prizename"] = "娃娃";
-                dr["point"] = 10;
-                dr["number"] = 1;
-                dr["totalpoint"] = 10;
-                dr["prizeid"] = "001";
-                dt.Rows.Add(dr);
-
-            }
-
-            ExcelHelper.DataTableToExcel("E:\\e.xlsx", dt, "Sheel1", true);
+                //{"User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36"},
+               // {"Content-Type", "text/plain; charset=utf-8"}
+            };
+            var v = helper.GetAsync(url, headerItem:h).GetAwaiter().GetResult();
 
             Assert.True(true);
         }

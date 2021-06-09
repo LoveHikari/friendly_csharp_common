@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Hikari.Common.Office\Hikari.Common.Office.csproj" />
     <ProjectReference Include="..\..\src\Hikari.Common.Redis\Hikari.Common.Redis.csproj" />
     <ProjectReference Include="..\..\src\Hikari.DbCore\Hikari.DbCore.csproj" />
     <ProjectReference Include="..\..\src\Hikari.Common\Hikari.Common.csproj" />

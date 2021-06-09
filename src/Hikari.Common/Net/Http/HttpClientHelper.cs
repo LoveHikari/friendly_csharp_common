@@ -169,7 +169,16 @@ namespace Hikari.Common.Net.Http
         /// <param name="param">请求参数</param>
         private void SetHttpContent(HttpRequestMessage request, IDictionary<string, string> headerItem, IDictionary<string, object> param)
         {
-            var contentType = headerItem?["Content-Type"] ?? "";
+            string contentType;
+            if (headerItem == null || !headerItem.ContainsKey("Content-Type"))
+            {
+                contentType = "text/plain; charset=utf-8";
+            }
+            else
+            {
+                contentType = headerItem["Content-Type"];
+            }
+            
             HttpContent content = null;
             if (param != null)
             {
@@ -244,15 +253,14 @@ namespace Hikari.Common.Net.Http
             //request.Content.Headers.Clear();
             //request.Headers.Clear();
             headerItem ??= new Dictionary<string, string>();
-
-            //if (!headerItem.ContainsKey("User-Agent"))
+            //if (!request.Headers.Contains("Content-Type") && !headerItem.ContainsKey("Content-Type"))
             //{
-            //    headerItem.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36");
+            //    request.Headers.Add("Content-Type", "text/plain; charset=utf-8");
             //}
-            //if (!headerItem.ContainsKey("Content-Type"))
-            //{
-            //    headerItem.Add("Content-Type", "text/plain; charset=utf-8");
-            //}
+            if (!request.Headers.Contains("User-Agent") && !headerItem.ContainsKey("User-Agent"))
+            {
+                request.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36");
+            }
             //if (!headerItem.ContainsKey("Accept"))
             //{
             //    headerItem.Add("Accept", "*/*");
@@ -261,7 +269,7 @@ namespace Hikari.Common.Net.Http
             {
                 if (!string.IsNullOrWhiteSpace(pair.Value))
                 {
-                    if (_wellKnownContentHeaders.Contains(pair.Key) && !request.Content.Headers.Contains(pair.Key))
+                    if (_wellKnownContentHeaders.Contains(pair.Key) && request.Content != null && !request.Content.Headers.Contains(pair.Key))
                     {
                         request.Content.Headers.Add(pair.Key, pair.Value);
                     }

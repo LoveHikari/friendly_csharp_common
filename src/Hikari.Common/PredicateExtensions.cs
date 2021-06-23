@@ -6,6 +6,7 @@ namespace Hikari.Common
     /// <summary>
     /// Linq扩展类
     /// </summary>
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), System.ComponentModel.Browsable(false)]
     public static class PredicateExtensions
     {
         public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> one, Expression<Func<T, bool>> another)

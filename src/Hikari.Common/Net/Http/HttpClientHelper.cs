@@ -42,6 +42,10 @@ namespace Hikari.Common.Net.Http
         /// </summary>
         public HttpStatusCode ErrorStatusCode;
         /// <summary>
+        /// 请求错误时内容
+        /// </summary>
+        public string ErrorContent;
+        /// <summary>
         /// HttpClient封装
         /// </summary>
         public HttpClientHelper()
@@ -140,6 +144,7 @@ namespace Hikari.Common.Net.Http
             var response = await this._client.SendAsync(request);
 
             this.ErrorStatusCode = response.StatusCode;
+            this.ErrorContent = await response.Content.ReadAsStringAsync();
 
             return response;
 

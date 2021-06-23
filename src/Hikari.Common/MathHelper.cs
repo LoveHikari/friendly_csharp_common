@@ -5,8 +5,7 @@ namespace Hikari.Common
     /// <summary>
     /// <see cref="Math"/> 扩展类
     /// </summary>
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), System.ComponentModel.Browsable(false)]
-    public class MathExtensions
+    public class MathHelper
     {
         #region 求最大公约数
         /// <summary>

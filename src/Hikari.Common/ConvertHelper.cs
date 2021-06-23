@@ -18,13 +18,13 @@ namespace Hikari.Common
     /// </summary>    
     public sealed class ConvertHelper
     {
-        #region 补足位数
         /// <summary>
         /// 指定字符串的固定长度，如果字符串小于固定长度，
         /// 则在字符串的前面补足零
         /// </summary>
         /// <param name="text">原始字符串</param>
         /// <param name="limitedLength">字符串的固定长度</param>
+        /// <returns></returns>
         public static string RepairZero(string text, int limitedLength)
         {
             //补足0的字符串
@@ -42,9 +42,6 @@ namespace Hikari.Common
             //返回补足0的字符串
             return temp;
         }
-        #endregion
-
-        #region 各进制数间转换
         /// <summary>
         /// 实现各进制数间的转换。ConvertBase("15",10,16)表示将十进制数15转换为16进制的数。
         /// </summary>
@@ -53,71 +50,38 @@ namespace Hikari.Common
         /// <param name="to">要转换到的目标进制，只能是2,8,10,16四个值。</param>
         public static string ConvertBase(string value, int from, int to)
         {
-            try
+            int intValue = Convert.ToInt32(value, from);  //先转成10进制
+            string result = Convert.ToString(intValue, to);  //再转成目标进制
+            if (to == 2)
             {
-                int intValue = Convert.ToInt32(value, from);  //先转成10进制
-                string result = Convert.ToString(intValue, to);  //再转成目标进制
-                if (to == 2)
+                int resultLength = result.Length;  //获取二进制的长度
+                switch (resultLength)
                 {
-                    int resultLength = result.Length;  //获取二进制的长度
-                    switch (resultLength)
-                    {
-                        case 7:
-                            result = "0" + result;
-                            break;
-                        case 6:
-                            result = "00" + result;
-                            break;
-                        case 5:
-                            result = "000" + result;
-                            break;
-                        case 4:
-                            result = "0000" + result;
-                            break;
-                        case 3:
-                            result = "00000" + result;
-                            break;
-                    }
+                    case 7:
+                        result = "0" + result;
+                        break;
+                    case 6:
+                        result = "00" + result;
+                        break;
+                    case 5:
+                        result = "000" + result;
+                        break;
+                    case 4:
+                        result = "0000" + result;
+                        break;
+                    case 3:
+                        result = "00000" + result;
+                        break;
                 }
-                return result;
             }
-            catch (Exception ex)
-            {
-                //LogHelper.WriteTraceLog(TraceLogLevel.Error, ex.Message);
-                throw ex;
-            }
+            return result;
         }
-        #endregion
 
-        #region 使用指定字符集将string转换成byte[]
-        /// <summary>
-        /// 使用指定字符集将string转换成byte[]
-        /// </summary>
-        /// <param name="text">要转换的字符串</param>
-        /// <param name="encoding">字符编码</param>
-        public static byte[] StringToBytes(string text, Encoding encoding)
-        {
-            return encoding.GetBytes(text);
-        }
-        #endregion
-
-        #region 使用指定字符集将byte[]转换成string
-        /// <summary>
-        /// 使用指定字符集将byte[]转换成string
-        /// </summary>
-        /// <param name="bytes">要转换的字节数组</param>
-        /// <param name="encoding">字符编码</param>
-        public static string BytesToString(byte[] bytes, Encoding encoding)
-        {
-            return encoding.GetString(bytes);
-        }
-        #endregion
-
-        #region 将byte[]转换成int
         /// <summary>
         /// 将byte[]转换成int
         /// </summary>
         /// <param name="data">需要转换成整数的byte数组</param>
+        /// <returns></returns>
         public static int BytesToInt32(byte[] data)
         {
             //如果传入的字节数组长度小于4,则返回0
@@ -145,32 +109,19 @@ namespace Hikari.Common
             //返回整数
             return num;
         }
-        #endregion
 
         /// <summary>
-        /// 将XML字符创转换为DataSet
+        /// 将XML字符串转换为DataSet
         /// </summary>
         /// <param name="xmlData">XML字符</param>
         /// <returns>DataSet:相同结点生成一个DataTable</returns>
         public static DataSet XmlToDataSet(string xmlData)
         {
-            XmlTextReader reader = null;
-            try
-            {
-                DataSet xmlDs = new DataSet();
-                StringReader stream = new StringReader(xmlData);
-                reader = new XmlTextReader(stream);
-                xmlDs.ReadXml(reader);
-                return xmlDs;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                reader?.Close();
-            }
+            DataSet xmlDs = new DataSet();
+            StringReader stream = new StringReader(xmlData);
+            using XmlTextReader reader = new XmlTextReader(stream);
+            xmlDs.ReadXml(reader);
+            return xmlDs;
         }
         /// <summary>
         /// 匿名类型转强类型

@@ -6,7 +6,7 @@ namespace Hikari.Common
     /// <summary>
     /// 
     /// </summary>
-    public class RegexUtil
+    public class RegexHelper
     {
         /// <summary>
         /// 判断输入的字符串只包含汉字
@@ -164,7 +164,7 @@ namespace Hikari.Common
             {
                 return false;
             }
-            int count = RegexUtil.GetStringCount(input, "::");
+            int count = GetStringCount(input, "::");
             if (count > 1)
             {
                 return false;

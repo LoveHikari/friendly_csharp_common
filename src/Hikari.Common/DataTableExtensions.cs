@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
+using System.Text;
 
 /******************************************************************************************************************
  * 
@@ -216,6 +217,39 @@ namespace Hikari.Common
                 }
             }
             return ds;
+        }
+
+        /// <summary>
+        /// DataTable转json
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public static string ToJson(this DataTable dt)
+        {
+            StringBuilder json = new StringBuilder();
+            json.Append("[");
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    json.Append("{");
+                    for (int j = 0; j < dt.Columns.Count; j++)
+                    {
+                        json.Append("\"" + dt.Columns[j].ColumnName + "\":\"" + dt.Rows[i][j].ToString().Replace("\r\n", "").Replace("\r", "").Replace("\n", "").Replace("\"", "").Replace("“", "").Replace("”", "").Replace(" ", "").Replace("\\", "").Replace("	", "") + "\"");
+                        if (j < dt.Columns.Count - 1)
+                        {
+                            json.Append(",");
+                        }
+                    }
+                    json.Append("}");
+                    if (i < dt.Rows.Count - 1)
+                    {
+                        json.Append(",");
+                    }
+                }
+            }
+            json.Append("]");
+            return json.ToString();
         }
     }
 }

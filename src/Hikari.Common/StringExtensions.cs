@@ -209,7 +209,15 @@ namespace Hikari.Common
             reg = new Regex(@"[ ]+");//合并多个空格为一个
             return reg.Replace(value, " ");
         }
-
+        /// <summary>
+        /// 从右边开始去掉i个字符
+        /// </summary>
+        /// <param name="i">要去掉的长度</param>
+        /// <returns></returns>
+        public static string RemoveRight(this string @this, int i)
+        {
+            return @this.Remove(@this.Length - i, i);
+        }
         /// <summary>
         /// 过滤文本中的空行
         /// </summary>

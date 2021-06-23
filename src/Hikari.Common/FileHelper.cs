@@ -212,92 +212,55 @@ namespace Hikari.Common
 
         #endregion
 
-        #region 删除文件夹
         /// <summary>
-        /// 清空指定的文件夹，但不删除文件夹
-        /// </summary>
-        /// <param name="dirPath">目录路径</param>
-        /// <returns></returns>
-        public static bool DeleteFolder(string dirPath)
-        {
-            try
-            {
-                foreach (string d in System.IO.Directory.GetFileSystemEntries(dirPath))
-                {
-                    if (System.IO.File.Exists(d))
-                    {
-                        System.IO.FileInfo fi = new System.IO.FileInfo(d);
-                        if (fi.Attributes.ToString().IndexOf("ReadOnly", StringComparison.Ordinal) != -1)
-                            fi.Attributes = System.IO.FileAttributes.Normal;
-                        System.IO.File.Delete(d);//直接删除其中的文件  
-                    }
-                    else
-                    {
-                        System.IO.DirectoryInfo d1 = new System.IO.DirectoryInfo(d);
-                        if (d1.GetFiles().Length != 0)
-                        {
-                            DeleteFolder(d1.FullName);////递归删除子文件夹
-                        }
-                        System.IO.Directory.Delete(d);
-                    }
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-
-        }
-        /// <summary>
-        /// 删除目录及其内容
+        /// 删除目录及其内容，默认不删除根目录
         /// </summary>
         /// <param name="dirPath">目录路径</param>
         /// <param name="recursive">是否删除根目录</param>
-        /// <returns></returns>
-        public static bool DeleteFolder(string dirPath, bool recursive)
+        public static void DeleteDirectory(string dirPath, bool recursive = false)
         {
+            foreach (string d in System.IO.Directory.GetFileSystemEntries(dirPath))
+            {
+                if (System.IO.File.Exists(d))
+                {
+                    System.IO.FileInfo fi = new System.IO.FileInfo(d);
+                    if (fi.Attributes.ToString().IndexOf("ReadOnly", StringComparison.Ordinal) != -1)
+                        fi.Attributes = System.IO.FileAttributes.Normal;
+                    System.IO.File.Delete(d);//直接删除其中的文件  
+                }
+                else
+                {
+                    System.IO.DirectoryInfo d1 = new System.IO.DirectoryInfo(d);
+                    if (d1.GetFiles().Length != 0 || d1.GetDirectories().Length > 0)
+                    {
+                        DeleteDirectory(d1.FullName);////递归删除子文件夹
+                    }
+                    System.IO.Directory.Delete(d);
+                }
+            }
+
             if (recursive)
             {
-                try
-                {
-                    foreach (string d in System.IO.Directory.GetFileSystemEntries(dirPath))
-                    {
-                        if (System.IO.File.Exists(d))
-                        {
-                            System.IO.FileInfo fi = new System.IO.FileInfo(d);
-                            if (fi.Attributes.ToString().IndexOf("ReadOnly", StringComparison.Ordinal) != -1)
-                                fi.Attributes = System.IO.FileAttributes.Normal;
-                            System.IO.File.Delete(d); //直接删除其中的文件
-                        }
-                        else
-                        {
-                            DeleteFolder(d);////递归删除子文件夹
-                            System.IO.Directory.Delete(d);
-                        }
-                    }
-                    System.IO.Directory.Delete(dirPath);
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    throw;
-                }
-
+                System.IO.Directory.Delete(dirPath);
             }
-            else
-            {
-                return DeleteFolder(dirPath);
-            }
+        }
+        /// <summary>
+        /// 重命名文件夹
+        /// </summary>
+        /// <param name="srcPath">原始文件夹</param>
+        /// <param name="aimPath">目标文件夹</param>
+        public static void RenameDirectory(string srcPath, string aimPath)
+        {
+            CopyDir(srcPath, aimPath);
+            DeleteDirectory(srcPath, true);
 
         }
-        #endregion
         /// <summary>
         /// 指定文件夹下面的所有内容copy到目标文件夹下面，目标文件夹为只读属性就会报错。适合重命名复制
         /// </summary>
         /// <param name="srcPath">原始路径</param>
         /// <param name="aimPath">目标文件夹</param>
-        public static void CopyDir(string srcPath, string aimPath)
+        private static void CopyDir(string srcPath, string aimPath)
         {
             // 检查目标目录是否以目录分割字符结束如果不是则添加之
             if (aimPath[^1] != System.IO.Path.DirectorySeparatorChar)
@@ -327,7 +290,7 @@ namespace Hikari.Common
         /// <param name="sourceFolder">原文件路径</param>
         /// <param name="destFolder">目标文件路径</param>
         /// <remarks>https://www.cnblogs.com/wangjianhui008/p/3234519.html?ivk_sa=1024320u</remarks>
-        public static void CopyDir2(string sourceFolder, string destFolder)
+        public static void CopyDirectory(string sourceFolder, string destFolder)
         {
             string folderName = System.IO.Path.GetFileName(sourceFolder);
             string destfolderdir = System.IO.Path.Combine(destFolder, folderName);
@@ -341,7 +304,7 @@ namespace Hikari.Common
                     {
                         System.IO.Directory.CreateDirectory(currentdir);
                     }
-                    CopyDir2(file, destfolderdir);
+                    CopyDirectory(file, destfolderdir);
                 }
                 else
                 {
@@ -583,7 +546,6 @@ namespace Hikari.Common
             }
         }
 
-#if !NET35
         /// <summary>
         /// 模糊搜索文件
         /// </summary>
@@ -602,7 +564,6 @@ namespace Hikari.Common
             }
             return fileList;
         }
-#endif
 
         /// <summary>
         /// 文件路径处理

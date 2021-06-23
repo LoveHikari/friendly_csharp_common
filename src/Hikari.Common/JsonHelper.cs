@@ -116,41 +116,6 @@ namespace Hikari.Common
         }
 
         /// <summary>
-        /// DataTable转json
-        /// </summary>
-        /// <param name="dt"></param>
-        /// <returns></returns>
-        public static string DataTableToJson(DataTable dt)
-        {
-            StringBuilder json = new StringBuilder();
-            //Json.Append("[");
-            if (dt.Rows.Count > 0)
-            {
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    json.Append("{");
-                    for (int j = 0; j < dt.Columns.Count; j++)
-                    {
-                        json.Append("\"" + dt.Columns[j].ColumnName.ToString() + "\":\"" + dt.Rows[i][j].ToString().Replace("\r\n", "").Replace("\r", "").Replace("\n", "").Replace("\"", "").Replace("“", "").Replace("”", "").Replace(" ", "").Replace("\\", "").Replace("	", "") + "\"");
-                        if (j < dt.Columns.Count - 1)
-                        {
-                            json.Append(",");
-                        }
-                    }
-                    json.Append("}");
-                    if (i < dt.Rows.Count - 1)
-                    {
-                        json.Append("\r\n");
-                    }
-                }
-            }
-            //Json.Append("]");
-            return json.ToString();
-        }
-
-        
-
-        /// <summary>
         /// 过滤特殊字符
         /// </summary>
         /// <param name="s"></param>
@@ -187,31 +152,5 @@ namespace Hikari.Common
         }
 
 
-    }
-    /// <summary>
-    /// Json 扩展类
-    /// </summary>
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), System.ComponentModel.Browsable(false)]
-    public static class JsonExtensions
-    {
-        /// <summary>
-        /// 对象序列化为json
-        /// </summary>
-        /// <param name="obj">对象</param>
-        /// <returns>json字符串</returns>
-        public static string ToJson(this object obj)
-        {
-            return System.Text.Json.JsonSerializer.Serialize(obj);
-        }
-        /// <summary>
-        /// json字符串反序列化为对象
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="jsonStr"></param>
-        /// <returns></returns>
-        public static T ToEntity<T>(this string jsonStr) where T : class, new()
-        {
-            return System.Text.Json.JsonSerializer.Deserialize<T>(jsonStr);
-        }
     }
 }

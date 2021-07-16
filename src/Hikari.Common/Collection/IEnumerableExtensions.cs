@@ -85,7 +85,25 @@ namespace Hikari.Common.Collection
 
             return result;
         }
-
+        /// <summary>
+        /// 合并多个 Dictionary
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="dictionaries"></param>
+        /// <returns></returns>
+        public static Dictionary<TKey, TValue> Merge<TKey, TValue>(IEnumerable<Dictionary<TKey, TValue>> dictionaries)
+        {
+            //var result = new Dictionary<TKey, TValue>();
+            //foreach (var dict in dictionaries)
+            //    foreach (var x in dict)
+            //        result[x.Key] = x.Value;
+            //return result;
+            var result = dictionaries.SelectMany(dict => dict)
+                         .ToLookup(pair => pair.Key, pair => pair.Value)
+                         .ToDictionary(group => group.Key, group => group.First());
+            return result;
+        }
 
         /// <summary>
         /// 比较器

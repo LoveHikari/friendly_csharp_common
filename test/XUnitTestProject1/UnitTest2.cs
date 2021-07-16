@@ -4,6 +4,7 @@ using FsLib.TuChuangUtils;
 using Hikari.Common.Net.Http;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 using Hikari.Common;
@@ -157,13 +158,24 @@ namespace XUnitTestProject1
         [Fact]
         public void Test4()
         {
+            string s = "3WLoE9bOT5aSAZp0+5M1og==";
+            byte[] b1 = Convert.FromBase64String(s);
+            byte[] b2 = System.Text.Encoding.UTF8.GetBytes(s);
+
             Assert.True(true);
+        }
+
+        [Fact]
+        public IEnumerator<string> GetEnumerator()
+        {
+            yield return $"{Environment.CurrentDirectory}";
+            yield return $"{Directory.GetCurrentDirectory()}";
+            yield return $"{GetType().Assembly.Location}";
+            yield return $"{Process.GetCurrentProcess().MainModule.FileName}";
+            yield return $"{AppDomain.CurrentDomain.BaseDirectory}";
         }
 
 
 
-
-       
-        
     }
 }

@@ -19,8 +19,11 @@
 	<ItemGroup>
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
-		<PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
-		<PackageReference Include="NLog.Web.AspNetCore" Version="4.13.0-readme-preview" />
+		<PackageReference Include="NLog.Web.AspNetCore" Version="4.13.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0-preview.6.21352.12" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0-preview.6.21352.12" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0-preview.6.21352.12" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0-preview.6.21352.12" />
 	</ItemGroup>
 
 </Project>

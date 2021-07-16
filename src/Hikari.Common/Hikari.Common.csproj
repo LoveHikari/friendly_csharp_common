@@ -7,9 +7,9 @@
 		<Product>Hikari.Common</Product>
 		<Company>5cm R &amp; D department</Company>
 		<Description>公共库</Description>
-		<Version>6.0.0-preview.4.3.0</Version>
+		<Version>6.0.0-preview.6.1.0</Version>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<PackageReleaseNotes>添加了一些类</PackageReleaseNotes>
+		<PackageReleaseNotes>升级了版本</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/LoveHikari/friendly_csharp_common</PackageProjectUrl>
 		<PackageTags>common</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -22,7 +22,7 @@
 	<ItemGroup>
 		<PackageReference Include="NSoup.Standard" Version="2.0.1" />
 		<PackageReference Include="SharpZipLib" Version="1.3.2" />
-		<PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0-preview.5.21301.5" />
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0-preview.6.21352.12" />
 		<PackageReference Include="ThoughtWorks.QRCode.Core" Version="1.0.1.2" />
 		<PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.7" />
 	</ItemGroup>

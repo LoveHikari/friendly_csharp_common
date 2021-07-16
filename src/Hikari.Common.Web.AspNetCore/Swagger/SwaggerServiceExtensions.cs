@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
 
 namespace Hikari.Common.Web.AspNetCore.Swagger
@@ -65,7 +64,7 @@ namespace Hikari.Common.Web.AspNetCore.Swagger
                 });
                 options.OperationFilter<SwaggerHeaderFilter>();
                 //Set the comments path for the swagger json and ui.
-                System.IO.Directory.GetFiles(PlatformServices.Default.Application.ApplicationBasePath, "*.xml").ToList().ForEach(file =>
+                System.IO.Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.xml").ToList().ForEach(file =>
                 {
                     options.IncludeXmlComments(file, true);
                 });

@@ -19,6 +19,15 @@ namespace Hikari.Common.Cryptography
             _aes.Mode = mode;
             _aes.Padding = padding;
         }
+        public AESCrypto(byte[] key, byte[] iv = null, CipherMode mode = CipherMode.ECB, PaddingMode padding = PaddingMode.PKCS7, string encoding = "utf-8")
+        {
+            _encoding = System.Text.Encoding.GetEncoding(encoding);
+            _aes = Aes.Create();
+            _aes.Key = key;
+            if(iv != null) _aes.IV = iv;
+            _aes.Mode = mode;
+            _aes.Padding = padding;
+        }
         /// <summary>
         /// 加密
         /// </summary>
@@ -76,7 +85,7 @@ namespace Hikari.Common.Cryptography
         /// <returns>明文</returns>
         public byte[] Decrypt(string data)
         {
-            byte[] bytes = _encoding.GetBytes(data);
+            byte[] bytes = Convert.FromBase64String(data);
             return this.Decrypt(bytes);
         }
         /// <summary>

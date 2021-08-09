@@ -9,23 +9,43 @@ C# Public libraries, including .net standard
 一旦使用本开源项目以及引用了本项目或包含本项目代码的公司因为违反劳动法（包括但不限定非法裁员、超时用工、雇佣童工等）在任何法律诉讼中败诉的，项目作者有权利追讨本项目的使用费，或者直接不允许使用任何包含本项目的源代码！任何性质的`外包公司`或`996公司`需要使用本类库，请联系作者进行商业授权！其他企业或个人可随意使用不受限。
 
 ## 建议开发环境
-操作系统：Windows 10 1903及以上版本
-开发工具：VisualStudio2019 v16.5及以上版本
+操作系统：Windows 11 22000.120及以上版本
+开发工具：VisualStudio2022 v17.0.0 Preview 2.1及以上版本
 SDK：.Net 6.0及以上版本
 
 ## 安装程序包
-.NET Framework 4.5特供版  
-`.NET Framework 4.5专用版本，相比4.6.1及.NET Core的版本，阉割了Redis、HTML、文件压缩、ASP.NET扩展、硬件监测、Session扩展等功能。`
+.NET 6.0以上
 ```shell
-PM> Install-Package Masuit.Tools.Net45
+PM> Install-Package Hikari.Common
 ```
-.NET Framework ≥4.6.1
-```shell
-PM> Install-Package Masuit.Tools.Net
+## 类库说明
+### 1.GalaSoft.MvvmLight
 ```
-.NET Core 2.1以上或.NET5
-```shell
-PM> Install-Package Masuit.Tools.Core
+UI 线程上的调度程序操作的帮助程序类。提取自GalaSoft.MvvmLight
+```
+### 2.Hikari.Common
+```
+帮助类日常积累
+```
+### 3.Hikari.WPF
+```
+WPF MVVM框架
+```
+### 4.FsLib.EfCore
+```
+EF DDD模式基类
+```
+### 5.Hikari.Common.Redis
+```
+Redis
+```
+### 6.Hikari.Common.Office
+```
+Office
+```
+### 7.Hikari.DbCore
+```
+数据库访问帮助类
 ```
 
 ## 特色功能示例代码

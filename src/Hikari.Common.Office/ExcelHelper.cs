@@ -16,20 +16,18 @@ namespace Hikari.Common.Office
         /// <summary>
         /// 把DataTable的数据写入到指定的excel文件中
         /// </summary>
-        /// <param name="targetFileNamePath">目标文件excel的路径</param>
         /// <param name="sourceData">要写入的数据</param>
         /// <param name="sheetName">excel表中的sheet的名称，可以根据情况自己起</param>
         /// <param name="isWriteColumnName">是否写入DataTable的列名称</param>
-        public static void DataTableToExcel(string targetFileNamePath, DataTable sourceData, string sheetName, bool isWriteColumnName)
+        /// <param name="target">Excel文件的后缀名，默认2007以上版本</param>
+        /// <returns>excel文件的二进制流</returns>
+        public static byte[] DataTableToExcel(DataTable sourceData, string sheetName, bool isWriteColumnName, string target = "xlsx")
         {
-            
-            //根据Excel文件的后缀名创建对应的workbook
-            string ext = Path.GetExtension(targetFileNamePath);
             // 新建工作簿
-            IWorkbook workbook = ext.ToLower() switch
+            IWorkbook workbook = target.ToLower() switch
             {
-                ".xls" => new HSSFWorkbook(),  // 2003版本的excel
-                ".xlsx" => new XSSFWorkbook(),  // 2007版本的excel
+                "xls" => new HSSFWorkbook(),  // 2003版本的excel
+                "xlsx" => new XSSFWorkbook(),  // 2007版本的excel
                 _ => new XSSFWorkbook()
             };
 
@@ -63,26 +61,25 @@ namespace Hikari.Common.Office
                     sheetCell.SetCellValue(item.ToString());
                 }
             }
-
-            using FileStream file = new FileStream(targetFileNamePath, FileMode.Create);
-            workbook.Write(file);
+            using MemoryStream stream = new MemoryStream();
+            workbook.Write(stream);
             workbook.Close();
+
+            return stream.ToArray();
         }
         /// <summary>
         /// 把二维数组的数据写入到指定的excel文件中
         /// </summary>
-        /// <param name="targetFileNamePath">目标文件excel的路径</param>
         /// <param name="sourceData">要写入的数据</param>
         /// <param name="sheetName">excel表中的sheet的名称，可以根据情况自己起</param>
-        public static void TwoArrayToExcel(string targetFileNamePath, List<List<string>> sourceData, string sheetName)
+        /// <param name="target">目标文件Excel文件的后缀名，默认2007以上版本</param>
+        public static byte[] TwoArrayToExcel(List<List<string>> sourceData, string sheetName, string target = "xlsx")
         {
-            //根据Excel文件的后缀名创建对应的workbook
-            string ext = Path.GetExtension(targetFileNamePath);
             // 新建工作簿
-            IWorkbook workbook = ext.ToLower() switch
+            IWorkbook workbook = target.ToLower() switch
             {
-                ".xls" => new HSSFWorkbook(),  // 2003版本的excel
-                ".xlsx" => new XSSFWorkbook(),  // 2007版本的excel
+                "xls" => new HSSFWorkbook(),  // 2003版本的excel
+                "xlsx" => new XSSFWorkbook(),  // 2007版本的excel
                 _ => new XSSFWorkbook()
             };
             
@@ -101,9 +98,11 @@ namespace Hikari.Common.Office
                 }
             }
 
-            using FileStream file = new FileStream(targetFileNamePath, FileMode.Create);
-            workbook.Write(file);
+            using MemoryStream stream = new MemoryStream();
+            workbook.Write(stream);
             workbook.Close();
+
+            return stream.ToArray();
         }
 
         /// <summary>

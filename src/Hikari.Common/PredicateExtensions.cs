@@ -9,6 +9,13 @@ namespace Hikari.Common
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), System.ComponentModel.Browsable(false)]
     public static class PredicateExtensions
     {
+        /// <summary>
+        /// 与
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="one"></param>
+        /// <param name="another"></param>
+        /// <returns></returns>
         public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> one, Expression<Func<T, bool>> another)
         {
             var candidateExpr = Expression.Parameter(typeof(T), "candidate");
@@ -20,7 +27,13 @@ namespace Hikari.Common
 
             return Expression.Lambda<Func<T, bool>>(body, candidateExpr);
         }
-
+        /// <summary>
+        /// 或
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="one"></param>
+        /// <param name="another"></param>
+        /// <returns></returns>
         public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> one, Expression<Func<T, bool>> another)
         {
             var candidateExpr = Expression.Parameter(typeof(T), "candidate");

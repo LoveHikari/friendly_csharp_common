@@ -57,37 +57,30 @@ namespace Hikari.Common
         /// <returns></returns>
         public static T ToEntity<T>(this IDataReader dr)
         {
-            try
+            using (dr)
             {
-                using (dr)
+                if (dr.Read())
                 {
-                    if (dr.Read())
+                    List<string> list = new List<string>(dr.FieldCount);
+                    for (int i = 0; i < dr.FieldCount; i++)
                     {
-                        List<string> list = new List<string>(dr.FieldCount);
-                        for (int i = 0; i < dr.FieldCount; i++)
+                        list.Add(dr.GetName(i).ToLower());
+                    }
+                    T model = Activator.CreateInstance<T>();
+                    foreach (PropertyInfo pi in model.GetType().GetProperties(BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Instance))
+                    {
+                        if (list.Contains(pi.Name.ToLower()))
                         {
-                            list.Add(dr.GetName(i).ToLower());
-                        }
-                        T model = Activator.CreateInstance<T>();
-                        foreach (PropertyInfo pi in model.GetType().GetProperties(BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Instance))
-                        {
-                            if (list.Contains(pi.Name.ToLower()))
+                            if (!IsNullOrDBNull(dr[pi.Name]))
                             {
-                                if (!IsNullOrDBNull(dr[pi.Name]))
-                                {
-                                    pi.SetValue(model, HackType(dr[pi.Name], pi.PropertyType), null);
-                                }
+                                pi.SetValue(model, HackType(dr[pi.Name], pi.PropertyType), null);
                             }
                         }
-                        return model;
                     }
+                    return model;
                 }
-                return default(T);
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return default(T);
         }
         /// <summary>
         /// 将IDataReader转换为List

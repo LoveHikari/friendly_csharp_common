@@ -62,7 +62,8 @@ namespace Hikari.Common
         /// </summary> 
         public int Next()
         {
-            RNGCryptoServiceProvider rngp = new RNGCryptoServiceProvider();
+            var rngp = RandomNumberGenerator.Create();
+
             byte[] rb = new byte[4];
             rngp.GetBytes(rb);
             int value = BitConverter.ToInt32(rb, 0);
@@ -75,7 +76,7 @@ namespace Hikari.Common
         /// <param name="max">最大值</param> 
         public int Next(int max)
         {
-            RNGCryptoServiceProvider rngp = new RNGCryptoServiceProvider();
+            var rngp = RandomNumberGenerator.Create();
             byte[] rb = new byte[4];
             rngp.GetBytes(rb);
             int value = BitConverter.ToInt32(rb, 0);
@@ -96,6 +97,9 @@ namespace Hikari.Common
         #endregion
 
     }
+    /// <summary>
+    /// 随机数扩展类
+    /// </summary>
     public static class RandomExtensions
     {
         /// <summary>

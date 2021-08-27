@@ -259,18 +259,9 @@ namespace Hikari.Common
         /// <returns></returns>  
         public static void KiRotate(string oldPath, string newPath, RotateFlipType rotateFlipType)
         {
-            try
-            {
-                using (Bitmap bitmap = new Bitmap(oldPath))
-                {
-                    bitmap.RotateFlip(rotateFlipType);
-                    bitmap.Save(newPath);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            using Bitmap bitmap = new Bitmap(oldPath);
+            bitmap.RotateFlip(rotateFlipType);
+            bitmap.Save(newPath);
         }
         /// <summary>
         /// 旋转
@@ -281,18 +272,9 @@ namespace Hikari.Common
         /// <returns></returns>  
         public static void KiRotate(Image original, string newPath, RotateFlipType rotateFlipType)
         {
-            try
-            {
-                using (Bitmap bitmap = new Bitmap(original))
-                {
-                    bitmap.RotateFlip(rotateFlipType);
-                    bitmap.Save(newPath);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            using Bitmap bitmap = new Bitmap(original);
+            bitmap.RotateFlip(rotateFlipType);
+            bitmap.Save(newPath);
         }
 
         #endregion
@@ -309,23 +291,16 @@ namespace Hikari.Common
         /// <returns>处理以后的图片</returns>
         public static Bitmap ResizeImage(Bitmap original, int width, int height, int mode)
         {
-            try
-            {
-                Bitmap b = new Bitmap(width, height);
-                Graphics g = Graphics.FromImage(b);
+            using Bitmap b = new Bitmap(width, height);
+            Graphics g = Graphics.FromImage(b);
 
-                // 插值算法的质量
-                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            // 插值算法的质量
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-                g.DrawImage(original, new Rectangle(0, 0, width, height), new Rectangle(0, 0, original.Width, original.Height), GraphicsUnit.Pixel);
-                g.Dispose();
+            g.DrawImage(original, new Rectangle(0, 0, width, height), new Rectangle(0, 0, original.Width, original.Height), GraphicsUnit.Pixel);
+            g.Dispose();
 
-                return b;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return b;
         }
         /// <summary>
         /// 缩放图片
@@ -336,30 +311,23 @@ namespace Hikari.Common
         /// <returns>处理以后的图片</returns>
         public static Bitmap ResizeImage(Bitmap original, int width, int height)
         {
-            try
-            {
-                // 生成新画布
-                Bitmap image = new Bitmap(width, height);
-                // 获取GDI+绘图图画
-                Graphics graph = Graphics.FromImage(image);
-                // 插值算法的质量
-                graph.CompositingQuality = CompositingQuality.HighQuality;
-                graph.SmoothingMode = SmoothingMode.HighQuality;
-                graph.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                // 缩放图片
-                graph.DrawImage(original, new Rectangle(0, 0, width, height),
-                    new Rectangle(0, 0, original.Width, original.Height), GraphicsUnit.Pixel);
-                // 保存绘制结果
-                graph.Save();
-                // 释放画笔内存
-                graph.Dispose();
-                // 返回缩放图片
-                return image;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            // 生成新画布
+            using Bitmap image = new Bitmap(width, height);
+            // 获取GDI+绘图图画
+            Graphics graph = Graphics.FromImage(image);
+            // 插值算法的质量
+            graph.CompositingQuality = CompositingQuality.HighQuality;
+            graph.SmoothingMode = SmoothingMode.HighQuality;
+            graph.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            // 缩放图片
+            graph.DrawImage(original, new Rectangle(0, 0, width, height),
+                new Rectangle(0, 0, original.Width, original.Height), GraphicsUnit.Pixel);
+            // 保存绘制结果
+            graph.Save();
+            // 释放画笔内存
+            graph.Dispose();
+            // 返回缩放图片
+            return image;
         }
         /// <summary>
         /// 缩放并补白图片
@@ -371,31 +339,24 @@ namespace Hikari.Common
         /// <returns>处理以后的图片</returns>
         public static Bitmap FillerImage(Bitmap original, int width, int height, int margin)
         {
-            try
-            {
-                // 生成新画布
-                Bitmap image = new Bitmap(original.Width + 2 * margin, original.Height + 2 * margin);
-                // 获取GDI+绘图图画
-                Graphics graph = Graphics.FromImage(image);
-                // 定义画笔
-                SolidBrush brush = new SolidBrush(Color.Wheat);
-                // 绘制背景色
-                graph.FillRectangle(brush, new Rectangle(0, 0, image.Width, image.Height));
-                // 叠加图片
-                graph.DrawImageUnscaled(original, margin, margin);
-                // 保存绘制结果
-                graph.Save();
-                // 释放GDI+绘图图画内存
-                graph.Dispose();
-                // 释放画笔内存
-                brush.Dispose();
-                // 缩放并返回处理后的图片
-                return ResizeImage(image, width, height);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            // 生成新画布
+            using Bitmap image = new Bitmap(original.Width + 2 * margin, original.Height + 2 * margin);
+            // 获取GDI+绘图图画
+            Graphics graph = Graphics.FromImage(image);
+            // 定义画笔
+            SolidBrush brush = new SolidBrush(Color.Wheat);
+            // 绘制背景色
+            graph.FillRectangle(brush, new Rectangle(0, 0, image.Width, image.Height));
+            // 叠加图片
+            graph.DrawImageUnscaled(original, margin, margin);
+            // 保存绘制结果
+            graph.Save();
+            // 释放GDI+绘图图画内存
+            graph.Dispose();
+            // 释放画笔内存
+            brush.Dispose();
+            // 缩放并返回处理后的图片
+            return ResizeImage(image, width, height);
         }
         #endregion
 
@@ -435,20 +396,13 @@ namespace Hikari.Common
                 iHeight = h - startY;
             }
 
-            try
-            {
-                Bitmap bmpOut = new Bitmap(iWidth, iHeight, PixelFormat.Format24bppRgb);
+            using Bitmap bmpOut = new Bitmap(iWidth, iHeight, PixelFormat.Format24bppRgb);
 
-                Graphics g = Graphics.FromImage(bmpOut);
-                g.DrawImage(b, new Rectangle(0, 0, iWidth, iHeight), new Rectangle(startX, startY, iWidth, iHeight), GraphicsUnit.Pixel);
-                g.Dispose();
+            Graphics g = Graphics.FromImage(bmpOut);
+            g.DrawImage(b, new Rectangle(0, 0, iWidth, iHeight), new Rectangle(startX, startY, iWidth, iHeight), GraphicsUnit.Pixel);
+            g.Dispose();
 
-                return bmpOut;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return bmpOut;
         }
 
         #endregion

@@ -158,9 +158,8 @@ namespace XUnitTestProject1
         [Fact]
         public void Test4()
         {
-            string s = "3WLoE9bOT5aSAZp0+5M1og==";
-            byte[] b1 = Convert.FromBase64String(s);
-            byte[] b2 = System.Text.Encoding.UTF8.GetBytes(s);
+            string s = "123456";
+            var v = DEncryptHelper.DESEncrypt(s);
 
             Assert.True(true);
         }

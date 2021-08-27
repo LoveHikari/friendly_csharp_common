@@ -16,7 +16,7 @@ namespace Hikari.Common.Security
         /// <returns>密文</returns>
         public string Encrypt(string data, string encoding = "utf-8")
         {
-            SHA1 sha1 = new SHA1CryptoServiceProvider();
+            SHA1 sha1 = SHA1.Create();
             byte[] bytes = System.Text.Encoding.GetEncoding(encoding).GetBytes(data);
 
             byte[] hash = sha1.ComputeHash(bytes);
@@ -32,7 +32,7 @@ namespace Hikari.Common.Security
         /// <returns>密文</returns>
         public string Encrypt(byte[] data)
         {
-            SHA1 sha1 = new SHA1CryptoServiceProvider();
+            SHA1 sha1 = SHA1.Create();
             byte[] hash = sha1.ComputeHash(data);
             sha1.Dispose();
             string result = BitConverter.ToString(hash);

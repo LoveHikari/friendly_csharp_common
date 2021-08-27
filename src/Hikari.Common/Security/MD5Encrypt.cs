@@ -16,7 +16,7 @@ namespace Hikari.Common.Security
         /// <returns>密文</returns>
         public string Encrypt(string data, string encoding = "utf-8")
         {
-            MD5 md5 = new MD5CryptoServiceProvider();
+            MD5 md5 = MD5.Create();
             byte[] t = md5.ComputeHash(System.Text.Encoding.GetEncoding(encoding).GetBytes(data));
             string t2 = BitConverter.ToString(t);
             t2 = t2.Replace("-", "").ToLower();
@@ -29,7 +29,7 @@ namespace Hikari.Common.Security
         /// <returns>密文</returns>
         public string Encrypt(byte[] data)
         {
-            MD5 md5 = new MD5CryptoServiceProvider();
+            MD5 md5 = MD5.Create();
             byte[] t = md5.ComputeHash(data);
             string t2 = BitConverter.ToString(t);
             t2 = t2.Replace("-", "").ToLower();

@@ -7,7 +7,7 @@ namespace Hikari.Common.Web.AspNetCore
 {
     /// <summary>
     /// 配置管理器
-    /// <see cref="https://blog.csdn.net/hofmann/article/details/118565090"/>
+    /// <remarks>https://blog.csdn.net/hofmann/article/details/118565090</remarks>
     /// </summary>
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), System.ComponentModel.Browsable(false)]
     public static class ConfigurationManager

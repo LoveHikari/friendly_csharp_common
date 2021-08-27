@@ -92,12 +92,12 @@ namespace Hikari.Common.Cryptography
             HashAlgorithm crypto = null;
             if (signType.ToLower() == "md5")
             {
-                crypto = new MD5CryptoServiceProvider();
+                crypto = MD5.Create();
             }
 
             if (signType.ToLower() == "sha1")
             {
-                crypto = new SHA1CryptoServiceProvider();
+                crypto = SHA1.Create();;
             }
 
             using (crypto)
@@ -130,12 +130,12 @@ namespace Hikari.Common.Cryptography
                 HashAlgorithm crypto = null;
                 if (signType.ToLower() == "md5")
                 {
-                    crypto = new MD5CryptoServiceProvider();
+                    crypto = MD5.Create();
                 }
 
                 if (signType.ToLower() == "sha1")
                 {
-                    crypto = new SHA1CryptoServiceProvider();
+                    crypto = SHA1.Create();
                 }
                 using (crypto)
                 {

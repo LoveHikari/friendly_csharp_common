@@ -66,54 +66,6 @@ namespace Hikari.Common
             return System.Text.Json.JsonSerializer.Serialize(dictionary);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="serializableObject"></param>
-        /// <returns></returns>
-        public static string Obj2Base64String(object serializableObject)
-        {
-            string returnedData;
-            if (serializableObject == null)
-                returnedData = String.Empty;
-            else
-            {
-                byte[] resultBytes = null;
-                System.Runtime.Serialization.Formatters.Binary.BinaryFormatter formatter
-                    = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                MemoryStream stream = new MemoryStream();
-                formatter.Serialize(stream, serializableObject);
-                resultBytes = stream.ToArray();
-                stream.Close();
-                returnedData = Convert.ToBase64String(resultBytes);
-            }
-            return returnedData;
-        }
-
-        /// <summary>
-        /// Deserializes base64 string to object.返序列化string 为 object
-        /// </summary>
-        /// <param name="deserializedString"></param>
-        /// <returns></returns>
-        public static object Base64String2Obj(string deserializedString)
-        {
-            object returnedData;
-            if (deserializedString == String.Empty)
-                returnedData = null;
-            else
-            {
-                System.Runtime.Serialization.Formatters.Binary.BinaryFormatter formatter
-                    = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                MemoryStream stream = new MemoryStream();
-                byte[] middata = Convert.FromBase64String(deserializedString);
-                stream.Write(middata, 0, middata.Length);
-                //Pay attention to the following line. don't forget this line.      
-                stream.Seek(0, SeekOrigin.Begin);
-                returnedData = formatter.Deserialize(stream);
-                stream.Close();
-            }
-            return returnedData;
-        }
 
         /// <summary>
         /// 过滤特殊字符

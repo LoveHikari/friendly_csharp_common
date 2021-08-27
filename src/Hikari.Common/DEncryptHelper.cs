@@ -24,7 +24,7 @@ namespace Hikari.Common
         /// <returns></returns>
         public static string DESEncrypt(string strSource)
         {
-            byte[] DESKey = System.Text.ASCIIEncoding.ASCII.GetBytes("xhVs6DRXLfUGxw+AhtfQdpQGoa+8SA9d");
+            byte[] DESKey = Encoding.ASCII.GetBytes("xhVs6DRXLfUGxw+AhtfQdpQGoa+8SA9d");
             return DESEncrypt(strSource, DESKey);
         }
         /// <summary>
@@ -35,7 +35,7 @@ namespace Hikari.Common
         /// <returns>加密后的字符串</returns>
         public static string DESEncrypt(string strSource, byte[] key)
         {
-            SymmetricAlgorithm sa = Rijndael.Create();
+            SymmetricAlgorithm sa = Aes.Create();
             sa.Key = key;
             sa.Mode = CipherMode.ECB;
             sa.Padding = PaddingMode.Zeros;
@@ -54,7 +54,7 @@ namespace Hikari.Common
         /// <returns></returns>
         public static string DESDecrypt(string strSource)
         {
-            byte[] DESKey = System.Text.ASCIIEncoding.ASCII.GetBytes("xhVs6DRXLfUGxw+AhtfQdpQGoa+8SA9d");
+            byte[] DESKey = Encoding.ASCII.GetBytes("xhVs6DRXLfUGxw+AhtfQdpQGoa+8SA9d");
             return DESDecrypt(strSource, DESKey);
         }
         /// <summary>
@@ -65,7 +65,7 @@ namespace Hikari.Common
         /// <returns>解密后的字符串</returns>
         public static string DESDecrypt(string strSource, byte[] key)
         {
-            SymmetricAlgorithm sa = Rijndael.Create();
+            SymmetricAlgorithm sa = Aes.Create();
             sa.Key = key;
             sa.Mode = CipherMode.ECB;
             sa.Padding = PaddingMode.Zeros;
@@ -90,7 +90,7 @@ namespace Hikari.Common
             // //矢量,可为空
             string sIV = "4vHKRj3yfzU=";
             // //构造对称算法
-            SymmetricAlgorithm mCSP = new TripleDESCryptoServiceProvider();
+            SymmetricAlgorithm mCSP = TripleDES.Create();
             ICryptoTransform ct;
             MemoryStream ms;
             CryptoStream cs;
@@ -117,7 +117,7 @@ namespace Hikari.Common
         /// <returns></returns>
         public string Encrypt3DES(string str, string sKey, string sIV)
         {
-            SymmetricAlgorithm mCSP = new TripleDESCryptoServiceProvider();
+            SymmetricAlgorithm mCSP = TripleDES.Create();
             ICryptoTransform ct;
             MemoryStream ms;
             CryptoStream cs;
@@ -144,7 +144,7 @@ namespace Hikari.Common
         {
             string sKey = "xhVs6DRXLfUGxw+AhtfQdpQGoa+8SA9d";//32个字符
             string sIV = "4vHKRj3yfzU=";//12个字符  
-            SymmetricAlgorithm mCSP = new TripleDESCryptoServiceProvider();
+            SymmetricAlgorithm mCSP = TripleDES.Create();
             ICryptoTransform ct;
             MemoryStream ms;
             CryptoStream cs;
@@ -165,13 +165,13 @@ namespace Hikari.Common
         /// <summary>
         /// 带指定密钥和矢量的3DES解密
         /// </summary>
-        /// <param name="Value"></param>
+        /// <param name="str"></param>
         /// <param name="sKey">32个字符</param>
         /// <param name="sIV">12个字符</param>
         /// <returns></returns>
         public string Decrypt3DES(string str, string sKey, string sIV)
         {
-            SymmetricAlgorithm mCSP = new TripleDESCryptoServiceProvider();
+            SymmetricAlgorithm mCSP = TripleDES.Create();
             ICryptoTransform ct;
             MemoryStream ms;
             CryptoStream cs;
@@ -284,7 +284,7 @@ namespace Hikari.Common
             byte[] byKey = System.Text.ASCIIEncoding.ASCII.GetBytes(key);
             byte[] byIV = System.Text.ASCIIEncoding.ASCII.GetBytes(iv);
 
-            DESCryptoServiceProvider cryptoProvider = new DESCryptoServiceProvider();
+            DES cryptoProvider = DES.Create();
             int i = cryptoProvider.KeySize;
             MemoryStream ms = new MemoryStream();
             CryptoStream cst = new CryptoStream(ms, cryptoProvider.CreateEncryptor(byKey, byIV), CryptoStreamMode.Write);
@@ -306,8 +306,8 @@ namespace Hikari.Common
         /// <returns></returns>
         public static string DESDecrypt(string data, string key, string iv)
         {
-            byte[] byKey = System.Text.ASCIIEncoding.ASCII.GetBytes(key);
-            byte[] byIV = System.Text.ASCIIEncoding.ASCII.GetBytes(iv);
+            byte[] byKey = System.Text.Encoding.ASCII.GetBytes(key);
+            byte[] byIV = System.Text.Encoding.ASCII.GetBytes(iv);
 
             byte[] byEnc;
             try
@@ -319,7 +319,7 @@ namespace Hikari.Common
                 return null;
             }
 
-            DESCryptoServiceProvider cryptoProvider = new DESCryptoServiceProvider();
+            DES cryptoProvider = DES.Create();
             MemoryStream ms = new MemoryStream(byEnc);
             CryptoStream cst = new CryptoStream(ms, cryptoProvider.CreateDecryptor(byKey, byIV), CryptoStreamMode.Read);
             StreamReader sr = new StreamReader(cst);
@@ -335,7 +335,7 @@ namespace Hikari.Common
         /// <returns></returns>
         public static string SHA1Encrypt(string content, string encoding = "utf-8")
         {
-            SHA1 sha1 = new SHA1CryptoServiceProvider();
+            SHA1 sha1 = SHA1.Create();
             //SHA1 sha1 = System.Security.Cryptography.SHA1.Create();
             byte[] bytesIn = System.Text.Encoding.GetEncoding(encoding).GetBytes(content);
             byte[] bytesOut = sha1.ComputeHash(bytesIn);

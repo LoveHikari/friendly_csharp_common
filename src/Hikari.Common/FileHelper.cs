@@ -46,17 +46,7 @@ namespace Hikari.Common
             {
                 //在指定目录查找文件(不包括子目录)
                 System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(dirPath);
-                try
-                {
-                    foreach (System.IO.FileInfo f in dir.GetFiles(extension)) //查找文件
-                    {
-                        filePathList.Add(f.FullName);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw;
-                }
+                filePathList.AddRange(dir.GetFiles(extension).Select(f => f.FullName));
             }
 
             return filePathList;
@@ -92,25 +82,16 @@ namespace Hikari.Common
         private static List<string> GetAll(string dirPath, string extension, List<string> filePathList)
         {
             System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(dirPath);
-            try
-            {
-                System.IO.FileInfo[] allFile = dir.GetFiles(extension);
-                foreach (System.IO.FileInfo fi in allFile)
-                {
-                    filePathList.Add(fi.FullName);
-                }
+            
+            System.IO.FileInfo[] allFile = dir.GetFiles(extension);
+            filePathList.AddRange(allFile.Select(fi => fi.FullName));
 
-                System.IO.DirectoryInfo[] allDir = dir.GetDirectories();
-                foreach (System.IO.DirectoryInfo d in allDir)
-                {
-                    GetAll(d.FullName, extension, filePathList);
-                }
-                return filePathList;
-            }
-            catch (Exception ex)
+            System.IO.DirectoryInfo[] allDir = dir.GetDirectories();
+            foreach (System.IO.DirectoryInfo d in allDir)
             {
-                throw;
+                GetAll(d.FullName, extension, filePathList);
             }
+            return filePathList;
         }
         /// <summary>
         /// 获得目录下所有文件，只包括一级目录
@@ -131,20 +112,13 @@ namespace Hikari.Common
         {
             List<string> filePathList = new List<string>();  //文件路径集合
             System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(dirPath);
-            try
+            foreach (System.IO.DirectoryInfo d in dir.GetDirectories()) //查找子目录
             {
-                foreach (System.IO.DirectoryInfo d in dir.GetDirectories()) //查找子目录
-                {
-                    filePathList.AddRange(FindFile(d.FullName, extension));
-                }
-                foreach (System.IO.FileInfo f in dir.GetFiles(extension)) //查找文件
-                {
-                    filePathList.Add(f.FullName);
-                }
+                filePathList.AddRange(FindFile(d.FullName, extension));
             }
-            catch (Exception ex)
+            foreach (System.IO.FileInfo f in dir.GetFiles(extension)) //查找文件
             {
-                throw;
+                filePathList.Add(f.FullName);
             }
             return filePathList;
         }
@@ -161,16 +135,9 @@ namespace Hikari.Common
         {
             List<string> filePathList = new List<string>();  //文件路径集合
             System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(dirPath);
-            try
+            foreach (System.IO.DirectoryInfo d in dir.GetDirectories()) //查找子目录
             {
-                foreach (System.IO.DirectoryInfo d in dir.GetDirectories()) //查找子目录
-                {
-                    filePathList.Add(d.FullName);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw;
+                filePathList.Add(d.FullName);
             }
             return filePathList;
         }
@@ -193,20 +160,13 @@ namespace Hikari.Common
         private static List<string> FindAllDirectories(string dirPath, List<string> filePathList)
         {
             System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(dirPath);
-            try
+            foreach (System.IO.DirectoryInfo d in dir.GetDirectories()) //查找子目录
             {
-                foreach (System.IO.DirectoryInfo d in dir.GetDirectories()) //查找子目录
-                {
-                    filePathList.Add(d.FullName);
-                    FindAllDirectories(d.FullName, filePathList);
+                filePathList.Add(d.FullName);
+                FindAllDirectories(d.FullName, filePathList);
 
-                }
-                return filePathList;
             }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return filePathList;
         }
 
 

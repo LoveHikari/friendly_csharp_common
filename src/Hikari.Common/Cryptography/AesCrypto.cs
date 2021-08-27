@@ -10,6 +10,14 @@ namespace Hikari.Common.Cryptography
     {
         private readonly Aes _aes;
         private readonly System.Text.Encoding _encoding;
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="iv"></param>
+        /// <param name="mode"></param>
+        /// <param name="padding"></param>
+        /// <param name="encoding"></param>
         public AESCrypto(string key, string iv = "", CipherMode mode = CipherMode.ECB, PaddingMode padding = PaddingMode.PKCS7, string encoding = "utf-8")
         {
             _encoding = System.Text.Encoding.GetEncoding(encoding);
@@ -19,6 +27,14 @@ namespace Hikari.Common.Cryptography
             _aes.Mode = mode;
             _aes.Padding = padding;
         }
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="iv"></param>
+        /// <param name="mode"></param>
+        /// <param name="padding"></param>
+        /// <param name="encoding"></param>
         public AESCrypto(byte[] key, byte[] iv = null, CipherMode mode = CipherMode.ECB, PaddingMode padding = PaddingMode.PKCS7, string encoding = "utf-8")
         {
             _encoding = System.Text.Encoding.GetEncoding(encoding);

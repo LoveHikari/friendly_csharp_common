@@ -627,8 +627,8 @@ namespace Hikari.Common
             // 设置当前流的位置为流的开始 
             stream.Seek(0, SeekOrigin.Begin);
             // 把 byte[] 写入文件 
-            FileStream fs = new FileStream(filePath, FileMode.Create);
-            BinaryWriter bw = new BinaryWriter(fs);
+            using FileStream fs = new FileStream(filePath, FileMode.Create);
+            using BinaryWriter bw = new BinaryWriter(fs);
             bw.Write(bytes);
             bw.Close();
             fs.Close();

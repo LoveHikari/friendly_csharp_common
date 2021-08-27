@@ -21,7 +21,7 @@ namespace Hikari.Common.Office
         /// <param name="isWriteColumnName">是否写入DataTable的列名称</param>
         /// <param name="target">Excel文件的后缀名，默认2007以上版本</param>
         /// <returns>excel文件的二进制流</returns>
-        public static byte[] DataTableToExcel(DataTable sourceData, string sheetName, bool isWriteColumnName, string target = "xlsx")
+        public static byte[] DataTableToExcel(DataTable sourceData, string sheetName = "Sheet1", bool isWriteColumnName = true, string target = "xlsx")
         {
             // 新建工作簿
             IWorkbook workbook = target.ToLower() switch

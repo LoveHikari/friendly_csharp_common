@@ -223,5 +223,14 @@ namespace Hikari.Common
                 return TimeZoneInfo.ConvertTimeToUtc(dateTime, TimeZoneInfo.Local);
             }
         }
+        /// <summary>
+        /// 转到ISO8601标准时间
+        /// </summary>
+        /// <param name="this"></param>
+        /// <returns></returns>
+        public static string ToISO8601DateTime(this in DateTime @this)
+        {
+            return @this.ToString("yyyy-MM-ddTHH:mm:ss.fffzzz");
+        }
     }
 }

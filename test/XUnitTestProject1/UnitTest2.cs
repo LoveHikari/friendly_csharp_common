@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using Hikari.Common;
+using Hikari.Common.Security;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -158,10 +160,23 @@ namespace XUnitTestProject1
         [Fact]
         public void Test4()
         {
-            string s = "123456";
-            var v = DEncryptHelper.DESEncrypt(s);
+            string data = "123456";
+            var v1 = e();
+
+            //var v = Convert.ToBase64String(hash);
 
             Assert.True(true);
+        }
+
+        public IEnumerable<string> e()
+        {
+            string data = "123456";
+            yield return new SecureHelper(data).Sha256().DigestHex();
+            yield return new SecureHelper(data).Sha1().DigestHex();
+            yield return new SecureHelper(data).HmacSha1("123").DigestHex();
+            yield return new SecureHelper(data).HmacMd5("123").DigestHex();
+            yield return new SecureHelper(data).HmacSha256("123").DigestHex();
+            yield return new SecureHelper(data).Md5().DigestHex();
         }
 
         [Fact]

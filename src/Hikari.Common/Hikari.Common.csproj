@@ -9,7 +9,7 @@
 		<Description>公共库</Description>
 		<Version>6.0.0-preview.6.1.0</Version>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<PackageReleaseNotes>升级了版本</PackageReleaseNotes>
+		<PackageReleaseNotes>添加了加密类</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/LoveHikari/friendly_csharp_common</PackageProjectUrl>
 		<PackageTags>common</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>

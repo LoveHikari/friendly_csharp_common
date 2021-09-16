@@ -6,12 +6,19 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Management;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using CZGL.SystemInfo;
+using Hardware.Info;
 using Hikari.Common;
+using Hikari.Common.Hardware;
 using Hikari.Common.Security;
 using Xunit;
 using Xunit.Abstractions;
+using Hikari.Common.Hardware.Retrieval;
 
 namespace XUnitTestProject1
 {
@@ -160,36 +167,12 @@ namespace XUnitTestProject1
         [Fact]
         public void Test4()
         {
-            string data = "123456";
-            var v1 = e();
 
-            //var v = Convert.ToBase64String(hash);
 
             Assert.True(true);
         }
 
-        public IEnumerable<string> e()
-        {
-            string data = "123456";
-            yield return new SecureHelper(data).Sha256().DigestHex();
-            yield return new SecureHelper(data).Sha1().DigestHex();
-            yield return new SecureHelper(data).HmacSha1("123").DigestHex();
-            yield return new SecureHelper(data).HmacMd5("123").DigestHex();
-            yield return new SecureHelper(data).HmacSha256("123").DigestHex();
-            yield return new SecureHelper(data).Md5().DigestHex();
-        }
-
-        [Fact]
-        public IEnumerator<string> GetEnumerator()
-        {
-            yield return $"{Environment.CurrentDirectory}";
-            yield return $"{Directory.GetCurrentDirectory()}";
-            yield return $"{GetType().Assembly.Location}";
-            yield return $"{Process.GetCurrentProcess().MainModule.FileName}";
-            yield return $"{AppDomain.CurrentDomain.BaseDirectory}";
-        }
-
-
+        
 
     }
 }

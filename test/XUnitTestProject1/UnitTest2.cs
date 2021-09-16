@@ -167,12 +167,21 @@ namespace XUnitTestProject1
         [Fact]
         public void Test4()
         {
-
+            IdWorkerHelper helper = new IdWorkerHelper(1);
+            var v = helper.NextId();
+            var v1 = helper.NextId();
 
             Assert.True(true);
         }
 
-        
 
+        /// <summary>
+        /// 生成当前时间戳
+        /// </summary>
+        /// <returns></returns>
+        private long timeGen()
+        {
+            return (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+        }
     }
 }

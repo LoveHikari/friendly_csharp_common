@@ -64,11 +64,11 @@ namespace Hikari.Common.Hardware.Retrieval
             }
         }
 
-        public virtual List<DriveInfo> GetDriveList()
+        public virtual List<Hikari.Common.Hardware.Components.DriveInfo> GetDriveList()
         {
-            List<DriveInfo> driveList = new List<DriveInfo>();
+            List<Hikari.Common.Hardware.Components.DriveInfo> driveList = new ();
 
-            DriveInfo drive = new DriveInfo();
+            Hikari.Common.Hardware.Components.DriveInfo drive = new ();
 
             PartitionInfo partition = new ();
 

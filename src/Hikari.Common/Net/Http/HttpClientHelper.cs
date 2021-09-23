@@ -36,15 +36,15 @@ namespace Hikari.Common.Net.Http
             "Content-MD5", "Content-Range", "Content-Type", "Expires", "Last-Modified"
         };
 
-        private readonly CookieContainer _cookieContainer = new CookieContainer();
+        private readonly CookieContainer _cookieContainer = new ();
         /// <summary>
         /// 请求错误代码
         /// </summary>
-        public HttpStatusCode ErrorStatusCode;
+        public HttpStatusCode ErrorStatusCode { get; set; }
         /// <summary>
         /// 请求错误时内容
         /// </summary>
-        public string ErrorContent;
+        public string ErrorContent { get; set; }
         /// <summary>
         /// HttpClient封装
         /// </summary>
@@ -56,15 +56,16 @@ namespace Hikari.Common.Net.Http
                 UseCookies = false,
             };
             this._client = new HttpClient(handler);
+            this.ErrorContent = "";
         }
         /// <summary>
         /// 发生一个get请求
         /// </summary>
         /// <param name="url">请求地址</param>
-        /// <param name="chareset">编码</param>
+        /// <param name="charset">编码</param>
         /// <param name="headerItem">请求头</param>
         /// <returns></returns>
-        public async Task<string> GetAsync(string url, string chareset = "utf-8", IDictionary<string, string> headerItem = null)
+        public async Task<string> GetAsync(string url, string charset = "utf-8", IDictionary<string, string>? headerItem = null)
         {
             var response = await SendAsync(url, HttpMethod.Get, null, headerItem);
 
@@ -73,7 +74,7 @@ namespace Hikari.Common.Net.Http
             if (response.IsSuccessStatusCode)
             {
                 var bytes = await response.Content.ReadAsByteArrayAsync();
-                html = System.Text.Encoding.GetEncoding(chareset).GetString(bytes);
+                html = System.Text.Encoding.GetEncoding(charset).GetString(bytes);
             }
 
             return html;
@@ -84,10 +85,10 @@ namespace Hikari.Common.Net.Http
         /// </summary>
         /// <param name="url">请求地址</param>
         /// <param name="param">请求参数</param>
-        /// <param name="chareset">编码</param>
+        /// <param name="charset">编码</param>
         /// <param name="headerItem">请求头</param>
         /// <returns></returns>
-        public async Task<string> PostAsync(string url, IDictionary<string, object> param, string chareset = "utf-8", IDictionary<string, string> headerItem = null)
+        public async Task<string> PostAsync(string url, IDictionary<string, object> param, string charset = "utf-8", IDictionary<string, string>? headerItem = null)
         {
             var response = await SendAsync(url, HttpMethod.Post, param, headerItem);
 
@@ -96,7 +97,7 @@ namespace Hikari.Common.Net.Http
             if (response.IsSuccessStatusCode)
             {
                 var bytes = await response.Content.ReadAsByteArrayAsync();
-                html = System.Text.Encoding.GetEncoding(chareset).GetString(bytes);
+                html = System.Text.Encoding.GetEncoding(charset).GetString(bytes);
             }
 
             return html;
@@ -108,10 +109,10 @@ namespace Hikari.Common.Net.Http
         /// <param name="url">请求地址</param>
         /// <param name="method">请求方式</param>
         /// <param name="param">请求参数</param>
-        /// <param name="chareset">编码</param>
+        /// <param name="charset">编码</param>
         /// <param name="headerItem">请求头</param>
         /// <returns></returns>
-        public async Task<string> SendAsync(string url, HttpMethod method, IDictionary<string, object> param, string chareset = "utf-8", IDictionary<string, string> headerItem = null)
+        public async Task<string> SendAsync(string url, HttpMethod method, IDictionary<string, object> param, string charset = "utf-8", IDictionary<string, string>? headerItem = null)
         {
             var response = await SendAsync(url, method, param, headerItem);
 
@@ -120,7 +121,7 @@ namespace Hikari.Common.Net.Http
             if (response.IsSuccessStatusCode)
             {
                 var bytes = await response.Content.ReadAsByteArrayAsync();
-                html = System.Text.Encoding.GetEncoding(chareset).GetString(bytes);
+                html = System.Text.Encoding.GetEncoding(charset).GetString(bytes);
             }
 
             return html;
@@ -134,7 +135,7 @@ namespace Hikari.Common.Net.Http
         /// <param name="param">请求参数</param>
         /// <param name="headerItem">请求头</param>
         /// <returns></returns>
-        private async Task<HttpResponseMessage> SendAsync(string url, HttpMethod method, IDictionary<string, object> param, IDictionary<string, string> headerItem = null)
+        private async Task<HttpResponseMessage> SendAsync(string url, HttpMethod method, IDictionary<string, object>? param, IDictionary<string, string>? headerItem = null)
         {
             var request = new HttpRequestMessage(method, new Uri(url));
 
@@ -155,7 +156,8 @@ namespace Hikari.Common.Net.Http
         /// <returns></returns>
         public string GetCookies()
         {
-            var cookies = _cookieContainer.GetCookieHeader(_client.BaseAddress);
+            var cookies = _client.BaseAddress is not null ? _cookieContainer.GetCookieHeader(_client.BaseAddress) : "";
+
             return cookies;
         }
         /// <summary>
@@ -164,7 +166,11 @@ namespace Hikari.Common.Net.Http
         /// <returns></returns>
         public void SetCookies(string cookieHeader)
         {
-            _cookieContainer.SetCookies(_client.BaseAddress, cookieHeader);
+            if (_client.BaseAddress is not null)
+            {
+                _cookieContainer.SetCookies(_client.BaseAddress, cookieHeader);
+            }
+           
         }
         /// <summary>
         /// 设置请求内容
@@ -172,10 +178,10 @@ namespace Hikari.Common.Net.Http
         /// <param name="request">请求对象</param>
         /// <param name="headerItem">请求头</param>
         /// <param name="param">请求参数</param>
-        private void SetHttpContent(HttpRequestMessage request, IDictionary<string, string> headerItem, IDictionary<string, object> param)
+        private void SetHttpContent(HttpRequestMessage request, IDictionary<string, string>? headerItem, IDictionary<string, object>? param)
         {
             string contentType;
-            if (headerItem == null || !headerItem.ContainsKey("Content-Type"))
+            if (headerItem is null || !headerItem.ContainsKey("Content-Type"))
             {
                 contentType = "text/plain; charset=utf-8";
             }
@@ -184,7 +190,7 @@ namespace Hikari.Common.Net.Http
                 contentType = headerItem["Content-Type"];
             }
             
-            HttpContent content = null;
+            HttpContent? content = null;
             if (param != null)
             {
                 if (contentType.Contains("form-data"))
@@ -195,13 +201,13 @@ namespace Hikari.Common.Net.Http
                     {
                         if (pair.Key.ToLower().Contains("file"))
                         {
-                            string fileName = Path.GetFileName(pair.Value.ToString());
+                            string fileName = Path.GetFileName(pair.Value.ToString())!;
                             // 读文件流
-                            data.Add(new ByteArrayContent(System.IO.File.ReadAllBytes(pair.Value.ToString())), pair.Key, fileName);
+                            data.Add(new ByteArrayContent(File.ReadAllBytes(pair.Value.ToString()!)), pair.Key, fileName);
                         }
                         else
                         {
-                            data.Add(new StringContent(pair.Value.ToString()));
+                            data.Add(new StringContent(pair.Value.ToString()!));
                         }
 
                     }
@@ -209,13 +215,13 @@ namespace Hikari.Common.Net.Http
                 }
                 else if (contentType.Contains("stream"))
                 {
-                    HttpContent data = null;
+                    HttpContent? data = null;
                     foreach (KeyValuePair<string, object> pair in param)
                     {
                         if ( pair.Key.ToLower().Contains("file"))
                         {
                             // 读文件流
-                            FileStream fs = new FileStream(pair.Value.ToString(), FileMode.Open, FileAccess.Read, FileShare.Read);
+                            FileStream fs = new FileStream(pair.Value.ToString()!, FileMode.Open, FileAccess.Read, FileShare.Read);
                             data = new StreamContent(fs);//为文件流提供的HTTP容器
                             data.Headers.ContentType = MediaTypeHeaderValue.Parse(contentType);//设置媒体类型
                         }
@@ -228,6 +234,7 @@ namespace Hikari.Common.Net.Http
                     var value = System.Text.Json.JsonSerializer.Serialize(param);
                     var data = new StringContent(value);
                     content = data;
+                    data.Headers.ContentType = MediaTypeHeaderValue.Parse(contentType);
                 }
                 else if (contentType.Contains("xml"))
                 {
@@ -240,7 +247,7 @@ namespace Hikari.Common.Net.Http
                 }
                 else
                 {
-                    IEnumerable<KeyValuePair<string, string>> dic = param.Select(kv => new KeyValuePair<string, string>(kv.Key, kv.Value.ToString()));
+                    IEnumerable<KeyValuePair<string, string>> dic = param.Select(kv => new KeyValuePair<string, string>(kv.Key, kv.Value.ToString()!));
                     var data = new FormUrlEncodedContent(dic);
                     content = data;
                 }
@@ -253,7 +260,7 @@ namespace Hikari.Common.Net.Http
         /// </summary>
         /// <param name="request">请求对象</param>
         /// <param name="headerItem">请求头</param>
-        private void SetHeaders(HttpRequestMessage request, IDictionary<string, string> headerItem)
+        private void SetHeaders(HttpRequestMessage request, IDictionary<string, string>? headerItem)
         {
             //request.Content.Headers.Clear();
             //request.Headers.Clear();
@@ -317,7 +324,7 @@ namespace Hikari.Common.Net.Http
             {
                 downloadProgress.TotalBytesToReceive = (ulong)contentLength.Value;
             }
-            progress?.Report(downloadProgress);
+            progress.Report(downloadProgress);
 
             await using FileStream fileStream = File.Open(path, FileMode.Create);
 

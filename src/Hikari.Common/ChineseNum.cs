@@ -355,8 +355,7 @@ namespace Hikari.Common
                 return "数字太大，无法换算，请输入一万亿元以下的金额";
             char[] ch = new char[1];
             ch[0] = '.'; //小数点 
-            string[] splitstr = null; //定义按小数点分割后的字符串数组 
-            splitstr = str.Split(ch[0]);//按小数点分割字符串 
+            string[] splitstr = str.Split(ch[0]);// 定义按小数点分割后的字符串数组, 按小数点分割字符串 
             if (splitstr.Length == 1) //只有整数部分 
                 return ConvertData(str) + "圆整";
             else //有小数部分 

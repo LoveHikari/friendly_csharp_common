@@ -276,15 +276,15 @@ internal class LinuxHardwareInfoRetrieval : HardwareInfoRetrievalBase, IHardware
     /// 获得磁盘驱动器信息
     /// </summary>
     /// <returns></returns>
-    public override List<DriveInfo> GetDriveList()
+    public override List<Hikari.Common.Hardware.Components.DriveInfo> GetDriveList()
     {
-        List<DriveInfo> driveList = new ();
+        List<Hikari.Common.Hardware.Components.DriveInfo> driveList = new ();
 
         string processOutput = ReadProcessOutput("lshw", "-class disk");
 
         string[] lines = processOutput.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-        DriveInfo? disk = null;
+        Hikari.Common.Hardware.Components.DriveInfo? disk = null;
 
         foreach (string line in lines)
         {
@@ -300,7 +300,7 @@ internal class LinuxHardwareInfoRetrieval : HardwareInfoRetrievalBase, IHardware
 
             if (line.StartsWith("*-disk:"))
             {
-                disk = new DriveInfo();
+                disk = new ();
                 continue;
             }
 

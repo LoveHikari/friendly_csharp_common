@@ -37,7 +37,7 @@ namespace Hikari.Common.Collection
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static List<T> ToList<T>(this IEnumerable<dynamic> source) where T : new()
+        public static List<T>? ToList<T>(this IEnumerable<dynamic> source) where T : new()
         {
             var list = source.ToList();
             if (!list.Any())
@@ -57,7 +57,7 @@ namespace Hikari.Common.Collection
                     var pros = ty.GetProperties();
                     foreach (PropertyInfo pro in pros)
                     {
-                        object value = (object)type.GetProperty(pro.Name).GetValue(o, null);
+                        object? value = (object?)type.GetProperty(pro.Name)?.GetValue(o, null);
 
                         pro.SetValue(t, ConvertHelper.ChangeType(value, pro.PropertyType), null);
 

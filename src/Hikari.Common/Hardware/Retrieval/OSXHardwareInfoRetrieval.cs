@@ -316,7 +316,7 @@ Hardware:
             return cpuList;
         }
 
-        public override List<DriveInfo> GetDriveList()
+        public override List<Hikari.Common.Hardware.Components.DriveInfo> GetDriveList()
         {
             /*
             SPSerialATADataType

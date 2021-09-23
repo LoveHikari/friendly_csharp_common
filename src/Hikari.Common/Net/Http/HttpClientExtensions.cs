@@ -46,7 +46,7 @@ namespace Hikari.Common.Net.Http
             {
                 downloadProgress.TotalBytesToReceive = (ulong)contentLength.Value;
             }
-            progress?.Report(downloadProgress);
+            progress.Report(downloadProgress);
 
             await using FileStream fileStream = File.Open(path, FileMode.Create);
 

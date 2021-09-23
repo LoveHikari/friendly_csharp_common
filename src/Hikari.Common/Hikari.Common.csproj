@@ -2,20 +2,23 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
 		<PackageId>Hikari.Common</PackageId>
 		<Authors>Asanoame</Authors>
 		<Product>Hikari.Common</Product>
 		<Company>5cm R &amp; D department</Company>
 		<Description>公共库 公共庫</Description>
-		<Version>6.0.0-rc.1.2.0</Version>
+		<Version>6.0.0-rc.1.2.1</Version>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<PackageReleaseNotes>添加了雪花算法
-			スノーフレークアルゴリズムを追加し
-			Add snowflake algorithm</PackageReleaseNotes>
+		<PackageReleaseNotes>
+			修复HttpClientHelper在json请求下报415的bug
+			HttpClientHelperがjsonリクエストで415を報告するバグを修正します
+			Fix the bug that HttpClientHelper reports 415 in json request
+		</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/LoveHikari/friendly_csharp_common</PackageProjectUrl>
 		<PackageTags>common</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

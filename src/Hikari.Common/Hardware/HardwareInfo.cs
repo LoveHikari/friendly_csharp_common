@@ -61,7 +61,7 @@ public class HardwareInfo : IHardwareInfo
         return _hardwareInfo.GetCpuList(includePercentProcessorTime);
     }
 
-    public List<DriveInfo> GetDriveList()
+    public List<Hikari.Common.Hardware.Components.DriveInfo> GetDriveList()
     {
         return _hardwareInfo.GetDriveList();
     }

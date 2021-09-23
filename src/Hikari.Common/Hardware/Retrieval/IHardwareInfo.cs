@@ -10,7 +10,7 @@ internal interface IHardwareInfo
     List<BatteryInfo> GetBatteryList();
     List<BiosInfo> GetBiosList();
     List<CpuInfo> GetCpuList(bool includePercentProcessorTime = true);
-    List<DriveInfo> GetDriveList();
+    List<Hikari.Common.Hardware.Components.DriveInfo> GetDriveList();
     List<KeyboardInfo> GetKeyboardList();
     List<MemoryInfo> GetMemoryList();
     List<MonitorInfo> GetMonitorList();

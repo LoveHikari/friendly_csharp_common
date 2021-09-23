@@ -1,24 +1,14 @@
-﻿using System;
-using FsLib.CreditCardUtils;
+﻿using FsLib.CreditCardUtils;
 using FsLib.TuChuangUtils;
+using Hikari.Common;
 using Hikari.Common.Net.Http;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Management;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
+using System.Net.Http;
 using System.Text.RegularExpressions;
-using CZGL.SystemInfo;
-using Hardware.Info;
-using Hikari.Common;
-using Hikari.Common.Hardware;
-using Hikari.Common.Security;
 using Xunit;
 using Xunit.Abstractions;
-using Hikari.Common.Hardware.Retrieval;
 
 namespace XUnitTestProject1
 {
@@ -133,7 +123,7 @@ namespace XUnitTestProject1
             Assert.True(true);
         }
         [Fact]
-        public async void Test3()
+        public void Test3()
         {
 
             DataTable dt = new DataTable("cart");
@@ -167,9 +157,23 @@ namespace XUnitTestProject1
         [Fact]
         public void Test4()
         {
-            IdWorkerHelper helper = new IdWorkerHelper(1);
-            var v = helper.NextId();
-            var v1 = helper.NextId();
+            IDictionary<string, object> param = new Dictionary<string, object>()
+            {
+                {"parkId", "1"},
+                {"sort", "2"},
+                {"typeId", "6"},
+                {"directionType", 2},
+                {"name", "bean.Data.Lpr"},
+                {"equipmentId", 2},
+                {"photo", ""}
+            };
+
+            IDictionary<string, string> headerItem = new Dictionary<string, string>()
+            {
+                {"Content-Type", "application/json"}
+            };
+            HttpClientHelper clientHelper = new();
+            string html = clientHelper.PostAsync("http://data.atzs.cn/api/v1/Flow", param, "utf-8", headerItem).GetAwaiter().GetResult();
 
             Assert.True(true);
         }

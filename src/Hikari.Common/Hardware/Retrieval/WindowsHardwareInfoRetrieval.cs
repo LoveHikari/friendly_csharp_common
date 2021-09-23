@@ -38,16 +38,16 @@ namespace Hikari.Common.Hardware.Retrieval
         public bool UseAsteriskInWMI { get; set; }
 
         private readonly string _managementScope = "root\\cimv2";
-        private readonly EnumerationOptions _enumerationOptions = new EnumerationOptions() { ReturnImmediately = true, Rewindable = false, Timeout = EnumerationOptions.InfiniteTimeout };
+        private readonly System.Management.EnumerationOptions _enumerationOptions = new System.Management.EnumerationOptions() { ReturnImmediately = true, Rewindable = false, Timeout = System.Management.EnumerationOptions.InfiniteTimeout };
 
         private readonly Version? _osVersion;
 
         public WindowsHardwareInfoRetrieval(TimeSpan? enumerationOptionsTimeout = null)
         {
             if (enumerationOptionsTimeout == null)
-                enumerationOptionsTimeout = EnumerationOptions.InfiniteTimeout;
+                enumerationOptionsTimeout = System.Management.EnumerationOptions.InfiniteTimeout;
 
-            _enumerationOptions = new EnumerationOptions() { ReturnImmediately = true, Rewindable = false, Timeout = enumerationOptionsTimeout.Value };
+            _enumerationOptions = new System.Management.EnumerationOptions() { ReturnImmediately = true, Rewindable = false, Timeout = enumerationOptionsTimeout.Value };
 
             _osVersion = GetOsVersionByWmi() ?? GetOsVersionByRtlGetVersion();
         }
@@ -276,16 +276,16 @@ namespace Hikari.Common.Hardware.Retrieval
             return cpuList;
         }
 
-        public override List<DriveInfo> GetDriveList()
+        public override List<Hikari.Common.Hardware.Components.DriveInfo> GetDriveList()
         {
-            List<DriveInfo> driveList = new List<DriveInfo>();
+            List<Hikari.Common.Hardware.Components.DriveInfo> driveList = new ();
 
             string queryString = UseAsteriskInWMI ? "SELECT * FROM Win32_DiskDrive"
                                                   : "SELECT Caption, Description, DeviceID, FirmwareRevision, Index, Manufacturer, Model, Name, Partitions, SerialNumber, Size FROM Win32_DiskDrive";
             using ManagementObjectSearcher Win32_DiskDrive = new ManagementObjectSearcher(_managementScope, queryString, _enumerationOptions);
             foreach (ManagementObject DiskDrive in Win32_DiskDrive.Get())
             {
-                DriveInfo drive = new DriveInfo
+                Hikari.Common.Hardware.Components.DriveInfo drive = new ()
                 {
                     Caption = GetPropertyString(DiskDrive["Caption"]),
                     Description = GetPropertyString(DiskDrive["Description"]),

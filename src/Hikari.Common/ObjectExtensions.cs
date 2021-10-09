@@ -13,7 +13,7 @@
  * 
  * ***************************************************************************************************************/
 
-using System;
+using System.Reflection;
 
 namespace Hikari.Common
 {
@@ -26,92 +26,75 @@ namespace Hikari.Common
         /// <summary>
         /// 获取字符串 不返回null值
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="this"></param>
         /// <param name="s">指定为null时返回的值</param>
         /// <returns></returns>
-        public static string ToNotNullString(this object value, string s = "")
+        public static string ToNotNullString(this object? @this, string s = "")
         {
-            if (value == null || value == System.DBNull.Value)
+            if (@this is null || @this == DBNull.Value)
                 return s;
-            return value.ToString();
+            return @this.ToString()!;
         }
         /// <summary>
         /// 转换为等效的32位有符号整数，转换失败返回指定的数字，为null时返回0
         /// </summary>
-        /// <param name="input"></param>
+        /// <param name="this"></param>
         /// <param name="i">指定转换失败时返回的值，默认为0</param>
         /// <returns></returns>
-        public static int ToInt32(this object input, int i = 0)
+        public static int ToInt32(this object? @this, int i = 0)
         {
-            if (input == null || string.IsNullOrEmpty(input.ToString()))
+            if (@this is null || string.IsNullOrWhiteSpace(@this.ToString()))
                 return 0;
-            if (int.TryParse(input.ToString(), out int result))
-                return result;
-            return i;
+            return int.TryParse(@this.ToString(), out var result) ? result : i;
         }
         /// <summary>
         /// 转换为Long，为null时返回0
         /// </summary>
-        /// <param name="input"></param>
+        /// <param name="this"></param>
         /// <param name="i">指定转换失败时返回的值，默认为0</param>
         /// <returns></returns>
-        public static long ToLong(this object input, long i = 0L)
+        public static long ToLong(this object? @this, long i = 0L)
         {
-            long result;
-            if (input == null || string.IsNullOrEmpty(input.ToString()))
+            if (@this is null || string.IsNullOrWhiteSpace(@this.ToString()))
                 return 0L;
-            if (long.TryParse(input.ToString(), out result))
-                return result;
-            return i;
+            return long.TryParse(@this.ToString(), out var result) ? result : i;
         }
         /// <summary>
         /// 转换为Short，为null时返回0
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="defaultValue">指定转换失败时返回的值，默认为0</param>
+        /// <param name="this"></param>
+        /// <param name="i">指定转换失败时返回的值，默认为0</param>
         /// <returns></returns>
-        public static short ToShort(this object source, short defaultValue = 0)
+        public static short ToShort(this object? @this, short i = 0)
         {
-            if (source == null || string.IsNullOrEmpty(source.ToString()))
-                return defaultValue;
-            short result;
-            if (!short.TryParse(source.ToString(), out result))
-                result = defaultValue;
-            return result;
+            if (@this is null || string.IsNullOrWhiteSpace(@this.ToString()))
+                return i;
+           
+            return short.TryParse(@this.ToString(), out var result) ? result : i;
         }
         /// <summary>
         /// 转换为decimal类型，失败返回0
         /// </summary>
-        /// <param name="s"></param>
+        /// <param name="this"></param>
         /// <param name="d">指定转换失败时返回的值,默认为0</param>
         /// <returns></returns>
-        public static decimal ToDecimal(this object s, decimal d = 0)
+        public static decimal ToDecimal(this object? @this, decimal d = 0M)
         {
-            decimal result;
-            if (s == null || string.IsNullOrEmpty(s.ToString()))
+            if (@this is null || string.IsNullOrWhiteSpace(@this.ToString()))
                 return d;
-            if (decimal.TryParse(s.ToString(), out result))
-            {
-                return result;
-            }
-            return d;
+            return decimal.TryParse(@this.ToString(), out var result) ? result : d;
         }
         /// <summary>
         /// 转换为double类型，失败返回0
         /// </summary>
-        /// <param name="s"></param>
+        /// <param name="this"></param>
         /// <param name="d">指定转换失败时返回的值,默认为0</param>
         /// <returns></returns>
-        public static double ToDouble(this object s, double d = 0)
+        public static double ToDouble(this object? @this, double d = 0)
         {
-            double result;
-            if (s == null || string.IsNullOrEmpty(s.ToString()))
+            if (@this is null || string.IsNullOrWhiteSpace(@this.ToString()))
                 return d;
-            if (double.TryParse(s.ToString(), out result))
-            {
-                return result;
-            }
-            return d;
+            return double.TryParse(@this.ToString(), out var result) ? result : d;
         }
 
         /// <summary>
@@ -119,9 +102,9 @@ namespace Hikari.Common
         /// </summary>
         /// <param name="this"></param>
         /// <returns></returns>
-        public static bool ToBoolean(this object @this)
+        public static bool ToBoolean(this object? @this)
         {
-            if (@this is not string source) return @this != null;
+            if (@this is not string source) return @this is not null;
             if (string.IsNullOrWhiteSpace(source)) return false;
 
             if (bool.TryParse(source, out var result)) return result;
@@ -132,6 +115,18 @@ namespace Hikari.Common
 
             return true;
 
+        }
+        /// <summary>
+        /// 根据属性名获得属性值
+        /// </summary>
+        /// <param name="this"></param>
+        /// <param name="propertyName">属性名</param>
+        /// <returns>属性值</returns>
+        public static object? GetValue(this object @this, string propertyName)
+        {
+            PropertyInfo[] properties = @this.GetType().GetProperties();
+            var obj = properties.FirstOrDefault(p => p.Name == "Name")?.GetValue(@this);
+            return obj;
         }
     }
 }

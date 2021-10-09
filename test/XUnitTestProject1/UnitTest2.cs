@@ -7,8 +7,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Net.Http;
 using System.Text.RegularExpressions;
+using Hikari.Common.Office;
 using Xunit;
 using Xunit.Abstractions;
+using System.Reflection;
+using System.Linq;
 
 namespace XUnitTestProject1
 {
@@ -92,7 +95,7 @@ namespace XUnitTestProject1
         {
             TuChuangClient client = new TuChuangClient();
             var s = client.UploadFile("").GetAwaiter().GetResult();
-            
+
 
             Assert.True(true);
         }
@@ -113,8 +116,8 @@ namespace XUnitTestProject1
                 {{"Content-Type", "application/x-www-form-urlencoded"}};
 
             HttpClientHelper helper = new HttpClientHelper();
-            var  v = helper.PostAsync(url, p, "utf-8", h).Result;
-            
+            var v = helper.PostAsync(url, p, "utf-8", h).Result;
+
             Regex regex = new Regex("\\\\\"(.+?)\\\\\"");
             var ms = regex.Matches(v);
 
@@ -128,15 +131,20 @@ namespace XUnitTestProject1
 
             DataTable dt = new DataTable("cart");
             DataColumn dc1 = new DataColumn("prizename");
-            DataColumn dc2 = new DataColumn("point");
-            DataColumn dc3 = new DataColumn("number");
-            DataColumn dc4 = new DataColumn("totalpoint");
-            DataColumn dc5 = new DataColumn("prizeid");
             dt.Columns.Add(dc1);
-            dt.Columns.Add(dc2);
-            dt.Columns.Add(dc3);
-            dt.Columns.Add(dc4);
-            dt.Columns.Add(dc5);
+            dc1 = new DataColumn("point");
+            dt.Columns.Add(dc1);
+            dc1 = new DataColumn("number");
+            dt.Columns.Add(dc1);
+            dc1 = new DataColumn("totalpoint");
+            dt.Columns.Add(dc1);
+            dc1 = new DataColumn("prizeid");
+            dt.Columns.Add(dc1);
+            //dt.Columns.Add(dc1);
+            //dt.Columns.Add(dc2);
+            //dt.Columns.Add(dc3);
+            //dt.Columns.Add(dc4);
+            //dt.Columns.Add(dc5);
             //以上代码完成了DataTable的构架，但是里面是没有任何数据的  
             for (int i = 0; i < 10; i++)
             {
@@ -149,31 +157,16 @@ namespace XUnitTestProject1
                 dt.Rows.Add(dr);
             }
 
-            string s = dt.ToJson();
-
+            var v = ExcelHelper.ExcelToDataTable("D:\\1.xlsx", "Sheet1", true);
             Assert.True(true);
         }
 
         [Fact]
         public void Test4()
         {
-            IDictionary<string, object> param = new Dictionary<string, object>()
-            {
-                {"parkId", "1"},
-                {"sort", "2"},
-                {"typeId", "6"},
-                {"directionType", 2},
-                {"name", "bean.Data.Lpr"},
-                {"equipmentId", 2},
-                {"photo", ""}
-            };
+            object a = null;
 
-            IDictionary<string, string> headerItem = new Dictionary<string, string>()
-            {
-                {"Content-Type", "application/json"}
-            };
-            HttpClientHelper clientHelper = new();
-            string html = clientHelper.PostAsync("http://data.atzs.cn/api/v1/Flow", param, "utf-8", headerItem).GetAwaiter().GetResult();
+            var v = a.ToString();
 
             Assert.True(true);
         }
@@ -186,6 +179,12 @@ namespace XUnitTestProject1
         private long timeGen()
         {
             return (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+        }
+
+        public class A
+        {
+            public string Name { get; set; }
+            public string Value { get; set; }
         }
     }
 }

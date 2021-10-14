@@ -205,7 +205,7 @@ namespace Hikari.Common
             }
         }
         /// <summary>
-        /// 重命名文件夹
+        /// 移动并重命名文件夹
         /// </summary>
         /// <param name="srcPath">原始文件夹</param>
         /// <param name="aimPath">目标文件夹</param>

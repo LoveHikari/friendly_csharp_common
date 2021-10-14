@@ -111,15 +111,16 @@ namespace Hikari.Common
         /// </summary>
         /// <param name="cmd">cmd命令</param>
         /// <returns>执行结果</returns>
-        /// <remarks>http://blog.csdn.net/qq_26597393/article/details/69945030</remarks>
         public static string RunCmd(string cmd)
         {
-            cmd = cmd.Trim().TrimEnd('&') + "&exit"; //说明：不管命令是否成功均执行exit命令，否则当调用ReadToEnd()方法时，会处于假死状态  
+            var fileName = cmd.SplitLeft(" ");
+            var arguments = cmd.TrimStart(fileName).TrimStart(' ');
             using Process p = new Process
             {
                 StartInfo =
                 {
-                    FileName = @"cmd.exe",
+                    FileName = fileName,
+                    Arguments = arguments,
                     UseShellExecute = false,  //是否使用操作系统shell启动
                     RedirectStandardInput = true,  //接受来自调用程序的输入信息
                     RedirectStandardOutput = true,  //由调用程序获取输出信息
@@ -128,18 +129,12 @@ namespace Hikari.Common
                 }
             };
             
-            
-            
-            
-            
 
             p.Start(); //启动程序
 
-            //向cmd窗口写入命令
-            p.StandardInput.WriteLine(cmd);
             p.StandardInput.AutoFlush = true;
 
-            //获取cmd窗口的输出信息
+            //获取输出信息
             string output = p.StandardOutput.ReadToEnd();
 
             p.WaitForExit(); // 等待程序执行完退出进程

@@ -1,4 +1,8 @@
-﻿/******************************************************************************************************************
+﻿// Copyright (c) the Hikari. Foundation. All rights reserved.
+// The Hikari. Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+/******************************************************************************************************************
  * 
  * 
  * 标  题： Object 帮助类(版本：Version1.0.0)

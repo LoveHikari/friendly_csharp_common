@@ -274,5 +274,34 @@ namespace Hikari.Common
             byte[] b = System.Text.Encoding.GetEncoding(encode).GetBytes(s);
             return ToBase64String(b);
         }
+
+        /// <summary>
+        /// 数字转ip地址
+        /// </summary>
+        /// <param name="ipInt">ip数字</param>
+        /// <returns>ip地址</returns>
+        public static string IntToIp(long ipInt)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(ipInt >> 0x18 & 0xff).Append(".");
+            sb.Append(ipInt >> 0x10 & 0xff).Append(".");
+            sb.Append(ipInt >> 0x8 & 0xff).Append(".");
+            sb.Append(ipInt & 0xff);
+            return sb.ToString();
+        }
+        /// <summary>
+        /// ip地址转数字
+        /// </summary>
+        /// <param name="ip">ip地址</param>
+        /// <returns>ip数字</returns>
+        public static long IpToInt(string ip)
+        {
+            char[] separator = { '.' };
+            string[] items = ip.Split(separator);
+            return long.Parse(items[0]) << 24
+                   | long.Parse(items[1]) << 16
+                   | long.Parse(items[2]) << 8
+                   | long.Parse(items[3]);
+        }
     }
 }

@@ -21,6 +21,7 @@ namespace Hikari.Common
     /// <summary>
     /// Distinct 扩展类
     /// </summary>
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), System.ComponentModel.Browsable(false)]
     public static class DistinctExtensions
     {
         /// <summary>

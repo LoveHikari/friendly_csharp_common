@@ -5,6 +5,8 @@ using Hikari.Common.Net.Http;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using Hikari.Common.Office;
@@ -12,6 +14,7 @@ using Xunit;
 using Xunit.Abstractions;
 using System.Reflection;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 
 namespace XUnitTestProject1
 {
@@ -164,13 +167,10 @@ namespace XUnitTestProject1
         [Fact]
         public void Test4()
         {
-            object a = null;
-
-            var v = a.ToString();
+            var v = SystemHelper.RunCmd("ipconfig s ds");
 
             Assert.True(true);
         }
-
 
         /// <summary>
         /// 生成当前时间戳
@@ -181,10 +181,43 @@ namespace XUnitTestProject1
             return (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
         }
 
-        public class A
+        private void S()
         {
-            public string Name { get; set; }
-            public string Value { get; set; }
+            using Process p = new Process
+            {
+                StartInfo =
+                {
+                    FileName = @"dotnet --version",
+                    Arguments = "",
+                    UseShellExecute = false,  //是否使用操作系统shell启动
+                    RedirectStandardInput = true,  //接受来自调用程序的输入信息
+                    RedirectStandardOutput = true,  //由调用程序获取输出信息
+                    RedirectStandardError = true,  //重定向标准错误输出
+                    CreateNoWindow = true  //不显示程序窗口
+                }
+            };
+            p.Start();
+            string output = p.StandardOutput.ReadToEnd();
+            //var psi = new ProcessStartInfo("dotnet", "--version")
+            //{
+            //    RedirectStandardOutput = true
+            //};
+            //var proc = Process.Start(psi);
+            //var s = proc.StandardOutput.ReadToEnd();
+            //s = s.Trim(System.Environment.NewLine.ToCharArray());
+        }
+        [return:NotNull]
+        private string TrimStart(string s1, string trimStr)
+        {
+            int i = trimStr.Length;
+            a:
+            string startStr = s1.SubLeft(i);
+            if (startStr == trimStr)
+            {
+                s1 = s1.Remove(0, i);
+                goto a;
+            }
+            return s1;
         }
     }
 }

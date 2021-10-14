@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Hikari.Common
 {
@@ -9,7 +10,7 @@ namespace Hikari.Common
     public static class IntegerExtensions
     {
         /// <summary>
-        /// 时间戳转为本地时间
+        /// 秒级时间戳转为本地时间
         /// </summary>
         /// <param name="this"></param>
         /// <returns></returns>
@@ -20,7 +21,7 @@ namespace Hikari.Common
             return dtStart + TimeSpan.FromSeconds(@this);
         }
         /// <summary>
-        /// 时间戳转为UTC时间
+        /// 秒级时间戳转为UTC时间
         /// </summary>
         /// <param name="this"></param>
         /// <returns></returns>
@@ -30,7 +31,7 @@ namespace Hikari.Common
             return unixEpochDateTimeUtc + TimeSpan.FromSeconds(@this);
         }
         /// <summary>
-        /// 时间戳转为本地时间
+        /// 毫秒级时间戳转为本地时间
         /// </summary>
         /// <param name="this"></param>
         /// <returns></returns>
@@ -41,7 +42,7 @@ namespace Hikari.Common
             return dtStart + TimeSpan.FromMilliseconds(@this);
         }
         /// <summary>
-        /// 时间戳转为UTC时间
+        /// 毫秒级时间戳转为UTC时间
         /// </summary>
         /// <param name="this"></param>
         /// <returns></returns>
@@ -82,5 +83,6 @@ namespace Hikari.Common
 
             return true;
         }
+        
     }
 }

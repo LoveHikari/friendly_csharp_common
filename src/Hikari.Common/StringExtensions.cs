@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -11,43 +12,19 @@ namespace Hikari.Common
     public static class StringExtensions
     {
         /// <summary>
-        /// 验证字符串个数是否超出指定长度
+        /// 截取指定字节长度的字符串
         /// </summary>
-        /// <param name="inputstr">被检验的字符串</param>
-        /// <param name="count">指定的长度</param>
-        /// <returns></returns>
-        public static bool ValidateCharLength(this string inputstr, int count)
-        {
-            bool flag = false;
-            int tempLen = 0;
-            System.Text.ASCIIEncoding ascii = new System.Text.ASCIIEncoding();
-
-            byte[] tempstr = ascii.GetBytes(inputstr);
-            for (int i = 0; i < tempstr.Length; i++)
-            {
-                if (tempstr[i] == 63)
-                    tempLen += 2;
-                else
-                    tempLen += 1;
-            }
-            if (tempLen <= count)
-                flag = true;
-
-            return flag;
-        }
-        /// <summary>
-        /// 截取指定长度的字符串
-        /// </summary>
-        /// <param name="inputString">被处理的字符串</param>
-        /// <param name="len">要求截取的长度</param>
+        /// <param name="this">被处理的字符串</param>
+        /// <param name="len">要求截取的字节长度</param>
         /// <param name="flag">截取后是否显示省略号,flag为true显示…，为false不显示，默认不显示</param>
         /// <returns></returns>
-        public static string CutString(this string inputString, int len, bool flag = false) //对inputString截取len字节的字符
+        public static string CutString(this string @this, int len, bool flag = false)
         {
+            //对@this截取len字节的字符
             System.Text.ASCIIEncoding ascii = new System.Text.ASCIIEncoding();
             int tempLen = 0;
             string outputString = string.Empty;
-            byte[] str = ascii.GetBytes(inputString);
+            byte[] str = ascii.GetBytes(@this);
             for (int i = 0; i < str.Length; i++)
             {
                 if (str[i] == 63)
@@ -56,7 +33,7 @@ namespace Hikari.Common
                     tempLen += 1;
                 try
                 {
-                    outputString += inputString.Substring(i, 1);
+                    outputString += @this.Substring(i, 1);
                 }
                 catch
                 {
@@ -67,7 +44,7 @@ namespace Hikari.Common
             }
 
             //如果截过则加上半个省略号
-            if (inputString != outputString && flag)
+            if (@this != outputString && flag)
                 outputString += "…";
             return outputString;
         }
@@ -89,17 +66,7 @@ namespace Hikari.Common
             //捕获的字符转换为""
             return regsql.Replace(value, m => string.Empty);
         }
-        /// <summary>
-        /// 基于字符串将字符串拆分为多个子字符串。可以指定子字符串是否包含空数组元素。
-        /// </summary>
-        /// <param name="value">字符串</param>
-        /// <param name="separator">分隔此字符串中子字符串的字符串数组、不包含分隔符的空数组或 null。</param>
-        /// <param name="options">要省略返回的数组中的空数组元素，则为 StringSplitOptions.RemoveEmptyEntries；要包含返回的数组中的空数组元素，则为 StringSplitOptions.None。</param>
-        /// <returns>一个数组，其元素包含此字符串中的子字符串，这些子字符串由 separator 中的一个或多个字符串分隔。 有关详细信息，请参阅“备注”部分。</returns>
-        public static string[] Split(this string value, string separator, StringSplitOptions options = StringSplitOptions.None)
-        {
-            return value.Split(new string[] { separator }, options);
-        }
+
         /// <summary>
         /// 获取左边指定位数的字符串
         /// </summary>
@@ -212,6 +179,7 @@ namespace Hikari.Common
         /// <summary>
         /// 从右边开始去掉i个字符
         /// </summary>
+        /// <param name="this"></param>
         /// <param name="i">要去掉的长度</param>
         /// <returns></returns>
         public static string RemoveRight(this string @this, int i)
@@ -268,14 +236,13 @@ namespace Hikari.Common
             }
             return count;
         }
-
         /// <summary>
         /// 截取从startString开始到结尾的字符，不包括前端
         /// </summary>
         /// <param name="value"></param>
         /// <param name="startString"></param>
         /// <returns></returns>
-        public static string GetSubString(this string value, string startString)
+        public static  string Substring(this string value, string startString)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -300,9 +267,9 @@ namespace Hikari.Common
         /// <param name="startString"></param>
         /// <param name="endString"></param>
         /// <returns></returns>
-        public static string GetSubString(this string value, string startString, string endString)
+        public static string Substring(this string value, string startString, string endString)
         {
-            value = GetSubString(value, startString);
+            value = Substring(value, startString);
             if (string.IsNullOrEmpty(value))
             {
                 return "";
@@ -318,6 +285,47 @@ namespace Hikari.Common
                 return "";
             }
         }
+        /// <summary>
+        /// 从当前字符串删除字符串的所有尾随匹配项
+        /// </summary>
+        /// <param name="this"></param>
+        /// <param name="trimStr">要删除的字符串</param>
+        /// <returns></returns>
+        public static string TrimEnd(this string @this, string trimStr)
+        {
+            int i = trimStr.Length;
+            a:
+            string endStr = @this.SubRight(i);
+            if (endStr != trimStr) return @this;
+            @this = @this.Substring(0, @this.Length - i);
+            goto a;
+        }
+        /// <summary>
+        /// 从当前字符串删除字符串的所有前导匹配项
+        /// </summary>
+        /// <param name="this"></param>
+        /// <param name="trimStr">要删除的字符串</param>
+        /// <returns></returns>
+        public static string TrimStart(this string @this, string trimStr)
+        {
+            int i = trimStr.Length;
+            a:
+            string startStr = @this.SubLeft(i);
+            if (startStr != trimStr) return @this;
+            @this = @this.Remove(0, i);
+            goto a;
+        }
+        /// <summary>
+        /// 从当前字符串删除字符串的所有前导匹配项和尾随匹配项
+        /// </summary>
+        /// <param name="this"></param>
+        /// <param name="trimStr">要删除的字符串</param>
+        /// <returns></returns>
+        public static string Trim(this string @this, string trimStr)
+        {
+            return @this.TrimStart(trimStr).TrimEnd(trimStr);
+        }
+
         #region 全角半角转换
         /// <summary>
         /// 转全角的函数(SBC case)

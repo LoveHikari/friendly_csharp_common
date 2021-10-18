@@ -16,7 +16,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="MySql.Data" Version="8.0.26" />
-		<PackageReference Include="Npgsql" Version="6.0.0-rc.1" />
+		<PackageReference Include="Npgsql" Version="6.0.0-rc.2" />
 		<PackageReference Include="System.Data.OracleClient" Version="1.0.8" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
 		<PackageReference Include="System.Data.SQLite" Version="1.0.115" />

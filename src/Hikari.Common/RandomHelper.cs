@@ -112,10 +112,10 @@ namespace Hikari.Common
         {
             if (sleep) System.Threading.Thread.Sleep(3);
             string result = "";
-            RandomHelper randomHelper = new RandomHelper();
+
             for (int i = 0; i < length; i++)
             {
-                result += randomHelper.Next(10).ToString();
+                result += ran.Next(10).ToString();
             }
             return result;
         }
@@ -126,7 +126,7 @@ namespace Hikari.Common
         /// <param name="ran"></param>
         /// <param name="length">生成长度</param>
         /// <param name="sleep">是否要在生成前将当前线程阻止以避免重复</param>
-        public static string Str(this Random ran, int length, bool sleep = false)
+        public static string RandomStr(this Random ran, int length, bool sleep = false)
         {
             if (sleep) System.Threading.Thread.Sleep(3);
             char[] pattern = new char[]
@@ -136,10 +136,10 @@ namespace Hikari.Common
             };
             string result = "";
             int n = pattern.Length;
-            System.Random random = new Random(~unchecked((int)DateTime.Now.Ticks));
+            //System.Random random = new Random(~unchecked((int)DateTime.Now.Ticks));
             for (int i = 0; i < length; i++)
             {
-                int rnd = random.Next(0, n);
+                int rnd = ran.Next(0, n);
                 result += pattern[rnd];
             }
             return result;
@@ -151,7 +151,7 @@ namespace Hikari.Common
         /// <param name="ran"></param>
         /// <param name="length">生成长度</param>
         /// <param name="sleep">是否要在生成前将当前线程阻止以避免重复</param>
-        public static string Str_char(this Random ran, int length, bool sleep = false)
+        public static string RandomStrChar(this Random ran, int length, bool sleep = false)
         {
             if (sleep) System.Threading.Thread.Sleep(3);
             char[] pattern = new char[]
@@ -161,10 +161,10 @@ namespace Hikari.Common
             };
             string result = "";
             int n = pattern.Length;
-            System.Random random = new Random(~unchecked((int)DateTime.Now.Ticks));
+            //System.Random random = new Random(~unchecked((int)DateTime.Now.Ticks));
             for (int i = 0; i < length; i++)
             {
-                int rnd = random.Next(0, n);
+                int rnd = ran.Next(0, n);
                 result += pattern[rnd];
             }
             return result;

@@ -167,9 +167,18 @@ namespace XUnitTestProject1
         [Fact]
         public void Test4()
         {
-            IniCollection helper = new IniCollection(@"D:\foo.ini");
-            helper.Add("foo", "aa", "11");
-            helper.Save(@"D:\foo.ini");
+            RandomHelper helper = new RandomHelper();
+            for (int i = 0; i < 10; i++)
+            {
+                _output.WriteLine(helper.Next(4).ToString());
+            }
+            _output.WriteLine("-------------------------------------");
+            Random ran = new Random();
+            for (int i = 0; i < 10; i++)
+            {
+                _output.WriteLine(ran.Str(4).ToString());
+            }
+
             Assert.True(true);
         }
 

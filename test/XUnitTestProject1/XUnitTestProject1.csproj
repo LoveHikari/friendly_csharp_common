@@ -9,11 +9,11 @@
   <ItemGroup>
     <PackageReference Include="CZGL.SystemInfo" Version="1.0.3" />
     <PackageReference Include="Hardware.Info" Version="1.1.1.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Include="NSoup.Standard" Version="2.0.1" />
     <PackageReference Include="PKT.NPinyin" Version="2.0.1" />
     <PackageReference Include="SharpZipLib" Version="1.3.3" />
-    <PackageReference Include="System.Management" Version="6.0.0-rc.2.21480.5" />
+    <PackageReference Include="System.Management" Version="6.0.0" />
     <PackageReference Include="xunit" Version="2.4.2-pre.12" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
       <PrivateAssets>all</PrivateAssets>

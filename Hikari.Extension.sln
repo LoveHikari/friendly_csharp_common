@@ -29,8 +29,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hikari.Common.Web.AspNetCor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hikari.Common.Office", "src\Hikari.Common.Office\Hikari.Common.Office.csproj", "{D74133B8-73C8-438F-8CB7-B2AF15DC39A9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "test\WebApplication1\WebApplication1.csproj", "{8807B622-48D3-4101-BC83-E1C809FA61D1}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,10 +79,6 @@ Global
 		{D74133B8-73C8-438F-8CB7-B2AF15DC39A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D74133B8-73C8-438F-8CB7-B2AF15DC39A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D74133B8-73C8-438F-8CB7-B2AF15DC39A9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8807B622-48D3-4101-BC83-E1C809FA61D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8807B622-48D3-4101-BC83-E1C809FA61D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8807B622-48D3-4101-BC83-E1C809FA61D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8807B622-48D3-4101-BC83-E1C809FA61D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,7 +95,6 @@ Global
 		{C18A3883-09F3-478E-94F5-BFB980A975EF} = {8594F782-B980-46E4-B45F-5673AC4D7862}
 		{61ACA6CA-B3E7-4C42-BD56-00E46961A579} = {8594F782-B980-46E4-B45F-5673AC4D7862}
 		{D74133B8-73C8-438F-8CB7-B2AF15DC39A9} = {8594F782-B980-46E4-B45F-5673AC4D7862}
-		{8807B622-48D3-4101-BC83-E1C809FA61D1} = {E7E1B92C-69E3-4919-8844-AEF4E5C325C8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B9842A58-6189-4D06-8F5D-789267C22712}

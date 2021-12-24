@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
+using Hikari.Common.IO;
 
 /******************************************************************************************************************
  * 
@@ -166,7 +167,7 @@ namespace Hikari.Common
         /// <param name="filePath">要保存的文件的路径</param>
         public void SaveAs(string filePath)
         {
-            filePath = FileHelper.FilePathProcess(filePath);
+            filePath = FileHelper.PathProcess(filePath);
             if (File.Exists(filePath))  //文件存在则删除
             {
                 System.IO.StreamWriter sw1 = new System.IO.StreamWriter(filePath, false);

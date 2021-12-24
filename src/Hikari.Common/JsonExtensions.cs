@@ -21,12 +21,12 @@ namespace Hikari.Common
         /// <param name="jsonArray">要解析的 JSON 文本</param>
         /// <param name="options">在解析过程中控制行为的选项</param>
         /// <returns>JSON 值的 TValue 表示</returns>
-        public static List<TValue> Deserialize<TValue>(this in ArrayEnumerator jsonArray, JsonSerializerOptions options = null)
+        public static List<TValue> Deserialize<TValue>(this in ArrayEnumerator jsonArray, JsonSerializerOptions? options = null)
         {
             List<TValue> resultData = new List<TValue>();
             foreach (var item in jsonArray)
             {
-                var v = JsonSerializer.Deserialize<TValue>(item.GetString(), options);
+                var v = JsonSerializer.Deserialize<TValue>(item.GetString()??"", options);
                 resultData.Add(v);
             }
             return resultData;

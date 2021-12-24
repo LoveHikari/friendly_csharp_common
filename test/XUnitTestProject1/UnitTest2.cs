@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using Hikari.Common.Office;
@@ -14,6 +15,9 @@ using Xunit;
 using Xunit.Abstractions;
 using System.Reflection;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Hikari.Common.IO;
 using Microsoft.Extensions.Configuration;
 
 namespace XUnitTestProject1
@@ -163,22 +167,12 @@ namespace XUnitTestProject1
             var v = ExcelHelper.ExcelToDataTable("D:\\1.xlsx", "Sheet1", true);
             Assert.True(true);
         }
-
+        private static readonly List<Task> _tasks = new List<Task>();
         [Fact]
         public void Test4()
         {
-            RandomHelper helper = new RandomHelper();
-            for (int i = 0; i < 10; i++)
-            {
-                _output.WriteLine(helper.Next(4).ToString());
-            }
-            _output.WriteLine("-------------------------------------");
-            Random ran = new Random();
-            for (int i = 0; i < 10; i++)
-            {
-                _output.WriteLine(ran.Str(4).ToString());
-            }
-
+            
+            var v = Path.GetDirectoryName("\\");
             Assert.True(true);
         }
 
@@ -190,7 +184,5 @@ namespace XUnitTestProject1
         {
             return (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
         }
-
-
     }
 }

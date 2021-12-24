@@ -36,7 +36,7 @@ namespace Hikari.Common
             };
 
             var coreCompatResult = barcodeReader.Decode(barcodeBitmap);
-            return coreCompatResult?.Text;
+            return coreCompatResult?.Text ?? "";
 
         }
         /// <summary>

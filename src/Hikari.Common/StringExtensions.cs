@@ -73,7 +73,7 @@ namespace Hikari.Common
         /// <param name="value">字符串</param>
         /// <param name="length">长度</param>
         /// <returns></returns>
-        public static string SubLeft(this string value, int length)
+        public static string SubLeft(this string? value, int length)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -385,7 +385,7 @@ namespace Hikari.Common
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static int ToNumber(this string value)
+        public static int ToNumber(this string? value)
         {
             if (value == null)
                 return 0;
@@ -397,10 +397,8 @@ namespace Hikari.Common
                     num += item;
                 }
             }
-            int result;
-            if (int.TryParse(num, out result))
-                return result;
-            return 0;
+
+            return int.TryParse(num, out var result) ? result : 0;
         }
 
         /// <summary>

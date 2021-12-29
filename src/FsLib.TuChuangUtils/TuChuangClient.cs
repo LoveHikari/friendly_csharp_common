@@ -19,8 +19,8 @@ namespace FsLib.TuChuangUtils
         /// <returns>文件地址</returns>
         public async Task<string> UploadFile(string filePath)
         {
-            HttpClientHelper httpClient = new HttpClientHelper();
             string url = "http://notice.chaoxing.com/pc/files/uploadNoticeFile";
+            HttpClientHelper httpClient = new HttpClientHelper();
             IDictionary<string, object> param = new Dictionary<string, object>()
             {
                 {"attrFile", filePath}

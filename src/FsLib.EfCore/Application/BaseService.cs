@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using FsLib.EfCore.Domain;
+﻿using FsLib.EfCore.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace FsLib.EfCore.Application
@@ -20,7 +17,7 @@ namespace FsLib.EfCore.Application
         /// <param name="pageSize">每页数据数</param>
         /// <param name="v">需要分页的数据</param>
         /// <returns></returns>
-        public async Task<Page<T>> GeneratePage<T>(int pageIndex, int pageSize, IQueryable<T> v)
+        public async Task<Page<T>> GeneratePageAsync<T>(int pageIndex, int pageSize, IQueryable<T> v)
         {
             int totalRecord = (await v.ToListAsync()).Count;
             var list = await v.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
@@ -47,7 +44,7 @@ namespace FsLib.EfCore.Application
         /// <param name="pageSize">每页数据数</param>
         /// <param name="v">需要分页的数据</param>
         /// <returns></returns>
-        public async Task<Page<T>> GeneratePage<T>(int pageIndex, int pageSize, IAsyncQueryable<T> v)
+        public async Task<Page<T>> GeneratePageAsync<T>(int pageIndex, int pageSize, IAsyncQueryable<T> v)
         {
             int totalRecord = (await v.ToListAsync()).Count;
             var list = await v.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace FsLib.EfCore
+﻿namespace FsLib.EfCore
 {
     /// <summary>
     /// 分页
@@ -11,30 +9,30 @@ namespace FsLib.EfCore
         /// <summary>
         /// 当前页
         /// </summary>
-        public int PageIndex { get; set; }
+        public int? PageIndex { get; set; }
         /// <summary>
         /// 每页数量
         /// </summary>
-        public int PageSize { get; set; }
+        public int? PageSize { get; set; }
         /// <summary>
         /// 数据总数
         /// </summary>
-        public int TotalRecord { get; set; }
+        public int? TotalRecord { get; set; }
         /// <summary>
         /// 总页数
         /// </summary>
-        public int PageCount { get; set; }
+        public int? PageCount { get; set; }
         /// <summary>
         /// 上一页
         /// </summary>
-        public int PrevPage { get; set; }
+        public int? PrevPage { get; set; }
         /// <summary>
         /// 下一页
         /// </summary>
-        public int NextPage { get; set; }
+        public int? NextPage { get; set; }
         /// <summary>
         /// 内容
         /// </summary>
-        public List<T> Content { get; set; }
+        public List<T>? Content { get; set; }
     }
 }

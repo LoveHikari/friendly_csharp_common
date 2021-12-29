@@ -19,7 +19,19 @@ public static class StreamExtensions
         @this.Seek(0, SeekOrigin.Begin);
         return bytes;
     }
-
+    /// <summary>
+    /// 将 Stream 转成 byte[]
+    /// </summary>
+    /// <param name="this"></param>
+    /// <returns></returns>
+    public static byte[] ToBytes(this Stream @this)
+    {
+        byte[] bytes = new byte[@this.Length];
+        @this.Read(bytes, 0, bytes.Length);
+        // 设置当前流的位置为流的开始 
+        @this.Seek(0, SeekOrigin.Begin);
+        return bytes;
+    }
     /// <summary>
     /// 将 byte[] 转成 Stream 
     /// </summary>

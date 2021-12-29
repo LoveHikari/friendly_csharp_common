@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace FsLib.EfCore.EntityFrameworkCore
 {
@@ -19,39 +18,23 @@ namespace FsLib.EfCore.EntityFrameworkCore
         /// <returns></returns>
         public static DbContextOptionsBuilder SetOptionsBuilder(this DbContextOptionsBuilder options, string connectionString, DbTypeEnum dbTypeName, string assemblyName)
         {
-            DbContextOptionsBuilder optionsBuilder = null;
-            switch (dbTypeName)
+            return dbTypeName switch
             {
-                case DbTypeEnum.SqlServer:
-                    optionsBuilder = options.UseSqlServer(connectionString, builder =>
-                        {
-                            builder.MigrationsAssembly(assemblyName).UseRelationalNulls();
-                        });
-                    break;
-                case DbTypeEnum.MySql:
-                    optionsBuilder = options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 25)), builder =>
+                DbTypeEnum.SqlServer => options.UseSqlServer(connectionString,
+                    builder => { builder.MigrationsAssembly(assemblyName).UseRelationalNulls(); }),
+                DbTypeEnum.MySql => options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 25)),
+                    builder =>
                     {
                         builder.MigrationsAssembly(assemblyName).UseRelationalNulls();
                         //builder.ServerVersion(new Version(5, 7, 17), ServerType.MySql);
-                    });
-                    break;
-                case DbTypeEnum.Sqlite:
-                    optionsBuilder = options.UseSqlite(connectionString, builder =>
-                    {
-                        builder.MigrationsAssembly(assemblyName).UseRelationalNulls();
-                    });
-                    break;
-                case DbTypeEnum.Npgsql:
-                    optionsBuilder = options.UseNpgsql(connectionString, builder =>
-                    {
-                        builder.MigrationsAssembly(assemblyName).UseRelationalNulls();
-                    });
-                    break;
-                default:
-                    throw new System.Exception("未实现的数据库");
-            }
+                    }),
+                DbTypeEnum.Sqlite => options.UseSqlite(connectionString,
+                    builder => { builder.MigrationsAssembly(assemblyName).UseRelationalNulls(); }),
+                DbTypeEnum.Npgsql => options.UseNpgsql(connectionString,
+                    builder => { builder.MigrationsAssembly(assemblyName).UseRelationalNulls(); }),
+                _ => throw new System.Exception("未实现的数据库")
+            };
 
-            return optionsBuilder;
         }
     }
 }

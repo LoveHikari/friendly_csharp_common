@@ -1,10 +1,7 @@
-﻿using System;
-using System.Data;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using FsLib.EfCore.Domain;
+﻿using FsLib.EfCore.Domain;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
+using System.Linq.Expressions;
 
 namespace FsLib.EfCore.Repository
 {
@@ -14,11 +11,14 @@ namespace FsLib.EfCore.Repository
     /// <typeparam name="TAggregateRoot">类型</typeparam>
     public class BaseRepository<TAggregateRoot> : IBaseRepository<TAggregateRoot> where TAggregateRoot : class, IAggregateRoot
     {
-        protected IDbContext NContext;
-
+        protected IDbContext _nContext;  // 连接上下文
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="dbContext"></param>
         public BaseRepository(IDbContext dbContext)
         {
-            NContext = dbContext;
+            _nContext = dbContext;
         }
 
         #region 方法
@@ -29,7 +29,7 @@ namespace FsLib.EfCore.Repository
         /// <returns>记录数</returns>
         public int Count(Expression<Func<TAggregateRoot, bool>> predicate)
         {
-            return NContext.Set<TAggregateRoot>().Count(predicate);
+            return _nContext.Set<TAggregateRoot>().Count(predicate);
         }
         /// <summary>
         /// 查询记录数
@@ -38,61 +38,61 @@ namespace FsLib.EfCore.Repository
         /// <returns>记录数</returns>
         public async Task<int> CountAsync(Expression<Func<TAggregateRoot, bool>> predicate)
         {
-            return await NContext.Set<TAggregateRoot>().CountAsync(predicate);
+            return await _nContext.Set<TAggregateRoot>().CountAsync(predicate);
         }
 
         /// <summary>
         /// 是否存在
         /// </summary>
-        /// <param name="anyLambda">查询表达式</param>
+        /// <param name="predicate">查询表达式</param>
         /// <returns>布尔值</returns>
-        public bool Exist(Expression<Func<TAggregateRoot, bool>> anyLambda)
+        public bool Any(Expression<Func<TAggregateRoot, bool>> predicate)
         {
-            return NContext.Set<TAggregateRoot>().Any(anyLambda);
+            return _nContext.Set<TAggregateRoot>().Any(predicate);
         }
         /// <summary>
         /// 是否存在
         /// </summary>
-        /// <param name="anyLambda">查询表达式</param>
+        /// <param name="predicate">查询表达式</param>
         /// <returns>布尔值</returns>
-        public async Task<bool> ExistAsync(Expression<Func<TAggregateRoot, bool>> anyLambda)
+        public async Task<bool> AnyAsync(Expression<Func<TAggregateRoot, bool>> predicate)
         {
-            return await NContext.Set<TAggregateRoot>().AnyAsync(anyLambda);
+            return await _nContext.Set<TAggregateRoot>().AnyAsync(predicate);
         }
         /// <summary>
         /// 查询数据
         /// </summary>
-        /// <param name="whereLambda">查询表达式</param>
+        /// <param name="predicate">查询表达式</param>
         /// <returns>实体</returns>
-        public TAggregateRoot Find(Expression<Func<TAggregateRoot, bool>> whereLambda)
+        public TAggregateRoot? Find(Expression<Func<TAggregateRoot, bool>> predicate)
         {
-            TAggregateRoot entity = NContext.Set<TAggregateRoot>().FirstOrDefault<TAggregateRoot>(whereLambda);
+            TAggregateRoot? entity = _nContext.Set<TAggregateRoot>().FirstOrDefault(predicate);
             return entity;
         }
         /// <summary>
         /// 查询数据
         /// </summary>
-        /// <param name="whereLambda">查询表达式</param>
+        /// <param name="predicate">查询表达式</param>
         /// <returns>实体</returns>
-        public async Task<TAggregateRoot> FindAsync(Expression<Func<TAggregateRoot, bool>> whereLambda)
+        public async Task<TAggregateRoot?> FindAsync(Expression<Func<TAggregateRoot, bool>> predicate)
         {
-            TAggregateRoot entity = await NContext.Set<TAggregateRoot>().FirstOrDefaultAsync<TAggregateRoot>(whereLambda);
+            TAggregateRoot? entity = await _nContext.Set<TAggregateRoot>().FirstOrDefaultAsync(predicate);
             return entity;
         }
 
         /// <summary>
         /// 查找数据列表
         /// </summary>
-        /// <param name="whereLamdba">查询表达式</param>
+        /// <param name="predicate">查询表达式</param>
         /// <param name="orderName">排序名称</param>
         /// <param name="isAsc">是否升序</param>
         /// <returns></returns>
-        public IQueryable<TAggregateRoot> FindList(Expression<Func<TAggregateRoot, bool>> whereLamdba = null, string orderName = "", bool isAsc = false)
+        public IQueryable<TAggregateRoot> FindList(Expression<Func<TAggregateRoot, bool>>? predicate = null, string orderName = "", bool isAsc = false)
         {
-            IQueryable<TAggregateRoot> list = NContext.Set<TAggregateRoot>();
-            if (whereLamdba != null)
+            IQueryable<TAggregateRoot> list = _nContext.Set<TAggregateRoot>();
+            if (predicate != null)
             {
-                list = list.Where(whereLamdba);
+                list = list.Where(predicate);
             }
 
             if (!string.IsNullOrWhiteSpace(orderName))
@@ -107,13 +107,13 @@ namespace FsLib.EfCore.Repository
         /// </summary>
         /// <param name="pageIndex">当前页</param>
         /// <param name="pageSize">每页记录数</param>
-        /// <param name="whereLamdba">查询表达式</param>
+        /// <param name="predicate">查询表达式</param>
         /// <param name="orderName">排序名称</param>
         /// <param name="isAsc">是否升序</param>
         /// <returns></returns>
-        public IQueryable<TAggregateRoot> FindPageList(int pageIndex, int pageSize, Expression<Func<TAggregateRoot, bool>> whereLamdba = null, string orderName = "", bool isAsc = false)
+        public IQueryable<TAggregateRoot> FindPageList(int pageIndex, int pageSize, Expression<Func<TAggregateRoot, bool>>? predicate = null, string orderName = "", bool isAsc = false)
         {
-            var list = FindPageList(pageIndex, pageSize, out _, whereLamdba, orderName, isAsc);
+            var list = FindPageList(pageIndex, pageSize, out _, predicate, orderName, isAsc);
             return list;
         }
         /// <summary>
@@ -121,15 +121,14 @@ namespace FsLib.EfCore.Repository
         /// </summary>
         /// <param name="pageIndex">当前页</param>
         /// <param name="pageSize">每页记录数</param>
-        /// <param name="whereLamdba">查询表达式</param>
+        /// <param name="predicate">查询表达式</param>
         /// <param name="orderName">排序名称</param>
         /// <param name="isAsc">是否升序</param>
         /// <returns>数据,数据总数,总页数,上一页,下一页</returns>
         public (IQueryable<TAggregateRoot> list, int totalRecord, int pageCount, int prevPage, int nextPage) FindPageList2(int pageIndex, int pageSize,
-            Expression<Func<TAggregateRoot, bool>> whereLamdba = null, string orderName = "", bool isAsc = false)
+            Expression<Func<TAggregateRoot, bool>>? predicate = null, string orderName = "", bool isAsc = false)
         {
-            int totalRecord;
-            var list = FindPageList(pageIndex, pageSize, out totalRecord, whereLamdba, orderName, isAsc);
+            var list = FindPageList(pageIndex, pageSize, out var totalRecord, predicate, orderName, isAsc);
             int pageCount = Convert.ToInt32(Math.Ceiling(totalRecord / Convert.ToDouble(pageSize)));
             int prevPage = pageIndex > 0 ? pageIndex - 1 : 0;
             int nextPage = pageIndex < pageCount ? pageIndex + 1 : 0;
@@ -141,21 +140,18 @@ namespace FsLib.EfCore.Repository
         /// <summary>
         /// 排序
         /// </summary>
-        /// <typeparam name="T">类型</typeparam>
         /// <param name="source">原IQueryable</param>
         /// <param name="propertyName">排序属性名</param>
         /// <param name="isAsc">是否正序</param>
-        /// <returns>排序后的IQueryable<T></returns>
+        /// <returns>排序后的IQueryable</returns>
         protected IQueryable<TAggregateRoot> OrderBy(IQueryable<TAggregateRoot> source, string propertyName, bool isAsc)
         {
-            if (source == null) throw new ArgumentNullException("source", "不能为空");
-            if (string.IsNullOrEmpty(propertyName)) return source;
+            if (string.IsNullOrWhiteSpace(propertyName)) return source;
             var parameter = Expression.Parameter(source.ElementType);
             var property = Expression.Property(parameter, propertyName);
-            if (property == null) throw new ArgumentNullException("propertyName", "属性不存在");
             var lambda = Expression.Lambda(property, parameter);
             var methodName = isAsc ? "OrderBy" : "OrderByDescending";
-            var resultExpression = Expression.Call(typeof(Queryable), methodName, new Type[] { source.ElementType, property.Type }, source.Expression, Expression.Quote(lambda));
+            var resultExpression = Expression.Call(typeof(Queryable), methodName, new [] { source.ElementType, property.Type }, source.Expression, Expression.Quote(lambda));
             return source.Provider.CreateQuery<TAggregateRoot>(resultExpression);
         }
 
@@ -165,23 +161,23 @@ namespace FsLib.EfCore.Repository
         /// <param name="pageIndex">当前页</param>
         /// <param name="pageSize">每页记录数</param>
         /// <param name="totalRecord">总记录数</param>
-        /// <param name="whereLamdba">查询表达式</param>
+        /// <param name="predicate">查询表达式</param>
         /// <param name="orderName">排序名称</param>
         /// <param name="isAsc">是否升序</param>
         /// <returns></returns>
-        private IQueryable<TAggregateRoot> FindPageList(int pageIndex, int pageSize, out int totalRecord, Expression<Func<TAggregateRoot, bool>> whereLamdba, string orderName = "", bool isAsc = false)
+        private IQueryable<TAggregateRoot> FindPageList(int pageIndex, int pageSize, out int totalRecord, Expression<Func<TAggregateRoot, bool>>? predicate, string orderName = "", bool isAsc = false)
         {
-            IQueryable<TAggregateRoot> list = NContext.Set<TAggregateRoot>();
-            if (whereLamdba != null)
+            IQueryable<TAggregateRoot> list = _nContext.Set<TAggregateRoot>();
+            if (predicate != null)
             {
-                list = list.Where<TAggregateRoot>(whereLamdba);
+                list = list.Where(predicate);
             }
             totalRecord = list.Count();
             if (!string.IsNullOrWhiteSpace(orderName))
             {
                 list = OrderBy(list, orderName, isAsc);
             }
-            list = list.Skip<TAggregateRoot>((pageIndex - 1) * pageSize).Take<TAggregateRoot>(pageSize);
+            list = list.Skip((pageIndex - 1) * pageSize).Take(pageSize);
 
             return list;
         }
@@ -193,7 +189,7 @@ namespace FsLib.EfCore.Repository
         /// <returns>DataTable</returns>
         public DataTable ExecuteDataTable(string sql, params object[] parameters)
         {
-            DataTable dt = SqlQuery(sql, CommandType.Text, parameters);
+            DataTable dt = SqlQueryAsync(sql, CommandType.Text, parameters).GetAwaiter().GetResult();
             return dt;
         }
         /// <summary>
@@ -253,92 +249,40 @@ namespace FsLib.EfCore.Repository
         //        conn.Close();
         //    }
         //}
-
-        private DataTable SqlQuery(string sql, CommandType cmdtype, params object[] parameters)
+        /// <summary>
+        /// sql查询
+        /// </summary>
+        /// <param name="sql">sql</param>
+        /// <param name="cmdType">命令类型</param>
+        /// <param name="parameters">参数</param>
+        /// <returns></returns>
+        private async Task<DataTable> SqlQueryAsync(string sql, CommandType cmdType, params object[] parameters)
         {
             //注意：不要对GetDbConnection获取到的conn进行using或者调用Dispose，否则DbContext后续不能再进行使用了，会抛异常
-            var conn = NContext.Database.GetDbConnection();
-            try
+            await using var conn = _nContext.Database.GetDbConnection();
+            await using var command = conn.CreateCommand();
+            command.CommandType = cmdType;
+            command.CommandText = sql;
+            command.Parameters.AddRange(parameters);
+
+            DataTable objDataTable = new DataTable("Table");
+
+            await using var reader = await command.ExecuteReaderAsync();
+            int intFieldCount = reader.FieldCount;
+            for (int intCounter = 0; intCounter < intFieldCount; ++intCounter)
             {
-                conn.Open();
-                using (var command = conn.CreateCommand())
-                {
-                    command.CommandType = cmdtype;
-                    command.CommandText = sql;
-                    command.Parameters.AddRange(parameters);
-
-                    DataTable objDataTable = new DataTable("Table");
-
-                    using (var reader = command.ExecuteReader())
-                    {
-                        int intFieldCount = reader.FieldCount;
-                        for (int intCounter = 0; intCounter < intFieldCount; ++intCounter)
-                        {
-                            objDataTable.Columns.Add(reader.GetName(intCounter), reader.GetFieldType(intCounter));
-                        }
-
-                        objDataTable.BeginLoadData();
-                        object[] objValues = new object[intFieldCount];
-                        while (reader.Read())
-                        {
-                            reader.GetValues(objValues);
-                            objDataTable.LoadDataRow(objValues, true);
-                        }
-                        reader.Close();
-                        objDataTable.EndLoadData();
-
-
-                    }
-                    return objDataTable;
-                }
+                objDataTable.Columns.Add(reader.GetName(intCounter), reader.GetFieldType(intCounter));
             }
-            finally
+
+            objDataTable.BeginLoadData();
+            object[] objValues = new object[intFieldCount];
+            while (await reader.ReadAsync())
             {
-                conn.Close();
+                reader.GetValues(objValues);
+                objDataTable.LoadDataRow(objValues, true);
             }
-        }
-        private async Task<DataTable> SqlQueryAsync(string sql, CommandType cmdtype, params object[] parameters)
-        {
-            //注意：不要对GetDbConnection获取到的conn进行using或者调用Dispose，否则DbContext后续不能再进行使用了，会抛异常
-            var conn = NContext.Database.GetDbConnection();
-            try
-            {
-                conn.Open();
-                using (var command = conn.CreateCommand())
-                {
-                    command.CommandType = cmdtype;
-                    command.CommandText = sql;
-                    command.Parameters.AddRange(parameters);
-
-                    DataTable objDataTable = new DataTable("Table");
-
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        int intFieldCount = reader.FieldCount;
-                        for (int intCounter = 0; intCounter < intFieldCount; ++intCounter)
-                        {
-                            objDataTable.Columns.Add(reader.GetName(intCounter), reader.GetFieldType(intCounter));
-                        }
-
-                        objDataTable.BeginLoadData();
-                        object[] objValues = new object[intFieldCount];
-                        while (reader.Read())
-                        {
-                            reader.GetValues(objValues);
-                            objDataTable.LoadDataRow(objValues, true);
-                        }
-                        reader.Close();
-                        objDataTable.EndLoadData();
-
-
-                    }
-                    return objDataTable;
-                }
-            }
-            finally
-            {
-                conn.Close();
-            }
+            objDataTable.EndLoadData();
+            return objDataTable;
         }
         #endregion
 

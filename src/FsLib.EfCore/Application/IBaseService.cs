@@ -8,6 +8,24 @@ namespace FsLib.EfCore.Application
     /// <typeparam name="TAggregateRoot">类型</typeparam>
     public interface IBaseService<TAggregateRoot> where TAggregateRoot : class, IAggregateRoot
     {
+        /// <summary>
+        /// 生成分页
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="pageIndex">当前页码</param>
+        /// <param name="pageSize">每页数据数</param>
+        /// <param name="v">需要分页的数据</param>
+        /// <returns></returns>
+        Task<Page<T>> GeneratePageAsync<T>(int pageIndex, int pageSize, IQueryable<T> v);
 
+        /// <summary>
+        /// 生成分页
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="pageIndex">当前页码</param>
+        /// <param name="pageSize">每页数据数</param>
+        /// <param name="v">需要分页的数据</param>
+        /// <returns></returns>
+        Task<Page<T>> GeneratePageAsync<T>(int pageIndex, int pageSize, IAsyncQueryable<T> v);
     }
 }

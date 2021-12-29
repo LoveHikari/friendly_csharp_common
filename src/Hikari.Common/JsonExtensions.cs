@@ -26,7 +26,7 @@ namespace Hikari.Common
             List<TValue> resultData = new List<TValue>();
             foreach (var item in jsonArray)
             {
-                var v = JsonSerializer.Deserialize<TValue>(item.GetString()??"", options);
+                var v = JsonSerializer.Deserialize<TValue>(item.ToString(), options);
                 resultData.Add(v);
             }
             return resultData;

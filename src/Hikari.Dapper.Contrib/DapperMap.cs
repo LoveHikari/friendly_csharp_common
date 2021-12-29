@@ -37,7 +37,7 @@ namespace Dapper.Contrib.Extensions
                     (type, columnName) =>
                         type.GetProperties().FirstOrDefault(prop =>
                             prop.GetCustomAttributes(false)
-                                .OfType<System.ComponentModel.DataAnnotations.Schema.ColumnAttribute>()
+                                .OfType<ColumnAttribute>()
                                 .Any(attr => attr.Name == columnName)
                         )
                 ),
@@ -58,7 +58,7 @@ namespace Dapper.Contrib.Extensions
                     (type, columnName) =>
                         type.GetProperties().FirstOrDefault(prop =>
                             prop.GetCustomAttributes(false)
-                                .OfType<System.ComponentModel.DataAnnotations.Schema.ColumnAttribute>()
+                                .OfType<ColumnAttribute>()
                                 .Any(attr => attr.Name == columnName)
                         )
                 ),

@@ -1,7 +1,6 @@
-﻿using System.Data;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using System.Data;
 
 namespace FsLib.EfCore.Domain
 {
@@ -11,7 +10,7 @@ namespace FsLib.EfCore.Domain
     public class UnitOfWork : IUnitOfWork
     {
         private readonly IDbContext _dbContext;
-        private IDbContextTransaction _dbTransaction;
+        private IDbContextTransaction? _dbTransaction;
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -29,6 +28,14 @@ namespace FsLib.EfCore.Domain
             _dbTransaction = await _dbContext.Database.BeginTransactionAsync();
         }
         /// <summary>
+        /// 开始一个事务
+        /// </summary>
+        /// <returns></returns>
+        public void BeginTransaction()
+        {
+            _dbTransaction = _dbContext.Database.BeginTransaction();
+        }
+        /// <summary>
         /// 执行非查询语句,并返回受影响的记录行数
         /// </summary>
         /// <param name="sql">SQL语句</param>
@@ -39,14 +46,34 @@ namespace FsLib.EfCore.Domain
             return await _dbContext.Database.ExecuteSqlRawAsync(sql, parameters);
         }
         /// <summary>
+        /// 执行非查询语句,并返回受影响的记录行数
+        /// </summary>
+        /// <param name="sql">SQL语句</param>
+        /// <param name="parameters">参数</param>
+        /// <returns>受影响记录行数</returns>
+        public int ExecuteNonQuery(string sql, params object[] parameters)
+        {
+            return _dbContext.Database.ExecuteSqlRaw(sql, parameters);
+        }
+        /// <summary>
         /// 执行非查询语句,并返回首行首列的值
         /// </summary>
         /// <param name="sql">SQL语句</param>
         /// <param name="parameters">参数</param>
         /// <returns>Object</returns>
-        public async Task<object> ExecuteScalarAsync(string sql, params object[] parameters)
+        public async Task<object?> ExecuteScalarAsync(string sql, params object[] parameters)
         {
             return await ExecuteScalarAsync(sql, CommandType.Text, parameters);
+        }
+        /// <summary>
+        /// 执行非查询语句,并返回首行首列的值
+        /// </summary>
+        /// <param name="sql">SQL语句</param>
+        /// <param name="parameters">参数</param>
+        /// <returns>Object</returns>
+        public object? ExecuteScalar(string sql, params object[] parameters)
+        {
+            return ExecuteScalar(sql, CommandType.Text, parameters);
         }
         /// <summary>
         /// 添加
@@ -55,10 +82,52 @@ namespace FsLib.EfCore.Domain
         /// <returns>是否成功</returns>
         public async Task<bool> AddAsync<TEntity>(TEntity entity) where TEntity : class
         {
+            await _dbContext.Set<TEntity>().AddAsync(entity);
+            //_dbContext.Entry<TEntity>(entity).State = EntityState.Added;
+            if (_dbTransaction == null)
+                return await _dbContext.SaveChangesAsync() > 0;
+
+            return true;
+        }
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="entity">数据实体</param>
+        /// <returns>是否成功</returns>
+        public bool Add<TEntity>(TEntity entity) where TEntity : class
+        {
             _dbContext.Set<TEntity>().Add(entity);
             //_dbContext.Entry<TEntity>(entity).State = EntityState.Added;
-            if (_dbTransaction != null)
+            if (_dbTransaction == null)
+                return _dbContext.SaveChanges() > 0;
+
+            return true;
+        }
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="entity">数据实体</param>
+        /// <returns>是否成功</returns>
+        public async Task<bool> AddListAsync<TEntity>(IEnumerable<TEntity> entity) where TEntity : class
+        {
+            await _dbContext.Set<TEntity>().AddRangeAsync(entity);
+            //_dbContext.Entry<TEntity>(entity).State = EntityState.Added;
+            if (_dbTransaction == null)
                 return await _dbContext.SaveChangesAsync() > 0;
+
+            return true;
+        }
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="entity">数据实体</param>
+        /// <returns>是否成功</returns>
+        public bool AddList<TEntity>(IEnumerable<TEntity> entity) where TEntity : class
+        {
+            _dbContext.Set<TEntity>().AddRange(entity);
+            //_dbContext.Entry<TEntity>(entity).State = EntityState.Added;
+            if (_dbTransaction == null)
+                return _dbContext.SaveChanges() > 0;
 
             return true;
         }
@@ -69,9 +138,21 @@ namespace FsLib.EfCore.Domain
         /// <returns>是否成功</returns>
         public async Task<bool> UpdateAsync<TEntity>(TEntity entity) where TEntity : class
         {
-            _dbContext.Entry<TEntity>(entity).State = EntityState.Modified;
-            if (_dbTransaction != null)
+            _dbContext.Entry(entity).State = EntityState.Modified;
+            if (_dbTransaction == null)
                 return await _dbContext.SaveChangesAsync() > 0;
+            return true;
+        }
+        /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="entity">数据实体</param>
+        /// <returns>是否成功</returns>
+        public bool Update<TEntity>(TEntity entity) where TEntity : class
+        {
+            _dbContext.Entry(entity).State = EntityState.Modified;
+            if (_dbTransaction == null)
+                return _dbContext.SaveChanges() > 0;
             return true;
         }
         /// <summary>
@@ -82,9 +163,22 @@ namespace FsLib.EfCore.Domain
         /// <returns></returns>
         public async Task<bool> CleanAsync<TEntity>(TEntity entity) where TEntity : class
         {
-            _dbContext.Entry<TEntity>(entity).State = EntityState.Unchanged;
-            if (_dbTransaction != null)
+            _dbContext.Entry(entity).State = EntityState.Unchanged;
+            if (_dbTransaction == null)
                 return await _dbContext.SaveChangesAsync() > 0;
+            return true;
+        }
+        /// <summary>
+        /// 清理
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public bool Clean<TEntity>(TEntity entity) where TEntity : class
+        {
+            _dbContext.Entry(entity).State = EntityState.Unchanged;
+            if (_dbTransaction == null)
+                return _dbContext.SaveChanges() > 0;
             return true;
         }
         /// <summary>
@@ -96,8 +190,47 @@ namespace FsLib.EfCore.Domain
         {
             _dbContext.Set<TEntity>().Remove(entity);
             //_dbContext.Entry<TEntity>(entity).State = EntityState.Deleted;
-            if (_dbTransaction != null)
+            if (_dbTransaction == null)
                 return await _dbContext.SaveChangesAsync() > 0;
+            return true;
+        }
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="entity">数据实体</param>
+        /// <returns>是否成功</returns>
+        public bool Delete<TEntity>(TEntity entity) where TEntity : class
+        {
+            _dbContext.Set<TEntity>().Remove(entity);
+            //_dbContext.Entry<TEntity>(entity).State = EntityState.Deleted;
+            if (_dbTransaction == null)
+                return _dbContext.SaveChanges() > 0;
+            return true;
+        }
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="entity">数据实体</param>
+        /// <returns>是否成功</returns>
+        public async Task<bool> DeleteListAsync<TEntity>(IEnumerable<TEntity> entity) where TEntity : class
+        {
+            _dbContext.Set<TEntity>().RemoveRange(entity);
+            //_dbContext.Entry<TEntity>(entity).State = EntityState.Deleted;
+            if (_dbTransaction == null)
+                return await _dbContext.SaveChangesAsync() > 0;
+            return true;
+        }
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="entity">数据实体</param>
+        /// <returns>是否成功</returns>
+        public bool DeleteList<TEntity>(IEnumerable<TEntity> entity) where TEntity : class
+        {
+            _dbContext.Set<TEntity>().RemoveRange(entity);
+            //_dbContext.Entry<TEntity>(entity).State = EntityState.Deleted;
+            if (_dbTransaction == null)
+                return _dbContext.SaveChanges() > 0;
             return true;
         }
         /// <summary>
@@ -113,13 +246,31 @@ namespace FsLib.EfCore.Domain
             return true;
         }
         /// <summary>
+        /// 事务提交
+        /// </summary>
+        /// <returns></returns>
+        public bool Commit()
+        {
+            if (_dbTransaction == null)
+                return _dbContext.SaveChanges() > 0;
+            else
+                _dbTransaction.Commit();
+            return true;
+        }
+        /// <summary>
+        /// 事务回滚
+        /// </summary>
+        public async Task RollbackAsync()
+        {
+            await _dbTransaction?.RollbackAsync()!;
+        }
+        /// <summary>
         /// 事务回滚
         /// </summary>
         public void Rollback()
         {
             _dbTransaction?.Rollback();
         }
-
         #region 私有方法
 
         /// <summary>
@@ -129,29 +280,31 @@ namespace FsLib.EfCore.Domain
         /// <param name="cmdType">命令类型</param>
         /// <param name="parameters">参数</param>
         /// <returns>Object</returns>
-        private async Task<object> ExecuteScalarAsync(string sql, CommandType cmdType, params object[] parameters)
+        private async Task<object?> ExecuteScalarAsync(string sql, CommandType cmdType, params object[] parameters)
         {
-            var conn = _dbContext.Database.GetDbConnection();
-            try
-            {
-                conn.Open();
-                using (var command = conn.CreateCommand())
-                {
-                    command.CommandType = cmdType;
-                    command.CommandText = sql;
-                    command.Parameters.AddRange(parameters);
+            await using var command = _dbContext.Database.GetDbConnection().CreateCommand();
+            command.CommandType = cmdType;
+            command.CommandText = sql;
+            command.Parameters.AddRange(parameters);
 
-                    return await command.ExecuteScalarAsync();
-
-
-                }
-            }
-            finally
-            {
-                conn.Close();
-            }
+            return await command.ExecuteScalarAsync();
         }
+        /// <summary>
+        /// 执行非查询语句,并返回首行首列的值
+        /// </summary>
+        /// <param name="sql">SQL语句</param>
+        /// <param name="cmdType">命令类型</param>
+        /// <param name="parameters">参数</param>
+        /// <returns>Object</returns>
+        private object? ExecuteScalar(string sql, CommandType cmdType, params object[] parameters)
+        {
+            using var command = _dbContext.Database.GetDbConnection().CreateCommand();
+            command.CommandType = cmdType;
+            command.CommandText = sql;
+            command.Parameters.AddRange(parameters);
 
+            return command.ExecuteScalar();
+        }
         #endregion
     }
 }

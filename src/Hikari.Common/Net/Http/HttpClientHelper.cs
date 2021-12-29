@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Hikari.Common.IO;
 
 /******************************************************************************************************************
  * 
@@ -36,7 +37,7 @@ namespace Hikari.Common.Net.Http
             "Content-MD5", "Content-Range", "Content-Type", "Expires", "Last-Modified"
         };
 
-        private readonly CookieContainer _cookieContainer = new ();
+        private readonly CookieContainer _cookieContainer;
         /// <summary>
         /// 请求错误代码
         /// </summary>
@@ -48,20 +49,27 @@ namespace Hikari.Common.Net.Http
         /// <summary>
         /// HttpClient封装
         /// </summary>
-        public HttpClientHelper()
+        /// <param name="baseAddress">请求基址</param>
+        public HttpClientHelper(string? baseAddress = null)
         {
+            _cookieContainer = new ();
             var handler = new HttpClientHandler
             {
                 CookieContainer = _cookieContainer,
-                UseCookies = false,
+                UseCookies = true,
             };
             this._client = new HttpClient(handler);
+            if (!string.IsNullOrWhiteSpace(baseAddress))
+            {
+                this._client.BaseAddress = new Uri(baseAddress);
+            }
+            
             this.ErrorContent = "";
         }
         /// <summary>
         /// 发生一个get请求
         /// </summary>
-        /// <param name="url">请求地址</param>
+        /// <param name="url">请求url</param>
         /// <param name="charset">编码</param>
         /// <param name="headerItem">请求头</param>
         /// <returns></returns>
@@ -79,11 +87,31 @@ namespace Hikari.Common.Net.Http
 
             return html;
         }
+        /// <summary>
+        /// 发生一个get请求
+        /// </summary>
+        /// <param name="url">请求url</param>
+        /// <param name="charset">编码</param>
+        /// <param name="headerItem">请求头</param>
+        /// <returns></returns>
+        public string Get(string url, string charset = "utf-8", IDictionary<string, string>? headerItem = null)
+        {
+            var response = Send(url, HttpMethod.Get, null, headerItem);
 
+            string html = "";
+
+            if (response.IsSuccessStatusCode)
+            {
+                var bytes = response.Content.ReadAsStream().ToBytes();
+                html = System.Text.Encoding.GetEncoding(charset).GetString(bytes);
+            }
+
+            return html;
+        }
         /// <summary>
         /// 发生一个post请求
         /// </summary>
-        /// <param name="url">请求地址</param>
+        /// <param name="url">请求url</param>
         /// <param name="param">请求参数</param>
         /// <param name="charset">编码</param>
         /// <param name="headerItem">请求头</param>
@@ -102,11 +130,33 @@ namespace Hikari.Common.Net.Http
 
             return html;
         }
+        /// <summary>
+        /// 发生一个post请求
+        /// </summary>
+        /// <param name="url">请求url</param>
+        /// <param name="param">请求参数</param>
+        /// <param name="charset">编码</param>
+        /// <param name="headerItem">请求头</param>
+        /// <returns></returns>
+        public string Post(string url, IDictionary<string, object> param, string charset = "utf-8", IDictionary<string, string>? headerItem = null)
+        {
+            var response = Send(url, HttpMethod.Post, param, headerItem);
+
+            string html = "";
+
+            if (response.IsSuccessStatusCode)
+            {
+                var bytes = response.Content.ReadAsStream().ToBytes();
+                html = System.Text.Encoding.GetEncoding(charset).GetString(bytes);
+            }
+
+            return html;
+        }
 
         /// <summary>
         /// 发生一个HTTP请求
         /// </summary>
-        /// <param name="url">请求地址</param>
+        /// <param name="url">请求url</param>
         /// <param name="method">请求方式</param>
         /// <param name="param">请求参数</param>
         /// <param name="charset">编码</param>
@@ -130,7 +180,32 @@ namespace Hikari.Common.Net.Http
         /// <summary>
         /// 发生一个HTTP请求
         /// </summary>
-        /// <param name="url">请求地址</param>
+        /// <param name="url">请求url</param>
+        /// <param name="method">请求方式</param>
+        /// <param name="param">请求参数</param>
+        /// <param name="charset">编码</param>
+        /// <param name="headerItem">请求头</param>
+        /// <returns></returns>
+        public string Send(string url, HttpMethod method, IDictionary<string, object> param, string charset = "utf-8", IDictionary<string, string>? headerItem = null)
+        {
+            var response = Send(url, method, param, headerItem);
+
+            string html = "";
+
+            if (response.IsSuccessStatusCode)
+            {
+                var bytes = response.Content.ReadAsStream().ToBytes();
+
+                html = System.Text.Encoding.GetEncoding(charset).GetString(bytes);
+            }
+
+            return html;
+
+        }
+        /// <summary>
+        /// 发生一个HTTP请求
+        /// </summary>
+        /// <param name="url">请求url</param>
         /// <param name="method">请求方式</param>
         /// <param name="param">请求参数</param>
         /// <param name="headerItem">请求头</param>
@@ -151,6 +226,28 @@ namespace Hikari.Common.Net.Http
 
         }
         /// <summary>
+        /// 发生一个HTTP请求
+        /// </summary>
+        /// <param name="url">请求url</param>
+        /// <param name="method">请求方式</param>
+        /// <param name="param">请求参数</param>
+        /// <param name="headerItem">请求头</param>
+        /// <returns></returns>
+        private HttpResponseMessage Send(string url, HttpMethod method, IDictionary<string, object>? param, IDictionary<string, string>? headerItem = null)
+        {
+            var request = new HttpRequestMessage(method, new Uri(url));
+
+            SetHttpContent(request, headerItem, param);
+            SetHeaders(request, headerItem);
+
+            var response = this._client.Send(request);
+
+            this.ErrorStatusCode = response.StatusCode;
+
+            return response;
+
+        }
+        /// <summary>
         /// 获得cookies
         /// </summary>
         /// <returns></returns>
@@ -161,7 +258,7 @@ namespace Hikari.Common.Net.Http
             return cookies;
         }
         /// <summary>
-        /// 获得cookies
+        /// 设置cookies
         /// </summary>
         /// <returns></returns>
         public void SetCookies(string cookieHeader)
@@ -170,7 +267,7 @@ namespace Hikari.Common.Net.Http
             {
                 _cookieContainer.SetCookies(_client.BaseAddress, cookieHeader);
             }
-           
+
         }
         /// <summary>
         /// 设置请求内容

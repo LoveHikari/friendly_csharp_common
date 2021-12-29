@@ -15,5 +15,6 @@ namespace FsLib.EfCore.Domain
         EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
+        int SaveChanges();
     }
 }

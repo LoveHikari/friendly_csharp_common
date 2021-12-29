@@ -5,6 +5,9 @@
     /// </summary>
     public interface IAggregateRoot
     {
+        /// <summary>
+        /// 主键id
+        /// </summary>
         int Id { get; }
     }
 }

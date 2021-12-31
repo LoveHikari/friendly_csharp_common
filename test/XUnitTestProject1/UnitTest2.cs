@@ -1,24 +1,16 @@
-﻿using FsLib.CreditCardUtils;
+﻿using Dapper.Contrib.Extensions;
+using Entity;
+using FsLib.CreditCardUtils;
 using FsLib.TuChuangUtils;
-using Hikari.Common;
-using Hikari.Common.Net.Http;
+using Hikari.Common.Office;
+using Hikari.Dapper.Contrib;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Net.Http;
-using System.Text.RegularExpressions;
-using Hikari.Common.Office;
+using System.Reflection;
+using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
-using System.Reflection;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Hikari.Common.IO;
-using Microsoft.Extensions.Configuration;
 
 namespace XUnitTestProject1
 {
@@ -108,31 +100,6 @@ namespace XUnitTestProject1
         }
 
         [Fact]
-        public void Test2()
-        {
-            //System.Globalization.CultureInfo.CurrentCulture = new CultureInfo("zh-CN");
-            // var mow = DateTime.Parse("1949-6-4");
-            //System.Globalization.ChineseLunisolarCalendar cc = new System.Globalization.ChineseLunisolarCalendar();
-            //var s1 = cc.IsLeapYear(mow.Year).ToString();//;False
-            //var s2 = cc.GetLeapMonth(mow.Year).ToString();//;0，注意：表示所闰月份。如果返回5，表示闰4月。
-            string url = "https://translate.google.cn/_/TranslateWebserverUi/data/batchexecute";
-            Dictionary<string, object> p = new Dictionary<string, object>()
-                {{"f.req", "[[[\"MkEWBc\",\"[[\\\"公司\\\",\\\"auto\\\",\\\"en\\\",true],[null]]\",null,\"generic\"]]]"}};
-
-            Dictionary<string, string> h = new Dictionary<string, string>()
-                {{"Content-Type", "application/x-www-form-urlencoded"}};
-
-            HttpClientHelper helper = new HttpClientHelper();
-            var v = helper.PostAsync(url, p, "utf-8", h).Result;
-
-            Regex regex = new Regex("\\\\\"(.+?)\\\\\"");
-            var ms = regex.Matches(v);
-
-            var v1 = ms[2].Groups[1].Value;
-
-            Assert.True(true);
-        }
-        [Fact]
         public void Test3()
         {
 
@@ -171,8 +138,18 @@ namespace XUnitTestProject1
         [Fact]
         public void Test4()
         {
-            
-            var v = Path.GetDirectoryName("\\");
+            //var v1 = SqlMapper.GetTypeMap(typeof(MProjectDetail));
+            DapperMap.Init(Assembly.Load("Entity"));
+            //var v2 = SqlMapper.GetTypeMap(typeof(MProjectDetail));
+            Hikari.Dapper.Contrib.
+            ProjectDetailDAO dao = new ProjectDetailDAO();
+
+            //var v = dao.GetAsync(1).GetAwaiter().GetResult();
+
+            var v = dao.AddAsync(new MProjectDetail()
+            {
+                project_id = 2
+            }).GetAwaiter().GetResult();
             Assert.True(true);
         }
 

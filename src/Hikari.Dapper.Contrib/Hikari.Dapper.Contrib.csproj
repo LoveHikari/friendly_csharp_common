@@ -4,15 +4,12 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<AssemblyName>Dapper.Contrib.Extensions</AssemblyName>
-		<RootNamespace>Dapper.Contrib.Extensions</RootNamespace>
 		<Description>Dapper Contrib Extension can specify the field name in the database for the model.</Description>
 		<Product></Product>
 		<Company>5cm R &amp; D department</Company>
 		<Authors>hikari.</Authors>
 		<Version>1.0.0.0</Version>
 		<AssemblyVersion>1.0.0.0</AssemblyVersion>
-		<PackageId>Dapper.Contrib.Extensions</PackageId>
 		<Copyright>Copyright @ hikari. 2021</Copyright>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -25,7 +22,7 @@
 	<ItemGroup>
 		<PackageReference Include="Dapper.Contrib" Version="2.0.78" />
 		<PackageReference Include="MySql.Data" Version="8.0.27" />
-		<PackageReference Include="Npgsql" Version="6.0.0" />
+		<PackageReference Include="Npgsql" Version="6.0.2" />
 		<PackageReference Include="System.Data.OracleClient" Version="1.0.8" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
 		<PackageReference Include="System.Data.SQLite" Version="1.0.115.5" />

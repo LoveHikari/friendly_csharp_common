@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
+using Dapper;
+using Dapper.Contrib.Extensions;
 
-namespace Dapper.Contrib.Extensions
+namespace Hikari.Dapper.Contrib
 {
     public class DapperMap
     {
@@ -27,7 +29,7 @@ namespace Dapper.Contrib.Extensions
     /// usual.
     /// </summary>
     /// <typeparam name="T">The type of the object that this association between the mapper applies to.</typeparam>
-    public class ColumnAttributeTypeMapper<T> : FallbackTypeMapper
+    class ColumnAttributeTypeMapper<T> : FallbackTypeMapper
     {
         public ColumnAttributeTypeMapper()
             : base(new SqlMapper.ITypeMap[]
@@ -48,7 +50,7 @@ namespace Dapper.Contrib.Extensions
 
     }
 
-    public class ColumnAttributeTypeMapper : FallbackTypeMapper
+    class ColumnAttributeTypeMapper : FallbackTypeMapper
     {
         public ColumnAttributeTypeMapper(Type t)
             : base(new SqlMapper.ITypeMap[]
@@ -73,7 +75,7 @@ namespace Dapper.Contrib.Extensions
     {
         public string Name { get; set; }
     }
-    public class FallbackTypeMapper : SqlMapper.ITypeMap
+    class FallbackTypeMapper : SqlMapper.ITypeMap
     {
         private readonly IEnumerable<SqlMapper.ITypeMap> _mappers;
 

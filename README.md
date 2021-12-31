@@ -1,6 +1,10 @@
 # friendly_csharp_common
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE) [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
 
+<a href="https://www.jetbrains.com/?from=Util" target="_blank">
+    <img src="https://github.com/dotnetcore/Home/blob/master/img/jetbrains.svg" title="JetBrains" />
+</a>
+
 C# Public libraries, including .net standard
 
 项目开发模式：日常代码积累+网络搜集

@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http.Headers;
 using System.Xml.Linq;
+using Microsoft.Extensions.DependencyInjection;
 
 /******************************************************************************************************************
  * 
@@ -43,31 +44,65 @@ namespace Hikari.Common.Net.Http
         /// 请求错误时内容
         /// </summary>
         public string ErrorContent { get; set; }
+        ///// <summary>
+        ///// HttpClient封装
+        ///// </summary>
+        ///// <param name="baseAddress">请求基址</param>
+        //public HttpClientHelper(string? baseAddress = null)
+        //{
+        //    _cookieContainer = new ();
+        //    _webProxy = new WebProxy();
+        //    _headerItem = new Dictionary<string, string>();
+        //    _encoding = System.Text.Encoding.GetEncoding("utf-8");
+
+        //    var handler = new HttpClientHandler
+        //    {
+        //        CookieContainer = _cookieContainer,
+        //        UseCookies = true,
+        //        Proxy = _webProxy,
+        //        UseProxy = true,
+        //        ServerCertificateCustomValidationCallback = (message, cert, chain, error) => true  // 忽略https证书提醒
+        //    };
+        //    this._client = new HttpClient(handler);
+        //    if (!string.IsNullOrWhiteSpace(baseAddress))
+        //    {
+        //        this._client.BaseAddress = new Uri(baseAddress);
+        //    }
+
+        //    this.ErrorContent = "";
+        //}
         /// <summary>
         /// HttpClient封装
         /// </summary>
         /// <param name="baseAddress">请求基址</param>
         public HttpClientHelper(string? baseAddress = null)
         {
-            _cookieContainer = new ();
+            _cookieContainer = new();
             _webProxy = new WebProxy();
             _headerItem = new Dictionary<string, string>();
             _encoding = System.Text.Encoding.GetEncoding("utf-8");
-
-            var handler = new HttpClientHandler
+            string name = new Random().RandomStr(10);
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddHttpClient(name).ConfigurePrimaryHttpMessageHandler(() =>
             {
-                CookieContainer = _cookieContainer,
-                UseCookies = true,
-                Proxy = _webProxy,
-                UseProxy = true,
-                ServerCertificateCustomValidationCallback = (message, cert, chain, error) => true  // 忽略https证书提醒
-            };
-            this._client = new HttpClient(handler);
+                var handler = new HttpClientHandler
+                {
+                    CookieContainer = _cookieContainer,
+                    UseCookies = true,
+                    Proxy = _webProxy,
+                    UseProxy = true,
+                    ServerCertificateCustomValidationCallback = (message, cert, chain, error) => true  // 忽略https证书提醒
+                };
+                return handler;
+            });
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+            IHttpClientFactory httpClientFactory = serviceProvider.GetService<IHttpClientFactory>()!;
+            this._client = httpClientFactory.CreateClient(name);
             if (!string.IsNullOrWhiteSpace(baseAddress))
             {
                 this._client.BaseAddress = new Uri(baseAddress);
             }
-            
+
             this.ErrorContent = "";
         }
         /// <summary>
@@ -251,11 +286,16 @@ namespace Hikari.Common.Net.Http
         /// 设置cookies
         /// </summary>
         /// <returns></returns>
-        public void SetCookies(string cookieHeader)
+        public void SetCookies(string cookies)
         {
             if (_client.BaseAddress is not null)
             {
-                _cookieContainer.SetCookies(_client.BaseAddress, cookieHeader);
+                var cs = cookies.Split(';', StringSplitOptions.RemoveEmptyEntries);
+                foreach (var cookieHeader in cs)
+                {
+                    _cookieContainer.SetCookies(_client.BaseAddress, cookieHeader);
+                }
+                
             }
 
         }

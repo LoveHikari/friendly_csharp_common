@@ -1,16 +1,17 @@
-﻿using Dapper.Contrib.Extensions;
-using Entity;
-using FsLib.CreditCardUtils;
+﻿using FsLib.CreditCardUtils;
 using FsLib.TuChuangUtils;
+using Hikari.Common;
 using Hikari.Common.Office;
-using Hikari.Dapper.Contrib;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
+using System.Net.Http;
+using Hikari.Common.Net.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace XUnitTestProject1
 {
@@ -138,18 +139,24 @@ namespace XUnitTestProject1
         [Fact]
         public void Test4()
         {
-            //var v1 = SqlMapper.GetTypeMap(typeof(MProjectDetail));
-            DapperMap.Init(Assembly.Load("Entity"));
-            //var v2 = SqlMapper.GetTypeMap(typeof(MProjectDetail));
-            Hikari.Dapper.Contrib.
-            ProjectDetailDAO dao = new ProjectDetailDAO();
-
-            //var v = dao.GetAsync(1).GetAwaiter().GetResult();
-
-            var v = dao.AddAsync(new MProjectDetail()
+            HttpClientHelper clientHelper = new HttpClientHelper();
+            ThreadPoolHelper.BeginThreadPool();
+            ThreadPoolHelper.CheckThreadPool();
+            for (int i = 0; i < 1000; i++)
             {
-                project_id = 2
-            }).GetAwaiter().GetResult();
+                async void CallBack(object state)
+                {
+                    var h = await clientHelper.GetAsync("https://www.baidu.com/");
+                    System.Diagnostics.Debug.WriteLine(h);
+                }
+
+                ThreadPool.QueueUserWorkItem(CallBack);
+            }
+            while (true)
+            {
+                
+            }
+
             Assert.True(true);
         }
 

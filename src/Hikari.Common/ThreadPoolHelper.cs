@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-
-/******************************************************************************************************************
+﻿/******************************************************************************************************************
  * 
  * 
  * 标  题：线程池帮助类(版本：Version1.0.0)
@@ -31,7 +28,7 @@ namespace Hikari.Common
     /// </summary>
     public class ThreadPoolHelper
     {
-        private static RegisteredWaitHandle _rhw;
+        private static RegisteredWaitHandle? _rhw;
         /// <summary>
         /// 线程池全部结束标志，结束为true
         /// </summary>
@@ -70,19 +67,16 @@ namespace Hikari.Common
         /// </summary>
         /// <param name="state"></param>
         /// <param name="timeout"></param>
-        private static void CheckThreadPool(object state, bool timeout)
+        private static void CheckThreadPool(object? state, bool timeout)
         {
-            int workerThreads = 0;
-            int maxWordThreads = 0;
-            int compleThreads = 0;
-            ThreadPool.GetAvailableThreads(out workerThreads, out compleThreads);
-            ThreadPool.GetMaxThreads(out maxWordThreads, out compleThreads);
+            ThreadPool.GetAvailableThreads(out var workerThreads, out _);
+            ThreadPool.GetMaxThreads(out var maxWordThreads, out _);
             System.Diagnostics.Debug.WriteLine($"现在是{DateTime.Now}，可用线程数为{workerThreads}，最大线程数为{maxWordThreads}");
             //当可用的线数与池程池最大的线程相等时表示线程池中所有的线程已经完成
             if (workerThreads == maxWordThreads)
             {
                 //当执行此方法后CheckThreadPool将不再执行
-                _rhw.Unregister(null);
+                _rhw?.Unregister(null);
                 //此处加入所有线程完成后的处理代码
                 System.Diagnostics.Debug.WriteLine("所有线程结束!");
                 ThreadPoolEndFlag = true;

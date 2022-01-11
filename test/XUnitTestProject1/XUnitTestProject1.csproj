@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="CZGL.SystemInfo" Version="1.0.3" />
     <PackageReference Include="Hardware.Info" Version="1.1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0-preview-20211109-03" />
     <PackageReference Include="NSoup.Standard" Version="2.0.1" />
     <PackageReference Include="PKT.NPinyin" Version="2.0.1" />
@@ -26,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Entity\Entity.csproj" />
     <ProjectReference Include="..\..\src\Hikari.Common.Office\Hikari.Common.Office.csproj" />
     <ProjectReference Include="..\..\src\Hikari.Common.Redis\Hikari.Common.Redis.csproj" />
     <ProjectReference Include="..\..\src\Hikari.DbCore\Hikari.DbCore.csproj" />

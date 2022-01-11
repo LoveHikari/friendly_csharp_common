@@ -25,7 +25,7 @@ namespace Hikari.Common
     /// <summary>
     /// 获得http信息
     /// </summary>
-    [Obsolete("弃用，请使用HttpClientHelper类", true)]
+    [Obsolete("弃用，请使用HttpClientHelper类", false)]
     public class HttpHelper
     {
         #region http POST 请求

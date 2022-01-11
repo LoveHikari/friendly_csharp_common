@@ -29,7 +29,8 @@ namespace FsLib.TuChuangUtils
             {
                 {"Content-Type", "multipart/form-data"}
             };
-            var result = await httpClient.PostAsync(url, param, "utf-8", headerItem);
+            httpClient.SetHeaderItem(headerItem);
+            var result = await httpClient.PostAsync(url, param);
             var jd = System.Text.Json.JsonDocument.Parse(result);
             string imgUrl = jd.RootElement.GetProperty("url").GetString();
 

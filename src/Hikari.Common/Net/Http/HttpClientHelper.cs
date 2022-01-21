@@ -44,33 +44,6 @@ namespace Hikari.Common.Net.Http
         /// 请求错误时内容
         /// </summary>
         public string ErrorContent { get; set; }
-        ///// <summary>
-        ///// HttpClient封装
-        ///// </summary>
-        ///// <param name="baseAddress">请求基址</param>
-        //public HttpClientHelper(string? baseAddress = null)
-        //{
-        //    _cookieContainer = new ();
-        //    _webProxy = new WebProxy();
-        //    _headerItem = new Dictionary<string, string>();
-        //    _encoding = System.Text.Encoding.GetEncoding("utf-8");
-
-        //    var handler = new HttpClientHandler
-        //    {
-        //        CookieContainer = _cookieContainer,
-        //        UseCookies = true,
-        //        Proxy = _webProxy,
-        //        UseProxy = true,
-        //        ServerCertificateCustomValidationCallback = (message, cert, chain, error) => true  // 忽略https证书提醒
-        //    };
-        //    this._client = new HttpClient(handler);
-        //    if (!string.IsNullOrWhiteSpace(baseAddress))
-        //    {
-        //        this._client.BaseAddress = new Uri(baseAddress);
-        //    }
-
-        //    this.ErrorContent = "";
-        //}
         /// <summary>
         /// HttpClient封装
         /// </summary>
@@ -81,23 +54,16 @@ namespace Hikari.Common.Net.Http
             _webProxy = new WebProxy();
             _headerItem = new Dictionary<string, string>();
             _encoding = System.Text.Encoding.GetEncoding("utf-8");
-            string name = new Random().RandomStr(10);
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddHttpClient(name).ConfigurePrimaryHttpMessageHandler(() =>
+
+            var handler = new HttpClientHandler
             {
-                var handler = new HttpClientHandler
-                {
-                    CookieContainer = _cookieContainer,
-                    UseCookies = true,
-                    Proxy = _webProxy,
-                    UseProxy = true,
-                    ServerCertificateCustomValidationCallback = (message, cert, chain, error) => true  // 忽略https证书提醒
-                };
-                return handler;
-            });
-            var serviceProvider = serviceCollection.BuildServiceProvider();
-            IHttpClientFactory httpClientFactory = serviceProvider.GetService<IHttpClientFactory>()!;
-            this._client = httpClientFactory.CreateClient(name);
+                CookieContainer = _cookieContainer,
+                UseCookies = true,
+                Proxy = _webProxy,
+                UseProxy = true,
+                ServerCertificateCustomValidationCallback = (message, cert, chain, error) => true  // 忽略https证书提醒
+            };
+            this._client = new HttpClient(handler);
             if (!string.IsNullOrWhiteSpace(baseAddress))
             {
                 this._client.BaseAddress = new Uri(baseAddress);
@@ -105,6 +71,41 @@ namespace Hikari.Common.Net.Http
 
             this.ErrorContent = "";
         }
+        ///// <summary>
+        ///// HttpClient封装
+        ///// </summary>
+        ///// <param name="baseAddress">请求基址</param>
+        //public HttpClientHelper(string? baseAddress = null)
+        //{
+        //    _cookieContainer = new();
+        //    _webProxy = new WebProxy();
+        //    _headerItem = new Dictionary<string, string>();
+        //    _encoding = System.Text.Encoding.GetEncoding("utf-8");
+        //    string name = new Random().RandomStr(10);
+        //    var serviceCollection = new ServiceCollection();
+        //    serviceCollection.AddHttpClient(name).ConfigurePrimaryHttpMessageHandler(() =>
+        //    {
+        //        var handler = new HttpClientHandler
+        //        {
+        //            CookieContainer = _cookieContainer,
+        //            UseCookies = true,
+        //            Proxy = _webProxy,
+        //            UseProxy = true,
+        //            ServerCertificateCustomValidationCallback = (message, cert, chain, error) => true, // 忽略https证书提醒
+        //            //AllowAutoRedirect = false
+        //        };
+        //        return handler;
+        //    });
+        //    var serviceProvider = serviceCollection.BuildServiceProvider();
+        //    IHttpClientFactory httpClientFactory = serviceProvider.GetService<IHttpClientFactory>()!;
+        //    this._client = httpClientFactory.CreateClient(name);
+        //    if (!string.IsNullOrWhiteSpace(baseAddress))
+        //    {
+        //        this._client.BaseAddress = new Uri(baseAddress);
+        //    }
+
+        //    this.ErrorContent = "";
+        //}
         /// <summary>
         /// 发生一个get请求
         /// </summary>
@@ -230,6 +231,18 @@ namespace Hikari.Common.Net.Http
 
         }
         /// <summary>
+        /// 获得重定向地址
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public string GetLocation(string url)
+        {
+            var v = GetHttpResponseMessage(url, HttpMethod.Get, null);
+            var uri = v.Headers.Location;
+            return uri?.AbsoluteUri ?? "";
+        }
+
+        /// <summary>
         /// 发生一个HTTP请求
         /// </summary>
         /// <param name="url">请求url</param>
@@ -264,7 +277,6 @@ namespace Hikari.Common.Net.Http
 
             SetHttpContent(request, param);
             SetHeaders(request);
-
             var response = this._client.Send(request);
 
             this.ErrorStatusCode = response.StatusCode;
@@ -272,6 +284,7 @@ namespace Hikari.Common.Net.Http
             return response;
 
         }
+
         /// <summary>
         /// 获得cookies
         /// </summary>
@@ -295,7 +308,7 @@ namespace Hikari.Common.Net.Http
                 {
                     _cookieContainer.SetCookies(_client.BaseAddress, cookieHeader);
                 }
-                
+
             }
 
         }
@@ -343,14 +356,14 @@ namespace Hikari.Common.Net.Http
             {
                 contentType = _headerItem["Content-Type"];
             }
-            
+
             HttpContent? content = null;
             if (param != null)
             {
                 if (contentType.Contains("form-data"))
                 {
                     var data = new MultipartFormDataContent();
-                    
+
                     foreach (KeyValuePair<string, object> pair in param)
                     {
                         if (pair.Key.ToLower().Contains("file"))
@@ -372,7 +385,7 @@ namespace Hikari.Common.Net.Http
                     HttpContent? data = null;
                     foreach (KeyValuePair<string, object> pair in param)
                     {
-                        if ( pair.Key.ToLower().Contains("file"))
+                        if (pair.Key.ToLower().Contains("file"))
                         {
                             // 读文件流
                             FileStream fs = new FileStream(pair.Value.ToString()!, FileMode.Open, FileAccess.Read, FileShare.Read);

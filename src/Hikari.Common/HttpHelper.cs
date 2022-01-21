@@ -25,7 +25,7 @@ namespace Hikari.Common
     /// <summary>
     /// 获得http信息
     /// </summary>
-    [Obsolete("弃用，请使用HttpClientHelper类", false)]
+    [Obsolete("弃用，请使用HttpClientHelper类", true)]
     public class HttpHelper
     {
         #region http POST 请求
@@ -533,27 +533,27 @@ namespace Hikari.Common
             string dataStr = GetFormData(param, headerItem);
             if (qequest == "POST")
                 request.ContentLength = Encoding.GetEncoding(chareset).GetByteCount(dataStr);
-            SetHeaderValue(request, headerItem);
-            request.Proxy = proxy;  //将其默认代理设置为空
+           // SetHeaderValue(request, headerItem);
+            //request.Proxy = proxy;  //将其默认代理设置为空
             //CookieContainer cookie = new CookieContainer();
 
-            request.CookieContainer = cookies ?? GetCookieContainer(url, cookie);
-            request.Timeout = 90000;
+            //request.CookieContainer = cookies ?? GetCookieContainer(url, cookie);
+            //request.Timeout = 90000;
             if (qequest == "POST")
             {
                 Stream myRequestStream = request.GetRequestStream();
                 myRequestStream.Write(Encoding.GetEncoding(chareset).GetBytes(dataStr), 0, Encoding.GetEncoding(chareset).GetByteCount(dataStr));
                 myRequestStream.Close();
             }
-            request.ServicePoint.Expect100Continue = false;  //这个在Post的时候，一定要加上，如果服务器返回错误，他还会继续再去请求，不会使用之前的错误数据，做返回数据
+            //request.ServicePoint.Expect100Continue = false;  //这个在Post的时候，一定要加上，如果服务器返回错误，他还会继续再去请求，不会使用之前的错误数据，做返回数据
 
             HttpWebResponse response;
             Stream myResponseStream;
             try
             {
                 response = (HttpWebResponse)request.GetResponse();
-                response.Cookies = request.CookieContainer?.GetCookies(response.ResponseUri);
-                cookie = request.CookieContainer?.GetCookieHeader(response.ResponseUri);
+                //response.Cookies = request.CookieContainer?.GetCookies(response.ResponseUri);
+                //cookie = request.CookieContainer?.GetCookieHeader(response.ResponseUri);
                 myResponseStream = response.GetResponseStream();
             }
             catch (WebException wex)

@@ -1,4 +1,4 @@
-﻿namespace FsLib.CreditCardUtils
+﻿namespace Hikari.Common.CreditCard
 {
     /// <summary>
     /// 信用卡验证结果

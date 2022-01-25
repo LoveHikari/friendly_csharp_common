@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using FsLib.CreditCardUtils.BINValidators;
+using Hikari.Common.CreditCard.BINValidators;
+
 /******************************************************************************************************************
  * 
  * 
@@ -15,7 +16,7 @@ using FsLib.CreditCardUtils.BINValidators;
  * 
  * 
  * ***************************************************************************************************************/
-namespace FsLib.CreditCardUtils
+namespace Hikari.Common.CreditCard
 {
     /// <summary>
     /// 信用卡验证器

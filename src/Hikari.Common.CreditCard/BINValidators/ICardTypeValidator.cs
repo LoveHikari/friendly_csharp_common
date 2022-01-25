@@ -1,4 +1,4 @@
-﻿namespace FsLib.CreditCardUtils.BINValidators
+﻿namespace Hikari.Common.CreditCard.BINValidators
 {
     public interface ICardTypeValidator
     {

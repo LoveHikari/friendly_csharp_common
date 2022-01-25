@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FsLib.CreditCardUtils.BINValidators
+namespace Hikari.Common.CreditCard.BINValidators
 {
     /// <summary>
     /// 已知卡类型

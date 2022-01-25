@@ -31,7 +31,7 @@
     <ProjectReference Include="..\..\src\Hikari.Common.Redis\Hikari.Common.Redis.csproj" />
     <ProjectReference Include="..\..\src\Hikari.DbCore\Hikari.DbCore.csproj" />
     <ProjectReference Include="..\..\src\Hikari.Common\Hikari.Common.csproj" />
-    <ProjectReference Include="..\..\src\FsLib.CreditCardUtils\FsLib.CreditCardUtils.csproj" />
+    <ProjectReference Include="..\..\src\FsLib.CreditCardUtils\Hikari.Common.CreditCard.csproj" />
     <ProjectReference Include="..\..\src\FsLib.EfCore\FsLib.EfCore.csproj" />
     <ProjectReference Include="..\..\src\FsLib.TuChuangUtils\FsLib.TuChuangUtils.csproj" />
   </ItemGroup>

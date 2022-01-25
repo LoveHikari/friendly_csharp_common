@@ -1,4 +1,4 @@
-﻿namespace FsLib.CreditCardUtils
+﻿namespace Hikari.Common.CreditCard
 {
     /// <summary>
     /// 卡号格式

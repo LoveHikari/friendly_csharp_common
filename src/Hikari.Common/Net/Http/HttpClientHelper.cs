@@ -50,6 +50,7 @@ namespace Hikari.Common.Net.Http
         /// <param name="baseAddress">请求基址</param>
         public HttpClientHelper(string? baseAddress = null)
         {
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
             _cookieContainer = new();
             _webProxy = new WebProxy();
             _headerItem = new Dictionary<string, string>();

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using Hikari.Common.Drawing;
 using ThoughtWorks.QRCode.Codec;
 using ZXing;
 using ZXing.QrCode;
@@ -20,7 +21,7 @@ namespace Hikari.Common
         public static string DecodeQrCode(string strbase64)
         {
             var barcodeBitmap = ImageHelper.Base64ToBitmap(strbase64);
-            string text = DecodeQrCode(barcodeBitmap);
+            string text = DecodeQrCode((Bitmap)barcodeBitmap);
             return text;
         }
         /// <summary>

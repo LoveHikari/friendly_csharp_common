@@ -1,8 +1,6 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.IO;
 
 /******************************************************************************************************************
  * 
@@ -19,7 +17,7 @@ using System.IO;
  * 
  * ***************************************************************************************************************/
 
-namespace Hikari.Common
+namespace Hikari.Common.Drawing
 {
     /// <summary>
     /// 图片处理类
@@ -28,158 +26,59 @@ namespace Hikari.Common
     {
         #region 图片相关类型转换 http://keleyi.com/a/bjac/7531015d41ae2490.htm http://blog.csdn.net/smartsmile2012/article/details/46799417
 
-        /// <summary>  
-        /// 图片转二进制  
-        /// </summary>  
-        /// <param name="imagePath">图片地址</param>  
-        /// <returns>二进制</returns>  
-        public static byte[] GetPictureData(string imagePath)
-        {
-            byte[] byData;
-            //根据图片文件的路径使用文件流打开，并保存为byte[]
-            using (FileStream fs = new FileStream(imagePath, FileMode.Open))  //可以是其他重载方法
-            {
-                byData = new byte[fs.Length];
-                fs.Read(byData, 0, byData.Length);
-            }
-            return byData;
-        }
         /// <summary>
-        /// 获取Image对象
+        /// 读取图片
         /// </summary>
         /// <param name="imagePath">图片地址</param>
         /// <returns></returns>
-        public static Image GetImage(string imagePath)
+        public static Image Read(string imagePath)
         {
-            Image image;
-            using (FileStream fs = new FileStream(imagePath, FileMode.Open))  //可以是其他重载方法
-            {
-                byte[] bytes = new byte[fs.Length];
-                fs.Read(bytes, 0, bytes.Length);
-                using (MemoryStream ms = new MemoryStream(bytes))
-                {
-                    image = Image.FromStream(ms);
-                    ms.Flush();
+            using FileStream fs = new FileStream(imagePath, FileMode.Open);
+            byte[] bytes = new byte[fs.Length];
+            var read = fs.Read(bytes, 0, bytes.Length);
+            using MemoryStream ms = new MemoryStream(bytes);
+            Image image = Image.FromStream(ms);
+            ms.Flush();
 
-                }
-            }
             return image;
         }
         /// <summary>
-        /// 二进制数组转图片对象
+        /// 读取图片
         /// </summary>
-        /// <param name="bytes"></param>
+        /// <param name="imagePath">图片地址</param>
         /// <returns></returns>
-        public static Image BytesToImage(byte[] bytes)
+        public static async Task<Image> ReadAsync(string imagePath)
         {
-            if (bytes == null)
-                return null;
-            Image image;
-            using (MemoryStream ms = new MemoryStream(bytes))
-            {
-                image = Image.FromStream(ms);
-                ms.Flush();
-            }
+            await using FileStream fs = new FileStream(imagePath, FileMode.Open);
+            byte[] bytes = new byte[fs.Length];
+            var read = await fs.ReadAsync(bytes, 0, bytes.Length);
+            await using MemoryStream ms = new MemoryStream(bytes);
+            Image image = Image.FromStream(ms);
+            await ms.FlushAsync();
+
             return image;
         }
         /// <summary>
-        /// 图片转二进制
-        /// </summary>
-        /// <param name="image">图片对象</param>  
-        /// <returns>二进制</returns>  
-        public static byte[] ImageToBytes(Image image)
-        {
-            byte[] byData;
-            //将Image转换成流数据，并保存为byte[]   
-            using (MemoryStream mstream = new MemoryStream())
-            {
-                image.Save(mstream, ImageFormat.Bmp);
-                byData = new Byte[mstream.Length];
-                mstream.Position = 0;
-                mstream.Read(byData, 0, byData.Length);
-                mstream.Flush();
-            }
-            return byData;
-
-        }
-        /// <summary>
-        /// 图片转二进制
+        /// 将图片对象保存为图片文件
         /// </summary>
         /// <param name="image">图片对象</param>
-        /// <param name="imageFormat">后缀名</param>
-        /// <returns></returns>
-        public static byte[] ImageToBytes(Image image, ImageFormat imageFormat)
+        /// <param name="filePath">要保存的路径，可以是绝对路径或相对路径</param>
+        /// <param name="imageFormat">要保存的图片格式，默认为Bmp</param>
+        public static void Save(Bitmap image, string filePath, ImageFormat? imageFormat = null)
         {
-            if (image == null) { return null; }
-            byte[] data;
-            using (MemoryStream ms = new MemoryStream())
-            {
-                using (Bitmap bitmap = new Bitmap(image))
-                {
-                    bitmap.Save(ms, imageFormat);
-                    ms.Position = 0;
-                    data = new byte[ms.Length];
-                    ms.Read(data, 0, Convert.ToInt32(ms.Length));
-                    ms.Flush();
-                }
-            }
-            return data;
-        }
-        /// <summary>
-        /// Bitmap转Image
-        /// </summary>
-        /// <param name="bitmap"></param>
-        /// <returns></returns>
-        public static Image BitmapToImage(Bitmap bitmap)
-        {
-            Image image;
-            using (MemoryStream ms = new MemoryStream())
-            {
-                bitmap.Save(ms, ImageFormat.Png);
-                image = Image.FromStream(ms);
-                ms.Flush();
-            }
-            return image;
-        }
-        /// <summary>
-        /// byte[] 转换 Bitmap
-        /// </summary>
-        /// <param name="bytes"></param>
-        /// <returns></returns>
-        public static Bitmap BytesToBitmap(byte[] bytes)
-        {
-            Bitmap bitmap;
-            using (MemoryStream stream = new MemoryStream(bytes))
-            {
-                bitmap = new Bitmap((Image)new Bitmap(stream));
-            }
+            string dir = System.IO.Path.GetDirectoryName(filePath)!;
+            //如果文件夹不存在，则创建
+            if (dir != "" && !Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
-            return bitmap;
-        }
-        /// <summary>
-        /// Bitmap转byte[]
-        /// </summary>
-        /// <param name="bitmap"></param>
-        /// <returns></returns>
-        public static byte[] BitmapToBytes(Bitmap bitmap)
-        {
-            byte[] byteImage;
-            using (MemoryStream ms = new MemoryStream())
-            {
-                Bitmap bm2 = new Bitmap(bitmap);
-                
-                bm2.Save(ms, ImageFormat.Png);
-                byteImage = ms.GetBuffer();
-                ms.Flush();
-            }
-            return byteImage;
+            using System.IO.FileStream fs = new System.IO.FileStream(filePath, System.IO.FileMode.Create, System.IO.FileAccess.Write);
+            image.Save(fs, imageFormat ?? ImageFormat.Bmp);
         }
         /// <summary>
         /// base64转Bitmap
         /// </summary>
         /// <param name="imgStr">data:image/png;base64,iVBORw0KG</param>
         /// <returns></returns>
-        public static Bitmap Base64ToBitmap(string imgStr)
+        public static Image Base64ToBitmap(string imgStr)
         {
             string[] ss = imgStr.Split(',');
             string base64 = ss[1];
@@ -371,13 +270,8 @@ namespace Hikari.Common
         /// <param name="iWidth">宽度</param>
         /// <param name="iHeight">高度</param>
         /// <returns>剪裁后的Bitmap，失败返回null</returns>
-        public static Bitmap KiCut(Bitmap b, int startX, int startY, int iWidth, int iHeight)
+        public static Bitmap? KiCut(Bitmap b, int startX, int startY, int iWidth, int iHeight)
         {
-            if (b == null)
-            {
-                return null;
-            }
-
             int w = b.Width;
             int h = b.Height;
 
@@ -395,34 +289,18 @@ namespace Hikari.Common
             {
                 iHeight = h - startY;
             }
-
+						// 创建新图位图
             using Bitmap bmpOut = new Bitmap(iWidth, iHeight, PixelFormat.Format24bppRgb);
-
-            Graphics g = Graphics.FromImage(bmpOut);
+        		//创建作图区域
+            using Graphics g = Graphics.FromImage(bmpOut);
+            // 截取原图相应区域写入作图区
             g.DrawImage(b, new Rectangle(0, 0, iWidth, iHeight), new Rectangle(startX, startY, iWidth, iHeight), GraphicsUnit.Pixel);
-            g.Dispose();
 
             return bmpOut;
         }
 
         #endregion
-        /// <summary>
-        /// 将图片对象保存为图片文件
-        /// </summary>
-        /// <param name="image">图片对象</param>
-        /// <param name="filePath">要保存的路径，可以是绝对路径或相对路径</param>
-        /// <param name="imageFormat">要保存的图片格式，默认为jpg</param>
-        public static void SaveImage(Bitmap image, string filePath, ImageFormat imageFormat = null)
-        {
-            string dir = System.IO.Path.GetDirectoryName(filePath);
-            //如果文件夹不存在，则创建
-            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
-            System.IO.FileStream fs = new System.IO.FileStream(filePath, System.IO.FileMode.OpenOrCreate, System.IO.FileAccess.Write);
-            image.Save(fs, imageFormat ?? ImageFormat.Jpeg);
-            fs.Close();
-            image.Dispose();
-        }
 
 
     }

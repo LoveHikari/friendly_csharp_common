@@ -1,20 +1,20 @@
-﻿using FsLib.CreditCardUtils;
-using FsLib.TuChuangUtils;
+﻿using FsLib.TuChuangUtils;
 using Hikari.Common;
 using Hikari.Common.Office;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.IO;
 using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
-using Xunit.Abstractions;
 using System.Net.Http;
 using System.Text;
-using Hikari.Common.Net.Http;
-using Microsoft.Extensions.DependencyInjection;
+using System.Threading;
+using System.Threading.Tasks;
+using Hikari.Common.Drawing;
+using Hikari.Common.IO;
+using Xunit;
+using Xunit.Abstractions;
 
 namespace XUnitTestProject1
 {
@@ -48,21 +48,6 @@ namespace XUnitTestProject1
         //    Assert.IsTrue(result.CardNumberFormat == CardNumberFormat.Invalid_BadStringFormat);
         //}
 
-        [Fact]
-        public void TestLuhnMod10Failure()
-        {
-            CreditCardValidator creditCardValidator = new CreditCardValidator();
-            var result = creditCardValidator.ValidCardNumber("9962514040073500");
-            Assert.True(result.CardNumberFormat == CardNumberFormat.Invalid_LuhnFailure);
-        }
-
-        [Fact]
-        public void TestLuhnMod10Success()
-        {
-            CreditCardValidator creditCardValidator = new CreditCardValidator();
-            var result = creditCardValidator.ValidCardNumber("5371381647477037");
-            Assert.True(result.CardNumberFormat == CardNumberFormat.Valid_LuhnOnly);
-        }
 
         //[Test]
         //public void TestValidVisa()
@@ -142,31 +127,11 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
+            var p = @"D:\Program\Visual Studio\Projects\crawler\TianyanchaApp\bin\Debug\net6.0\captcha2.jpg";
 
-            //clientHelper.SetCookies("BAIDUID=E341C17C697F3D4D84469375CBD70AA9:FG=1; BDUSS=DhJZTBTZGhudzhmUUpjfkQyZ1cwWmhzSEdNVUthbGFxb3dXcW9HMm9jQkxrdnhoSVFBQUFBJCQAAAAAAAAAAAEAAAB9~HIH0uy2yNSqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEsF1WFLBdVhU;");
-            //var headerItem = new Dictionary<string, string>()
-            //{
-            //    {"Content-Type", "text/html; charset=UTF-8"},
-            //    {"Referer", "https://aiqicha.baidu.com"},
-            //    {"Zx-Open-Url", "https://aiqicha.baidu.com"},
-            //    {"User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0"},
-            //    {"X-Requested-With", "XMLHttpRequest"},
-            //    //{"Sec-Fetch-User", "document"},
-            //};
-            //clientHelper.SetHeaderItem(headerItem);
-            HttpClient clientHelper = new();
-            ThreadPoolHelper.BeginThreadPool();
-            for (int i = 0; i < 100000; i++)
-            {
-                new Thread(async (state) =>
-                    {
-                        var html = await clientHelper.GetAsync("https://www.aliwork.com/home/?spm=a1zvbc7.26271733.0.0.1aa72546k5yBNa");
-                        System.Diagnostics.Debug.WriteLine(html);
-                    }).Start(i);
+            var v = (Bitmap)ImageHelper.Read(p).ToBytes().ToImage();
 
-            }
 
-            ThreadPoolHelper.CheckThreadPool();
 
             Assert.True(true);
         }
@@ -178,26 +143,6 @@ namespace XUnitTestProject1
         private long timeGen()
         {
             return (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
-        }
-
-        public string HttpGet(string url)
-        {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.Proxy = null;
-            request.Method = "GET";
-            //request.CookieContainer = cookies ?? GetCookieContainer(url, cookie);
-            request.ContentType = "text/html;charset=UTF-8";
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            {
-                using (Stream myResponseStream = response.GetResponseStream())
-                {
-                    StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding("utf-8"));
-                    string retString = myStreamReader.ReadToEnd();
-                    myStreamReader.Close();
-                    myResponseStream.Close();
-                    return retString;
-                }
-            }
         }
     }
 }

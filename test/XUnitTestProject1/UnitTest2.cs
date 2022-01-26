@@ -127,9 +127,8 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            var p = @"D:\Program\Visual Studio\Projects\crawler\TianyanchaApp\bin\Debug\net6.0\captcha2.jpg";
-
-            var v = (Bitmap)ImageHelper.Read(p).ToBytes().ToImage();
+            var i = QRCodeHelper.EncodeQrCode("1234");
+            ImageHelper.Save((Bitmap)i, "D:\\1.jpg");
 
 
 

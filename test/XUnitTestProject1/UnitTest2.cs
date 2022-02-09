@@ -1,18 +1,8 @@
-﻿using FsLib.TuChuangUtils;
-using Hikari.Common;
-using Hikari.Common.Office;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Hikari.Common.Drawing;
-using Hikari.Common.IO;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -78,15 +68,6 @@ namespace XUnitTestProject1
         //    });
         //    Assert.IsTrue(result.CardNumberFormat == CardNumberFormat.Valid_BINTest && result.CardTypes.Contains("Wells Fargo Bank"));
         //}
-        [Fact]
-        public void Test1()
-        {
-            TuChuangClient client = new TuChuangClient();
-            var s = client.UploadFile("").GetAwaiter().GetResult();
-
-
-            Assert.True(true);
-        }
 
         [Fact]
         public void Test3()
@@ -120,17 +101,17 @@ namespace XUnitTestProject1
                 dt.Rows.Add(dr);
             }
 
-            var v = ExcelHelper.ExcelToDataTable("D:\\1.xlsx", "Sheet1", true);
+
             Assert.True(true);
         }
         private static readonly List<Task> _tasks = new List<Task>();
         [Fact]
         public async void Test4()
         {
-            var i = QRCodeHelper.EncodeQrCode("1234");
-            ImageHelper.Save((Bitmap)i, "D:\\1.jpg");
-
-
+            ThreadPoolHelper.BeginThreadPool();
+            ThreadPool.GetAvailableThreads(out var workerThreads, out _);
+            ThreadPool.GetMaxThreads(out var maxWordThreads, out _);
+            System.Diagnostics.Debug.WriteLine($"现在是{DateTime.Now}，可用线程数为{workerThreads}，最大线程数为{maxWordThreads}");
 
             Assert.True(true);
         }

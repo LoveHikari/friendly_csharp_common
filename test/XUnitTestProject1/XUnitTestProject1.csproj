@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -26,13 +26,5 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Hikari.Common.Office\Hikari.Common.Office.csproj" />
-    <ProjectReference Include="..\..\src\Hikari.Common.Redis\Hikari.Common.Redis.csproj" />
-    <ProjectReference Include="..\..\src\Hikari.DbCore\Hikari.DbCore.csproj" />
-    <ProjectReference Include="..\..\src\Hikari.Common\Hikari.Common.csproj" />
-    <ProjectReference Include="..\..\src\FsLib.EfCore\FsLib.EfCore.csproj" />
-    <ProjectReference Include="..\..\src\FsLib.TuChuangUtils\FsLib.TuChuangUtils.csproj" />
-  </ItemGroup>
 
 </Project>

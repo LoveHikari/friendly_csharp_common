@@ -33,7 +33,14 @@ namespace Hikari.Common
         /// 线程池全部结束标志，结束为true
         /// </summary>
         public static bool ThreadPoolEndFlag { get; set; }
-
+        /// <summary>
+        /// 可用线程数
+        /// </summary>
+        public static int WorkerThreads { get; set; }
+        /// <summary>
+        /// 最大线程数
+        /// </summary>
+        public static int MaxWordThreads { get; set; }
         /// <summary>
         /// 开始线程池
         /// </summary>
@@ -71,6 +78,8 @@ namespace Hikari.Common
         {
             ThreadPool.GetAvailableThreads(out var workerThreads, out _);
             ThreadPool.GetMaxThreads(out var maxWordThreads, out _);
+            WorkerThreads = workerThreads;
+            MaxWordThreads = maxWordThreads;
             System.Diagnostics.Debug.WriteLine($"现在是{DateTime.Now}，可用线程数为{workerThreads}，最大线程数为{maxWordThreads}");
             //当可用的线数与池程池最大的线程相等时表示线程池中所有的线程已经完成
             if (workerThreads == maxWordThreads)

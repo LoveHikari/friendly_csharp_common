@@ -1,4 +1,5 @@
 ﻿using FsLib.EfCore.Domain;
+using Hikari.Common;
 
 namespace FsLib.EfCore.Application
 {
@@ -16,7 +17,7 @@ namespace FsLib.EfCore.Application
         /// <param name="pageSize">每页数据数</param>
         /// <param name="v">需要分页的数据</param>
         /// <returns></returns>
-        Task<Page<T>> GeneratePageAsync<T>(int pageIndex, int pageSize, IQueryable<T> v);
+        Task<Pager<T>> GeneratePageAsync<T>(int pageIndex, int pageSize, IQueryable<T> v);
 
         /// <summary>
         /// 生成分页
@@ -26,6 +27,6 @@ namespace FsLib.EfCore.Application
         /// <param name="pageSize">每页数据数</param>
         /// <param name="v">需要分页的数据</param>
         /// <returns></returns>
-        Task<Page<T>> GeneratePageAsync<T>(int pageIndex, int pageSize, IAsyncQueryable<T> v);
+        Task<Pager<T>> GeneratePageAsync<T>(int pageIndex, int pageSize, IAsyncQueryable<T> v);
     }
 }

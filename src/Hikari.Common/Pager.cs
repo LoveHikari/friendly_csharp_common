@@ -1,10 +1,10 @@
-﻿namespace FsLib.EfCore
+﻿namespace Hikari.Common
 {
     /// <summary>
     /// 分页
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Page<T>
+    public class Pager<T>
     {
         /// <summary>
         /// 当前页

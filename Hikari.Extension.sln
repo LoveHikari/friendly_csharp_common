@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hikari.Common", "src\Hikari
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTestProject1", "test\XUnitTestProject1\XUnitTestProject1.csproj", "{2D5CB179-895D-46DE-A4E4-57F3A85DBA51}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FsLib.EfCore", "src\FsLib.EfCore\FsLib.EfCore.csproj", "{22F7927D-6CC4-45F7-9856-A875808FFC22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hikari.Common.EfCore", "src\Hikari.Common.EfCore\Hikari.Common.EfCore.csproj", "{22F7927D-6CC4-45F7-9856-A875808FFC22}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hikari.DbCore", "src\Hikari.DbCore\Hikari.DbCore.csproj", "{A7AEF1B7-DAEB-4C1F-A461-4DCE7D7E78DA}"
 EndProject
@@ -29,9 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hikari.Common.Office", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hikari.Dapper.Contrib", "src\Hikari.Dapper.Contrib\Hikari.Dapper.Contrib.csproj", "{B929F68C-F66D-4505-9AFE-5DD73A497E53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "test\WebApplication1\WebApplication1.csproj", "{21E1BF61-B970-4456-9677-B1998373C57D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "test\WebApplication1\WebApplication1.csproj", "{21E1BF61-B970-4456-9677-B1998373C57D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hikari.Common.ElasticSearch", "src\Hikari.Common.ElasticSearch\Hikari.Common.ElasticSearch.csproj", "{AAF99C4E-B553-4F16-BC62-FF9EACAAADB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hikari.Common.ElasticSearch", "src\Hikari.Common.ElasticSearch\Hikari.Common.ElasticSearch.csproj", "{AAF99C4E-B553-4F16-BC62-FF9EACAAADB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

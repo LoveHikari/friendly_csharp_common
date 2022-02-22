@@ -1,4 +1,5 @@
 ﻿using FsLib.EfCore.Domain;
+using Hikari.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace FsLib.EfCore.Application
@@ -17,14 +18,14 @@ namespace FsLib.EfCore.Application
         /// <param name="pageSize">每页数据数</param>
         /// <param name="v">需要分页的数据</param>
         /// <returns></returns>
-        public async Task<Page<T>> GeneratePageAsync<T>(int pageIndex, int pageSize, IQueryable<T> v)
+        public async Task<Pager<T>> GeneratePageAsync<T>(int pageIndex, int pageSize, IQueryable<T> v)
         {
             int totalRecord = (await v.ToListAsync()).Count;
             var list = await v.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
             int pageCount = Convert.ToInt32(Math.Ceiling(totalRecord / Convert.ToDouble(pageSize)));
             int prevPage = pageIndex > 0 ? pageIndex - 1 : 0;
             int nextPage = pageIndex < pageCount ? pageIndex + 1 : 0;
-            var pages = new Page<T>()
+            var pages = new Pager<T>()
             {
                 PageSize = pageSize,
                 PageIndex = pageIndex,
@@ -44,14 +45,14 @@ namespace FsLib.EfCore.Application
         /// <param name="pageSize">每页数据数</param>
         /// <param name="v">需要分页的数据</param>
         /// <returns></returns>
-        public async Task<Page<T>> GeneratePageAsync<T>(int pageIndex, int pageSize, IAsyncQueryable<T> v)
+        public async Task<Pager<T>> GeneratePageAsync<T>(int pageIndex, int pageSize, IAsyncQueryable<T> v)
         {
             int totalRecord = (await v.ToListAsync()).Count;
             var list = await v.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
             int pageCount = Convert.ToInt32(Math.Ceiling(totalRecord / Convert.ToDouble(pageSize)));
             int prevPage = pageIndex > 0 ? pageIndex - 1 : 0;
             int nextPage = pageIndex < pageCount ? pageIndex + 1 : 0;
-            var pages = new Page<T>()
+            var pages = new Pager<T>()
             {
                 PageSize = pageSize,
                 PageIndex = pageIndex,

@@ -10,4 +10,8 @@
     <PackageReference Include="NEST" Version="7.17.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Hikari.Common\Hikari.Common.csproj" />
+  </ItemGroup>
+
 </Project>

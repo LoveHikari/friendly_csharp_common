@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<PackageId>Hikari.Common.EfCore</PackageId>
+		<Authors>Yu XiaoWei</Authors>
+		<Product>Hikari.Common.EfCore</Product>
+		<Company>5cm R &amp; D department</Company>
+		<Description>efcore基础类</Description>
+		<Version>6.0.1.2</Version>
+		<Language>zh-CN</Language>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DocumentationFile>bin\Debug\net6.0\FsLib.EfCore.xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.0-preview.1.22076.6" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0-preview.1.22076.6" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.0-preview.1" />
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
+		<!--<PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.3.1" />-->
+		<PackageReference Include="System.Linq.Async.Queryable" Version="6.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Hikari.Common\Hikari.Common.csproj" />
+	</ItemGroup>
+
+</Project>

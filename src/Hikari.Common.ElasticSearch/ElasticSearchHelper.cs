@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Elasticsearch.Net;
+﻿using Elasticsearch.Net;
 using Nest;
 
 namespace Hikari.Common.ElasticSearch;
@@ -98,10 +97,12 @@ public class ElasticSearchHelper
     /// <param name="pageIndex">当前页</param>
     /// <param name="pageSize">每页数量</param>
     /// <returns></returns>
-    public async Task<List<T>?> GetListAsync<T>(IDictionary<string, string>? query, int pageIndex, int pageSize) where T : class
+    public async Task<Pager<T>> GetListAsync<T>(IDictionary<string, string>? query, int pageIndex, int pageSize) where T : class
     {
         int size = pageSize;  // 显示应该返回的结果数量
         int from = (pageIndex - 1) * pageSize;  // 显示应该跳过的初始结果数量
+
+        Pager<T> pager = new Pager<T>();
 
         List<QueryContainerDescriptor<T>> queryList = new List<QueryContainerDescriptor<T>>();
         if (query != null)
@@ -123,10 +124,16 @@ public class ElasticSearchHelper
         if (searchRes.Total > 0)
         {
             var models = searchRes.Documents.ToList();
-            return models;
+            pager.Content = models;
+            pager.PageCount = Math.Ceiling(searchRes.Total.ToDouble() / pageSize).ToInt32();
+            pager.PageIndex = pageIndex;
+            pager.PageSize = pageSize;
+            pager.PrevPage = pageIndex > 0 ? pageIndex - 1 : 0;
+            pager.NextPage = pageIndex < pager.PageCount ? pageIndex + 1 : 0;
+            pager.TotalRecord = searchRes.Total.ToInt32();
         }
 
-        return null;
+        return pager;
     }
     /// <summary>
     /// 获得数据列表
@@ -135,10 +142,12 @@ public class ElasticSearchHelper
     /// <param name="pageIndex">当前页</param>
     /// <param name="pageSize">每页数量</param>
     /// <returns></returns>
-    public List<T>? GetList<T>(IDictionary<string, string>? query, int pageIndex, int pageSize) where T : class
+    public Pager<T> GetList<T>(IDictionary<string, string>? query, int pageIndex, int pageSize) where T : class
     {
         int size = pageSize;  // 显示应该返回的结果数量
         int from = (pageIndex - 1) * pageSize;  // 显示应该跳过的初始结果数量
+
+        Pager<T> pager = new Pager<T>();
 
         List<QueryContainerDescriptor<T>> queryList = new List<QueryContainerDescriptor<T>>();
         if (query != null)
@@ -160,10 +169,16 @@ public class ElasticSearchHelper
         if (searchRes.Total > 0)
         {
             var models = searchRes.Documents.ToList();
-            return models;
+            pager.Content = models;
+            pager.PageCount = Math.Ceiling(searchRes.Total.ToDouble() / pageSize).ToInt32();
+            pager.PageIndex = pageIndex;
+            pager.PageSize = pageSize;
+            pager.PrevPage = pageIndex > 0 ? pageIndex - 1 : 0;
+            pager.NextPage = pageIndex < pager.PageCount ? pageIndex + 1 : 0;
+            pager.TotalRecord = searchRes.Total.ToInt32();
         }
 
-        return null;
+        return pager;
     }
     /// <summary>
     /// 更新
@@ -175,7 +190,7 @@ public class ElasticSearchHelper
 
         var list = new List<T> { entity };
         var bulkRequest = new BulkRequest(_index) { Operations = new List<IBulkOperation>() };
-        var id = GetValue(entity, "Id") as Nest.Id;
+        var id = entity.GetValue("Id") as Nest.Id;
         var idxops = list.Select(o => new BulkIndexOperation<T>(o) { Id = id }).Cast<IBulkOperation>().ToList();
         bulkRequest.Operations = idxops;
         var response = await _elasticClient.BulkAsync(bulkRequest);
@@ -190,7 +205,7 @@ public class ElasticSearchHelper
     {
         var list = new List<T> { entity };
         var bulkRequest = new BulkRequest(_index) { Operations = new List<IBulkOperation>() };
-        var id = GetValue(entity, "Id") as Nest.Id;
+        var id = entity.GetValue("Id") as Nest.Id;
         var idxops = list.Select(o => new BulkIndexOperation<T>(o) { Id = id }).Cast<IBulkOperation>().ToList();
         bulkRequest.Operations = idxops;
         var response = _elasticClient.Bulk(bulkRequest);
@@ -205,7 +220,7 @@ public class ElasticSearchHelper
     {
         var list = new List<T> { entity };
         var bulkRequest = new BulkRequest(_index) { Operations = new List<IBulkOperation>() };
-        var id = GetValue(entity, "Id") as Nest.Id;
+        var id = entity.GetValue("Id") as Nest.Id;
         var idxops = list.Select(o => new BulkIndexOperation<T>(o) { Id = id }).Cast<IBulkOperation>().ToList();
         bulkRequest.Operations = idxops;
         var response = await _elasticClient.BulkAsync(bulkRequest);
@@ -221,7 +236,7 @@ public class ElasticSearchHelper
     {
         var list = new List<T> { entity };
         var bulkRequest = new BulkRequest(_index) { Operations = new List<IBulkOperation>() };
-        var id = GetValue(entity, "Id") as Nest.Id;
+        var id = entity.GetValue("Id") as Nest.Id;
         var idxops = list.Select(o => new BulkIndexOperation<T>(o) { Id = id }).Cast<IBulkOperation>().ToList();
         bulkRequest.Operations = idxops;
         var response = _elasticClient.Bulk(bulkRequest);
@@ -301,18 +316,5 @@ public class ElasticSearchHelper
             ).Index(_index));
 
         return searchRes.Count;
-    }
-
-    /// <summary>
-    /// 根据属性名获得属性值
-    /// </summary>
-    /// <param name="this"></param>
-    /// <param name="propertyName">属性名</param>
-    /// <returns>属性值</returns>
-    private static object? GetValue(object @this, string propertyName)
-    {
-        PropertyInfo[] properties = @this.GetType().GetProperties();
-        var obj = properties.FirstOrDefault(p => p.Name == propertyName)?.GetValue(@this);
-        return obj;
     }
 }

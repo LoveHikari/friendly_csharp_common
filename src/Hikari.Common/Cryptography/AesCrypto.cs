@@ -35,7 +35,7 @@ namespace Hikari.Common.Cryptography
         /// <param name="mode"></param>
         /// <param name="padding"></param>
         /// <param name="encoding"></param>
-        public AESCrypto(byte[] key, byte[] iv = null, CipherMode mode = CipherMode.ECB, PaddingMode padding = PaddingMode.PKCS7, string encoding = "utf-8")
+        public AESCrypto(byte[] key, byte[]? iv = null, CipherMode mode = CipherMode.ECB, PaddingMode padding = PaddingMode.PKCS7, string encoding = "utf-8")
         {
             _encoding = System.Text.Encoding.GetEncoding(encoding);
             _aes = Aes.Create();

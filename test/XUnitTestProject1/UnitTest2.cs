@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
@@ -108,21 +107,9 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            ThreadPoolHelper.BeginThreadPool();
-            ThreadPool.GetAvailableThreads(out var workerThreads, out _);
-            ThreadPool.GetMaxThreads(out var maxWordThreads, out _);
-            System.Diagnostics.Debug.WriteLine($"现在是{DateTime.Now}，可用线程数为{workerThreads}，最大线程数为{maxWordThreads}");
 
             Assert.True(true);
         }
 
-        /// <summary>
-        /// 生成当前时间戳
-        /// </summary>
-        /// <returns></returns>
-        private long timeGen()
-        {
-            return (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
-        }
     }
 }

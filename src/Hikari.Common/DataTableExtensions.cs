@@ -53,7 +53,7 @@ namespace Hikari.Common
         /// <typeparam name="T">类型</typeparam>
         /// <param name="objlist">实体</param>
         /// <returns><see cref="DataTable"/></returns>
-        public static DataTable ToDataTable<T>(this IList<T> objlist)
+        public static DataTable? ToDataTable<T>(this IList<T> objlist)
         {
             if (objlist == null || objlist.Count <= 0)
             {
@@ -147,7 +147,7 @@ namespace Hikari.Common
         /// <returns></returns>
         public static List<T> ToList<T>(this DataColumn dc)
         {
-            DataTable dt = dc.Table;
+            DataTable dt = dc.Table!;
             string columnName = dc.ColumnName;
             List<T> list = new List<T>();
             foreach (DataRow row in dt.Rows)

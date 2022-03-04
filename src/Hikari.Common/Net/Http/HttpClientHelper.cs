@@ -62,7 +62,8 @@ namespace Hikari.Common.Net.Http
                 UseCookies = true,
                 Proxy = _webProxy,
                 UseProxy = true,
-                ServerCertificateCustomValidationCallback = (message, cert, chain, error) => true  // 忽略https证书提醒
+                ServerCertificateCustomValidationCallback = (message, cert, chain, error) => true,  // 忽略https证书提醒
+                AutomaticDecompression = DecompressionMethods.All
             };
             this._client = new HttpClient(handler);
             if (!string.IsNullOrWhiteSpace(baseAddress))

@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Hikari.Dapper.Contrib;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
@@ -107,7 +109,10 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-
+            DapperMap.Init(Assembly.Load("XUnitTestProject1"));
+            BaseDapper<MFactory> b = new BaseDapper<MFactory>("Persist Security Info=False;User ID=sa;Password=Atkj89715326;Initial Catalog=Test;Server=192.168.1.140", DbProviderEnum.SqlServer);
+            
+            var v = b.GetAsync(1).Result;
             Assert.True(true);
         }
 

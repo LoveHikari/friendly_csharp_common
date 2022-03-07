@@ -23,10 +23,11 @@ public class BaseDapper<T> where T : class, new()
     /// </summary>
     /// <param name="connectionString">连接字符串</param>
     /// <param name="dbProvider">数据库提供者</param>
-    public BaseDapper(string connectionString, DbProviderEnum? dbProvider = null)
+    public BaseDapper(string connectionString = "", DbProviderEnum? dbProvider = null)
     {
-        _connectionString = connectionString;
-        _dbProvider = dbProvider;
+        _connectionString = string.IsNullOrWhiteSpace(connectionString) ? DapperMap.ConnectionString : connectionString;
+
+        _dbProvider = dbProvider ?? DapperMap.DbProvider;
 
         var type = typeof(T);
         var table = type.GetCustomAttribute<TableAttribute>();
@@ -62,16 +63,6 @@ public class BaseDapper<T> where T : class, new()
         return f;
     }
 
-    private Hikari.Dapper.Contrib.ISqlAdapter<T> GetSqlAdapter()
-    {
-        Hikari.Dapper.Contrib.ISqlAdapter<T> f = _dbProvider switch
-        {
-            DbProviderEnum.SqlServer => new Hikari.Dapper.Contrib.SqlServerAdapter<T>(),
-            _ => new Hikari.Dapper.Contrib.SqlServerAdapter<T>()
-        };
-        return f;
-    }
-
     /// <summary>
     /// 查询数据
     /// </summary>
@@ -93,6 +84,26 @@ public class BaseDapper<T> where T : class, new()
         using var conn = CreateConnection();
         var entity = conn.Get<T>(id, _dbTransaction);
         return entity;
+    }
+    /// <summary>
+    /// 查询数据
+    /// </summary>
+    /// <returns></returns>
+    public async Task<List<T>> GetAllAsync()
+    {
+        await using var conn = CreateConnection();
+        var entitys = await conn.GetAllAsync<T>(_dbTransaction);
+        return entitys.ToList();
+    }
+    /// <summary>
+    /// 查询数据
+    /// </summary>
+    /// <returns></returns>
+    public List<T> GetAll()
+    {
+        using var conn = CreateConnection();
+        var entitys = conn.GetAll<T>(_dbTransaction);
+        return entitys.ToList();
     }
     /// <summary>
     /// 查询数据
@@ -168,22 +179,24 @@ public class BaseDapper<T> where T : class, new()
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
-    public async Task<int> AddAsync(T entity)
+    public async Task<int> InsertAsync(T entity)
     {
         await using var conn = CreateConnection();
-        return await GetSqlAdapter().InsertAsync(conn, entity, _dbTransaction);
+
+        int id = await conn.InsertAsync(entity, _dbTransaction);
+        return id;
     }
     /// <summary>
     /// 添加数据
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
-    public int Add(T entity)
+    public int Insert(T entity)
     {
         using var conn = CreateConnection();
 
-
-        return GetSqlAdapter().Insert(conn, entity, _dbTransaction);
+        int id = (int)conn.Insert(entity, _dbTransaction);
+        return id;
     }
     /// <summary>
     /// 更新数据
@@ -226,17 +239,17 @@ public class BaseDapper<T> where T : class, new()
         return conn.Delete(entity, _dbTransaction);
     }
     /// <summary>
-    /// 删除数据
+    /// 是否存在
     /// </summary>
-    /// <param name="param">删除条件</param>
+    /// <param name="param"></param>
     /// <returns></returns>
-    public async Task<bool> DeleteAsync(object? param = null)
+    public async Task<bool> AnyAsync(object? param = null)
     {
         await using var conn = CreateConnection();
-        string sql = $"delete from {_tableName} where 1=1";
+        string sql = "select count(*) from dt_company where 1=1 ";
         if (param != null)
         {
-            // 获得此模型的公共属性 
+            // 获得此模型的公共属性
             PropertyInfo[] propertys = param.GetType().GetProperties();
             //遍历该对象的所有属性 
             foreach (PropertyInfo pi in propertys)
@@ -246,21 +259,21 @@ public class BaseDapper<T> where T : class, new()
             }
         }
 
-        var i = await conn.ExecuteAsync(sql, param, _dbTransaction);
-        return i > 0;
+        var c = await conn.ExecuteScalarAsync<int>(sql, param);
+        return c > 0;
     }
     /// <summary>
-    /// 删除数据
+    /// 是否存在
     /// </summary>
-    /// <param name="param">删除条件</param>
+    /// <param name="param"></param>
     /// <returns></returns>
-    public bool Delete(object? param = null)
+    public bool Any(object? param = null)
     {
         using var conn = CreateConnection();
-        string sql = $"delete from {_tableName} where 1=1";
+        string sql = "select count(*) from dt_company where 1=1 ";
         if (param != null)
         {
-            // 获得此模型的公共属性 
+            // 获得此模型的公共属性
             PropertyInfo[] propertys = param.GetType().GetProperties();
             //遍历该对象的所有属性 
             foreach (PropertyInfo pi in propertys)
@@ -270,8 +283,8 @@ public class BaseDapper<T> where T : class, new()
             }
         }
 
-        var i = conn.Execute(sql, param, _dbTransaction);
-        return i > 0;
+        var c = (int)conn.ExecuteScalar(sql, param);
+        return c > 0;
     }
 
     /// <summary>

@@ -26,5 +26,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Hikari.Dapper.Contrib\Hikari.Dapper.Contrib.csproj" />
+  </ItemGroup>
+
 
 </Project>

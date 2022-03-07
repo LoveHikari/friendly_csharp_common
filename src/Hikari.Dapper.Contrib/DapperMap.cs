@@ -6,9 +6,13 @@ namespace Hikari.Dapper.Contrib
 {
     public class DapperMap
     {
-        public static void Init(Assembly assembly)
+        internal static string ConnectionString { get; set; }
+        internal static DbProviderEnum? DbProvider { get; set; }
+        public static void Init(Assembly assembly, string connectionString = "", DbProviderEnum? dbProvider = null)
         {
             Init(new[] { assembly });
+            ConnectionString = connectionString;
+            DbProvider = dbProvider;
         }
         public static void Init(Assembly[] assemblies)
         {
@@ -70,11 +74,7 @@ namespace Hikari.Dapper.Contrib
         }
 
     }
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
-    public class ColumnAttribute : Attribute
-    {
-        public string Name { get; set; }
-    }
+
     class FallbackTypeMapper : SqlMapper.ITypeMap
     {
         private readonly IEnumerable<SqlMapper.ITypeMap> _mappers;

@@ -129,24 +129,37 @@ namespace Hikari.Common
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         /// <param name="obj">匿名对象</param>
-        /// <param name="func"></param>
-        /// <para>Cast(new { Name = "Tom", Age = 25 }, () => new { Name = "", Age = 0 });</para>
+        /// <para>Cast(new { Name = "Tom", Age = 25 });</para>
         /// <returns></returns>
-        public static T Cast<T>(object obj, Func<T> func) where T : class
+        public static T? Cast<T>(object obj) where T : class
         {
-            return (T)obj;
-        }
-        /// <summary>
-        /// 匿名类型转强类型
-        /// </summary>
-        /// <typeparam name="T">类型</typeparam>
-        /// <param name="obj">匿名对象</param>
-        /// <param name="type">匿名类型</param>
-        /// <para>Cast(new { Name = "Tom", Age = 25 }, new { Name = "", Age = 0 });</para>
-        /// <returns></returns>
-        public static T Cast<T>(object obj, T type) where T : class
-        {
-            return (T)obj;
+            var t = typeof(T);
+            var o = System.Activator.CreateInstance(t);
+            if (o is null)
+            {
+                return null;
+            }
+            var pros = t.GetProperties();
+            var t2 = obj.GetType();
+            if (t2 == typeof(System.Dynamic.ExpandoObject))
+            {
+                var dic = (IDictionary<string, object>)obj;
+                foreach (var pro in pros)
+                {
+                    pro.SetValue(o, dic[pro.Name]);
+                }
+            }
+            else
+            {
+
+                foreach (var pro in pros)
+                {
+                    pro.SetValue(o, t2.GetProperty(pro.Name)?.GetValue(obj, null));
+                }
+
+
+            }
+            return (T)o;
         }
 
         /// <summary>
@@ -155,7 +168,7 @@ namespace Hikari.Common
         /// <param name="value">需要转化的对象</param>
         /// <param name="conversionType">转化后的类型</param>
         /// <returns>转化后的对象</returns>
-        public static object ChangeType(object value, Type conversionType)
+        public static object? ChangeType(object? value, Type conversionType)
         {
             if (value == null)
                 return null;
@@ -303,5 +316,6 @@ namespace Hikari.Common
                    | long.Parse(items[2]) << 8
                    | long.Parse(items[3]);
         }
+
     }
 }

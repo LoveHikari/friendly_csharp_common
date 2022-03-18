@@ -43,9 +43,18 @@ namespace Hikari.Common
         /// 转换为等效的32位有符号整数，转换失败返回指定的数字，为null时返回0
         /// </summary>
         /// <param name="this"></param>
+        /// <returns></returns>
+        public static int ToInt32(this object? @this)
+        {
+            return ToInt32(@this, 0);
+        }
+        /// <summary>
+        /// 转换为等效的32位有符号整数，转换失败返回指定的数字，为null时返回0
+        /// </summary>
+        /// <param name="this"></param>
         /// <param name="i">指定转换失败时返回的值，默认为0</param>
         /// <returns></returns>
-        public static int ToInt32(this object? @this, int i = 0)
+        public static int ToInt32(this object? @this, int i)
         {
             if (@this is null || string.IsNullOrWhiteSpace(@this.ToString()))
                 return 0;

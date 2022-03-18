@@ -288,6 +288,23 @@ public class DirectoryHelper
         return filePathList;
     }
     /// <summary>
+    /// 获得目录下所有子目录和子文件
+    /// </summary>
+    /// <param name="dirPath"></param>
+    /// <returns></returns>
+    public static List<string> GetCompressFiles(string dirPath)
+    {
+        var compressFiles = new List<string>();
+        compressFiles.AddRange(Directory.EnumerateDirectories(
+            dirPath, "*.*", SearchOption.AllDirectories));
+        compressFiles.AddRange(Directory.EnumerateFiles(
+            dirPath, "*.*", SearchOption.AllDirectories)
+        );
+
+        return compressFiles;
+    }
+
+    /// <summary>
     /// 获得目录下所有文件，只包括一级目录
     /// </summary>
     /// <param name="dirPath">目录路径</param>

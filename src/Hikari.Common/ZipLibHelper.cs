@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Hikari.Common.IO;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.Zip;
@@ -162,30 +163,83 @@ namespace Hikari.Common
         /// <param name="directory">要压缩的文件夹路径</param>
         /// <param name="zipFileDir">生成的文件路径</param>
         /// <param name="zipFileName">生成的文件名称，不带扩展名</param>
+        /// <param name="compressionLevel">压缩级别</param>
+        /// <param name="password">压缩密码</param>
+        /// <param name="comment">压缩包注释</param>
         /// <returns></returns>  
-        public bool CreateZipArchive(string directory, string zipFileDir, string zipFileName = "")
+        public bool CreateZipArchive(string directory, string zipFileDir, string zipFileName = "", int compressionLevel = 9, string password = "", string comment = "")
         {
-            if (string.IsNullOrEmpty(zipFileName))
-            {
-                zipFileName = new DirectoryInfo(directory).Name;
-            }
-
-            zipFileName = Path.Combine(zipFileDir, zipFileName + ".zip");
             if (!Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);
             }
+            var dirInfo = new DirectoryInfo(directory);
+
+            if (string.IsNullOrEmpty(zipFileName))
+            {
+                zipFileName = dirInfo.Name;
+            }
+
+            zipFileName = Path.Combine(zipFileDir, zipFileName + ".zip");
+            
             if (File.Exists(zipFileName))
             {
                 File.Delete(zipFileName);
             }
 
-            FastZip fz = new FastZip();
-            fz.CreateEmptyDirectories = true;
-            fz.CreateZip(zipFileName, directory, true, "");
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            System.Text.Encoding encode = System.Text.Encoding.GetEncoding("gbk");
+            ZipStrings.CodePage = encode.CodePage;
+
+            using var zipOutput = new ZipOutputStream(File.Create(zipFileName));
+            zipOutput.SetLevel(compressionLevel);
+            zipOutput.Password = password;
+            zipOutput.SetComment(comment);
+
+            var buffer = new byte[4096];
+            var compressFiles = DirectoryHelper.GetCompressFiles(directory);
+            compressFiles.Add(directory);
+            foreach (var item in compressFiles)
+            {
+                var isFilePath = File.Exists(item);
+                var zipName = item.Replace(dirInfo.Parent.FullName, "");
+                zipName = isFilePath ? zipName : string.Format($"{zipName}/");
+                var fileEntry = new ZipEntry(zipName)
+                {
+                    DateTime = DateTime.Now
+                };
+                zipOutput.PutNextEntry(fileEntry);
+                if (!isFilePath) continue;
+                using var fileStream = File.OpenRead(item);
+                int sourceBytes;
+
+                do
+                {
+                    sourceBytes = fileStream.Read(buffer, 0, buffer.Length);
+                    zipOutput.Write(buffer, 0, sourceBytes);
+                } while (sourceBytes > 0);
+            }
+
+
+            //FastZip fz = new FastZip();
+            //fz.CreateEmptyDirectories = true;
+            //if (password != "")
+            //{
+            //    fz.Password = password;
+            //}
+            //fz.CreateZip(zipFileName, directory, true, "");
+            //if (comment != "")
+            //{
+            //    using ZipFile zip = new ZipFile(zipFileName);
+            //    zip.BeginUpdate();
+            //    zip.SetComment(comment);
+            //    zip.CommitUpdate();
+
+            // }
 
             return true;
         }
+
         /// <summary>  
         /// zip解压文件  
         /// </summary>  

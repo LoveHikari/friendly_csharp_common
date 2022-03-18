@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace FsLib.EfCore.EntityFrameworkCore
+namespace Hikari.Common.EfCore.EntityFrameworkCore
 {
     /// <summary>
     /// <see cref="DbContextOptionsBuilder"/> 扩展类

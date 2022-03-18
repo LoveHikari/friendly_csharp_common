@@ -1,4 +1,4 @@
-﻿namespace FsLib.EfCore.EntityFrameworkCore
+﻿namespace Hikari.Common.EfCore.EntityFrameworkCore
 {
     /// <summary>
     /// 数据库类型

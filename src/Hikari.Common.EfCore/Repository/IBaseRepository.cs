@@ -1,8 +1,8 @@
-﻿using FsLib.EfCore.Domain;
+﻿using Hikari.Common.EfCore.Domain;
 using System.Data;
 using System.Linq.Expressions;
 
-namespace FsLib.EfCore.Repository
+namespace Hikari.Common.EfCore.Repository
 {
     /// <summary>
     /// 仓储接口基类

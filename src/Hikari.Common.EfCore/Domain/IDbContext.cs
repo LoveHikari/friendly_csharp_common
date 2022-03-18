@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace FsLib.EfCore.Domain
+namespace Hikari.Common.EfCore.Domain
 {
     public interface IDbContext
     {

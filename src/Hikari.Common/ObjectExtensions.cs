@@ -65,12 +65,21 @@ namespace Hikari.Common
             return int.TryParse(@this.ToString(), out var result) ? result : i;
         }
         /// <summary>
-        /// 转换为Long，为null时返回默认值
+        /// 转换为Long，为null时返回默认值，默认为0
         /// </summary>
         /// <param name="this"></param>
-        /// <param name="i">指定转换失败时返回的值，默认为0</param>
         /// <returns></returns>
-        public static long ToLong(this object? @this, long i = 0L)
+        public static long ToLong(this object? @this)
+        {
+            return ToLong(@this, 0L);
+        }
+        /// <summary>
+        /// 转换为Long，为null时返回默认值，默认为0
+        /// </summary>
+        /// <param name="this"></param>
+        /// <param name="i">指定转换失败时返回的值</param>
+        /// <returns></returns>
+        public static long ToLong(this object? @this, long i)
         {
             if (@this is null || string.IsNullOrWhiteSpace(@this.ToString()))
                 return 0L;
@@ -81,12 +90,21 @@ namespace Hikari.Common
             return long.TryParse(@this.ToString(), out var result) ? result : i;
         }
         /// <summary>
+        /// 转换为Short，为null时返回默认值，默认为0
+        /// </summary>
+        /// <param name="this"></param>
+        /// <returns></returns>
+        public static short ToShort(this object? @this)
+        {
+            return ToShort(@this, 0);
+        }
+        /// <summary>
         /// 转换为Short，为null时返回默认值
         /// </summary>
         /// <param name="this"></param>
         /// <param name="i">指定转换失败时返回的值，默认为0</param>
         /// <returns></returns>
-        public static short ToShort(this object? @this, short i = 0)
+        public static short ToShort(this object? @this, short i)
         {
             if (@this is null || string.IsNullOrWhiteSpace(@this.ToString()))
                 return 0;
@@ -97,12 +115,21 @@ namespace Hikari.Common
             return short.TryParse(@this.ToString(), out var result) ? result : i;
         }
         /// <summary>
+        /// 转换为decimal类型，失败返回默认值,默认为0
+        /// </summary>
+        /// <param name="this"></param>
+        /// <returns></returns>
+        public static decimal ToDecimal(this object? @this)
+        {
+            return ToDecimal(@this, 0M);
+        }
+        /// <summary>
         /// 转换为decimal类型，失败返回默认值
         /// </summary>
         /// <param name="this"></param>
-        /// <param name="d">指定转换失败时返回的值,默认为0</param>
+        /// <param name="d">指定转换失败时返回的值</param>
         /// <returns></returns>
-        public static decimal ToDecimal(this object? @this, decimal d = 0M)
+        public static decimal ToDecimal(this object? @this, decimal d)
         {
             if (@this is null || string.IsNullOrWhiteSpace(@this.ToString()))
                 return 0;
@@ -113,12 +140,21 @@ namespace Hikari.Common
             return decimal.TryParse(@this.ToString(), out var result) ? result : d;
         }
         /// <summary>
+        /// 转换为double类型，失败返回默认值,默认为0
+        /// </summary>
+        /// <param name="this"></param>
+        /// <returns></returns>
+        public static double ToDouble(this object? @this)
+        {
+            return ToDouble(@this, 0D);
+        }
+        /// <summary>
         /// 转换为double类型，失败返回默认值
         /// </summary>
         /// <param name="this"></param>
-        /// <param name="d">指定转换失败时返回的值,默认为0</param>
+        /// <param name="d">指定转换失败时返回的值</param>
         /// <returns></returns>
-        public static double ToDouble(this object? @this, double d = 0)
+        public static double ToDouble(this object? @this, double d)
         {
             if (@this is null || string.IsNullOrWhiteSpace(@this.ToString()))
                 return 0;
@@ -129,12 +165,21 @@ namespace Hikari.Common
             return double.TryParse(@this.ToString(), out var result) ? result : d;
         }
         /// <summary>
+        /// 转换为float类型，失败返回默认值,默认为0
+        /// </summary>
+        /// <param name="this"></param>
+        /// <returns></returns>
+        public static double ToFloat(this object? @this)
+        {
+            return ToFloat(@this, 0F);
+        }
+        /// <summary>
         /// 转换为float类型，失败返回默认值
         /// </summary>
         /// <param name="this"></param>
-        /// <param name="d">指定转换失败时返回的值,默认为0</param>
+        /// <param name="d">指定转换失败时返回的值</param>
         /// <returns></returns>
-        public static double ToFloat(this object? @this, float d = 0F)
+        public static double ToFloat(this object? @this, float d)
         {
             if (@this is null || string.IsNullOrWhiteSpace(@this.ToString()))
                 return 0;

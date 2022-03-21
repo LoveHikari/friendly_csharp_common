@@ -111,16 +111,16 @@
         /// <summary>
         /// 删除
         /// </summary>
-        /// <param name="entity">数据实体</param>
+        /// <param name="entitys">数据实体</param>
         /// <returns>是否成功</returns>
-        Task<bool> DeleteListAsync<TEntity>(IEnumerable<TEntity> entity) where TEntity : class;
+        Task<bool> DeleteListAsync<TEntity>(IEnumerable<TEntity> entitys) where TEntity : class;
 
         /// <summary>
         /// 删除
         /// </summary>
-        /// <param name="entity">数据实体</param>
+        /// <param name="entitys">数据实体</param>
         /// <returns>是否成功</returns>
-        bool DeleteList<TEntity>(IEnumerable<TEntity> entity) where TEntity : class;
+        bool DeleteList<TEntity>(IEnumerable<TEntity> entitys) where TEntity : class;
         /// <summary>
         /// 事务提交
         /// </summary>

@@ -84,10 +84,8 @@ namespace Hikari.Common.EfCore.Domain
         {
             await _dbContext.Set<TEntity>().AddAsync(entity);
             //_dbContext.Entry<TEntity>(entity).State = EntityState.Added;
-            if (_dbTransaction == null)
-                return await _dbContext.SaveChangesAsync() > 0;
+            return await _dbContext.SaveChangesAsync() > 0;
 
-            return true;
         }
         /// <summary>
         /// 添加
@@ -98,38 +96,32 @@ namespace Hikari.Common.EfCore.Domain
         {
             _dbContext.Set<TEntity>().Add(entity);
             //_dbContext.Entry<TEntity>(entity).State = EntityState.Added;
-            if (_dbTransaction == null)
-                return _dbContext.SaveChanges() > 0;
+            return _dbContext.SaveChanges() > 0;
 
-            return true;
         }
         /// <summary>
         /// 添加
         /// </summary>
-        /// <param name="entity">数据实体</param>
+        /// <param name="entitys">数据实体</param>
         /// <returns>是否成功</returns>
-        public async Task<bool> AddListAsync<TEntity>(IEnumerable<TEntity> entity) where TEntity : class
+        public async Task<bool> AddListAsync<TEntity>(IEnumerable<TEntity> entitys) where TEntity : class
         {
-            await _dbContext.Set<TEntity>().AddRangeAsync(entity);
+            await _dbContext.Set<TEntity>().AddRangeAsync(entitys);
             //_dbContext.Entry<TEntity>(entity).State = EntityState.Added;
-            if (_dbTransaction == null)
-                return await _dbContext.SaveChangesAsync() > 0;
+            return await _dbContext.SaveChangesAsync() > 0;
 
-            return true;
         }
         /// <summary>
         /// 添加
         /// </summary>
-        /// <param name="entity">数据实体</param>
+        /// <param name="entitys">数据实体</param>
         /// <returns>是否成功</returns>
-        public bool AddList<TEntity>(IEnumerable<TEntity> entity) where TEntity : class
+        public bool AddList<TEntity>(IEnumerable<TEntity> entitys) where TEntity : class
         {
-            _dbContext.Set<TEntity>().AddRange(entity);
+            _dbContext.Set<TEntity>().AddRange(entitys);
             //_dbContext.Entry<TEntity>(entity).State = EntityState.Added;
-            if (_dbTransaction == null)
-                return _dbContext.SaveChanges() > 0;
+            return _dbContext.SaveChanges() > 0;
 
-            return true;
         }
         /// <summary>
         /// 更新
@@ -139,9 +131,7 @@ namespace Hikari.Common.EfCore.Domain
         public async Task<bool> UpdateAsync<TEntity>(TEntity entity) where TEntity : class
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
-            if (_dbTransaction == null)
-                return await _dbContext.SaveChangesAsync() > 0;
-            return true;
+            return await _dbContext.SaveChangesAsync() > 0;
         }
         /// <summary>
         /// 更新
@@ -151,9 +141,7 @@ namespace Hikari.Common.EfCore.Domain
         public bool Update<TEntity>(TEntity entity) where TEntity : class
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
-            if (_dbTransaction == null)
-                return _dbContext.SaveChanges() > 0;
-            return true;
+            return _dbContext.SaveChanges() > 0;
         }
         /// <summary>
         /// 清理
@@ -164,9 +152,7 @@ namespace Hikari.Common.EfCore.Domain
         public async Task<bool> CleanAsync<TEntity>(TEntity entity) where TEntity : class
         {
             _dbContext.Entry(entity).State = EntityState.Unchanged;
-            if (_dbTransaction == null)
-                return await _dbContext.SaveChangesAsync() > 0;
-            return true;
+            return await _dbContext.SaveChangesAsync() > 0;
         }
         /// <summary>
         /// 清理
@@ -177,9 +163,7 @@ namespace Hikari.Common.EfCore.Domain
         public bool Clean<TEntity>(TEntity entity) where TEntity : class
         {
             _dbContext.Entry(entity).State = EntityState.Unchanged;
-            if (_dbTransaction == null)
-                return _dbContext.SaveChanges() > 0;
-            return true;
+            return _dbContext.SaveChanges() > 0;
         }
         /// <summary>
         /// 删除
@@ -190,9 +174,7 @@ namespace Hikari.Common.EfCore.Domain
         {
             _dbContext.Set<TEntity>().Remove(entity);
             //_dbContext.Entry<TEntity>(entity).State = EntityState.Deleted;
-            if (_dbTransaction == null)
-                return await _dbContext.SaveChangesAsync() > 0;
-            return true;
+            return await _dbContext.SaveChangesAsync() > 0;
         }
         /// <summary>
         /// 删除
@@ -203,35 +185,29 @@ namespace Hikari.Common.EfCore.Domain
         {
             _dbContext.Set<TEntity>().Remove(entity);
             //_dbContext.Entry<TEntity>(entity).State = EntityState.Deleted;
-            if (_dbTransaction == null)
-                return _dbContext.SaveChanges() > 0;
-            return true;
+            return _dbContext.SaveChanges() > 0;
         }
         /// <summary>
         /// 删除
         /// </summary>
-        /// <param name="entity">数据实体</param>
+        /// <param name="entitys">数据实体</param>
         /// <returns>是否成功</returns>
-        public async Task<bool> DeleteListAsync<TEntity>(IEnumerable<TEntity> entity) where TEntity : class
+        public async Task<bool> DeleteListAsync<TEntity>(IEnumerable<TEntity> entitys) where TEntity : class
         {
-            _dbContext.Set<TEntity>().RemoveRange(entity);
+            _dbContext.Set<TEntity>().RemoveRange(entitys);
             //_dbContext.Entry<TEntity>(entity).State = EntityState.Deleted;
-            if (_dbTransaction == null)
-                return await _dbContext.SaveChangesAsync() > 0;
-            return true;
+            return await _dbContext.SaveChangesAsync() > 0;
         }
         /// <summary>
         /// 删除
         /// </summary>
-        /// <param name="entity">数据实体</param>
+        /// <param name="entitys">数据实体</param>
         /// <returns>是否成功</returns>
-        public bool DeleteList<TEntity>(IEnumerable<TEntity> entity) where TEntity : class
+        public bool DeleteList<TEntity>(IEnumerable<TEntity> entitys) where TEntity : class
         {
-            _dbContext.Set<TEntity>().RemoveRange(entity);
+            _dbContext.Set<TEntity>().RemoveRange(entitys);
             //_dbContext.Entry<TEntity>(entity).State = EntityState.Deleted;
-            if (_dbTransaction == null)
-                return _dbContext.SaveChanges() > 0;
-            return true;
+            return _dbContext.SaveChanges() > 0;
         }
         /// <summary>
         /// 事务提交

@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Hikari.Common.Office\Hikari.Common.Office.csproj" />
+    <ProjectReference Include="..\..\src\Hikari.Common\Hikari.Common.csproj" />
   </ItemGroup>
 
 

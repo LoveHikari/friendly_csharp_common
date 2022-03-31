@@ -83,7 +83,30 @@ namespace Hikari.Common
             var dtYearEd = new DateTime(dtNow.Year, 12, 31);  //本年年末
             return (dtYearSt, dtYearEd);
         }
+        /// <summary>
+        /// 获得一年有几周
+        /// </summary>
+        /// <param name="strYear"></param>
+        /// <returns></returns>
+        public static int GetYearWeekCount(int strYear)
+        {
+            System.DateTime fDt = DateTime.Parse(strYear.ToString() + "-01-01");
+            int k = Convert.ToInt32(fDt.DayOfWeek);//得到该年的第一天是周几 
+            if (k == 0)
+            {
+                int countDay = fDt.AddYears(1).AddDays(-1).DayOfYear;
+                int countWeek = countDay / 7;
+                return countWeek;
 
+            }
+            else
+            {
+                int countDay = fDt.AddYears(1).AddDays(-1).DayOfYear;
+                int countWeek = countDay / 7 + 1;
+                return countWeek;
+            }
+
+        }
 
         /// <summary>
         /// 判断两个时间是否是在同一周

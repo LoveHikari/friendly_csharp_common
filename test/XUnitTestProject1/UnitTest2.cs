@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
+using Hikari.Common;
 using Hikari.Common.Office;
 using Xunit;
 using Xunit.Abstractions;
@@ -105,7 +107,12 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            ExcelHelper.ExcelToDataTable("", "", )
+            for (int i = 1; i < 12; i++)
+            {
+                
+                System.Diagnostics.Debug.WriteLine(i/4+1);
+            }
+            
             Assert.True(true);
         }
 

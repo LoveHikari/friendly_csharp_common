@@ -64,8 +64,8 @@ namespace Hikari.Common
         /// <summary>
         /// 判断给定的数字是否为素数(质数)
         /// </summary>
-        /// <param name="this">true为质数</param>
-        /// <returns></returns>
+        /// <param name="this"></param>
+        /// <returns>true为质数</returns>
         public static bool IsPrime(this in int @this)
         {
             if (@this < 2)
@@ -83,6 +83,14 @@ namespace Hikari.Common
 
             return true;
         }
-        
+        /// <summary>
+        /// 获得当前整数的长度
+        /// </summary>
+        /// <param name="this"></param>
+        /// <returns></returns>
+        public static int Count(this in int @this)
+        {
+            return @this.ToString().Length;
+        }
     }
 }

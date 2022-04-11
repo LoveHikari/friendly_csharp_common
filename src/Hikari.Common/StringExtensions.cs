@@ -546,22 +546,32 @@ namespace Hikari.Common
                 {
                     if (string.IsNullOrEmpty(part))
                         continue;
-                    var str = part.ToCamelCase();
+                    var str = SingleCamelCase(part);
                     sb.Append(char.ToUpper(str[0]) + str.Substring(1, str.Length - 1));
                 }
 
                 return sb.ToString();
             }
 
-            var camelCase = value.ToCamelCase();
+            var camelCase = SingleCamelCase(value);
             return char.ToUpper(camelCase[0]) + camelCase.Substring(1, camelCase.Length - 1);
         }
-				/// <summary>
+        /// <summary>
         /// 转换成驼峰命名
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
         public static string ToCamelCase(this string value)
+        {
+            var pascalCase = value.ToPascalCase();
+            return char.ToLower(pascalCase[0]) + pascalCase.Substring(1, pascalCase.Length - 1);
+        }
+        /// <summary>
+        /// 一个单词转换成驼峰命名
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private static string SingleCamelCase(string value)
         {
             int LowerCaseOffset = 'a' - 'A';
             if (string.IsNullOrEmpty(value))

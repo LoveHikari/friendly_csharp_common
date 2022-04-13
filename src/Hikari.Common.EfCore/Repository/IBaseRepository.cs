@@ -63,7 +63,7 @@ namespace Hikari.Common.EfCore.Repository
         /// <param name="orderName">排序名称</param>
         /// <param name="isAsc">是否升序</param>
         /// <returns>数据,数据总数,总页数,上一页,下一页</returns>
-        Pager<TAggregateRoot> FindList(int pageIndex, int pageSize, Expression<Func<TAggregateRoot, bool>>? predicate = null, string orderName = "", bool isAsc = false);
+        (IQueryable<TAggregateRoot> list, int totalRecord, int pageCount, int prevPage, int nextPage) FindList(int pageIndex, int pageSize, Expression<Func<TAggregateRoot, bool>>? predicate = null, string orderName = "", bool isAsc = false);
         /// <summary>
         /// 执行查询，并以DataTable返回结果集
         /// </summary>

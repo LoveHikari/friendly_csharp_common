@@ -1,4 +1,4 @@
-﻿namespace Hikari.Common
+﻿namespace Hikari.Common.EfCore
 {
     /// <summary>
     /// 分页
@@ -33,6 +33,6 @@
         /// <summary>
         /// 内容
         /// </summary>
-        public IQueryable<T>? Content { get; set; }
+        public List<T>? Content { get; set; }
     }
 }

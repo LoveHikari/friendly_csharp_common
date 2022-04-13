@@ -20,7 +20,7 @@ namespace Hikari.Common.EfCore.Application
         public async Task<Pager<T>> GeneratePageAsync<T>(int pageIndex, int pageSize, IQueryable<T> v)
         {
             int totalRecord = await v.CountAsync();
-            var list = v.Skip((pageIndex - 1) * pageSize).Take(pageSize);
+            var list = await v.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
             int pageCount = Convert.ToInt32(Math.Ceiling(totalRecord / Convert.ToDouble(pageSize)));
             int prevPage = pageIndex > 0 ? pageIndex - 1 : 0;
             int nextPage = pageIndex < pageCount ? pageIndex + 1 : 0;
@@ -47,7 +47,7 @@ namespace Hikari.Common.EfCore.Application
         public Pager<T> GeneratePage<T>(int pageIndex, int pageSize, IQueryable<T> v)
         {
             int totalRecord = v.Count();
-            var list = v.Skip((pageIndex - 1) * pageSize).Take(pageSize);
+            var list = v.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             int pageCount = Convert.ToInt32(Math.Ceiling(totalRecord / Convert.ToDouble(pageSize)));
             int prevPage = pageIndex > 0 ? pageIndex - 1 : 0;
             int nextPage = pageIndex < pageCount ? pageIndex + 1 : 0;
@@ -74,7 +74,7 @@ namespace Hikari.Common.EfCore.Application
         public async Task<Pager<T>> GeneratePageAsync<T>(int pageIndex, int pageSize, IAsyncQueryable<T> v)
         {
             int totalRecord = await v.CountAsync();
-            var list = v.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToEnumerable().AsQueryable();
+            var list = await v.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
             int pageCount = Convert.ToInt32(Math.Ceiling(totalRecord / Convert.ToDouble(pageSize)));
             int prevPage = pageIndex > 0 ? pageIndex - 1 : 0;
             int nextPage = pageIndex < pageCount ? pageIndex + 1 : 0;

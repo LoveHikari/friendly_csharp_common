@@ -33,6 +33,6 @@
         /// <summary>
         /// 内容
         /// </summary>
-        public List<T>? Content { get; set; }
+        public IQueryable<T>? Content { get; set; }
     }
 }

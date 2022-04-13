@@ -19,8 +19,8 @@ namespace Hikari.Common.EfCore.Application
         /// <returns></returns>
         public async Task<Pager<T>> GeneratePageAsync<T>(int pageIndex, int pageSize, IQueryable<T> v)
         {
-            int totalRecord = (await v.ToListAsync()).Count;
-            var list = await v.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+            int totalRecord = await v.CountAsync();
+            var list = v.Skip((pageIndex - 1) * pageSize).Take(pageSize);
             int pageCount = Convert.ToInt32(Math.Ceiling(totalRecord / Convert.ToDouble(pageSize)));
             int prevPage = pageIndex > 0 ? pageIndex - 1 : 0;
             int nextPage = pageIndex < pageCount ? pageIndex + 1 : 0;
@@ -46,8 +46,8 @@ namespace Hikari.Common.EfCore.Application
         /// <returns></returns>
         public Pager<T> GeneratePage<T>(int pageIndex, int pageSize, IQueryable<T> v)
         {
-            int totalRecord = v.ToList().Count;
-            var list = v.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            int totalRecord = v.Count();
+            var list = v.Skip((pageIndex - 1) * pageSize).Take(pageSize);
             int pageCount = Convert.ToInt32(Math.Ceiling(totalRecord / Convert.ToDouble(pageSize)));
             int prevPage = pageIndex > 0 ? pageIndex - 1 : 0;
             int nextPage = pageIndex < pageCount ? pageIndex + 1 : 0;
@@ -73,8 +73,8 @@ namespace Hikari.Common.EfCore.Application
         /// <returns></returns>
         public async Task<Pager<T>> GeneratePageAsync<T>(int pageIndex, int pageSize, IAsyncQueryable<T> v)
         {
-            int totalRecord = (await v.ToListAsync()).Count;
-            var list = await v.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+            int totalRecord = await v.CountAsync();
+            var list = v.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToEnumerable().AsQueryable();
             int pageCount = Convert.ToInt32(Math.Ceiling(totalRecord / Convert.ToDouble(pageSize)));
             int prevPage = pageIndex > 0 ? pageIndex - 1 : 0;
             int nextPage = pageIndex < pageCount ? pageIndex + 1 : 0;

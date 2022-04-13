@@ -110,29 +110,24 @@ namespace Hikari.Common.EfCore.Repository
         /// <param name="predicate">查询表达式</param>
         /// <param name="orderName">排序名称</param>
         /// <param name="isAsc">是否升序</param>
-        /// <returns></returns>
-        public IQueryable<TAggregateRoot> FindPageList(int pageIndex, int pageSize, Expression<Func<TAggregateRoot, bool>>? predicate = null, string orderName = "", bool isAsc = false)
-        {
-            var list = FindPageList(pageIndex, pageSize, out _, predicate, orderName, isAsc);
-            return list;
-        }
-        /// <summary>
-        /// 查找分页数据列表
-        /// </summary>
-        /// <param name="pageIndex">当前页</param>
-        /// <param name="pageSize">每页记录数</param>
-        /// <param name="predicate">查询表达式</param>
-        /// <param name="orderName">排序名称</param>
-        /// <param name="isAsc">是否升序</param>
         /// <returns>数据,数据总数,总页数,上一页,下一页</returns>
-        public (IQueryable<TAggregateRoot> list, int totalRecord, int pageCount, int prevPage, int nextPage) FindPageList2(int pageIndex, int pageSize,
-            Expression<Func<TAggregateRoot, bool>>? predicate = null, string orderName = "", bool isAsc = false)
+        public Pager<TAggregateRoot> FindList(int pageIndex, int pageSize, Expression<Func<TAggregateRoot, bool>>? predicate = null, string orderName = "", bool isAsc = false)
         {
             var list = FindPageList(pageIndex, pageSize, out var totalRecord, predicate, orderName, isAsc);
             int pageCount = Convert.ToInt32(Math.Ceiling(totalRecord / Convert.ToDouble(pageSize)));
             int prevPage = pageIndex > 0 ? pageIndex - 1 : 0;
             int nextPage = pageIndex < pageCount ? pageIndex + 1 : 0;
-            return (list, totalRecord, pageCount, prevPage, nextPage);
+            var pager = new Pager<TAggregateRoot>()
+            {
+                Content = list,
+                NextPage = nextPage,
+                PageCount = pageCount,
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                PrevPage = prevPage,
+                TotalRecord = totalRecord
+            };
+            return pager;
         }
 
         #endregion

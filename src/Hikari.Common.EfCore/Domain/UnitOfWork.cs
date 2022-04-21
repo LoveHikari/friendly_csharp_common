@@ -102,11 +102,11 @@ namespace Hikari.Common.EfCore.Domain
         /// <summary>
         /// 添加
         /// </summary>
-        /// <param name="entitys">数据实体</param>
+        /// <param name="entities">数据实体</param>
         /// <returns>是否成功</returns>
-        public async Task<bool> AddListAsync<TEntity>(IEnumerable<TEntity> entitys) where TEntity : class
+        public async Task<bool> AddListAsync<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
         {
-            await _dbContext.Set<TEntity>().AddRangeAsync(entitys);
+            await _dbContext.Set<TEntity>().AddRangeAsync(entities);
             //_dbContext.Entry<TEntity>(entity).State = EntityState.Added;
             return await _dbContext.SaveChangesAsync() > 0;
 
@@ -114,11 +114,11 @@ namespace Hikari.Common.EfCore.Domain
         /// <summary>
         /// 添加
         /// </summary>
-        /// <param name="entitys">数据实体</param>
+        /// <param name="entities">数据实体</param>
         /// <returns>是否成功</returns>
-        public bool AddList<TEntity>(IEnumerable<TEntity> entitys) where TEntity : class
+        public bool AddList<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
         {
-            _dbContext.Set<TEntity>().AddRange(entitys);
+            _dbContext.Set<TEntity>().AddRange(entities);
             //_dbContext.Entry<TEntity>(entity).State = EntityState.Added;
             return _dbContext.SaveChanges() > 0;
 
@@ -130,7 +130,8 @@ namespace Hikari.Common.EfCore.Domain
         /// <returns>是否成功</returns>
         public async Task<bool> UpdateAsync<TEntity>(TEntity entity) where TEntity : class
         {
-            _dbContext.Entry(entity).State = EntityState.Modified;
+            _dbContext.Set<TEntity>().Update(entity);
+            // _dbContext.Entry(entity).State = EntityState.Modified;
             return await _dbContext.SaveChangesAsync() > 0;
         }
         /// <summary>
@@ -140,7 +141,30 @@ namespace Hikari.Common.EfCore.Domain
         /// <returns>是否成功</returns>
         public bool Update<TEntity>(TEntity entity) where TEntity : class
         {
-            _dbContext.Entry(entity).State = EntityState.Modified;
+            _dbContext.Set<TEntity>().Update(entity);
+            // _dbContext.Entry(entity).State = EntityState.Modified;
+            return _dbContext.SaveChanges() > 0;
+        }
+
+        /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="entities">数据实体</param>
+        /// <returns>是否成功</returns>
+        public async Task<bool> UpdateListAsync<TEntity>(TEntity entities) where TEntity : class
+        {
+            _dbContext.Set<TEntity>().UpdateRange(entities);
+            return await _dbContext.SaveChangesAsync() > 0;
+        }
+
+        /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="entities">数据实体</param>
+        /// <returns>是否成功</returns>
+        public bool UpdateList<TEntity>(TEntity entities) where TEntity : class
+        {
+            _dbContext.Set<TEntity>().UpdateRange(entities);
             return _dbContext.SaveChanges() > 0;
         }
         /// <summary>
@@ -190,22 +214,22 @@ namespace Hikari.Common.EfCore.Domain
         /// <summary>
         /// 删除
         /// </summary>
-        /// <param name="entitys">数据实体</param>
+        /// <param name="entities">数据实体</param>
         /// <returns>是否成功</returns>
-        public async Task<bool> DeleteListAsync<TEntity>(IEnumerable<TEntity> entitys) where TEntity : class
+        public async Task<bool> DeleteListAsync<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
         {
-            _dbContext.Set<TEntity>().RemoveRange(entitys);
+            _dbContext.Set<TEntity>().RemoveRange(entities);
             //_dbContext.Entry<TEntity>(entity).State = EntityState.Deleted;
             return await _dbContext.SaveChangesAsync() > 0;
         }
         /// <summary>
         /// 删除
         /// </summary>
-        /// <param name="entitys">数据实体</param>
+        /// <param name="entities">数据实体</param>
         /// <returns>是否成功</returns>
-        public bool DeleteList<TEntity>(IEnumerable<TEntity> entitys) where TEntity : class
+        public bool DeleteList<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
         {
-            _dbContext.Set<TEntity>().RemoveRange(entitys);
+            _dbContext.Set<TEntity>().RemoveRange(entities);
             //_dbContext.Entry<TEntity>(entity).State = EntityState.Deleted;
             return _dbContext.SaveChanges() > 0;
         }

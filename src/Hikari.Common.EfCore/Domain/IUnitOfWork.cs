@@ -59,16 +59,16 @@
         /// <summary>
         /// 添加
         /// </summary>
-        /// <param name="entity">数据实体</param>
+        /// <param name="entities">数据实体</param>
         /// <returns>是否成功</returns>
-        Task<bool> AddListAsync<TEntity>(IEnumerable<TEntity> entity) where TEntity : class;
+        Task<bool> AddListAsync<TEntity>(IEnumerable<TEntity> entities) where TEntity : class;
 
         /// <summary>
         /// 添加
         /// </summary>
-        /// <param name="entity">数据实体</param>
+        /// <param name="entities">数据实体</param>
         /// <returns>是否成功</returns>
-        bool AddList<TEntity>(IEnumerable<TEntity> entity) where TEntity : class;
+        bool AddList<TEntity>(IEnumerable<TEntity> entities) where TEntity : class;
         /// <summary>
         /// 更新
         /// </summary>
@@ -81,6 +81,18 @@
         /// <param name="entity">数据实体</param>
         /// <returns>是否成功</returns>
         bool Update<TEntity>(TEntity entity) where TEntity : class;
+        /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="entities">数据实体</param>
+        /// <returns>是否成功</returns>
+        Task<bool> UpdateListAsync<TEntity>(TEntity entities) where TEntity : class;
+        /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="entities">数据实体</param>
+        /// <returns>是否成功</returns>
+        bool UpdateList<TEntity>(TEntity entities) where TEntity : class;
         /// <summary>
         /// 清理
         /// </summary>
@@ -111,16 +123,16 @@
         /// <summary>
         /// 删除
         /// </summary>
-        /// <param name="entitys">数据实体</param>
+        /// <param name="entities">数据实体</param>
         /// <returns>是否成功</returns>
-        Task<bool> DeleteListAsync<TEntity>(IEnumerable<TEntity> entitys) where TEntity : class;
+        Task<bool> DeleteListAsync<TEntity>(IEnumerable<TEntity> entities) where TEntity : class;
 
         /// <summary>
         /// 删除
         /// </summary>
-        /// <param name="entitys">数据实体</param>
+        /// <param name="entities">数据实体</param>
         /// <returns>是否成功</returns>
-        bool DeleteList<TEntity>(IEnumerable<TEntity> entitys) where TEntity : class;
+        bool DeleteList<TEntity>(IEnumerable<TEntity> entities) where TEntity : class;
         /// <summary>
         /// 事务提交
         /// </summary>

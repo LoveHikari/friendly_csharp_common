@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Data;
+using System.IO;
+using System.Runtime.Serialization.Json;
+using System.Text;
 using Hikari.Common;
 using Hikari.Common.Office;
+using NPOI.SS.Formula.Functions;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -107,12 +111,18 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            for (int i = 1; i < 12; i++)
+            WaterPowerNoticEt et = new WaterPowerNoticEt()
             {
-                
-                System.Diagnostics.Debug.WriteLine(i/4+1);
-            }
-            
+                CompanyId = 1,
+                CompanyName = "333",
+                WaterNoticeInfo = new WaterPowerNoticEt.WaterNotice()
+                {
+                    SharedTotal = 1
+                }
+            };
+
+            ConvertHelper.ChangeType<WaterPowerNoticDto>(et);
+
             Assert.True(true);
         }
 

@@ -57,6 +57,20 @@ namespace Hikari.Common
             return (dtQuarterSt, dtQuarterEd);
         }
         /// <summary>
+        /// 获取某季度的开始日期和结束日期
+        /// </summary>
+        /// <param name="quarter">季度</param>
+        /// <param name="year">年份，默认为当前年</param>
+        /// <returns>本季度初,本季度末</returns>
+        public static (DateOnly firstDay, DateOnly lastDay) GetDateQuarter(int quarter, int? year = null)
+        {
+            var nowYear = year ?? DateTime.Now.Year;  // 当前年
+            var startMonth = quarter * 3 - 2;
+            var dtQuarterSt = DateOnly.FromDateTime(new DateTime(nowYear, startMonth, 1));  //本季度初
+            var dtQuarterEd = dtQuarterSt.AddMonths(3).AddDays(-1);  //本季度末
+            return (dtQuarterSt, dtQuarterEd);
+        }
+        /// <summary>
         /// 获取某日期所在的年的开始日期和结束日期
         /// </summary>
         /// <param name="dtNow">当前日期</param>

@@ -168,7 +168,7 @@ namespace Hikari.Common
         /// <param name="value">需要转化的对象</param>
         /// <param name="conversionType">转化后的类型</param>
         /// <returns>转化后的对象</returns>
-        public static object? ChangeType(object? value, Type conversionType)
+        internal static object? ChangeType(object? value, Type conversionType)
         {
             if (value == null)
                 return null;
@@ -196,12 +196,8 @@ namespace Hikari.Common
         /// <returns>转化后的对象</returns>
         public static T ChangeType<T>(object value)
         {
-            if (value == null)
-            {
-                return default(T);
-            }
             Type conversionType = typeof(T);
-            object obj = conversionType.Assembly.CreateInstance(conversionType.FullName);
+            object obj = Activator.CreateInstance(conversionType)!;
 
             Type oldType = value.GetType();
             PropertyInfo[] propertyInfos = conversionType.GetProperties();
@@ -210,8 +206,6 @@ namespace Hikari.Common
                 var v = oldType.GetProperty(propertyInfo.Name)?.GetValue(value);
 
                 propertyInfo.SetValue(obj, ChangeType(v, propertyInfo.PropertyType), null);
-
-
             }
 
             return (T)obj;
@@ -224,18 +218,7 @@ namespace Hikari.Common
         /// <returns>转化后的对象</returns>
         public static List<T> ChangeType<T>(IEnumerable<object> value)
         {
-            if (value == null)
-            {
-                return default;
-            }
-
-            List<T> list = new List<T>();
-            foreach (object t in value)
-            {
-                list.Add(ChangeType<T>(t));
-            }
-
-            return list;
+            return value.Select(ChangeType<T>).ToList();
         }
         /// <summary>
         /// 解密base64,解决了base64长度不是4的倍数的问题

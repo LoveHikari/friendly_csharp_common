@@ -15,8 +15,9 @@ namespace Hikari.Common.Collection
         /// </summary>
         /// <typeparam name="T">实体类型</typeparam>
         /// <param name="nvc"><see cref="NameValueCollection"/> 对象</param>
+        /// <param name="sc">默认忽略大小写</param>
         /// <returns>实体类</returns>
-        public static T ToEntity<T>(this NameValueCollection nvc) where T : class, new()
+        public static T? ToEntity<T>(this NameValueCollection nvc, StringComparison sc = StringComparison.OrdinalIgnoreCase) where T : class, new()
         {
             T t = new T();
             // 获得此模型的公共属性 
@@ -27,10 +28,10 @@ namespace Hikari.Common.Collection
             {
                 string tempName = pi.Name; //将属性名称赋值给临时变量
                 //检查DataTable是否包含此列（列名==对象的属性名）
-                if (nvc.AllKeys.Contains(tempName, StringComparison.OrdinalIgnoreCase))
+                if (nvc.AllKeys!.Contains(tempName, sc))
                 {
                     //取值
-                    object value = nvc[tempName];
+                    object? value = nvc[tempName];
                     //如果非空，则赋给对象的属性
                     pi.SetValue(t, ConvertHelper.ChangeType(value, pi.PropertyType), null);
 

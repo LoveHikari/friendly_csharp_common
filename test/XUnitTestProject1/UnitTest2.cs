@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Runtime.Serialization.Json;
@@ -111,17 +112,23 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            WaterPowerNoticEt et = new WaterPowerNoticEt()
-            {
-                CompanyId = 1,
-                CompanyName = "333",
-                WaterNoticeInfo = new WaterPowerNoticEt.WaterNotice()
-                {
-                    SharedTotal = 1
-                }
-            };
+            //HashSet<int> rndIndexes = new HashSet<int>();
+            //Random rng = new Random();
+            //int maxNumber = 20;
+            //int iter = 0;
+            //while (rndIndexes.Count != maxNumber)
+            //{
+            //    int index = rng.Next(maxNumber);
+            //    rndIndexes.Add(index);
+            //    iter++;
+            //}
 
-            ConvertHelper.ChangeType<WaterPowerNoticDto>(et);
+            //foreach (int num in rndIndexes)
+            //{
+            //    _output.WriteLine(num.ToString());
+            //}
+            var v = new Random().RandomNumber(10);
+            _output.WriteLine(v);
 
             Assert.True(true);
         }

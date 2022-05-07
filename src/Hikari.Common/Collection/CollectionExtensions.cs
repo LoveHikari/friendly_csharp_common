@@ -42,7 +42,26 @@ namespace Hikari.Common.Collection
 
             return t;
         }
+        /// <summary>
+        /// 实体类转Dictionary
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static IDictionary<string, object?> ToDictionary(this object obj)
+        {
+            IDictionary<string, object?> dic = new Dictionary<string, object?>();
+            PropertyInfo[] propertys = obj.GetType().GetProperties();
+            foreach (var pi in propertys)
+            {
+                string name = pi.Name;
+                object? value = pi.GetValue(obj, null);
+                dic[name] = value;
+            }
+            return dic;
+        }
     }
+    
+
 
 
 }

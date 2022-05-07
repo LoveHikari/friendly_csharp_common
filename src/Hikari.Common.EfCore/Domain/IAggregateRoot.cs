@@ -8,6 +8,6 @@
         /// <summary>
         /// 主键id
         /// </summary>
-        int Id { get; }
+        long Id { get; }
     }
 }

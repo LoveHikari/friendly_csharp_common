@@ -9,7 +9,7 @@
 		<Product>Hikari.Common.EfCore</Product>
 		<Company>5cm R &amp; D department</Company>
 		<Description>efcore基础类</Description>
-		<Version>6.0.1.7</Version>
+		<Version>6.0.1.8</Version>
 		<Language>zh-CN</Language>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>

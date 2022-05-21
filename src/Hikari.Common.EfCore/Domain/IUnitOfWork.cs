@@ -86,13 +86,13 @@
         /// </summary>
         /// <param name="entities">数据实体</param>
         /// <returns>是否成功</returns>
-        Task<bool> UpdateListAsync<TEntity>(TEntity entities) where TEntity : class;
+        Task<bool> UpdateListAsync<TEntity>(IEnumerable<TEntity> entities) where TEntity : class;
         /// <summary>
         /// 更新
         /// </summary>
         /// <param name="entities">数据实体</param>
         /// <returns>是否成功</returns>
-        bool UpdateList<TEntity>(TEntity entities) where TEntity : class;
+        bool UpdateList<TEntity>(IEnumerable<TEntity> entities) where TEntity : class;
         /// <summary>
         /// 清理
         /// </summary>

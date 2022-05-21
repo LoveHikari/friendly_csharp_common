@@ -151,7 +151,7 @@ namespace Hikari.Common.EfCore.Domain
         /// </summary>
         /// <param name="entities">数据实体</param>
         /// <returns>是否成功</returns>
-        public async Task<bool> UpdateListAsync<TEntity>(TEntity entities) where TEntity : class
+        public async Task<bool> UpdateListAsync<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
         {
             _dbContext.Set<TEntity>().UpdateRange(entities);
             return await _dbContext.SaveChangesAsync() > 0;
@@ -162,7 +162,7 @@ namespace Hikari.Common.EfCore.Domain
         /// </summary>
         /// <param name="entities">数据实体</param>
         /// <returns>是否成功</returns>
-        public bool UpdateList<TEntity>(TEntity entities) where TEntity : class
+        public bool UpdateList<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
         {
             _dbContext.Set<TEntity>().UpdateRange(entities);
             return _dbContext.SaveChanges() > 0;

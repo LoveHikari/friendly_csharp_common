@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using Hikari.Common;
+using Hikari.Common.Net.Http;
 using Hikari.Common.Office;
 using NPOI.SS.Formula.Functions;
 using Xunit;
@@ -127,8 +128,9 @@ namespace XUnitTestProject1
             //{
             //    _output.WriteLine(num.ToString());
             //}
-            var v = new Random().RandomNumber(10);
-            _output.WriteLine(v);
+
+            HttpClientHelper httpClient = new HttpClientHelper();
+            httpClient.Download("https://api.github.com/repos/nondanee/UnblockNeteaseMusic/zipball/v0.25.3", "D:\\1.zip");
 
             Assert.True(true);
         }

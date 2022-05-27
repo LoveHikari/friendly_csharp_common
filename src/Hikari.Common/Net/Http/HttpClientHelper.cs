@@ -507,5 +507,41 @@ namespace Hikari.Common.Net.Http
 
             await fileStream.FlushAsync(cancellationToken);
         }
+        /// <summary>
+        /// 下载文件
+        /// </summary>
+        /// <param name="requestUri">请求地址</param>
+        /// <param name="path">保持文件路径带文件名</param>
+        /// <returns></returns>
+        public void Download(string requestUri, string path)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, new Uri(requestUri));
+            using var responseMessage = _client.Send(request);
+
+            var content = responseMessage.Content;
+
+            using var responseStream = content.ReadAsStream();
+
+            using (var fileStream = new FileInfo(path).Create())
+            using (responseStream)
+            {
+                responseStream.CopyTo(fileStream);
+            }
+
+            int bufferSize = 1024;
+            var buffer = new byte[bufferSize];
+            int bytesRead;
+
+
+            //using FileStream fileStream = File.Open(path, FileMode.Create);
+
+            //while ((bytesRead = responseStream.Read(buffer, 0, bufferSize)) > 0)
+            //{
+
+            //    fileStream.Write(buffer.Take(bytesRead).ToArray());
+            //}
+
+            //fileStream.Flush();
+        }
     }
 }

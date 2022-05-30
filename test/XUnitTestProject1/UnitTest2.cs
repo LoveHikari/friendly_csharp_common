@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Runtime.Serialization.Json;
-using System.Text;
-using Hikari.Common;
-using Hikari.Common.Net.Http;
-using Hikari.Common.Office;
+﻿using Hikari.Common.Net.Http;
 using NPOI.SS.Formula.Functions;
+using System.Data;
 using Xunit;
 using Xunit.Abstractions;
 

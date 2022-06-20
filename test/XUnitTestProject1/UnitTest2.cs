@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Runtime.Serialization.Json;
-using System.Text;
-using Hikari.Common;
-using Hikari.Common.Net.Http;
-using Hikari.Common.Office;
 using NPOI.SS.Formula.Functions;
+using System.Data;
+using CryptoRC4;
+using Hikari.Common.Cryptography;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -129,8 +124,16 @@ namespace XUnitTestProject1
             //    _output.WriteLine(num.ToString());
             //}
 
-            HttpClientHelper httpClient = new HttpClientHelper();
-            httpClient.Download("https://api.github.com/repos/nondanee/UnblockNeteaseMusic/zipball/v0.25.3", "D:\\1.zip");
+            //RC4Crypto crypto = new RC4Crypto();
+            //var b = crypto.EncryptEx("123456", "aptx4869");
+            //var s = Convert.ToBase64String(b);
+
+            var rec = new RC4Engine();
+            rec.EncryptionKey = "aptx4869";
+            rec.CryptedText = "";
+            rec.InClearText = "123456";
+            rec.Decrypt();
+
 
             Assert.True(true);
         }

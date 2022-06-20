@@ -516,32 +516,15 @@ namespace Hikari.Common.Net.Http
         public void Download(string requestUri, string path)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, new Uri(requestUri));
+            request.Headers.Add("user-agent", "Anything");
             using var responseMessage = _client.Send(request);
-
             var content = responseMessage.Content;
 
             using var responseStream = content.ReadAsStream();
 
-            using (var fileStream = new FileInfo(path).Create())
-            using (responseStream)
-            {
-                responseStream.CopyTo(fileStream);
-            }
+            using var fileStream = new FileInfo(path).Create();
+            responseStream.CopyTo(fileStream);
 
-            int bufferSize = 1024;
-            var buffer = new byte[bufferSize];
-            int bytesRead;
-
-
-            //using FileStream fileStream = File.Open(path, FileMode.Create);
-
-            //while ((bytesRead = responseStream.Read(buffer, 0, bufferSize)) > 0)
-            //{
-
-            //    fileStream.Write(buffer.Take(bytesRead).ToArray());
-            //}
-
-            //fileStream.Flush();
         }
     }
 }

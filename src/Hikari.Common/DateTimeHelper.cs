@@ -87,6 +87,15 @@ namespace Hikari.Common
             return (dtQuarterSt, dtQuarterEd);
         }
         /// <summary>
+        /// 获得月份是第几季度
+        /// </summary>
+        /// <param name="month">月份</param>
+        /// <returns>第几季度</returns>
+        public static int GetQuarter(int month)
+        {
+            return Math.Pow(2, month).ToInt32().Count();
+        }
+        /// <summary>
         /// 获取某日期所在的年的开始日期和结束日期
         /// </summary>
         /// <param name="dtNow">当前日期</param>

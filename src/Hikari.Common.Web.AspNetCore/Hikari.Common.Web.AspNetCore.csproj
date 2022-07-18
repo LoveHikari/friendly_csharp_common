@@ -17,13 +17,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
 		<PackageReference Include="NLog.Web.AspNetCore" Version="5.0.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0-preview.5.22301.12" />
-		<PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0-preview.5.22301.12" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0-preview.5.22301.12" />
-		<PackageReference Include="Microsoft.Extensions.Options" Version="7.0.0-preview.5.22301.12" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0-preview.6.22324.4" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0-preview.6.22324.4" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0-preview.6.22324.4" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="7.0.0-preview.6.22324.4" />
 	</ItemGroup>
 
 </Project>

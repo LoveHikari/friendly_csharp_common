@@ -113,7 +113,7 @@ public class ExcelHelper
     /// <param name="sheetName">excel文件中工作表名称</param>
     /// <param name="isHasColumnName">文件是否有列名</param>
     /// <returns>从Excel读取到数据的DataTable结果集</returns>
-    public static DataTable ExcelToDataTable(string sourceFileNamePath, string sheetName, bool isHasColumnName)
+    public static DataTable ExcelToDataTable(string sourceFileNamePath, string sheetName = "", bool isHasColumnName = true)
     {
         if (!File.Exists(sourceFileNamePath))
         {
@@ -138,7 +138,88 @@ public class ExcelHelper
         };
 
         //获取工作表sheet
-        ISheet sheet = workbook.GetSheet(sheetName);
+        ISheet sheet = string.IsNullOrWhiteSpace(sheetName) ? workbook.GetSheetAt(0) : workbook.GetSheet(sheetName);
+        //获取不到，直接返回
+        if (sheet == null) return null;
+
+        //开始读取的行号
+        int startReadRow = 0;
+        DataTable targetTable = new DataTable();
+
+        //表中有列名,则为DataTable添加列名
+        if (isHasColumnName)
+        {
+            //获取要读取的工作表的第一行
+            IRow columnNameRow = sheet.GetRow(0);   //0代表第一行
+                                                    //获取该行的列数(即该行的长度)
+            int cellLength = columnNameRow.LastCellNum;
+
+            //遍历读取
+            for (int columnNameIndex = 0; columnNameIndex < cellLength; columnNameIndex++)
+            {
+                //不为空，则读入
+                if (columnNameRow.GetCell(columnNameIndex) != null)
+                {
+                    //获取该单元格的值
+                    string cellValue = columnNameRow.GetCell(columnNameIndex).StringCellValue;
+                    if (cellValue != null)
+                    {
+                        //为DataTable添加列名
+                        targetTable.Columns.Add(new DataColumn(cellValue));
+                    }
+                }
+            }
+            startReadRow++;
+        }
+
+        // 开始读取sheet表中的数据
+        //获取sheet文件中的行数
+        int rowLength = sheet.LastRowNum;
+        //遍历一行一行地读入
+        for (int i = startReadRow; i < rowLength; i++)
+        {
+            //获取sheet表中对应下标的一行数据
+            IRow currentRow = sheet.GetRow(i);   //RowIndex代表第RowIndex+1行
+
+            if (currentRow == null) continue;  //表示当前行没有数据，则继续
+                                               //获取第Row行中的列数，即Row行中的长度
+            int currentColumnLength = currentRow.LastCellNum;
+
+            //创建DataTable的数据行
+            DataRow dataRow = targetTable.NewRow();
+            //遍历读取数据
+            for (int j = 0; j < currentColumnLength; j++)
+            {
+                //没有数据的单元格默认为空
+                if (currentRow.GetCell(j) != null)
+                {
+                    dataRow[j] = currentRow.GetCell(j);
+                }
+            }
+            //把DataTable的数据行添加到DataTable中
+            targetTable.Rows.Add(dataRow);
+        }
+
+        //释放资源
+        workbook.Close();
+
+        return targetTable;
+    }
+    
+    /// <summary>
+    /// 从Excel中读入数据到DataTable中
+    /// </summary>
+    /// <param name="stream">Excel文件流</param>
+    /// <param name="sheetName">excel文件中工作表名称</param>
+    /// <param name="isHasColumnName">文件是否有列名</param>
+    /// <returns>从Excel读取到数据的DataTable结果集</returns>
+    public static DataTable ExcelToDataTable(Stream stream, string sheetName = "", bool isHasColumnName = true)
+    {
+        // 新建工作簿
+        IWorkbook workbook = new XSSFWorkbook(stream);
+
+        //获取工作表sheet
+        ISheet sheet = string.IsNullOrWhiteSpace(sheetName) ? workbook.GetSheetAt(0) : workbook.GetSheet(sheetName);
         //获取不到，直接返回
         if (sheet == null) return null;
 

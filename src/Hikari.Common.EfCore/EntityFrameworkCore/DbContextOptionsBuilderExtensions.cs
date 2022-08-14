@@ -22,7 +22,7 @@ namespace Hikari.Common.EfCore.EntityFrameworkCore
             {
                 DbTypeEnum.SqlServer => options.UseSqlServer(connectionString,
                     builder => { builder.MigrationsAssembly(assemblyName).UseRelationalNulls(); }),
-                DbTypeEnum.MySql => options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 25)),
+                DbTypeEnum.MySql => options.UseMySQL(connectionString,
                     builder =>
                     {
                         builder.MigrationsAssembly(assemblyName).UseRelationalNulls();

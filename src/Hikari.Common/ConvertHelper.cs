@@ -168,7 +168,7 @@ namespace Hikari.Common
         /// <param name="value">需要转化的对象</param>
         /// <param name="conversionType">转化后的类型</param>
         /// <returns>转化后的对象</returns>
-        internal static object? ChangeType(object? value, Type conversionType)
+        public static object? ChangeType(object? value, Type conversionType)
         {
             if (value == null)
                 return null;

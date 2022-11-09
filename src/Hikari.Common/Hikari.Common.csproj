@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<PackageId>Hikari.Common</PackageId>
@@ -9,7 +9,7 @@
 		<Product>Hikari.Common</Product>
 		<Company>5cm R &amp; D department</Company>
 		<Description>公共库 公共庫</Description>
-		<Version>6.0.4.0</Version>
+		<Version>7.0.0.0</Version>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageReleaseNotes>
 			修复了一些错误
@@ -34,20 +34,20 @@
 		<PackageReference Include="NSoup.Standard" Version="2.0.1">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="SharpZipLib" Version="1.4.0">
+		<PackageReference Include="SharpZipLib" Version="1.4.1">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="System.Drawing.Common" Version="7.0.0-rc.2.22472.3">
+		<PackageReference Include="System.Drawing.Common" Version="7.0.0">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0-rc.2.22472.3">
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<!--<PackageReference Include="ThoughtWorks.QRCode.Core" Version="1.0.1.2" />-->
-		<PackageReference Include="System.Management" Version="7.0.0-rc.2.22472.3">
+		<PackageReference Include="System.Management" Version="7.0.0">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0-rc.2.22472.3">
+		<PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.10">

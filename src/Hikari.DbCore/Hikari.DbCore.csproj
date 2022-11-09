@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<PackageId>Hikari.DbCore</PackageId>
 		<Authors>Asanoame</Authors>
 		<Product>Hikari.DbCore</Product>
@@ -18,7 +18,7 @@
 		<PackageReference Include="MySql.Data" Version="8.0.31" />
 		<PackageReference Include="Npgsql" Version="7.0.0-rc.2" />
 		<PackageReference Include="System.Data.OracleClient" Version="1.0.8" />
-		<PackageReference Include="System.Data.SqlClient" Version="4.8.4" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
 		<PackageReference Include="System.Data.SQLite" Version="1.0.116" />
 	</ItemGroup>
 

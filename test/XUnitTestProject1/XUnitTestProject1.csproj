@@ -9,12 +9,12 @@
   <ItemGroup>
     <PackageReference Include="CZGL.SystemInfo" Version="1.0.3" />
     <PackageReference Include="Hardware.Info" Version="10.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0-rc.2.22472.3" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0-preview-20221003-04" />
     <PackageReference Include="NSoup.Standard" Version="2.0.1" />
     <PackageReference Include="PKT.NPinyin" Version="2.0.1" />
-    <PackageReference Include="SharpZipLib" Version="1.4.0" />
-    <PackageReference Include="System.Management" Version="7.0.0-rc.2.22472.3" />
+    <PackageReference Include="SharpZipLib" Version="1.4.1" />
+    <PackageReference Include="System.Management" Version="7.0.0" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
       <PrivateAssets>all</PrivateAssets>

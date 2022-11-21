@@ -28,7 +28,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="JavaScriptEngineSwitcher.ChakraCore" Version="3.20.5">
+		<PackageReference Include="JavaScriptEngineSwitcher.ChakraCore" Version="3.20.6">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="NSoup.Standard" Version="2.0.1">

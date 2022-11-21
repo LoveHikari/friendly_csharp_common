@@ -362,25 +362,53 @@ namespace Hikari.Common.Net.Http
             HttpContent? content = null;
             if (param != null)
             {
-                if (contentType.Contains("form-data"))
+                if (contentType.Contains("multipart/form-data"))
                 {
-                    var data = new MultipartFormDataContent();
+                    string boundary = Guid.NewGuid().ToString();
+                    var data = new MultipartFormDataContent(boundary);
 
                     foreach (KeyValuePair<string, object> pair in param)
                     {
                         if (pair.Key.ToLower().Contains("file"))
                         {
-                            string fileName = Path.GetFileName(pair.Value.ToString())!;
-                            // 读文件流
-                            data.Add(new ByteArrayContent(File.ReadAllBytes(pair.Value.ToString()!)), pair.Key, fileName);
+                            if (pair.Value is string)
+                            {
+                                string fileName = Path.GetFileName(pair.Value.ToString())!;
+                                data.Add(new ByteArrayContent(File.ReadAllBytes(pair.Value.ToString()!))
+                                {
+                                    Headers =
+                                    {
+                                        ContentDisposition = new ContentDispositionHeaderValue("form-data") { Name = "\"file\"", FileName = "\"" + fileName + "\"" }, 
+                                        //ContentType = new MediaTypeHeaderValue(ct)
+                                    }
+                                });
+                            }
+                            else if (pair.Value is byte[] bytes)
+                            {
+                                string fileName = "file-" + new Random().NextInt64(99999);
+                                data.Add(new ByteArrayContent(bytes)
+                                {
+                                    Headers =
+                                    {
+                                        ContentDisposition = new ContentDispositionHeaderValue("form-data") { Name = "\"file\"", FileName = "\"" + fileName + "\"" }, 
+                                        //ContentType = new MediaTypeHeaderValue(ct)
+                                    }
+                                });
+                            }
+
                         }
                         else
                         {
-                            data.Add(new StringContent(pair.Value.ToString()!));
+                            data.Add(new StringContent(pair.Value.ToString()!)
+                            {
+                                Headers = { ContentDisposition = new ContentDispositionHeaderValue("form-data") { Name = "\"" + pair.Key + "\"" }, ContentType = null }
+                            });
                         }
 
                     }
                     content = data;
+                    content.Headers.Remove("Content-Type");
+                    content.Headers.TryAddWithoutValidation("Content-Type", "multipart/form-data; boundary=" + boundary);
                 }
                 else if (contentType.Contains("stream"))
                 {

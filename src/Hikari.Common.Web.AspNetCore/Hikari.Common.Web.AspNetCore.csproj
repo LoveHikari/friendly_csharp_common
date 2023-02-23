@@ -19,11 +19,11 @@
 	<ItemGroup>
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
-		<PackageReference Include="NLog.Web.AspNetCore" Version="5.2.1" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
+		<PackageReference Include="NLog.Web.AspNetCore" Version="5.2.2" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0-preview.1.23110.8" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0-preview.1.23110.8" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0-preview.1.23110.8" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0-preview.1.23110.8" />
 	</ItemGroup>
 
 </Project>

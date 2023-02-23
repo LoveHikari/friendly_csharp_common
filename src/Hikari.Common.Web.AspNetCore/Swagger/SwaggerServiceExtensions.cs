@@ -64,7 +64,7 @@ namespace Hikari.Common.Web.AspNetCore.Swagger
                 });
                 options.OperationFilter<SwaggerHeaderFilter>();
                 //Set the comments path for the swagger json and ui.
-                System.IO.Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.xml").ToList().ForEach(file =>
+                System.IO.Directory.GetFiles(System.Environment.CurrentDirectory, "*.xml").ToList().ForEach(file =>
                 {
                     options.IncludeXmlComments(file, true);
                 });

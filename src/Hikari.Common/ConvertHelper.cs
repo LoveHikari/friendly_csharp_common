@@ -110,7 +110,20 @@ namespace Hikari.Common
             //返回整数
             return num;
         }
+        /// <summary>
+        /// 字节数组转16进制字符串
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
+        public static string ByteToHexStr(byte[] bytes) {
+            var hexString = string.Empty;
+            if (bytes.Length <= 0) return hexString;
+            foreach (var item in bytes) {
+                hexString += item.ToString("X2");
+            }
 
+            return hexString.ToUpper().Replace(" ", "");
+        }
         /// <summary>
         /// 将XML字符串转换为DataSet
         /// </summary>

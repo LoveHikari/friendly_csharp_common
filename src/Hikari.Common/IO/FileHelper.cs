@@ -222,7 +222,91 @@ public class FileHelper
             return System.Text.Encoding.Default;
         }
     }
+    /// <summary>
+    /// 获得文件真实格式
+    /// </summary>
+    /// <param name="path">文件路径</param>
+    /// <returns></returns>
+    /// <remarks>https://blog.nowcoder.net/n/ffe451b014c5428295e1d114424de83a</remarks>
+    public static OfficeFileClassEnum GetFileHeader(string path) {
+        // 初始化文件头十六进制字符串和返回的文件格式类型
+        var byteArray = new byte[8];   //设置二进制数组
+        System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+        System.IO.BinaryReader r = new System.IO.BinaryReader(fs);
+        r.Read(byteArray, 0, 8);
+        string fileCode = ConvertHelper.ByteToHexStr(byteArray);
+        //如果顺利取出前8个字符生成的十六进制字符串
 
+        //对文件头进行简单判断
+        OfficeFileClassEnum fileClassEnum = OfficeFileClassEnum.Unknown;
+
+        // 先判断前2位
+        var fileCodeHeaderType = fileCode.Substring(0, 4);
+        fileClassEnum = fileCodeHeaderType switch {
+            "FFD8" => OfficeFileClassEnum.JPG,
+            "4749" => OfficeFileClassEnum.GIF,
+            "424D" => OfficeFileClassEnum.BMP,
+            "8950" => OfficeFileClassEnum.PNG,
+            "5261" => OfficeFileClassEnum.RAR,
+            "EFBB" => OfficeFileClassEnum.ASPX,
+            "7573" => OfficeFileClassEnum.CS,
+            "7769" => OfficeFileClassEnum.JS,
+            "D2BB" => OfficeFileClassEnum.TXT,
+            "4065" => OfficeFileClassEnum.BAT,
+            "6438" => OfficeFileClassEnum.BTSEED,
+            "3842" => OfficeFileClassEnum.PSD,
+            "2550" => OfficeFileClassEnum.PDF,
+            "4954" => OfficeFileClassEnum.CHM,
+            "4669" => OfficeFileClassEnum.LOG,
+            "5245" => OfficeFileClassEnum.REG,
+            "3F5F" => OfficeFileClassEnum.HLP,
+            "3C3F" => OfficeFileClassEnum.XML,
+            "3C21" => OfficeFileClassEnum.HTML,
+            _ => fileClassEnum
+        };
+        if (fileCodeHeaderType == "4143") {
+            // 判断前3位
+            fileCodeHeaderType = fileCode.Substring(0, 6);
+            fileClassEnum = fileCodeHeaderType switch {
+                "414331" => OfficeFileClassEnum.DWG,
+                //"414376" => OfficeFileClassEnum.SLE,
+                _ => fileClassEnum
+            };
+        }
+        else if (fileCodeHeaderType == "4D5A") {
+            // 判断前3位
+            fileCodeHeaderType = fileCode.Substring(0, 6);
+            fileClassEnum = fileCodeHeaderType switch {
+                "4D5AEE" => OfficeFileClassEnum.COM,
+                "4D5A78" => OfficeFileClassEnum.EXE,
+                "4D5A90" => OfficeFileClassEnum.DLL,
+                _ => fileClassEnum
+            };
+        }
+
+
+        fileCodeHeaderType = fileCode.Substring(0, 8);//取字符串前8个十六进制位（4个字节位）进行判断
+        if (fileCodeHeaderType == "504B0304") {
+            fileCodeHeaderType = fileCode.Substring(0, 10);
+            fileClassEnum = fileCodeHeaderType switch {
+                "504B030406" => OfficeFileClassEnum.ZIP,
+                "504B030400" => OfficeFileClassEnum.DOCX,
+                "504B03040A" => OfficeFileClassEnum.XLSX,
+                _ => fileClassEnum
+            };
+        }
+        else if (fileCodeHeaderType == "D0CF11E0") {
+            fileCodeHeaderType = fileCode.Substring(0, 10);
+            fileClassEnum = fileCodeHeaderType switch {
+                "D0CF11E0A1" => OfficeFileClassEnum.DOC,
+                //"D0CF11E0A1" => OfficeFileClassEnum.XLS,
+                _ => fileClassEnum
+            };
+        }
+
+        return fileClassEnum;
+
+    }
 
 
     /// <summary>
@@ -274,4 +358,41 @@ public class FileHelper
         new FileExtensionContentTypeProvider().TryGetContentType(fileName, out var contentType);
         return contentType ?? "application/octet-stream";
     }
+}
+/// <summary>
+/// 
+/// </summary>
+/// <remarks>https://blog.mythsman.com/post/5d301940976abc05b345469f/</remarks>
+public enum OfficeFileClassEnum {
+    JPG,
+    GIF,
+    BMP,
+    PNG,
+    COM,
+    EXE,
+    DLL,
+    RAR,
+    ZIP,
+    XML,
+    HTML,
+    ASPX,
+    CS,
+    JS,
+    TXT,
+    SQL,
+    BAT,
+    BTSEED,
+    RDP,
+    PSD,
+    PDF,
+    CHM,
+    LOG,
+    REG,
+    HLP,
+    DOC,
+    XLS,
+    DOCX,
+    XLSX,
+    DWG,
+    Unknown
 }

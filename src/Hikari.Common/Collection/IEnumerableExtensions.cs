@@ -104,6 +104,46 @@ namespace Hikari.Common.Collection
                          .ToDictionary(group => group.Key, group => group.First());
             return result;
         }
+        /// <summary>
+        /// List转化成树结构
+        /// </summary>
+        /// <typeparam name="T1">List的对象类型</typeparam>
+        /// <typeparam name="T2">返回的树的对象类型</typeparam>
+        /// <param name="menuList">菜单的平级list</param>
+        /// <param name="rootId">根节点id</param>
+        /// <param name="getId">指定id字段，默认为id</param>
+        /// <param name="getParentId">指定父节点字段，默认为ParentId</param>
+        /// <returns>树结构</returns>
+        public static List<T2> ToTreeList<T1, T2>(this List<T1> menuList, object? rootId = null, Func<T1, object?>? getId = null, Func<T2, object?>? getParentId = null) where T1 : class, new() where T2 : class, new()
+        {
+            rootId ??= 0;
+            getId ??= arg => arg.GetValue("Id");
+            getParentId ??= arg => arg.GetValue("ParentId");
+
+
+            var dic = new Dictionary<object, T2>(menuList.Count);
+            foreach (var chapter in menuList)
+            {
+
+                dic.Add(getId(chapter), ConvertHelper.ChangeType<T2>(chapter));
+            }
+            foreach (var chapter in dic.Values)
+            {
+                var parentId = getParentId(chapter);
+
+                if (dic.ContainsKey(parentId))
+                {
+                    if (dic[parentId].GetValue("Children") == null)
+                    {
+                        dic[parentId].GetType().GetProperty("Children").SetValue(dic[parentId], new List<T2>());
+                    }
+
+                    ((List<T2>)dic[parentId].GetValue("Children"))?.Add(chapter);
+                }
+            }
+            return dic.Values.Where(t => getParentId(t).Equals(rootId)).ToList();
+        }
+
 
         /// <summary>
         /// 比较器

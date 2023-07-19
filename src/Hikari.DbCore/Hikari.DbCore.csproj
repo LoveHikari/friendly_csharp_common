@@ -15,11 +15,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MySql.Data" Version="8.0.32" />
-		<PackageReference Include="Npgsql" Version="7.0.2" />
+		<PackageReference Include="MySql.Data" Version="8.1.0" />
+		<PackageReference Include="Npgsql" Version="7.0.4" />
 		<PackageReference Include="System.Data.OracleClient" Version="1.0.8" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
-		<PackageReference Include="System.Data.SQLite" Version="1.0.117" />
+		<PackageReference Include="System.Data.SQLite" Version="1.0.118" />
 	</ItemGroup>
 
 </Project>

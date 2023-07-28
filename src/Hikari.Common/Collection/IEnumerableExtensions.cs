@@ -110,40 +110,70 @@ namespace Hikari.Common.Collection
         /// <typeparam name="T1">List的对象类型</typeparam>
         /// <typeparam name="T2">返回的树的对象类型</typeparam>
         /// <param name="menuList">菜单的平级list</param>
-        /// <param name="rootId">根节点id</param>
-        /// <param name="getId">指定id字段，默认为id</param>
-        /// <param name="getParentId">指定父节点字段，默认为ParentId</param>
+        /// <param name="idField">指定id字段，默认为id</param>
+        /// <param name="parentIdField">指定父节点字段，默认为ParentId</param>
+        /// <param name="childrenField">指定子项列表字段，默认为Children</param>
         /// <returns>树结构</returns>
-        public static List<T2> ToTreeList<T1, T2>(this List<T1> menuList, object? rootId = null, Func<T1, object?>? getId = null, Func<T2, object?>? getParentId = null) where T1 : class, new() where T2 : class, new()
+        public static List<T2> ToTreeList<T1, T2>(this List<T1> menuList, string idField = "Id", string parentIdField = "ParentId", string childrenField = "Children") where T1 : class, new() where T2 : class, new()
         {
-            rootId ??= 0;
-            getId ??= arg => arg.GetValue("Id");
-            getParentId ??= arg => arg.GetValue("ParentId");
-
-
             var dic = new Dictionary<object, T2>(menuList.Count);
             foreach (var chapter in menuList)
             {
 
-                dic.Add(getId(chapter), ConvertHelper.ChangeType<T2>(chapter));
+                dic.Add(chapter.GetValue(idField), ConvertHelper.ChangeType<T2>(chapter));
             }
+            var ids = new List<string>();
             foreach (var chapter in dic.Values)
             {
-                var parentId = getParentId(chapter);
+                var parentId = chapter.GetValue(parentIdField);
 
                 if (dic.ContainsKey(parentId))
                 {
-                    if (dic[parentId].GetValue("Children") == null)
+                    if (dic[parentId].GetValue(childrenField) == null)
                     {
-                        dic[parentId].GetType().GetProperty("Children").SetValue(dic[parentId], new List<T2>());
+                        dic[parentId].GetType().GetProperty(childrenField).SetValue(dic[parentId], new List<T2>());
                     }
 
-                    ((List<T2>)dic[parentId].GetValue("Children"))?.Add(chapter);
+                    ((List<T2>)dic[parentId].GetValue(childrenField))?.Add(chapter);
+                    ids.Add(chapter.GetValue(idField).ToString());
                 }
             }
-            return dic.Values.Where(t => getParentId(t).Equals(rootId)).ToList();
+            return dic.Values.Where(t => !ids.Contains(t.GetValue(idField).ToString())).ToList();
         }
 
+        /// <summary>
+        /// 平铺树结构到list
+        /// </summary>
+        /// <typeparam name="T">List的对象类型</typeparam>
+        /// <param name="treeList"></param>
+        /// <param name="childrenField">指定子项列表字段，默认为Children</param>
+        /// <returns></returns>
+        public static List<T> TileTreeList<T>(this List<T> treeList, string childrenField = "Children")
+        {
+            List<T> list = new();
+
+            Action<List<T>>? func = null;
+            func = list1 =>
+            {
+                foreach (var item in list1)
+                {
+                    if (item != null)
+                    {
+                        list.Add(item);
+                        var children = (List<T>?)item.GetValue(childrenField);
+                        if (children != null)
+                        {
+                            func?.Invoke(children);
+                        }
+                    }
+
+                }
+            };
+            func(treeList);
+
+            return list;
+
+        }
 
         /// <summary>
         /// 比较器

@@ -12,7 +12,6 @@
  * 
  * ***************************************************************************************************************/
 
-using Microsoft.AspNetCore.StaticFiles;
 
 namespace Hikari.Common.IO;
 
@@ -348,16 +347,18 @@ public class FileHelper
             File.Create(path).Close();
         }
     }
-    /// <summary>
-    /// 获取文件的MIME类型
-    /// </summary>
-    /// <param name="fileName">文件名</param>
-    /// <returns>MIME类型</returns>
-    public string GetMimeMapping(string fileName)
-    {
-        new FileExtensionContentTypeProvider().TryGetContentType(fileName, out var contentType);
-        return contentType ?? "application/octet-stream";
-    }
+    // todo 获取文件的MIME类型
+    
+    ///// <summary>
+    ///// 获取文件的MIME类型
+    ///// </summary>
+    ///// <param name="fileName">文件名</param>
+    ///// <returns>MIME类型</returns>
+    //public string GetMimeMapping(string fileName)
+    //{
+    //    new FileExtensionContentTypeProvider().TryGetContentType(fileName, out var contentType);
+    //    return contentType ?? "application/octet-stream";
+    //}
 }
 /// <summary>
 /// 

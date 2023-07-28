@@ -65,27 +65,75 @@ namespace Hikari.Common.Collection
         /// 转化成树结构
         /// </summary>
         /// <param name="menuList">菜单的平级list</param>
-        /// <returns></returns>
-        public static List<IDictionary<string, object?>> ToTreeList(List<IDictionary<string, object?>> menuList)
+        /// <param name="idField">指定id字段，默认为id</param>
+        /// <param name="parentIdField">指定父节点字段，默认为ParentId</param>
+        /// <param name="childrenField">指定子项列表字段，默认为Children</param>
+        /// <returns>树结构</returns>
+        public static IEnumerable<IDictionary<string, object?>> ToTreeList(this IEnumerable<IDictionary<string, object?>> menuList, string idField = "Id", string parentIdField = "ParentId", string childrenField = "Children")
         {
+            var dic = new Dictionary<object, IDictionary<string, object?>>();
             foreach (var chapter in menuList)
             {
-                if (chapter.ContainsKey("ParentId"))
+                if (chapter[idField] != null)
                 {
-                    var item = menuList.Find(x => x["Id"]?.ToString() == chapter["ParentId"]?.ToString());
-                    if (item != null)
-                    {
-                        if (!item.ContainsKey("Children"))
-                        {
-                            item.Add("Children", new List<IDictionary<string, object?>>());
-                        }
-                        ((List<IDictionary<string, object?>>)item["Children"]).Add(chapter);
-                    }
+                    dic.Add(chapter[idField], chapter);
                 }
+               
+            }
+            var ids = new List<string>();
+            foreach (var chapter in dic.Values)
+            {
+                var parentId = chapter[parentIdField];
 
+                if (parentId != null && dic.ContainsKey(parentId))
+                {
+                    if (!dic[parentId].ContainsKey(childrenField))
+                    {
+                        dic[parentId].Add(childrenField, new List<IDictionary<string, object?>>());
+                    }
+
+                    dic[parentId][childrenField] ??= new List<IDictionary<string, object?>>();
+
+                    ((List<IDictionary<string, object?>>)dic[parentId][childrenField]).Add(chapter);
+                    ids.Add(chapter[idField].ToString());
+                }
             }
 
-            return menuList.Where(t => !t.ContainsKey("ParentId") || t["ParentId"]?.ToString() == "0" || string.IsNullOrWhiteSpace(t["ParentId"]?.ToString())).ToList();
+            var dicList = dic.Values.Where(t => !ids.Contains(t[idField].ToString()));
+
+            return dicList;
+        }
+        /// <summary>
+        /// 平铺树结构到list
+        /// </summary>
+        /// <param name="treeList">树形列表</param>
+        /// <param name="childrenField">指定子项列表字段，默认为Children</param>
+        /// <returns>平级list</returns>
+        public static IEnumerable<IDictionary<string, object>> TileTreeList(this IEnumerable<IDictionary<string, object?>> treeList, string childrenField = "Children")
+        {
+            List<IDictionary<string, object?>> list = new();
+
+            Action<IEnumerable<IDictionary<string, object?>>>? func = null;
+            func = list1 =>
+            {
+                foreach (var item in list1)
+                {
+                    list.Add(item);
+                    if (item.ContainsKey(childrenField))
+                    {
+                        var children = (List<IDictionary<string, object?>>?)item[childrenField];
+                        if (children != null)
+                        {
+                            func?.Invoke(children);
+                        }
+                    }
+
+                }
+            };
+            func(treeList);
+
+            return list;
+
         }
 
         /// <summary>

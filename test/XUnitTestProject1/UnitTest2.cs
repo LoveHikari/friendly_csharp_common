@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Hikari.Common.SkiaSharp;
 using NPOI.SS.Formula.Functions;
 using System.Data;
-using CryptoRC4;
-using Hikari.Common.Cryptography;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -108,31 +106,7 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            //HashSet<int> rndIndexes = new HashSet<int>();
-            //Random rng = new Random();
-            //int maxNumber = 20;
-            //int iter = 0;
-            //while (rndIndexes.Count != maxNumber)
-            //{
-            //    int index = rng.Next(maxNumber);
-            //    rndIndexes.Add(index);
-            //    iter++;
-            //}
-
-            //foreach (int num in rndIndexes)
-            //{
-            //    _output.WriteLine(num.ToString());
-            //}
-
-            //RC4Crypto crypto = new RC4Crypto();
-            //var b = crypto.EncryptEx("123456", "aptx4869");
-            //var s = Convert.ToBase64String(b);
-
-            var rec = new RC4Engine();
-            rec.EncryptionKey = "aptx4869";
-            rec.CryptedText = "";
-            rec.InClearText = "123456";
-            rec.Decrypt();
+            var ig = ImageHelper.ReadPictureDegree(@"C:\Users\master\Desktop\20230808084717.jpg");
 
 
             Assert.True(true);

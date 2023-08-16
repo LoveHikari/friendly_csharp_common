@@ -9,8 +9,8 @@
 		<Product>Hikari.Common</Product>
 		<Company>5cm R &amp; D department</Company>
 		<Description>公共库 公共庫</Description>
-		<Version>7.0.1.4</Version>
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Version>7.0.2.0</Version>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<PackageReleaseNotes>
 			修复了一些错误
 			いくつかのバグを修正しました
@@ -23,12 +23,11 @@
 		<Copyright>Copyright (c) Hikari.</Copyright>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DocumentationFile>bin\Debug\net7.0\Hikari.Common.xml</DocumentationFile>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<PackageReference Include="JavaScriptEngineSwitcher.ChakraCore" Version="3.21.0">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="MetadataExtractor" Version="2.8.0">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="NSoup.Standard" Version="2.0.1">
@@ -37,22 +36,26 @@
 		<PackageReference Include="SharpZipLib" Version="1.4.2">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="System.Drawing.Common" Version="8.0.0-preview.5.23280.5">
-			<PrivateAssets>all</PrivateAssets>
+		<PackageReference Include="SkiaSharp" Version="2.88.4-preview.89">
+		<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0-preview.6.23329.7">
+
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0-preview.7.23375.6">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<!--<PackageReference Include="ThoughtWorks.QRCode.Core" Version="1.0.1.2" />-->
-		<PackageReference Include="System.Management" Version="8.0.0-preview.6.23329.7">
+		<PackageReference Include="System.Management" Version="8.0.0-preview.7.23375.6">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0-preview.6.23329.7">
+		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0-preview.7.23375.6">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.12">
+		<PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.13">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
+		<!--<PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.12">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>-->
 	</ItemGroup>
 
 	<ItemGroup>

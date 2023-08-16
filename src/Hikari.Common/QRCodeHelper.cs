@@ -1,8 +1,8 @@
-﻿using System.Drawing;
+﻿using SkiaSharp;
 using ZXing;
 using ZXing.QrCode;
 using ZXing.QrCode.Internal;
-using ZXing.Windows.Compatibility;
+using ZXing.SkiaSharp;
 
 namespace Hikari.Common
 {
@@ -14,10 +14,23 @@ namespace Hikari.Common
         /// <summary>
         /// 解码二维码
         /// </summary>
+        /// <param name="filePath">待解码的二维码图片位置</param>
+        /// <param name="characterSet">内容编码</param>
+        /// <returns>扫码结果</returns>
+        public static string DecodeQrCode(string filePath, string characterSet = "utf-8")
+        {
+            // 加载二维码图像
+            SKBitmap barcodeBitmap = SKBitmap.Decode(filePath);
+            return DecodeQrCode(barcodeBitmap, characterSet);
+
+        }
+        /// <summary>
+        /// 解码二维码
+        /// </summary>
         /// <param name="barcodeBitmap">待解码的二维码图片</param>
         /// <param name="characterSet">内容编码</param>
         /// <returns>扫码结果</returns>
-        public static string DecodeQrCode(Bitmap barcodeBitmap, string characterSet = "utf-8")
+        public static string DecodeQrCode(SKBitmap barcodeBitmap, string characterSet = "utf-8")
         {
             var barcodeReader = new BarcodeReader()
             {
@@ -37,7 +50,7 @@ namespace Hikari.Common
         /// <param name="errorCorrection">纠错码等级</param>
         /// <param name="characterSet">内容编码</param>
         /// <returns></returns>
-        public static System.Drawing.Image EncodeQrCode(string content, int size = 10, int margin = 2, string errorCorrection = "L", string characterSet = "utf-8")
+        public static SKBitmap EncodeQrCode(string content, int size = 10, int margin = 2, string errorCorrection = "L", string characterSet = "utf-8")
         {
             BarcodeWriter barCodeWriter = new BarcodeWriter();
             barCodeWriter.Format = BarcodeFormat.QR_CODE;
@@ -87,7 +100,7 @@ namespace Hikari.Common
 
             barCodeWriter.Options = options;
             ZXing.Common.BitMatrix bm = barCodeWriter.Encode(content);
-            Bitmap result = barCodeWriter.Write(bm);
+            SKBitmap result = barCodeWriter.Write(bm);
 
             return result;
 

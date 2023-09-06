@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="CZGL.SystemInfo" Version="2.2.0" />
     <PackageReference Include="Hardware.Info" Version="11.1.1.1" />
+    <PackageReference Include="Masuit.Tools.Core" Version="2.6.6.4" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0-preview.6.23329.7" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.3" />
     <PackageReference Include="NSoup.Standard" Version="2.0.1" />

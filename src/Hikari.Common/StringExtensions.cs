@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -241,7 +242,7 @@ namespace Hikari.Common
         /// <param name="value"></param>
         /// <param name="startString"></param>
         /// <returns></returns>
-        public static  string Substring(this string value, string startString)
+        public static string Substring(this string value, string startString)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -293,7 +294,7 @@ namespace Hikari.Common
         public static string TrimEnd(this string @this, string trimStr)
         {
             int i = trimStr.Length;
-            a:
+        a:
             string endStr = @this.SubRight(i);
             if (endStr != trimStr) return @this;
             @this = @this.Substring(0, @this.Length - i);
@@ -308,7 +309,7 @@ namespace Hikari.Common
         public static string TrimStart(this string @this, string trimStr)
         {
             int i = trimStr.Length;
-            a:
+        a:
             string startStr = @this.SubLeft(i);
             if (startStr != trimStr) return @this;
             @this = @this.Remove(0, i);
@@ -505,7 +506,7 @@ namespace Hikari.Common
         public static DateTime ToDateTime(this string @this, DateTime value)
         {
             if (string.IsNullOrWhiteSpace(@this)) return value;
-            
+
             return DateTime.TryParse(@this, out var result) ? result : value;
         }
         /// <summary>
@@ -573,7 +574,7 @@ namespace Hikari.Common
         /// <returns></returns>
         private static string SingleCamelCase(string value)
         {
-            int LowerCaseOffset = 'a' - 'A';
+            int lowerCaseOffset = 'a' - 'A';
             if (string.IsNullOrEmpty(value))
                 return value;
 
@@ -589,7 +590,7 @@ namespace Hikari.Common
                 var c1isUpper = c1 is >= 'A' and <= 'Z';
 
                 if (firstPart && c0isUpper && (c1isUpper || i == 0))
-                    c0 = (char)(c0 + LowerCaseOffset);
+                    c0 = (char)(c0 + lowerCaseOffset);
                 else
                     firstPart = false;
 
@@ -597,6 +598,48 @@ namespace Hikari.Common
             }
 
             return new string(newValue);
+        }
+        /// <summary>
+        /// 二进制转十进制
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static BigInteger BinaryToBigInteger(this string value)
+        {
+            BigInteger decimalValue = BigInteger.Zero;
+            int sign = value[0] == '1' ? -1 : 1;
+            if (sign == -1)
+            {
+                foreach (var t in value)
+                {
+                    decimalValue <<= 1;
+                    decimalValue += t - '0';
+                }
+
+                decimalValue--;
+
+                string binary = decimalValue.ToBase(2).TrimStart('0');  // 反码
+
+                List<string> ss = new List<string>();
+                foreach (var c in binary)
+                {
+                    ss.Add(c.ToString() == "0" ? "1" : "0");
+                }
+
+                value = string.Join("", ss);
+
+            }
+
+            decimalValue = BigInteger.Zero;
+
+            for (int i = 1; i < value.Length; i++)
+            {
+                int bit = value[i] - '0';
+                decimalValue = (decimalValue << 1) + bit;
+            }
+
+            return decimalValue * sign;
+
         }
     }
 }

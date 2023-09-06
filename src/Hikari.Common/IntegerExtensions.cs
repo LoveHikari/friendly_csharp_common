@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using System.Text;
 
 namespace Hikari.Common
@@ -91,6 +92,64 @@ namespace Hikari.Common
         public static int Count(this in int @this)
         {
             return @this.ToString().Length;
+        }
+
+        /// <summary>
+        /// 十进制转任意进制
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetBase">进制</param>
+        /// <returns></returns>
+        public static string ToBase(this int value, byte targetBase)
+        {
+            return new BigInteger(value).ToBase(targetBase);
+        }
+        /// <summary>
+        /// 十进制转任意进制
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetBase">进制</param>
+        /// <returns></returns>
+        public static string ToBase(this long value, byte targetBase)
+        {
+            return new BigInteger(value).ToBase(targetBase);
+        }
+
+
+        /// <summary>
+        /// 十进制转任意进制
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetBase">进制</param>
+        /// <returns></returns>
+        public static string ToBase(this BigInteger value, byte targetBase)
+        {
+            // 将 BigInteger 转换为字节数组
+            byte[] byteArray = value.ToByteArray();
+
+            // 计算数组长度
+            int arrayLength = (int)Math.Ceiling(byteArray.Length * 8.0 / Math.Log(targetBase, 2));
+
+            // 创建结果数组
+            int[] resultArray = new int[arrayLength];
+
+            // 进行进制转换
+            int currentIndex = 0;
+            foreach (byte b in byteArray)
+            {
+                int currentByte = b;
+                for (int j = 0; j < 8; j += Math.Max(1, (int)Math.Log(targetBase, 2)))
+                {
+                    int remainder = currentByte % targetBase;
+                    currentByte = currentByte / targetBase;
+                    resultArray[currentIndex++] = remainder;
+                }
+            }
+
+            // 反转数组
+            Array.Reverse(resultArray);
+            return string.Join("", resultArray.Select(i => Convert.ToString(i, targetBase)));
+            
         }
     }
 }

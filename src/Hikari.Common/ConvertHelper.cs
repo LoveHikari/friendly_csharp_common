@@ -20,30 +20,6 @@ namespace Hikari.Common
     public sealed class ConvertHelper
     {
         /// <summary>
-        /// 指定字符串的固定长度，如果字符串小于固定长度，
-        /// 则在字符串的前面补足零
-        /// </summary>
-        /// <param name="text">原始字符串</param>
-        /// <param name="limitedLength">字符串的固定长度</param>
-        /// <returns></returns>
-        public static string RepairZero(string text, int limitedLength)
-        {
-            //补足0的字符串
-            string temp = "";
-
-            //补足0
-            for (int i = 0; i < limitedLength - text.Length; i++)
-            {
-                temp += "0";
-            }
-
-            //连接text
-            temp += text;
-
-            //返回补足0的字符串
-            return temp;
-        }
-        /// <summary>
         /// 实现各进制数间的转换。ConvertBase("15",10,16)表示将十进制数15转换为16进制的数。
         /// </summary>
         /// <param name="value">要转换的值,即原值</param>

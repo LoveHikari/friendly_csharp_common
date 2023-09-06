@@ -1,6 +1,8 @@
-﻿using Hikari.Common.SkiaSharp;
-using NPOI.SS.Formula.Functions;
+﻿using NPOI.SS.Formula.Functions;
+using System.Collections.Generic;
 using System.Data;
+using System.Numerics;
+using Hikari.Common;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -106,10 +108,42 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            var ig = ImageHelper.ReadPictureDegree(@"C:\Users\master\Desktop\20230808084717.jpg");
+            var i = -256;
+            var a = new BigInteger(i).ToBase(2);
+            _output.WriteLine(a);
+            var b = a.BinaryToBigInteger().ToString();
+             _output.WriteLine(a);
+            _output.WriteLine(b);
 
 
+            //_output.WriteLine(ConvertHelper.ConvertBase("11110111", 2, 10));
+
+
+            //BigInteger number = new BigInteger(i);
+            //int baseValue = 2; // 目标进制
+
+            //string result = ConvertToBase(number, baseValue);
+            //_output.WriteLine(result);
+
+            //vv.
             Assert.True(true);
+        }
+        string ConvertToBase(BigInteger number, int baseValue)
+        {
+            const string chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            List<char> result = new List<char>();
+
+            BigInteger baseValueBigInt = new BigInteger(baseValue);
+            BigInteger remainder;
+
+            while (number != 0)
+            {
+                remainder = BigInteger.Remainder(number, baseValueBigInt);
+                number = BigInteger.Divide(number, baseValueBigInt);
+                result.Insert(0, chars[(int)remainder]);
+            }
+
+            return new string(result.ToArray());
         }
 
     }

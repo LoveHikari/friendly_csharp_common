@@ -37,28 +37,29 @@ namespace Hikari.Common.Net.Http
             var headers = content.Headers;
             var contentLength = headers.ContentLength;
             await using var responseStream = await content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+            using MemoryStream memoryStream = new MemoryStream();
+            await responseStream.CopyToAsync(memoryStream);
 
             int bufferSize = 1024;
             var buffer = new byte[bufferSize];
             int bytesRead;
-
+            
             var downloadProgress = new HttpDownloadProgress();
             if (contentLength.HasValue)
             {
                 downloadProgress.TotalBytesToReceive = (ulong)contentLength.Value;
-                if (downloadProgress.TotalBytesToReceive is null)
-                {
-                    var stream = await client.GetStreamAsync(requestUri);
-                    using MemoryStream memoryStream = new MemoryStream();
-                    await stream.CopyToAsync(memoryStream, cancellationToken);
-                    downloadProgress.TotalBytesToReceive = (ulong)memoryStream.Length;
-                }
+            }
+            else
+            {
+                downloadProgress.TotalBytesToReceive = (ulong)memoryStream.Length;
+                // 重新定位 MemoryStream 的位置
+                memoryStream.Seek(0, SeekOrigin.Begin);
             }
             progress.Report(downloadProgress);
 
             await using FileStream fileStream = File.Open(path, FileMode.Create);
 
-            while ((bytesRead = await responseStream.ReadAsync(buffer, 0, bufferSize, cancellationToken).ConfigureAwait(false)) > 0)
+            while ((bytesRead = await memoryStream.ReadAsync(buffer, 0, bufferSize, cancellationToken).ConfigureAwait(false)) > 0)
             {
 
                 await fileStream.WriteAsync(buffer.Take(bytesRead).ToArray(), cancellationToken);

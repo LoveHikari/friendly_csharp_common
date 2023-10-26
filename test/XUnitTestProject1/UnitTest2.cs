@@ -1,8 +1,13 @@
-﻿using NPOI.SS.Formula.Functions;
+﻿using System;
+using NPOI.SS.Formula.Functions;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
+using System.Net.Http;
 using System.Numerics;
+using System.Threading;
 using Hikari.Common;
+using Hikari.Common.Net.Http;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -145,6 +150,39 @@ namespace XUnitTestProject1
 
             return new string(result.ToArray());
         }
+        [Fact]
+        public async void Test5()
+        {
+            string fileName = "txt.zip";
+            string path = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, fileName);
+            string url = "https://zip.baipiao.eu.org/";
 
+
+            // 下载
+            ThreadPool.QueueUserWorkItem(async state =>
+            {
+                IProgress<HttpDownloadProgress> progress = new Progress<HttpDownloadProgress>(progress =>
+                {
+
+                    if (progress.BytesReceived == progress.TotalBytesToReceive)
+                    {
+                        // 解压
+                        new ZipLibHelper().UnzipZip(path, System.AppDomain.CurrentDomain.BaseDirectory);
+                        // 覆盖
+                        //CopyDirectory(fileName);
+                        //DeleteDirectory(fileName);
+                        //MessageBox.Show("完成");
+                        _output.WriteLine("完成");
+                    }
+                });
+                await new HttpClient().GetByteArrayAsync("https://zip.baipiao.eu.org/", path, progress, CancellationToken.None);
+            });
+            while (true)
+            {
+
+                Thread.Sleep(100);
+            }
+            Assert.True(true);
+        }
     }
 }

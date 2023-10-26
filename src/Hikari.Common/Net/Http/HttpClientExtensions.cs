@@ -46,6 +46,13 @@ namespace Hikari.Common.Net.Http
             if (contentLength.HasValue)
             {
                 downloadProgress.TotalBytesToReceive = (ulong)contentLength.Value;
+                if (downloadProgress.TotalBytesToReceive is null)
+                {
+                    var stream = await client.GetStreamAsync(requestUri);
+                    using MemoryStream memoryStream = new MemoryStream();
+                    await stream.CopyToAsync(memoryStream, cancellationToken);
+                    downloadProgress.TotalBytesToReceive = (ulong)memoryStream.Length;
+                }
             }
             progress.Report(downloadProgress);
 

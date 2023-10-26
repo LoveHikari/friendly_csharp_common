@@ -152,7 +152,7 @@ public class FileHelper
         byte[] bytes = new byte[fileStream.Length];
         await fileStream.ReadAsync(bytes, 0, bytes.Length);
         // 把 byte[] 转换成 Stream 
-        await using Stream stream = new MemoryStream(bytes);
+        Stream stream = new MemoryStream(bytes);
         return stream;
     }
     /// <summary>
@@ -168,7 +168,7 @@ public class FileHelper
         byte[] bytes = new byte[fileStream.Length];
         fileStream.Read(bytes, 0, bytes.Length);
         // 把 byte[] 转换成 Stream 
-        using Stream stream = new MemoryStream(bytes);
+        Stream stream = new MemoryStream(bytes);
         return stream;
     }
     #endregion

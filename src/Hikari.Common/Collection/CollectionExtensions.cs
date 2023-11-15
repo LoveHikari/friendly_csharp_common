@@ -135,7 +135,37 @@ namespace Hikari.Common.Collection
             return list;
 
         }
+        /// <summary>
+        /// 获取该树形结构的最后一级的所有节点
+        /// </summary>
+        /// <param name="tree">树形列表</param>
+        /// <param name="childrenField">指定子项列表字段，默认为Children</param>
+        /// <returns></returns>
+        public static IEnumerable<IDictionary<string, object>> GetAllNodesAtLastLevel(this IEnumerable<IDictionary<string, object>> tree, string childrenField = "Children")
+        {
+            var nodes = new List<IDictionary<string, object>>();
+            void traverse(IDictionary<string, object> node, int level)
+            {
+                var children = node.ContainsKey(childrenField) ? (List<IDictionary<string, Object>>?)node[childrenField] : null;
+                if (children == null || !children.Any())
+                {
+                    nodes.Add(node);
+                    return;
+                }
+                foreach (var child in children)
+                {
+                    traverse(child, level + 1);
+                }
+            }
+            var temp = new Dictionary<string, object>()
+            {
+                {childrenField, tree}
+            };
 
+            traverse(temp, 0);
+
+            return nodes;
+        }
         /// <summary>
         /// <see cref="IDictionary"/> 转换为实体类
         /// </summary>

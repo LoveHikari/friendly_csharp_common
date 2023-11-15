@@ -9,14 +9,14 @@
   <ItemGroup>
     <PackageReference Include="CZGL.SystemInfo" Version="2.2.0" />
     <PackageReference Include="Hardware.Info" Version="100.0.0" />
-    <PackageReference Include="Masuit.Tools.Core" Version="2.6.7.4" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0-rc.2.23479.6" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0-preview-23503-02" />
+    <PackageReference Include="Masuit.Tools.Core" Version="2.6.7.5" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0-preview-23531-01" />
     <PackageReference Include="NSoup.Standard" Version="2.0.1" />
     <PackageReference Include="PKT.NPinyin" Version="2.0.1" />
     <PackageReference Include="SharpZipLib" Version="1.4.2" />
-    <PackageReference Include="System.Management" Version="8.0.0-rc.2.23479.6" />
-    <PackageReference Include="xunit" Version="2.5.3" />
+    <PackageReference Include="System.Management" Version="8.0.0" />
+    <PackageReference Include="xunit" Version="2.6.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

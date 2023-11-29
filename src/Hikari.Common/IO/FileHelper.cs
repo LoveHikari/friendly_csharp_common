@@ -13,6 +13,8 @@
  * ***************************************************************************************************************/
 
 
+using System.Text;
+
 namespace Hikari.Common.IO;
 
 /// <summary>
@@ -26,38 +28,80 @@ public class FileHelper
     /// </summary>
     /// <param name="path">文件路径</param>
     /// <param name="strings">文件内容</param>
-    /// <param name="charset">编码，默认utf-8</param>
-    public static async Task WriteAsync(string path, string strings, string charset = "utf-8")
+    /// <param name="charset">编码</param>
+    public static async Task WriteAsync(string path, string strings, string charset)
     {
-        Create(path);
-
-        await using System.IO.StreamWriter f2 = new System.IO.StreamWriter(path, false, System.Text.Encoding.GetEncoding(charset));
-        await f2.WriteAsync(strings);
+        Encoding encoding = Encoding.GetEncoding(charset);
+        await WriteAsync(path, strings, encoding);
     }
     /// <summary>
     /// 写文件，如果文件不存在则创建，存在则覆盖
     /// </summary>
     /// <param name="path">文件路径</param>
     /// <param name="strings">文件内容</param>
-    /// <param name="charset">编码，默认utf-8</param>
-    public static void Write(string path, string strings, string charset = "utf-8")
+    /// <param name="encoding">编码</param>
+    public static async Task WriteAsync(string path, string strings, System.Text.Encoding encoding)
     {
         Create(path);
 
-        using System.IO.StreamWriter f2 = new System.IO.StreamWriter(path, false, System.Text.Encoding.GetEncoding(charset));
+        await using System.IO.StreamWriter f2 = new System.IO.StreamWriter(path, false, encoding);
+        await f2.WriteAsync(strings);
+    }
+    /// <summary>
+    /// 写文件，如果文件不存在则创建，存在则覆盖，默认编码UTF-8(无BOM)
+    /// </summary>
+    /// <param name="path">文件路径</param>
+    /// <param name="strings">文件内容</param>
+    public static async Task WriteAsync(string path, string strings)
+    {
+        Encoding encoding = new UTF8Encoding(false);
+        await WriteAsync(path, strings, encoding);
+    }
+    /// <summary>
+    /// 写文件，如果文件不存在则创建，存在则覆盖
+    /// </summary>
+    /// <param name="path">文件路径</param>
+    /// <param name="strings">文件内容</param>
+    /// <param name="charset">编码</param>
+    public static void Write(string path, string strings, string charset)
+    {
+        Encoding encoding = Encoding.GetEncoding(charset);
+        Write(path, strings, encoding);
+    }
+    /// <summary>
+    /// 写文件，如果文件不存在则创建，存在则覆盖
+    /// </summary>
+    /// <param name="path">文件路径</param>
+    /// <param name="strings">文件内容</param>
+    /// <param name="encoding">编码</param>
+    public static void Write(string path, string strings, Encoding encoding)
+    {
+        Create(path);
+
+        using System.IO.StreamWriter f2 = new System.IO.StreamWriter(path, false, encoding);
         f2.Write(strings);
+    }
+    /// <summary>
+    /// 写文件，如果文件不存在则创建，存在则覆盖，默认编码UTF-8(无BOM)
+    /// </summary>
+    /// <param name="path">文件路径</param>
+    /// <param name="strings">文件内容</param>
+    public static void Write(string path, string strings)
+    {
+        Encoding encoding = new UTF8Encoding(false);
+        Write(path, strings, encoding);
     }
     /// <summary>
     /// 写文件，如果文件不存在则创建，存在则追加
     /// </summary>
     /// <param name="path">文件路径</param>
     /// <param name="strings">内容</param>
-    /// <param name="charset">编码，默认utf-8</param>
-    public static async Task AppendAsync(string path, string strings, string charset = "utf-8")
+    /// <param name="encoding">编码</param>
+    public static async Task AppendAsync(string path, string strings, Encoding encoding)
     {
         Create(path);
 
-        await using System.IO.StreamWriter f2 = new System.IO.StreamWriter(path, true, System.Text.Encoding.GetEncoding(charset));
+        await using System.IO.StreamWriter f2 = new System.IO.StreamWriter(path, true, encoding);
         await f2.WriteAsync(strings);
     }
     /// <summary>
@@ -65,13 +109,55 @@ public class FileHelper
     /// </summary>
     /// <param name="path">文件路径</param>
     /// <param name="strings">内容</param>
-    /// <param name="charset">编码，默认utf-8</param>
-    public static void Append(string path, string strings, string charset = "utf-8")
+    /// <param name="charset">编码</param>
+    public static async Task AppendAsync(string path, string strings, string charset)
+    {
+        Encoding encoding = Encoding.GetEncoding(charset);
+        await AppendAsync(path, strings, encoding);
+    }
+    /// <summary>
+    /// 写文件，如果文件不存在则创建，存在则追加，默认编码UTF-8(无BOM)
+    /// </summary>
+    /// <param name="path">文件路径</param>
+    /// <param name="strings">内容</param>
+    public static async Task AppendAsync(string path, string strings)
+    {
+        Encoding encoding = new UTF8Encoding(false);
+        await AppendAsync(path, strings, encoding);
+    }
+    /// <summary>
+    /// 写文件，如果文件不存在则创建，存在则追加
+    /// </summary>
+    /// <param name="path">文件路径</param>
+    /// <param name="strings">内容</param>
+    /// <param name="encoding">编码</param>
+    public static void Append(string path, string strings, Encoding encoding)
     {
         Create(path);
 
-        using System.IO.StreamWriter f2 = new System.IO.StreamWriter(path, true, System.Text.Encoding.GetEncoding(charset));
+        using System.IO.StreamWriter f2 = new System.IO.StreamWriter(path, true, encoding);
         f2.Write(strings);
+    }
+    /// <summary>
+    /// 写文件，如果文件不存在则创建，存在则追加
+    /// </summary>
+    /// <param name="path">文件路径</param>
+    /// <param name="strings">内容</param>
+    /// <param name="charset">编码</param>
+    public static void Append(string path, string strings, string charset)
+    {
+        Encoding encoding = Encoding.GetEncoding(charset);
+        Append(path, strings, encoding);
+    }
+    /// <summary>
+    /// 写文件，如果文件不存在则创建，存在则追加，默认编码UTF-8(无BOM)
+    /// </summary>
+    /// <param name="path">文件路径</param>
+    /// <param name="strings">内容</param>
+    public static void Append(string path, string strings)
+    {
+        Encoding encoding = new UTF8Encoding(false);
+        Append(path, strings, encoding);
     }
     /// <summary>
     ///  将 Stream 写入文件 

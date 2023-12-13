@@ -1,11 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
 using Hikari.Common.Web.AspNetCore.Swagger.Filter;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using System;
+using System.Linq;
 
 namespace Hikari.Common.Web.AspNetCore.Swagger
 {
@@ -29,8 +29,11 @@ namespace Hikari.Common.Web.AspNetCore.Swagger
                 options.ApiVersionReader = new MediaTypeApiVersionReader();
                 options.AssumeDefaultVersionWhenUnspecified = true;
                 options.ApiVersionSelector = new CurrentImplementationApiVersionSelector(options);
-            });  //添加版本控制、激活媒体类型版本控制
-            services.AddVersionedApiExplorer(o => o.GroupNameFormat = "'v'VVV");
+            }).AddApiExplorer(o =>
+            {
+                o.GroupNameFormat = "'v'VVV";
+                o.SubstituteApiVersionInUrl = true;
+            });;  //添加版本控制、激活媒体类型版本控制
             //注册SwaggerAPI文档服务
             services.AddSwaggerGen(options =>
             {

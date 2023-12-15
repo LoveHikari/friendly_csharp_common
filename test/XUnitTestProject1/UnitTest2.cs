@@ -77,7 +77,7 @@ namespace XUnitTestProject1
         [Fact]
         public void Test3()
         {
-
+            
             DataTable dt = new DataTable("cart");
             DataColumn dc1 = new DataColumn("prizename");
             dt.Columns.Add(dc1);

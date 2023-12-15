@@ -5,7 +5,7 @@
 		<Authors>Asanoame</Authors>
 		<Company>5cm R &amp; D department</Company>
 		<Description>AspNetCore库</Description>
-		<Version>8.0.0.0</Version>
+		<Version>8.0.0.2</Version>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageProjectUrl>https://github.com/LoveHikari/friendly_csharp_common</PackageProjectUrl>
 		<PackageTags>common</PackageTags>

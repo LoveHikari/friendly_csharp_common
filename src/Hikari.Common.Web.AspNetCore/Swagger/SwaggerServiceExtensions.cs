@@ -26,14 +26,21 @@ namespace Hikari.Common.Web.AspNetCore.Swagger
         {
             services.AddApiVersioning(options =>
             {
-                options.ApiVersionReader = new MediaTypeApiVersionReader();
+                //options.ApiVersionReader = new MediaTypeApiVersionReader();
+                var builder = new MediaTypeApiVersionReaderBuilder();
+
+                options.ApiVersionReader = builder.Parameter("v")
+                                                  .Include("application/json")
+                                                  .Build();
                 options.AssumeDefaultVersionWhenUnspecified = true;
                 options.ApiVersionSelector = new CurrentImplementationApiVersionSelector(options);
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.ReportApiVersions = true;
             }).AddApiExplorer(o =>
             {
-                o.GroupNameFormat = "'v'VVV";
+                o.GroupNameFormat = "'v'VVVV";
                 o.SubstituteApiVersionInUrl = true;
-            });;  //添加版本控制、激活媒体类型版本控制
+            }); ;  //添加版本控制、激活媒体类型版本控制
             //注册SwaggerAPI文档服务
             services.AddSwaggerGen(options =>
             {

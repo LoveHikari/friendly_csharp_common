@@ -127,7 +127,7 @@ namespace Hikari.Common.Collection
             {
                 var parentId = chapter.GetValue(parentIdField);
 
-                if (dic.ContainsKey(parentId))
+                if (parentId != null && dic.ContainsKey(parentId))
                 {
                     if (dic[parentId].GetValue(childrenField) == null)
                     {

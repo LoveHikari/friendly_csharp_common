@@ -4,8 +4,6 @@ using Hikari.Common.Web.AspNetCore.Swagger.Filter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Linq;
 
 namespace Hikari.Common.Web.AspNetCore.Swagger
 {
@@ -22,7 +20,7 @@ namespace Hikari.Common.Web.AspNetCore.Swagger
         /// <param name="services"></param>
         /// <param name="openApiInfo"></param>
         /// <returns></returns>
-        public static IServiceCollection AddSwaggerCustom(this IServiceCollection services, OpenApiInfo openApiInfo = null)
+        public static IServiceCollection AddSwaggerCustom(this IServiceCollection services, OpenApiInfo? openApiInfo = null)
         {
             services.AddApiVersioning(options =>
             {
@@ -40,7 +38,7 @@ namespace Hikari.Common.Web.AspNetCore.Swagger
             {
                 o.GroupNameFormat = "'v'VVVV";
                 o.SubstituteApiVersionInUrl = true;
-            }); ;  //添加版本控制、激活媒体类型版本控制
+            });  //添加版本控制、激活媒体类型版本控制
             //注册SwaggerAPI文档服务
             services.AddSwaggerGen(options =>
             {
@@ -74,7 +72,7 @@ namespace Hikari.Common.Web.AspNetCore.Swagger
                 });
                 options.OperationFilter<SwaggerHeaderFilter>();
                 //Set the comments path for the swagger json and ui.
-                System.IO.Directory.GetFiles(System.Environment.CurrentDirectory, "*.xml").ToList().ForEach(file =>
+                System.IO.Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.xml").ToList().ForEach(file =>
                 {
                     options.IncludeXmlComments(file, true);
                 });
@@ -110,7 +108,7 @@ namespace Hikari.Common.Web.AspNetCore.Swagger
         /// <param name="description">版本描述</param>
         /// <param name="openApiInfo">标题</param>
         /// <returns></returns>
-        private static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description, OpenApiInfo openApiInfo)
+        private static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description, OpenApiInfo? openApiInfo)
         {
             if (openApiInfo == null)
             {

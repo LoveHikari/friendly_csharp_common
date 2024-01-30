@@ -78,7 +78,7 @@ namespace Hikari.Common.Collection
                 {
                     dic.Add(chapter[idField], chapter);
                 }
-               
+
             }
             var ids = new List<string>();
             foreach (var chapter in dic.Values)
@@ -144,7 +144,7 @@ namespace Hikari.Common.Collection
         public static IEnumerable<IDictionary<string, object>> GetAllNodesAtLastLevel(this IEnumerable<IDictionary<string, object>> tree, string childrenField = "Children")
         {
             var nodes = new List<IDictionary<string, object>>();
-            void traverse(IDictionary<string, object> node, int level)
+            void Traverse(IDictionary<string, object> node, int level)
             {
                 var children = node.ContainsKey(childrenField) ? (List<IDictionary<string, Object>>?)node[childrenField] : null;
                 if (children == null || !children.Any())
@@ -154,7 +154,7 @@ namespace Hikari.Common.Collection
                 }
                 foreach (var child in children)
                 {
-                    traverse(child, level + 1);
+                    Traverse(child, level + 1);
                 }
             }
             var temp = new Dictionary<string, object>()
@@ -162,10 +162,82 @@ namespace Hikari.Common.Collection
                 {childrenField, tree}
             };
 
-            traverse(temp, 0);
+            Traverse(temp, 0);
 
             return nodes;
         }
+
+        /// <summary>
+        /// 获取某一层的所有数据
+        /// </summary>
+        /// <param name="tree">树形列表</param>
+        /// <param name="level">某一层，从0开始</param>
+        /// <param name="childrenField">指定子项列表字段，默认为Children</param>
+        /// <returns></returns>
+        public static IEnumerable<IDictionary<string, object>> GetNodesAtLevel(this IEnumerable<IDictionary<string, object>> tree, int level, string childrenField = "Children")
+        {
+            level++;
+            var nodes = new List<IDictionary<string, object>>();
+            void Traverse(IDictionary<string, object> node, int currentLevel)
+            {
+                if (currentLevel == level)
+                {
+                    nodes.Add(node);
+                    return;
+                }
+                var children = node.ContainsKey(childrenField) ? (List<IDictionary<string, Object>>?)node[childrenField] : null;
+                if (children != null)
+                {
+                    foreach (var child in children)
+                    {
+                        Traverse(child, currentLevel + 1);
+                    }
+                }
+
+            }
+            var temp = new Dictionary<string, object>()
+            {
+                {childrenField, tree}
+            };
+
+            Traverse(temp, 0);
+
+            return nodes;
+        }
+        /// <summary>
+        /// 向上筛选树结构, 返回包含的树
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="tree">树形列表</param>
+        /// <param name="func"></param>
+        /// <param name="childrenField">指定子项列表字段，默认为Children</param>
+        /// <returns></returns>
+        public static List<IDictionary<string, object>> TreeFilter(this IEnumerable<IDictionary<string, object>> tree, Func<IDictionary<string, object>, bool> func, string childrenField = "Children")
+        {
+            IDictionary<string, object> CopyNode(IDictionary<string, object> node)
+            {
+                // Assuming T is a class type
+                IDictionary<string, object> copy = new Dictionary<string, object>();
+                foreach (var key in node.Keys)
+                {
+                    var value = node[key];
+                    copy.Add(key, value);
+                }
+                return copy;
+            }
+
+            return tree
+                .Select(CopyNode)
+                .Where(node =>
+                {
+                    var children = node.ContainsKey(childrenField) ? (List<IDictionary<string, Object>>?)node[childrenField] : null;
+
+                    children = children != null ? TreeFilter(children, func) : null;
+                    return func(node) || children is { Count: > 0 };
+                })
+                .ToList();
+        }
+
         /// <summary>
         /// <see cref="IDictionary"/> 转换为实体类
         /// </summary>
@@ -198,7 +270,7 @@ namespace Hikari.Common.Collection
             return t;
         }
     }
-    
+
 
 
 

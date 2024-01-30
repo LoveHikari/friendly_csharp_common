@@ -184,7 +184,7 @@ namespace Hikari.Common.Collection
         public static List<T> GetAllNodesAtLastLevel<T>(this List<T> tree, string childrenField = "Children") where T : class, new()
         {
             var nodes = new List<T>();
-            void traverse(T node, int level)
+            void Traverse(T node, int level)
             {
                 var children = node.GetValue(childrenField) != null ? (List<T>?)node.GetValue(childrenField) : null;
                 if (children == null || !children.Any())
@@ -194,7 +194,7 @@ namespace Hikari.Common.Collection
                 }
                 foreach (var child in children)
                 {
-                    traverse(child, level + 1);
+                    Traverse(child, level + 1);
                 }
             }
             var temp = new Dictionary<string, object>()
@@ -202,10 +202,88 @@ namespace Hikari.Common.Collection
                 {childrenField, tree}
             };
 
-            traverse(temp.ToEntity<T>(), 0);
+            Traverse(temp.ToEntity<T>(), 0);
 
             return nodes;
         }
+        /// <summary>
+        /// 获取某一层的所有数据
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="tree">树形列表</param>
+        /// <param name="level">某一层，从0开始</param>
+        /// <param name="childrenField">指定子项列表字段，默认为Children</param>
+        /// <returns></returns>
+        public static List<T> GetNodesAtLevel<T>(List<T> tree, int level, string childrenField = "Children") where T : class, new()
+        {
+            level++;
+            var nodes = new List<T>();
+
+            void Traverse(T node, int currentLevel)
+            {
+                if (currentLevel == level)
+                {
+                    nodes.Add(node);
+                }
+                else
+                {
+                    var childrenProperty = node.GetType().GetProperty(childrenField);
+                    if (childrenProperty != null && childrenProperty.GetValue(node) is IEnumerable<T> children)
+                    {
+                        foreach (var child in children)
+                        {
+                            Traverse(child, currentLevel + 1);
+                        }
+                    }
+
+                }
+            }
+
+            var temp = new Dictionary<string, object>()
+            {
+                { childrenField, tree }
+            };
+            Traverse(temp.ToEntity<T>(), 0);
+            return nodes;
+        }
+        /// <summary>
+        /// 向上筛选树结构, 返回包含的树
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="tree">树形列表</param>
+        /// <param name="func"></param>
+        /// <param name="childrenField">指定子项列表字段，默认为Children</param>
+        /// <returns></returns>
+        public static List<T> TreeFilter<T>(List<T> tree, Func<T, bool> func, string childrenField = "Children")
+        {
+            T CopyNode(T node)
+            {
+                // Assuming T is a class type
+                var copy = Activator.CreateInstance<T>();
+                var properties = typeof(T).GetProperties();
+                foreach (var property in properties)
+                {
+                    var value = property.GetValue(node);
+                    property.SetValue(copy, value);
+                }
+                return copy;
+            }
+
+            return tree
+                .Select(CopyNode)
+                .Where(node =>
+                {
+                    var childrenProperty = node.GetType().GetProperty(childrenField);
+                    List<T>? children = childrenProperty.GetValue(node) as List<T>;
+
+                    children = children != null ? TreeFilter(children, func) : null;
+                    return func(node) || children is { Count: > 0 };
+                })
+                .ToList();
+        }
+
+
+
         /// <summary>
         /// 比较器
         /// </summary>

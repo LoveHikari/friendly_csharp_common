@@ -489,13 +489,13 @@ namespace Hikari.Common
         }
 
         /// <summary>
-        /// 转换成时间类型，失败则得到最小时间
+        /// 转换成时间类型
         /// </summary>
         /// <param name="this"></param>
         /// <returns></returns>
-        public static DateTime ToDateTime(this string @this)
+        public static DateTime? ToDateTime(this string @this)
         {
-            return @this.ToDateTime(DateTime.MinValue);
+            return @this.ToDateTime(null);
         }
         /// <summary>
         /// 转换成时间类型
@@ -503,18 +503,18 @@ namespace Hikari.Common
         /// <param name="this"></param>
         /// <param name="value">失败时间</param>
         /// <returns></returns>
-        public static DateTime ToDateTime(this string @this, DateTime value)
+        public static DateTime? ToDateTime(this string @this, DateTime? value)
         {
             if (string.IsNullOrWhiteSpace(@this)) return value;
 
             return DateTime.TryParse(@this, out var result) ? result : value;
         }
         /// <summary>
-        /// 转换成日期类型，失败则得到最小日期
+        /// 转换成日期类型
         /// </summary>
         /// <param name="this"></param>
         /// <returns></returns>
-        public static DateOnly ToDateOnly(this string @this)
+        public static DateOnly? ToDateOnly(this string @this)
         {
             return @this.ToDateOnly(DateOnly.MinValue);
         }
@@ -524,7 +524,7 @@ namespace Hikari.Common
         /// <param name="this"></param>
         /// <param name="value">失败时间</param>
         /// <returns></returns>
-        public static DateOnly ToDateOnly(this string @this, DateOnly value)
+        public static DateOnly? ToDateOnly(this string @this, DateOnly? value)
         {
             if (string.IsNullOrWhiteSpace(@this)) return value;
             return DateTime.TryParse(@this, out var result) ? DateOnly.FromDateTime(result) : value;

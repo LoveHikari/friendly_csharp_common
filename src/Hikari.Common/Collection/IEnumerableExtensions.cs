@@ -214,7 +214,7 @@ namespace Hikari.Common.Collection
         /// <param name="level">某一层，从0开始</param>
         /// <param name="childrenField">指定子项列表字段，默认为Children</param>
         /// <returns></returns>
-        public static List<T> GetNodesAtLevel<T>(List<T> tree, int level, string childrenField = "Children") where T : class, new()
+        public static List<T> GetNodesAtLevel<T>(this List<T> tree, int level, string childrenField = "Children") where T : class, new()
         {
             level++;
             var nodes = new List<T>();
@@ -254,7 +254,7 @@ namespace Hikari.Common.Collection
         /// <param name="func"></param>
         /// <param name="childrenField">指定子项列表字段，默认为Children</param>
         /// <returns></returns>
-        public static List<T> TreeFilter<T>(List<T> tree, Func<T, bool> func, string childrenField = "Children")
+        public static List<T> TreeFilter<T>(this List<T> tree, Func<T, bool> func, string childrenField = "Children")
         {
             T CopyNode(T node)
             {

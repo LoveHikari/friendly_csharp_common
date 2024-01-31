@@ -27,34 +27,34 @@ namespace Hikari.Common
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), System.ComponentModel.Browsable(false)]
     public static class ObjectExtensions
     {
+        ///// <summary>
+        ///// 获取字符串 不返回null值
+        ///// </summary>
+        ///// <param name="this"></param>
+        ///// <param name="s">指定为null时返回的值</param>
+        ///// <returns></returns>
+        //public static string ToNotNullString(this object? @this, string s = "")
+        //{
+        //    if (@this is null || @this == DBNull.Value)
+        //        return s;
+        //    return @this.ToString()!;
+        //}
         /// <summary>
-        /// 获取字符串 不返回null值
+        /// 转换为等效的32位有符号整数
         /// </summary>
         /// <param name="this"></param>
-        /// <param name="s">指定为null时返回的值</param>
         /// <returns></returns>
-        public static string ToNotNullString(this object? @this, string s = "")
+        public static int? ToInt32(this object? @this)
         {
-            if (@this is null || @this == DBNull.Value)
-                return s;
-            return @this.ToString()!;
+            return ToInt32(@this, null);
         }
         /// <summary>
-        /// 转换为等效的32位有符号整数，转换失败返回指定的数字，为null时返回0
+        /// 转换为等效的32位有符号整数，转换失败返回指定的数字
         /// </summary>
         /// <param name="this"></param>
+        /// <param name="i">指定转换失败时返回的值</param>
         /// <returns></returns>
-        public static int ToInt32(this object? @this)
-        {
-            return ToInt32(@this, 0);
-        }
-        /// <summary>
-        /// 转换为等效的32位有符号整数，转换失败返回指定的数字，为null时返回0
-        /// </summary>
-        /// <param name="this"></param>
-        /// <param name="i">指定转换失败时返回的值，默认为0</param>
-        /// <returns></returns>
-        public static int ToInt32(this object? @this, int i)
+        public static int? ToInt32(this object? @this, int? i)
         {
             if (@this is null || string.IsNullOrWhiteSpace(@this.ToString()))
                 return 0;
@@ -65,21 +65,21 @@ namespace Hikari.Common
             return int.TryParse(@this.ToString(), out var result) ? result : i;
         }
         /// <summary>
-        /// 转换为Long，为null时返回默认值，默认为0
+        /// 转换为Long
         /// </summary>
         /// <param name="this"></param>
         /// <returns></returns>
-        public static long ToLong(this object? @this)
+        public static long? ToLong(this object? @this)
         {
-            return ToLong(@this, 0L);
+            return ToLong(@this, null);
         }
         /// <summary>
-        /// 转换为Long，为null时返回默认值，默认为0
+        /// 转换为Long
         /// </summary>
         /// <param name="this"></param>
         /// <param name="i">指定转换失败时返回的值</param>
         /// <returns></returns>
-        public static long ToLong(this object? @this, long i)
+        public static long? ToLong(this object? @this, long? i)
         {
             if (@this is null || string.IsNullOrWhiteSpace(@this.ToString()))
                 return 0L;
@@ -90,21 +90,21 @@ namespace Hikari.Common
             return long.TryParse(@this.ToString(), out var result) ? result : i;
         }
         /// <summary>
-        /// 转换为Short，为null时返回默认值，默认为0
+        /// 转换为Short
         /// </summary>
         /// <param name="this"></param>
         /// <returns></returns>
-        public static short ToShort(this object? @this)
+        public static short? ToShort(this object? @this)
         {
-            return ToShort(@this, 0);
+            return ToShort(@this, null);
         }
         /// <summary>
-        /// 转换为Short，为null时返回默认值
+        /// 转换为Short
         /// </summary>
         /// <param name="this"></param>
-        /// <param name="i">指定转换失败时返回的值，默认为0</param>
+        /// <param name="i">指定转换失败时返回的值</param>
         /// <returns></returns>
-        public static short ToShort(this object? @this, short i)
+        public static short? ToShort(this object? @this, short? i)
         {
             if (@this is null || string.IsNullOrWhiteSpace(@this.ToString()))
                 return 0;
@@ -115,21 +115,21 @@ namespace Hikari.Common
             return short.TryParse(@this.ToString(), out var result) ? result : i;
         }
         /// <summary>
-        /// 转换为decimal类型，失败返回默认值,默认为0
+        /// 转换为decimal类型
         /// </summary>
         /// <param name="this"></param>
         /// <returns></returns>
-        public static decimal ToDecimal(this object? @this)
+        public static decimal? ToDecimal(this object? @this)
         {
-            return ToDecimal(@this, 0M);
+            return ToDecimal(@this, null);
         }
         /// <summary>
-        /// 转换为decimal类型，失败返回默认值
+        /// 转换为decimal类型
         /// </summary>
         /// <param name="this"></param>
         /// <param name="d">指定转换失败时返回的值</param>
         /// <returns></returns>
-        public static decimal ToDecimal(this object? @this, decimal d)
+        public static decimal? ToDecimal(this object? @this, decimal? d)
         {
             if (@this is null || string.IsNullOrWhiteSpace(@this.ToString()))
                 return 0;
@@ -140,13 +140,13 @@ namespace Hikari.Common
             return decimal.TryParse(@this.ToString(), out var result) ? result : d;
         }
         /// <summary>
-        /// 转换为double类型，失败返回默认值,默认为0
+        /// 转换为double类型
         /// </summary>
         /// <param name="this"></param>
         /// <returns></returns>
-        public static double ToDouble(this object? @this)
+        public static double? ToDouble(this object? @this)
         {
-            return ToDouble(@this, 0D);
+            return ToDouble(@this, null);
         }
         /// <summary>
         /// 转换为double类型，失败返回默认值
@@ -154,7 +154,7 @@ namespace Hikari.Common
         /// <param name="this"></param>
         /// <param name="d">指定转换失败时返回的值</param>
         /// <returns></returns>
-        public static double ToDouble(this object? @this, double d)
+        public static double? ToDouble(this object? @this, double? d)
         {
             if (@this is null || string.IsNullOrWhiteSpace(@this.ToString()))
                 return 0;
@@ -165,13 +165,13 @@ namespace Hikari.Common
             return double.TryParse(@this.ToString(), out var result) ? result : d;
         }
         /// <summary>
-        /// 转换为float类型，失败返回默认值,默认为0
+        /// 转换为float类型
         /// </summary>
         /// <param name="this"></param>
         /// <returns></returns>
-        public static double ToFloat(this object? @this)
+        public static float? ToFloat(this object? @this)
         {
-            return ToFloat(@this, 0F);
+            return ToFloat(@this, null);
         }
         /// <summary>
         /// 转换为float类型，失败返回默认值
@@ -179,7 +179,7 @@ namespace Hikari.Common
         /// <param name="this"></param>
         /// <param name="d">指定转换失败时返回的值</param>
         /// <returns></returns>
-        public static double ToFloat(this object? @this, float d)
+        public static float? ToFloat(this object? @this, float? d)
         {
             if (@this is null || string.IsNullOrWhiteSpace(@this.ToString()))
                 return 0;
@@ -187,7 +187,7 @@ namespace Hikari.Common
             {
                 return b ? 1 : 0;
             }
-            return double.TryParse(@this.ToString(), out var result) ? result : d;
+            return float.TryParse(@this.ToString(), out var result) ? result : d;
         }
         /// <summary>
         /// 转换为Boolean类型，遵循非0即真原则

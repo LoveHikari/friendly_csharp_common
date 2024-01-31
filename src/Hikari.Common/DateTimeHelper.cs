@@ -93,7 +93,7 @@ namespace Hikari.Common
         /// <returns>第几季度</returns>
         public static int GetQuarter(int month)
         {
-            return Math.Pow(2, month).ToInt32().Count();
+            return Math.Pow(2, month).ToInt32()?.Count() ?? 1;
         }
         /// <summary>
         /// 获取某日期所在的年的开始日期和结束日期

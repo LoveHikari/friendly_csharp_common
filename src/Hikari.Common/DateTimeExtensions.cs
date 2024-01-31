@@ -67,7 +67,7 @@ namespace Hikari.Common
         /// <returns>该年中的第几季</returns>
         public static int QuarterOfYear(this in DateTime @this)
         {
-            return Math.Pow(2, @this.Month).ToInt32().Count();
+            return Math.Pow(2, @this.Month).ToInt32()?.Count() ?? 1;
         }
         /// <summary>
         /// 获取此实例所表示的日期是该季度中的第几天

@@ -135,7 +135,7 @@ namespace Hikari.Common
             double d = 0;
             foreach (DataRow row in dt.Rows)
             {
-                d += row[columnName].ToDouble();
+                d += row[columnName].ToDouble() ?? 0D;
             }
             return d;
         }
@@ -165,7 +165,7 @@ namespace Hikari.Common
         public static DataSet SplitDataTable(this DataTable originalTab, int rowsNum)
         {
             //获取所需创建的表数量  
-            int tableNum = Math.Ceiling(originalTab.Rows.Count / (double)rowsNum).ToInt32();
+            int tableNum = Math.Ceiling(originalTab.Rows.Count / (double)rowsNum).ToInt32() ?? 0;
 
             //获取数据余数  
             int remainder = originalTab.Rows.Count % rowsNum;

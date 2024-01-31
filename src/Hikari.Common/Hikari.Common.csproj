@@ -9,7 +9,7 @@
 		<Product>Hikari.Common</Product>
 		<Company>5cm R &amp; D department</Company>
 		<Description>公共库 公共庫</Description>
-		<Version>8.0.0.3</Version>
+		<Version>8.0.5</Version>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<PackageReleaseNotes>
 			修复了一些错误
@@ -27,7 +27,7 @@
 		<PackageReference Include="JavaScriptEngineSwitcher.ChakraCore" Version="3.23.7">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="MetadataExtractor" Version="2.8.1">
+		<PackageReference Include="MetadataExtractor" Version="2.9.0-rc1">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="NSoup.Standard" Version="2.0.1">

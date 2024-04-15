@@ -8,6 +8,7 @@ using System.Numerics;
 using System.Threading;
 using Hikari.Common;
 using Hikari.Common.Net.Http;
+using JiebaNet.Segmenter;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -153,34 +154,13 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test5()
         {
-            string fileName = "txt.zip";
-            string path = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, fileName);
-            string url = "https://zip.baipiao.eu.org/";
-
-
-            // 下载
-            ThreadPool.QueueUserWorkItem(async state =>
+            var segmenter = new JiebaSegmenter();
+            string sentence = "我来到北京清华大学";
+            var segList = segmenter.Cut(sentence, cutAll: true);
+             _output.WriteLine("【全模式】：{0}", string.Join("/ ", segList));
+            foreach (var word in segList)
             {
-                IProgress<HttpDownloadProgress> progress = new Progress<HttpDownloadProgress>(progress =>
-                {
-
-                    if (progress.BytesReceived == progress.TotalBytesToReceive)
-                    {
-                        // 解压
-                        new ZipLibHelper().UnzipZip(path, System.AppDomain.CurrentDomain.BaseDirectory);
-                        // 覆盖
-                        //CopyDirectory(fileName);
-                        //DeleteDirectory(fileName);
-                        //MessageBox.Show("完成");
-                        _output.WriteLine("完成");
-                    }
-                });
-                await new HttpClient().GetByteArrayAsync("https://zip.baipiao.eu.org/", path, progress, CancellationToken.None);
-            });
-            while (true)
-            {
-
-                Thread.Sleep(100);
+                 _output.WriteLine(word + " ");
             }
             Assert.True(true);
         }

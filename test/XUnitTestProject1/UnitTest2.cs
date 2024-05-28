@@ -8,7 +8,6 @@ using System.Numerics;
 using System.Threading;
 using Hikari.Common;
 using Hikari.Common.Net.Http;
-using JiebaNet.Segmenter;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -150,19 +149,6 @@ namespace XUnitTestProject1
             }
 
             return new string(result.ToArray());
-        }
-        [Fact]
-        public async void Test5()
-        {
-            var segmenter = new JiebaSegmenter();
-            string sentence = "我来到北京清华大学";
-            var segList = segmenter.Cut(sentence, cutAll: true);
-             _output.WriteLine("【全模式】：{0}", string.Join("/ ", segList));
-            foreach (var word in segList)
-            {
-                 _output.WriteLine(word + " ");
-            }
-            Assert.True(true);
         }
     }
 }

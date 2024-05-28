@@ -24,7 +24,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="JavaScriptEngineSwitcher.ChakraCore" Version="3.24.1">
+		<PackageReference Include="JavaScriptEngineSwitcher.ChakraCore" Version="3.26.0">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="MetadataExtractor" Version="2.9.0-rc2">
@@ -40,14 +40,14 @@
 		<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 
-		<PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.0-preview.3.24172.9">
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.0-preview.4.24266.19">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<!--<PackageReference Include="ThoughtWorks.QRCode.Core" Version="1.0.1.2" />-->
-		<PackageReference Include="System.Management" Version="9.0.0-preview.3.24172.9">
+		<PackageReference Include="System.Management" Version="9.0.0-preview.4.24266.19">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0-preview.3.24172.9">
+		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0-preview.4.24266.19">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.14">

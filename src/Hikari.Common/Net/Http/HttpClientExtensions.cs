@@ -37,10 +37,8 @@ namespace Hikari.Common.Net.Http
             var headers = content.Headers;
             var contentLength = headers.ContentLength;
             await using var responseStream = await content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
-            using MemoryStream memoryStream = new MemoryStream();
-            await responseStream.CopyToAsync(memoryStream);
 
-            int bufferSize = 1024;
+            int bufferSize = 8192;
             var buffer = new byte[bufferSize];
             int bytesRead;
             
@@ -51,6 +49,8 @@ namespace Hikari.Common.Net.Http
             }
             else
             {
+                using MemoryStream memoryStream = new MemoryStream();
+                await responseStream.CopyToAsync(memoryStream, cancellationToken);
                 downloadProgress.TotalBytesToReceive = (ulong)memoryStream.Length;
                 // 重新定位 MemoryStream 的位置
                 memoryStream.Seek(0, SeekOrigin.Begin);
@@ -59,7 +59,7 @@ namespace Hikari.Common.Net.Http
 
             await using FileStream fileStream = File.Open(path, FileMode.Create);
 
-            while ((bytesRead = await memoryStream.ReadAsync(buffer, 0, bufferSize, cancellationToken).ConfigureAwait(false)) > 0)
+            while ((bytesRead = await responseStream.ReadAsync(buffer, 0, bufferSize, cancellationToken).ConfigureAwait(false)) > 0)
             {
 
                 await fileStream.WriteAsync(buffer.Take(bytesRead).ToArray(), cancellationToken);
@@ -90,7 +90,7 @@ namespace Hikari.Common.Net.Http
 
             await using var responseStream = await content.ReadAsStreamAsync().ConfigureAwait(false);
 
-            int bufferSize = 1024;
+            int bufferSize = 8192;
             var buffer = new byte[bufferSize];
             int bytesRead;
 

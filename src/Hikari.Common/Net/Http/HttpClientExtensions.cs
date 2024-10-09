@@ -43,9 +43,22 @@ namespace Hikari.Common.Net.Http
             int bytesRead;
             
             var downloadProgress = new HttpDownloadProgress();
+            await using FileStream fileStream = File.Open(path, FileMode.Create);
             if (contentLength.HasValue)
             {
                 downloadProgress.TotalBytesToReceive = (ulong)contentLength.Value;
+
+                progress.Report(downloadProgress);
+
+
+                while ((bytesRead = await responseStream.ReadAsync(buffer, 0, bufferSize, cancellationToken).ConfigureAwait(false)) > 0)
+                {
+
+                    await fileStream.WriteAsync(buffer.Take(bytesRead).ToArray(), cancellationToken);
+
+                    downloadProgress.BytesReceived += (ulong)bytesRead;
+                    progress?.Report(downloadProgress);
+                }
             }
             else
             {
@@ -54,19 +67,20 @@ namespace Hikari.Common.Net.Http
                 downloadProgress.TotalBytesToReceive = (ulong)memoryStream.Length;
                 // 重新定位 MemoryStream 的位置
                 memoryStream.Seek(0, SeekOrigin.Begin);
+
+                progress.Report(downloadProgress);
+
+
+                while ((bytesRead = await memoryStream.ReadAsync(buffer, 0, bufferSize, cancellationToken).ConfigureAwait(false)) > 0)
+                {
+
+                    await fileStream.WriteAsync(buffer.Take(bytesRead).ToArray(), cancellationToken);
+
+                    downloadProgress.BytesReceived += (ulong)bytesRead;
+                    progress?.Report(downloadProgress);
+                }
             }
-            progress.Report(downloadProgress);
-
-            await using FileStream fileStream = File.Open(path, FileMode.Create);
-
-            while ((bytesRead = await responseStream.ReadAsync(buffer, 0, bufferSize, cancellationToken).ConfigureAwait(false)) > 0)
-            {
-
-                await fileStream.WriteAsync(buffer.Take(bytesRead).ToArray(), cancellationToken);
-
-                downloadProgress.BytesReceived += (ulong)bytesRead;
-                progress?.Report(downloadProgress);
-            }
+            
 
             await fileStream.FlushAsync(cancellationToken);
         }

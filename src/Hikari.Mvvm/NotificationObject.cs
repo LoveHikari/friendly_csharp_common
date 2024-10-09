@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Hikari.WPF.MVVM
+namespace Hikari.Mvvm
 {
     /// <summary>
     /// INotifyPropertyChanged 用于通知属性改变（实现ViewModel向View喊话，所有绑定该属性的都会得到通知）

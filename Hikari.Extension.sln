@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8594F782-B98
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FsLib.TuChuangUtils", "src\FsLib.TuChuangUtils\FsLib.TuChuangUtils.csproj", "{AA8D10A9-5A9A-4F96-BE74-AD5088998BAD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hikari.WPF", "src\Hikari.WPF\Hikari.WPF.csproj", "{66D205F3-EF14-43DD-AAA3-9DA1296DB983}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hikari.Mvvm", "src\Hikari.Mvvm\Hikari.Mvvm.csproj", "{66D205F3-EF14-43DD-AAA3-9DA1296DB983}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hikari.Common.Redis", "src\Hikari.Common.Redis\Hikari.Common.Redis.csproj", "{C18A3883-09F3-478E-94F5-BFB980A975EF}"
 EndProject

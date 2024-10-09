@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Hikari.WPF.MVVM
+namespace Hikari.Mvvm.Command
 {
     public class DelegateCommand<T> : ICommand
     {

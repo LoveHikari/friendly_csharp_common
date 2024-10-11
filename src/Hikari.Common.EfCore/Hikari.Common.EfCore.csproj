@@ -19,19 +19,22 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0-preview.4.24267.1">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0-rc.2.24474.1">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0-preview.4.24267.1">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0-rc.2.24474.1">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0-preview.3">
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0-rc.1">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<!--<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>-->
-		<PackageReference Include="MySql.EntityFrameworkCore" Version="8.0.2">
+		<PackageReference Include="MySql.EntityFrameworkCore" Version="8.0.5">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-rc.2.24474.1">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="System.Linq.Async.Queryable" Version="6.0.1" />

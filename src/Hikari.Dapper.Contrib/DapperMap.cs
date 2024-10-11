@@ -1,6 +1,6 @@
-﻿using System.Reflection;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 using Dapper;
-using Dapper.Contrib.Extensions;
 
 namespace Hikari.Dapper.Contrib
 {
@@ -27,7 +27,7 @@ namespace Hikari.Dapper.Contrib
         }
     }
     /// <summary>
-    /// Uses the Name value of the <see cref="ColumnAttribute"/> specified to determine
+    /// Uses the Name value of the <see cref="System.ComponentModel.DataAnnotations.Schema.ColumnAttribute"/> specified to determine
     /// the association between the name of the column in the query results and the member to
     /// which it will be extracted. If no column mapping is present all members are mapped as
     /// usual.

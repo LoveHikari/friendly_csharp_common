@@ -17,6 +17,7 @@ namespace Hikari.Common
         private readonly int _workerIdShift; //机器码数据左移位数，就是后面计数器占用的位数
         private readonly int _timestampLeftShift; //时间戳左移动位数就是机器码和计数器总字节数
         private readonly long _sequenceMask; //一微秒内可以产生计数，如果达到该值则等到下一微妙在进行生成
+        private readonly Lock _syncLock = new();
         
         private long _lastTimestamp;
         private long _sequence;
@@ -49,7 +50,7 @@ namespace Hikari.Common
         /// <exception cref="Exception"></exception>
         public long NextId()
         {
-            lock (this)
+            lock (_syncLock)
             {
                 long timestamp = TimeGen();
                 if (this._lastTimestamp == timestamp)

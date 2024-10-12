@@ -18,7 +18,7 @@ namespace Hikari.Common
     /// </summary>
     public class LogHelper
     {
-        private static readonly object _locker = new object();
+        private static readonly Lock _locker = new();
 
         private static string _loginfoDir => GetLogger("loginfo");
         private static string _logerrorDir => GetLogger("logerror");

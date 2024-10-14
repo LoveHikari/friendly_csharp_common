@@ -10,6 +10,7 @@ using Hikari.Common;
 using Hikari.Common.Net.Http;
 using Xunit;
 using Xunit.Abstractions;
+using Hikari.DbCore;
 
 namespace XUnitTestProject1
 {
@@ -113,12 +114,9 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            var i = -256;
-            var a = new BigInteger(i).ToBase(2);
-            _output.WriteLine(a);
-            var b = a.BinaryToBigInteger().ToString();
-             _output.WriteLine(a);
-            _output.WriteLine(b);
+            string connectionString = "Server=localhost;Port=3306;charset=UTF8;Database=humablotpro;User ID=root;Password=123456";
+            var db = new CrDb(connectionString, DbProviderEnum.MySql);
+            //_output.WriteLine(b);
 
 
             //_output.WriteLine(ConvertHelper.ConvertBase("11110111", 2, 10));

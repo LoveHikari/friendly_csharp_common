@@ -6,8 +6,7 @@ namespace Hikari.Common.EfCore.Application
     /// <summary>
     /// 业务基类
     /// </summary>
-    /// <typeparam name="TAggregateRoot"></typeparam>
-    public class BaseService<TAggregateRoot> : IBaseService<TAggregateRoot> where TAggregateRoot : class, IAggregateRoot
+    public class BaseService : IBaseService
     {
         /// <summary>
         /// 生成分页

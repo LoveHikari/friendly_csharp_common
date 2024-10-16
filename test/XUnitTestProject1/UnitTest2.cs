@@ -114,8 +114,7 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            string connectionString = "Server=localhost;Port=3306;charset=UTF8;Database=humablotpro;User ID=root;Password=123456";
-            var db = new CrDb(connectionString, DbProviderEnum.MySql);
+            var v = ("18.88").ToInt32(0);
             //_output.WriteLine(b);
 
 

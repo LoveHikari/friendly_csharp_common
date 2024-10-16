@@ -52,6 +52,10 @@ namespace Hikari.Common
             {
                 return b ? 1 : 0;
             }
+            if (double.TryParse(@this.ToString(), out var doubleResult))
+            {
+                return (int)doubleResult; // 转换为int
+            }
             return int.TryParse(@this.ToString(), out var result) ? result : null;
         }
         /// <summary>
@@ -68,6 +72,10 @@ namespace Hikari.Common
             {
                 return b ? 1 : 0;
             }
+            if (double.TryParse(@this.ToString(), out var doubleResult))
+            {
+                return (int)doubleResult; // 转换为int
+            }
             return int.TryParse(@this.ToString(), out var result) ? result : i;
         }
         /// <summary>
@@ -82,6 +90,10 @@ namespace Hikari.Common
             if (@this is bool b)
             {
                 return b ? 1 : 0;
+            }
+            if (double.TryParse(@this.ToString(), out var doubleResult))
+            {
+                return (long)doubleResult; // 转换为long
             }
             return long.TryParse(@this.ToString(), out var result) ? result : null;
         }
@@ -99,6 +111,10 @@ namespace Hikari.Common
             {
                 return b ? 1 : 0;
             }
+            if (double.TryParse(@this.ToString(), out var doubleResult))
+            {
+                return (long)doubleResult; // 转换为long
+            }
             return long.TryParse(@this.ToString(), out var result) ? result : i;
         }
         /// <summary>
@@ -113,6 +129,10 @@ namespace Hikari.Common
             if (@this is bool b)
             {
                 return b ? (short)1 : (short)0;
+            }
+            if (double.TryParse(@this.ToString(), out var doubleResult))
+            {
+                return (short)doubleResult; // 转换为long
             }
             return short.TryParse(@this.ToString(), out var result) ? result : null;
         }
@@ -129,6 +149,10 @@ namespace Hikari.Common
             if (@this is bool b)
             {
                 return b ? (short)1 : (short)0;
+            }
+            if (double.TryParse(@this.ToString(), out var doubleResult))
+            {
+                return (short)doubleResult; // 转换为long
             }
             return short.TryParse(@this.ToString(), out var result) ? result : i;
         }

@@ -9,7 +9,7 @@
 		<Product>Hikari.Common</Product>
 		<Company>5cm R &amp; D department</Company>
 		<Description>公共库 公共庫</Description>
-		<Version>8.0.8</Version>
+		<Version>8.0.9</Version>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<PackageReleaseNotes>
 			修复了一些错误

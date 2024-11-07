@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Numerics;
 using System.Threading;
 using Hikari.Common;
+using Hikari.Common.Mathematics;
 using Hikari.Common.Net.Http;
 using Xunit;
 using Xunit.Abstractions;
@@ -114,7 +115,7 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            var v = ("18.88").ToInt32(0);
+            //var v = ("18.88").ToInt32(0);
             //_output.WriteLine(b);
 
 
@@ -127,7 +128,21 @@ namespace XUnitTestProject1
             //string result = ConvertToBase(number, baseValue);
             //_output.WriteLine(result);
 
-            //vv.
+            //double value = 0.75;
+            //var fraction = new Fraction(value);
+            //System.Diagnostics.Debug.WriteLine($"{value} as a fraction is: {fraction}");
+
+            var value = 3.14159;
+            var fraction = new Fraction(value);
+            System.Diagnostics.Debug.WriteLine($"{value} as a fraction is: {fraction}");
+
+            //value = 2.5;
+            //fraction = new Fraction(value);
+            //System.Diagnostics.Debug.WriteLine($"{value} as a fraction is: {fraction}");
+
+            //value = 0.3333333333333333; // 近似 1/3
+            //fraction = new Fraction(value);
+            //System.Diagnostics.Debug.WriteLine($"{value} as a fraction is: {fraction}");
             Assert.True(true);
         }
         string ConvertToBase(BigInteger number, int baseValue)

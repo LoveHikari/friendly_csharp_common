@@ -14,16 +14,16 @@ namespace Hikari.Common
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        public static int GetGreatestCommonDivisor3(int a, int b)
+        public static long GetGreatestCommonDivisor3(long a, long b)
         {
-            int result = 1;
+            long result = 1;
             if (a > b)
                 result = Gcd(a, b);
             else
                 result = Gcd(b, a);
             return result;
         }
-        private static int Gcd(int a, int b)
+        private static long Gcd(long a, long b)
         {
             if (a % b == 0)
                 return b;
@@ -36,7 +36,7 @@ namespace Hikari.Common
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        public static int GetGreatestCommonDivisor2(int a, int b)
+        public static long GetGreatestCommonDivisor2(long a, long b)
         {
             if (a == b)
                 return a;
@@ -52,7 +52,7 @@ namespace Hikari.Common
         /// <param name="b"></param>
         /// <returns></returns>
         /// <remarks>参考：http://blog.jobbole.com/106315/?utm_source=blog.jobbole.com&amp;utm_medium=relatedPosts </remarks>
-        public static int GetGreatestCommonDivisor(int a, int b)
+        public static long GetGreatestCommonDivisor(long a, long b)
         {
             if (a >> 1 == 0 || b >> 1 == 0) return 1;
             if (a == b)

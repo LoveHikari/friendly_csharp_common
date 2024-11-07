@@ -256,16 +256,20 @@ namespace Hikari.Common
         /// <returns></returns>
         public static bool ToBoolean(this object? @this)
         {
-            if (@this is not string source) return @this is not null;
-            if (string.IsNullOrWhiteSpace(source)) return false;
-
-            if (bool.TryParse(source, out var result)) return result;
-            if (int.TryParse(source, out var i))  //如果是int
+            if (@this == null) return false;
+            // 检查对象类型并根据不同情况转换为bool
+            return @this switch
             {
-                return i != 0;  //非0即真
-            }
-
-            return true;
+                bool boolValue => boolValue,
+                int intValue => intValue != 0,
+                double doubleValue => Math.Abs(doubleValue) > double.Epsilon,
+                float floatValue => Math.Abs(floatValue) > float.Epsilon,
+                string strValue => bool.TryParse(strValue, out var boolResult) ? boolResult : 
+                    double.TryParse(strValue, out var num) ? num != 0.0 : 
+                    !string.IsNullOrEmpty(strValue),
+                IEnumerable<object> enumerableValue => enumerableValue.GetEnumerator().MoveNext(), // 检查是否为空集合
+                _ => true
+            };
 
         }
         /// <summary>

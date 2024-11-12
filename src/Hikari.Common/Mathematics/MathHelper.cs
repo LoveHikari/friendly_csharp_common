@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hikari.Common
+namespace Hikari.Common.Mathematics
 {
     /// <summary>
     /// <see cref="Math"/> 扩展类
@@ -16,6 +16,8 @@ namespace Hikari.Common
         /// <returns></returns>
         public static long GetGreatestCommonDivisor3(long a, long b)
         {
+            a = Math.Abs(a); // 取绝对值
+            b = Math.Abs(b); // 取绝对值
             long result = 1;
             if (a > b)
                 result = Gcd(a, b);
@@ -38,6 +40,8 @@ namespace Hikari.Common
         /// <returns></returns>
         public static long GetGreatestCommonDivisor2(long a, long b)
         {
+            a = Math.Abs(a); // 取绝对值
+            b = Math.Abs(b); // 取绝对值
             if (a == b)
                 return a;
             if (a < b)
@@ -54,6 +58,8 @@ namespace Hikari.Common
         /// <remarks>参考：http://blog.jobbole.com/106315/?utm_source=blog.jobbole.com&amp;utm_medium=relatedPosts </remarks>
         public static long GetGreatestCommonDivisor(long a, long b)
         {
+            a = Math.Abs(a); // 取绝对值
+            b = Math.Abs(b); // 取绝对值
             if (a >> 1 == 0 || b >> 1 == 0) return 1;
             if (a == b)
                 return a;
@@ -72,8 +78,16 @@ namespace Hikari.Common
 
             }
         }
-
-
+        /// <summary>
+        /// 最小公倍数
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static long GetLeastCommonMultiple(long a, long b)
+        {
+            return Math.Abs(a * b) / GetGreatestCommonDivisor(a, b);
+        }
         #endregion
     }
 }

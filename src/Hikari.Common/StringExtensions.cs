@@ -184,7 +184,8 @@ namespace Hikari.Common
         /// <returns></returns>
         public static string RemoveRight(this string @this, int i)
         {
-            return @this.Remove(@this.Length - i, i);
+            return @this[..^i];
+            //return @this.Remove(@this.Length - i, i);
         }
         /// <summary>
         /// 过滤文本中的空行

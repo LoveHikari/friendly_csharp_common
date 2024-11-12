@@ -132,10 +132,15 @@ namespace XUnitTestProject1
             //var fraction = new Fraction(value);
             //System.Diagnostics.Debug.WriteLine($"{value} as a fraction is: {fraction}");
 
-            var value = 3.14159;
-            var fraction = new Fraction(value);
-            System.Diagnostics.Debug.WriteLine($"{value} as a fraction is: {fraction}");
+            int num1 = -12;
+            int num2 = 18;
 
+            var lcm = MathHelper.GetLeastCommonMultiple(num1, num2);
+            System.Diagnostics.Debug.WriteLine($"最小公倍数 LCM({num1}, {num2}) = {lcm}");
+            var text = "string";
+            var result = text[..^1];
+            System.Diagnostics.Debug.WriteLine(text.RemoveRight(3));
+            System.Diagnostics.Debug.WriteLine(text[..^3]);
             //value = 2.5;
             //fraction = new Fraction(value);
             //System.Diagnostics.Debug.WriteLine($"{value} as a fraction is: {fraction}");

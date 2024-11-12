@@ -264,8 +264,8 @@ namespace Hikari.Common
                 int intValue => intValue != 0,
                 double doubleValue => Math.Abs(doubleValue) > double.Epsilon,
                 float floatValue => Math.Abs(floatValue) > float.Epsilon,
-                string strValue => bool.TryParse(strValue, out var boolResult) ? boolResult : 
-                    double.TryParse(strValue, out var num) ? num != 0.0 : 
+                string strValue => bool.TryParse(strValue, out var boolResult) ? boolResult :
+                    double.TryParse(strValue, out var num) ? num != 0.0 :
                     !string.IsNullOrEmpty(strValue),
                 IEnumerable<object> enumerableValue => enumerableValue.GetEnumerator().MoveNext(), // 检查是否为空集合
                 _ => true
@@ -283,6 +283,23 @@ namespace Hikari.Common
             PropertyInfo[] properties = @this.GetType().GetProperties();
             var obj = properties.FirstOrDefault(p => p.Name == propertyName)?.GetValue(@this);
             return obj;
+        }
+        /// <summary>
+        /// 范围判断函数，检查给定的值是否在指定的最小值和最大值之间。
+        /// 例如，可以用来判断当前日期是否在开始日期和结束日期之间。
+        /// 该方法适用于任何实现了 IComparable 接口的类型，比如 int、double、DateTime 等等。
+        /// </summary>
+        /// <typeparam name="T">实现了 IComparable 接口的泛型类型参数</typeparam>
+        /// <param name="value">要比较的值</param>
+        /// <param name="min">范围的最小值</param>
+        /// <param name="max">范围的最大值</param>
+        /// <returns>如果 value 在 min 和 max 之间，则返回 true；否则返回 false</returns>
+        public static bool Between<T>(this T value, T min, T max) where T : IComparable<T>
+        {
+            // 使用 CompareTo 方法比较 value、min 和 max 的大小关系
+            // value 必须大于或等于 min，并且小于或等于 max
+            // 这里可以根据实际业务场景需求调整
+            return value.CompareTo(min) >= 0 && value.CompareTo(max) <= 0;
         }
     }
 }

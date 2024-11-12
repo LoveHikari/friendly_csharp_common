@@ -50,7 +50,7 @@ namespace Hikari.Common.Cryptography
         /// <param name="pass">私钥</param>
         /// <param name="encoding"></param>
         /// <returns></returns>
-        public override byte[] DecryptEx(byte[] data, string pass, string encoding = "utf-8")
+        public override byte[]? DecryptEx(byte[] data, string pass, string encoding = "utf-8")
         {
             using (RSACryptoServiceProvider rsa = DecodePemPrivateKey(pass))
             {
@@ -66,7 +66,7 @@ namespace Hikari.Common.Cryptography
         /// <param name="pass">公钥</param>
         /// <param name="encoding"></param>
         /// <returns></returns>
-        public override byte[] EncryptEx(byte[] data, string pass, string encoding = "utf-8")
+        public override byte[]? EncryptEx(byte[] data, string pass, string encoding = "utf-8")
         {
             RSAParameters paraPub = ConvertFromPublicKey(pass);
             using (var rsa = new RSACryptoServiceProvider())

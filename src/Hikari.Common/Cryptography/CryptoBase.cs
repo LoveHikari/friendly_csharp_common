@@ -14,7 +14,7 @@ namespace Hikari.Common.Cryptography
         /// <param name="pass">密钥</param>
         /// <param name="encoding">编码</param>
         /// <returns>密文</returns>
-        public abstract Byte[] EncryptEx(Byte[] data, String pass, string encoding = "utf-8");
+        public abstract Byte[]? EncryptEx(Byte[] data, String pass, string encoding = "utf-8");
 
         /// <summary>
         /// 加密
@@ -23,7 +23,7 @@ namespace Hikari.Common.Cryptography
         /// <param name="pass">密钥</param>
         /// <param name="encoding">编码</param>
         /// <returns>密文</returns>
-        public Byte[] EncryptEx(string data, String pass, string encoding = "utf-8")
+        public Byte[]? EncryptEx(string data, String pass, string encoding = "utf-8")
         {
             byte[] bytes = System.Text.Encoding.GetEncoding(encoding).GetBytes(data);
             return this.EncryptEx(bytes, pass, encoding);
@@ -35,7 +35,7 @@ namespace Hikari.Common.Cryptography
         /// <param name="pass">密码</param>
         /// <param name="encoding">编码</param>
         /// <returns>明文</returns>
-        public abstract Byte[] DecryptEx(Byte[] data, String pass, string encoding = "utf-8");
+        public abstract Byte[]? DecryptEx(Byte[] data, String pass, string encoding = "utf-8");
 
         /// <summary>
         /// 解密
@@ -44,7 +44,7 @@ namespace Hikari.Common.Cryptography
         /// <param name="pass">密码</param>
         /// <param name="encoding">编码</param>
         /// <returns>明文</returns>
-        public Byte[] DecryptEx(string data, String pass, string encoding = "utf-8")
+        public Byte[]? DecryptEx(string data, String pass, string encoding = "utf-8")
         {
             byte[] bytes = System.Text.Encoding.GetEncoding(encoding).GetBytes(data);
             return this.DecryptEx(bytes, pass, encoding);

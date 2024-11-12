@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Numerics;
 using System.Threading;
 using Hikari.Common;
+using Hikari.Common.Cryptography;
 using Hikari.Common.Mathematics;
 using Hikari.Common.Net.Http;
 using Xunit;
@@ -115,32 +116,11 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            //var v = ("18.88").ToInt32(0);
-            //_output.WriteLine(b);
-
-
-            //_output.WriteLine(ConvertHelper.ConvertBase("11110111", 2, 10));
-
-
-            //BigInteger number = new BigInteger(i);
-            //int baseValue = 2; // 目标进制
-
-            //string result = ConvertToBase(number, baseValue);
-            //_output.WriteLine(result);
-
-            //double value = 0.75;
-            //var fraction = new Fraction(value);
-            //System.Diagnostics.Debug.WriteLine($"{value} as a fraction is: {fraction}");
-
-            int num1 = -12;
-            int num2 = 18;
-
-            var lcm = MathHelper.GetLeastCommonMultiple(num1, num2);
-            System.Diagnostics.Debug.WriteLine($"最小公倍数 LCM({num1}, {num2}) = {lcm}");
-            var text = "string";
-            var result = text[..^1];
-            System.Diagnostics.Debug.WriteLine(text.RemoveRight(3));
-            System.Diagnostics.Debug.WriteLine(text[..^3]);
+            var text = " Hello, World!";
+            AESCrypto crypto = new AESCrypto("111111","111");
+            var v = crypto.EncryptBase64(text);
+            System.Diagnostics.Debug.WriteLine(v);
+            System.Diagnostics.Debug.WriteLine(crypto.DecryptStr(v));
             //value = 2.5;
             //fraction = new Fraction(value);
             //System.Diagnostics.Debug.WriteLine($"{value} as a fraction is: {fraction}");

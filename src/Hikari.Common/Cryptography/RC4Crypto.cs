@@ -14,7 +14,7 @@ namespace Hikari.Common.Cryptography
         /// <param name="pass">加密密码</param>
         /// <param name="encoding">编码</param>
         /// <returns>加密字符串</returns>
-        public override Byte[] EncryptEx(Byte[] data, String pass, string encoding = "utf-8")
+        public override Byte[]? EncryptEx(Byte[]? data, String? pass, string encoding = "utf-8")
         {
             if (data == null || pass == null) return null;
             Byte[] output = new Byte[data.Length];
@@ -46,7 +46,7 @@ namespace Hikari.Common.Cryptography
         /// <param name="pass">密码</param>
         /// <param name="encoding">编码</param>
         /// <returns>解密字符串</returns>
-        public override byte[] DecryptEx(byte[] data, String pass, string encoding = "utf-8")
+        public override byte[]? DecryptEx(byte[] data, String pass, string encoding = "utf-8")
         {
 
             return EncryptEx(data, pass, encoding);

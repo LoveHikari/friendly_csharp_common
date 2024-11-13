@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+		<TargetFramework>net9.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<PackageId>Hikari.Common</PackageId>
@@ -40,14 +40,14 @@
 		<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 
-		<PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.0-rc.2.24473.5">
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.0">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<!--<PackageReference Include="ThoughtWorks.QRCode.Core" Version="1.0.1.2" />-->
-		<PackageReference Include="System.Management" Version="9.0.0-rc.2.24473.5">
+		<PackageReference Include="System.Management" Version="9.0.0">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0-rc.2.24473.5">
+		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.14">

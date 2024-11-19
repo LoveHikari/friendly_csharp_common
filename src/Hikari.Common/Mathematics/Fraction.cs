@@ -1,5 +1,7 @@
 ﻿namespace Hikari.Common.Mathematics;
-
+/// <summary>
+/// 分数
+/// </summary>
 public class Fraction
 {
     private long _numerator; // 分子
@@ -38,6 +40,9 @@ public class Fraction
         }
 
     }
+    /// <summary>
+    /// 创建分数
+    /// </summary>
     public Fraction() { }
     /// <summary>
     /// 创建分数(默认分母为1)

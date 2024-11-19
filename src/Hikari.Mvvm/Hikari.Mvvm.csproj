@@ -19,4 +19,8 @@
 		<DocumentationFile>bin\Debug\net9.0-windows\Hikari.Mvvm.xml</DocumentationFile>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <Folder Include="Themes\" />
+	</ItemGroup>
+
 </Project>

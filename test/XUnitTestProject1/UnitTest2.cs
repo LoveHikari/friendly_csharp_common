@@ -117,7 +117,7 @@ namespace XUnitTestProject1
         public async void Test4()
         {
             var text = " Hello, World!";
-            AESCrypto crypto = new AESCrypto("111111","111");
+            TripleDesCrypto crypto = new TripleDesCrypto("xhVs6DRXLfUGxw+AhtfQdpQG","111111");
             var v = crypto.EncryptBase64(text);
             System.Diagnostics.Debug.WriteLine(v);
             System.Diagnostics.Debug.WriteLine(crypto.DecryptStr(v));

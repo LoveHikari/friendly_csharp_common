@@ -4,9 +4,9 @@ using System.Security.Cryptography;
 namespace Hikari.Common.Cryptography
 {
     /// <summary>
-    /// AES加解密
+    /// 3DES加解密
     /// </summary>
-    public class AesCrypto
+    public class TripleDesCrypto
     {
         private readonly System.Text.Encoding _encoding;
         private readonly byte[] _key;
@@ -21,7 +21,7 @@ namespace Hikari.Common.Cryptography
         /// <param name="mode"></param>
         /// <param name="padding"></param>
         /// <param name="encoding"></param>
-        public AesCrypto(string key, string iv = "", CipherMode mode = CipherMode.ECB, PaddingMode padding = PaddingMode.PKCS7, string encoding = "utf-8")
+        public TripleDesCrypto(string key, string iv = "", CipherMode mode = CipherMode.ECB, PaddingMode padding = PaddingMode.PKCS7, string encoding = "utf-8")
         {
             _encoding = System.Text.Encoding.GetEncoding(encoding);
             _key = _encoding.GetBytes(key);
@@ -37,7 +37,7 @@ namespace Hikari.Common.Cryptography
         /// <param name="mode"></param>
         /// <param name="padding"></param>
         /// <param name="encoding"></param>
-        public AesCrypto(byte[] key, byte[]? iv = null, CipherMode mode = CipherMode.ECB, PaddingMode padding = PaddingMode.PKCS7, string encoding = "utf-8")
+        public TripleDesCrypto(byte[] key, byte[]? iv = null, CipherMode mode = CipherMode.ECB, PaddingMode padding = PaddingMode.PKCS7, string encoding = "utf-8")
         {
             _encoding = System.Text.Encoding.GetEncoding(encoding);
             _key = key;
@@ -52,8 +52,8 @@ namespace Hikari.Common.Cryptography
         /// <returns>密文</returns>
         public byte[] Encrypt(byte[] data)
         {
-            using var aesAlg = GetAes();
-            ICryptoTransform cTransform = aesAlg.CreateEncryptor();
+            using var desAlg = GetDes();
+            ICryptoTransform cTransform = desAlg.CreateEncryptor();
             byte[] resultArray = cTransform.TransformFinalBlock(data, 0, data.Length);
             return resultArray;
         }
@@ -85,9 +85,9 @@ namespace Hikari.Common.Cryptography
         /// <returns>明文</returns>
         public byte[] Decrypt(byte[] data)
         {
-            using var aesAlg = GetAes();
+            using var desAlg = GetDes();
             // 创建解密器
-            ICryptoTransform decryptor = aesAlg.CreateDecryptor();
+            ICryptoTransform decryptor = desAlg.CreateDecryptor();
 
             // 使用 TransformFinalBlock 解密
             byte[] decryptedBytes = decryptor.TransformFinalBlock(data, 0, data.Length);
@@ -116,27 +116,19 @@ namespace Hikari.Common.Cryptography
             return _encoding.GetString(bytes);
         }
 
-        private Aes GetAes()
+        private TripleDES GetDes()
         {
-            Aes aesAlg = Aes.Create();
+            TripleDES desAlg = TripleDES.Create();
             int targetLength;
 
-            if (_key.Length <= 16)
-            {
-                targetLength = 16;
-            }
-            else if (_key.Length <= 24)
+            if (_key.Length <= 24)
             {
                 targetLength = 24;
             }
-            else if (_key.Length <= 32)
-            {
-                targetLength = 32;
-            }
             else
             {
-                // 如果输入长度超过 32，则截取前 32 字节
-                targetLength = 32;
+                // 如果输入长度超过 24，则截取前 24 字节
+                targetLength = 24;
             }
 
             // 创建目标长度的数组
@@ -145,21 +137,20 @@ namespace Hikari.Common.Cryptography
             // 将输入数组复制到目标数组中，超出目标长度的部分将被截取，未达到目标长度的部分用0填充
             Array.Copy(_key, resultArray, Math.Min(_key.Length, targetLength));
 
-            aesAlg.Key = resultArray;
+            desAlg.Key = resultArray;
             if (_iv != null)
             {
-                // 创建一个新的 16 字节数组，并用默认值 0 填充
-                byte[] expandedArray = new byte[16];
+                // 创建一个新的 8 字节数组，并用默认值 0 填充
+                byte[] expandedArray = new byte[8];
                 // 将 _iv 复制到 expandedArray 中
-                // 如果不足 16 字节则填充 0），如果长度超过 16 字节则截取前 16 字节
+                // 如果不足 16 字节则填充 0），如果长度超过 8 字节则截取前 8 字节
                 Array.Copy(_iv, expandedArray, Math.Min(_iv.Length, expandedArray.Length));
-                aesAlg.IV = expandedArray;
+                desAlg.IV = expandedArray;
             }
 
-
-            aesAlg.Padding = _padding;
-            aesAlg.Mode = _mode;
-            return aesAlg;
+            desAlg.Padding = _padding;
+            desAlg.Mode = _mode;
+            return desAlg;
         }
     }
 }

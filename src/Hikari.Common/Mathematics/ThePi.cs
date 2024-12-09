@@ -42,7 +42,7 @@ using System.Text.RegularExpressions;
            }
        }
 */
-namespace Hikari.Common
+namespace Hikari.Common.Mathematics
 {
     // 用反正切展式计算圆周率 
     // 例如: pi= + 16 * arctan(1/5) - 4 * arctan(1/239) [Machin] 
@@ -213,7 +213,7 @@ namespace Hikari.Common
             using (StreamReader sr = new StreamReader(iniFileName))
             {
                 Regex regex = new Regex(@"\s+");
-                for (;;)
+                for (; ; )
                 {
                     string s = sr.ReadLine();
                     if (s == null) break;

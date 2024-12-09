@@ -78,6 +78,9 @@ namespace Hikari.Common.Mathematics
 
             }
         }
+
+        #endregion
+
         /// <summary>
         /// 最小公倍数
         /// </summary>
@@ -88,6 +91,17 @@ namespace Hikari.Common.Mathematics
         {
             return Math.Abs(a * b) / GetGreatestCommonDivisor(a, b);
         }
-        #endregion
+        /// <summary>
+        /// 计算标准差
+        /// </summary>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public static double CalculateStandardDeviation(double[] values)
+        {
+            double mean = values.Average();
+            double sumOfSquaresOfDifferences = values.Select(val => (val - mean) * (val - mean)).Sum();
+            double standardDeviation = Math.Sqrt(sumOfSquaresOfDifferences / (values.Length - 1)); // 样本标准差
+            return standardDeviation;
+        }
     }
 }

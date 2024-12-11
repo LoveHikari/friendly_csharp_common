@@ -363,16 +363,18 @@
         {
             //计算时辰的地支
             var hour = dt.Hour;
-            var minute = dt.Minute;
-            if (minute != 0)
-            {
-                hour += 1;
-            }
-
-            var offset = hour / 2;
-            if (offset >= 12)
+            int offset;
+            if (hour is 23 or 0)
             {
                 offset = 0;
+            }
+            else
+            {
+                offset = (hour - 1) / 2 + 1;
+                if (offset >= 12)
+                {
+                    offset = 0;
+                }
             }
 
             //计算天干
@@ -392,17 +394,22 @@
         {
             //计算时辰的地支
             var hour = dt.Hour;
-            var minute = dt.Minute;
-            if (minute != 0)
-            {
-                hour += 1;
-            }
-
-            var offset = hour / 2;
-            if (offset >= 12)
+            int offset;
+            // 子时需要特殊处理，因为23:00 - 00:59 属于子时
+            if (hour is 23 or 0)
             {
                 offset = 0;
             }
+            else
+            {
+                offset = (hour - 1) / 2 + 1;
+                if (offset >= 12)
+                {
+                    offset = 0;
+                }
+            }
+
+
 
             return DiZhi[offset] + "";
         }
@@ -477,7 +484,7 @@
 
         #endregion 私有函数
 
-        
+
 
         #region 公历日期
 

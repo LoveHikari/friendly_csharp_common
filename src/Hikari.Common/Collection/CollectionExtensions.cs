@@ -48,7 +48,7 @@ namespace Hikari.Common.Collection
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static IDictionary<string, object?> ToDictionary(this object obj)
+        public static IDictionary<string, object?> ToDictionary<T>(this T obj) where T : class
         {
             IDictionary<string, object?> dic = new Dictionary<string, object?>();
             PropertyInfo[] propertys = obj.GetType().GetProperties();

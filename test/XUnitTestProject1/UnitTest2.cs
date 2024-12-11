@@ -2,18 +2,12 @@
 using NPOI.SS.Formula.Functions;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Net.Http;
-using System.Numerics;
 using System.Text.Json;
-using System.Threading;
 using Hikari.Common;
-using Hikari.Common.Cryptography;
-using Hikari.Common.Mathematics;
-using Hikari.Common.Net.Http;
+using Hikari.Common.Collection;
+using Masuit.Tools.Systems;
 using Xunit;
 using Xunit.Abstractions;
-using Hikari.DbCore;
 
 namespace XUnitTestProject1
 {
@@ -117,21 +111,10 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            List<WaterPowerNoticDto.WaterNotice.WaterInfo> wi = new List<WaterPowerNoticDto.WaterNotice.WaterInfo>()
-            {
-                new WaterPowerNoticDto.WaterNotice.WaterInfo()
-                {
-                    BeforeMonthBm = 1
-                },
-                new WaterPowerNoticDto.WaterNotice.WaterInfo()
-                {
-                    BeforeMonthBm = 2
-                }
-            };
-            var wi2 = DeepCopy(wi);
-            wi2[0].BeforeMonthBm = 4;
-            System.Diagnostics.Debug.WriteLine(JsonSerializer.Serialize(wi));
-            System.Diagnostics.Debug.WriteLine(JsonSerializer.Serialize(wi2));
+            var w = new WaterPowerNoticDto();
+            w.ToDictionary();
+            System.Diagnostics.Debug.WriteLine(JsonSerializer.Serialize(typeof(Enum1).ToDictionary()));
+            //System.Diagnostics.Debug.WriteLine(JsonSerializer.Serialize("1A3F".FromBaseBigInteger(16).ToString()));
             //value = 2.5;
             //fraction = new Fraction(value);
             //System.Diagnostics.Debug.WriteLine($"{value} as a fraction is: {fraction}");
@@ -142,9 +125,5 @@ namespace XUnitTestProject1
             Assert.True(true);
         }
 
-        private T DeepCopy<T>(T info) where T : class
-        {
-            return JsonSerializer.Deserialize<T>(JsonSerializer.Serialize(info));
-        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Reflection;
 
 namespace Hikari.Common;
 
@@ -8,6 +9,27 @@ namespace Hikari.Common;
 [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), System.ComponentModel.Browsable(false)]
 public static class EnumExtensions
 {
+    /// <summary>
+    /// 获取枚举对象Key与显示名称的字典
+    /// </summary>
+    /// <param name="enumType"></param>
+    /// <returns></returns>
+    public static Dictionary<int, string> ToDictionary(this Type enumType)
+    {
+        if (!enumType.IsEnum)
+        {
+            throw new Exception("给定的类型不是枚举类型");
+        }
+
+        var enumItems = enumType.GetFields(BindingFlags.Public | BindingFlags.Static);
+        var names = new Dictionary<int, string>(enumItems.Length);
+        foreach (var enumItem in enumItems)
+        {
+            names[(int)enumItem.GetValue(enumType)] = enumItem.Name;
+        }
+
+        return names;
+    }
     /// <summary>
     /// 获得描述
     /// </summary>

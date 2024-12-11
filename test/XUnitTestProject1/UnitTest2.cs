@@ -5,6 +5,7 @@ using System.Data;
 using System.IO;
 using System.Net.Http;
 using System.Numerics;
+using System.Text.Json;
 using System.Threading;
 using Hikari.Common;
 using Hikari.Common.Cryptography;
@@ -116,11 +117,21 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            var text = " Hello, World!";
-            TripleDesCrypto crypto = new TripleDesCrypto("xhVs6DRXLfUGxw+AhtfQdpQG","111111");
-            var v = crypto.EncryptBase64(text);
-            System.Diagnostics.Debug.WriteLine(v);
-            System.Diagnostics.Debug.WriteLine(crypto.DecryptStr(v));
+            List<WaterPowerNoticDto.WaterNotice.WaterInfo> wi = new List<WaterPowerNoticDto.WaterNotice.WaterInfo>()
+            {
+                new WaterPowerNoticDto.WaterNotice.WaterInfo()
+                {
+                    BeforeMonthBm = 1
+                },
+                new WaterPowerNoticDto.WaterNotice.WaterInfo()
+                {
+                    BeforeMonthBm = 2
+                }
+            };
+            var wi2 = DeepCopy(wi);
+            wi2[0].BeforeMonthBm = 4;
+            System.Diagnostics.Debug.WriteLine(JsonSerializer.Serialize(wi));
+            System.Diagnostics.Debug.WriteLine(JsonSerializer.Serialize(wi2));
             //value = 2.5;
             //fraction = new Fraction(value);
             //System.Diagnostics.Debug.WriteLine($"{value} as a fraction is: {fraction}");
@@ -130,22 +141,10 @@ namespace XUnitTestProject1
             //System.Diagnostics.Debug.WriteLine($"{value} as a fraction is: {fraction}");
             Assert.True(true);
         }
-        string ConvertToBase(BigInteger number, int baseValue)
+
+        private T DeepCopy<T>(T info) where T : class
         {
-            const string chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            List<char> result = new List<char>();
-
-            BigInteger baseValueBigInt = new BigInteger(baseValue);
-            BigInteger remainder;
-
-            while (number != 0)
-            {
-                remainder = BigInteger.Remainder(number, baseValueBigInt);
-                number = BigInteger.Divide(number, baseValueBigInt);
-                result.Insert(0, chars[(int)remainder]);
-            }
-
-            return new string(result.ToArray());
+            return JsonSerializer.Deserialize<T>(JsonSerializer.Serialize(info));
         }
     }
 }

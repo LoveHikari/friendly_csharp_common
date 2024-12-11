@@ -301,5 +301,15 @@ namespace Hikari.Common
             // 这里可以根据实际业务场景需求调整
             return value.CompareTo(min) >= 0 && value.CompareTo(max) <= 0;
         }
+        /// <summary>
+        /// 深拷贝
+        /// </summary>
+        /// <typeparam name="T">泛型类型参数</typeparam>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public static T? DeepCopy<T>(this T? info) where T : class
+        {
+            return info == null ? null : System.Text.Json.JsonSerializer.Deserialize<T>(System.Text.Json.JsonSerializer.Serialize(info));
+        }
     }
 }

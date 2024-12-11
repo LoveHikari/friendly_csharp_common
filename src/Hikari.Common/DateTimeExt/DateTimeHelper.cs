@@ -15,7 +15,7 @@
 
 using System;
 
-namespace Hikari.Common
+namespace Hikari.Common.DateTimeExt
 {
     /// <summary>
     /// DateTime 帮助类
@@ -137,7 +137,7 @@ namespace Hikari.Common
         /// <param name="date1"></param>
         /// <param name="date2"></param>
         /// <returns></returns>
-        public static bool IsWeekSame(String date1, String date2)
+        public static bool IsWeekSame(string date1, string date2)
         {
 
             DateTime dt1 = DateTime.Parse(date1);
@@ -153,7 +153,7 @@ namespace Hikari.Common
         /// <param name="date1"></param>
         /// <param name="date2"></param>
         /// <returns></returns>
-        public static bool IsMonthSame(String date1, String date2)
+        public static bool IsMonthSame(string date1, string date2)
         {
 
             DateTime dt1 = DateTime.Parse(date1);

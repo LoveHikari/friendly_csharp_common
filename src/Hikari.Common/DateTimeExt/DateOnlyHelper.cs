@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hikari.Common
+namespace Hikari.Common.DateTimeExt
 {
     /// <summary>
     /// DateOnly 帮助类
@@ -88,7 +88,7 @@ namespace Hikari.Common
         /// <returns></returns>
         public static int GetYearWeekCount(int strYear)
         {
-            System.DateOnly fDt = DateOnly.Parse(strYear.ToString() + "-01-01");
+            DateOnly fDt = DateOnly.Parse(strYear.ToString() + "-01-01");
             int k = Convert.ToInt32(fDt.DayOfWeek);//得到该年的第一天是周几 
             if (k == 0)
             {
@@ -112,7 +112,7 @@ namespace Hikari.Common
         /// <param name="date1"></param>
         /// <param name="date2"></param>
         /// <returns></returns>
-        public static bool IsWeekSame(String date1, String date2)
+        public static bool IsWeekSame(string date1, string date2)
         {
 
             DateOnly dt1 = DateOnly.Parse(date1);
@@ -128,7 +128,7 @@ namespace Hikari.Common
         /// <param name="date1"></param>
         /// <param name="date2"></param>
         /// <returns></returns>
-        public static bool IsMonthSame(String date1, String date2)
+        public static bool IsMonthSame(string date1, string date2)
         {
 
             DateOnly dt1 = DateOnly.Parse(date1);

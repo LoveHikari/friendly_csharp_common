@@ -1,19 +1,19 @@
 ﻿using System;
 
-namespace Hikari.Common
+namespace Hikari.Common.DateTimeExt
 {
     /// <summary>
-    /// <see cref="DateOnly"/> 扩展类
+    /// DateTime扩展类
     /// </summary>
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), System.ComponentModel.Browsable(false)]
-    public static class DateOnlyExtensions
+    public static class DateTimeExtensions
     {
         /// <summary>
         /// 获取此实例所表示的日期是该年中的第几周
         /// </summary>
         /// <param name="this">给定的日期(年月日)</param>
         /// <returns>该年中的第几周</returns>
-        public static int WeekOfYear(this in DateOnly @this)
+        public static int WeekOfYear(this in DateTime @this)
         {
             ////一.找到第一周的最后一天（先获取1月1日是星期几，从而得知第一周周末是几）
             //int firstWeekend = 7 - Convert.ToInt32(DateTime.Parse(@this.Year + "-1-1").DayOfWeek);
@@ -25,7 +25,7 @@ namespace Hikari.Common
             ////    刚好考虑了惟一的特殊情况就是，今天刚好在第一周内，那么距第一周就是0 再加上第一周的1 最后还是1
             //return Convert.ToInt32(Math.Ceiling((currentDay - firstWeekend) / 7.0)) + 1;
             var gc = new System.Globalization.DateTimeFormatInfo().Calendar;
-            return gc.GetWeekOfYear(@this.ToDateTime(TimeOnly.MinValue), System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
+            return gc.GetWeekOfYear(@this.Date, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
 
         }
 
@@ -34,25 +34,25 @@ namespace Hikari.Common
         /// </summary>
         /// <param name="this">给定的日期(年月日)</param>
         /// <returns>该月中的第几周</returns>
-        public static int WeekOfMonth(this in DateOnly @this)
+        public static int WeekOfMonth(this in DateTime @this)
         {
-            var firstOfMonth = DateOnly.Parse(@this.Year + "-" + @this.Month + "-" + 1);  // 该月第一天
-            int i = (int)firstOfMonth.DayOfWeek;
+            var firstOfMonth = Convert.ToDateTime(@this.Date.Year + "-" + @this.Date.Month + "-" + 1);  // 该月第一天
+            int i = (int)firstOfMonth.Date.DayOfWeek;
             if (i == 0)
             {
                 i = 7;
             }
-            return (@this.Day + i - 1) / 7 + 1;
+            return (@this.Date.Day + i - 1) / 7 + 1;
         }
         /// <summary>
         /// 获取此实例所表示的日期是该季度中的第几周
         /// </summary>
         /// <param name="this">给定的日期(年月日)</param>
         /// <returns>该季度中的第几周</returns>
-        public static int WeekOfQuarter(this in DateOnly @this)
+        public static int WeekOfQuarter(this in DateTime @this)
         {
             // 该季度的第一天
-            var firstDay = DateOnlyHelper.GetDateQuarter(@this).firstDay;
+            var firstDay = DateTimeHelper.GetDateQuarter(@this).firstDay;
 
             int week = @this.WeekOfYear();
             week = week - firstDay.WeekOfYear() + 1;
@@ -65,7 +65,7 @@ namespace Hikari.Common
         /// </summary>
         /// <param name="this">给定的日期(年月日)</param>
         /// <returns>该年中的第几季</returns>
-        public static int QuarterOfYear(this in DateOnly @this)
+        public static int QuarterOfYear(this in DateTime @this)
         {
             return Math.Pow(2, @this.Month).ToInt32()?.Count() ?? 1;
         }
@@ -74,10 +74,10 @@ namespace Hikari.Common
         /// </summary>
         /// <param name="this">给定的日期(年月日)</param>
         /// <returns>该季中的第几天</returns>
-        public static int DayOfQuarter(this in DateOnly @this)
+        public static int DayOfQuarter(this in DateTime @this)
         {
-            var firstDay = DateOnlyHelper.GetDateQuarter(@this).firstDay;  // 该季度的第一天
-            return (@this.ToDateTime(TimeOnly.MinValue) - firstDay.ToDateTime(TimeOnly.MinValue)).Days + 1;
+            var firstDay = DateTimeHelper.GetDateQuarter(@this).firstDay;  // 该季度的第一天
+            return (@this.Date - firstDay).Days + 1;
 
         }
         /// <summary>
@@ -85,9 +85,9 @@ namespace Hikari.Common
         /// </summary>
         /// <param name="this">给定的日期(年月日)</param>
         /// <returns>该季度中的第几月</returns>
-        public static int MonthOfQuarter(this in DateOnly @this)
+        public static int MonthOfQuarter(this in DateTime @this)
         {
-            var firstDay = DateOnlyHelper.GetDateQuarter(@this).firstDay;  // 该季度的第一天
+            var firstDay = DateTimeHelper.GetDateQuarter(@this).firstDay;  // 该季度的第一天
             return @this.Month - firstDay.Month + 1;
         }
         /// <summary>
@@ -95,9 +95,9 @@ namespace Hikari.Common
         /// </summary>
         /// <param name="this">给定的日期(年月日)</param>
         /// <returns>所在季度的周数</returns>
-        public static int WeeksOfQuarter(this in DateOnly @this)
+        public static int WeeksOfQuarter(this in DateTime @this)
         {
-            var lastDay = DateOnlyHelper.GetDateQuarter(@this).lastDay;  // 该季度的最后一天
+            var lastDay = DateTimeHelper.GetDateQuarter(@this).lastDay;  // 该季度的最后一天
             return lastDay.WeekOfQuarter();
         }
         /// <summary>
@@ -105,9 +105,9 @@ namespace Hikari.Common
         /// </summary>
         /// <param name="this">给定的日期(年月日)</param>
         /// <returns>所在季度的周数</returns>
-        public static int WeeksOfMonth(this in DateOnly @this)
+        public static int WeeksOfMonth(this in DateTime @this)
         {
-            var lastDay = DateOnlyHelper.GetDateMonth(@this).lastDay;
+            var lastDay = DateTimeHelper.GetDateMonth(@this).lastDay;
             return lastDay.WeekOfMonth();
         }
         /// <summary>
@@ -115,18 +115,18 @@ namespace Hikari.Common
         /// </summary>
         /// <param name="this">给定的日期(年月日)</param>
         /// <returns>所在季度的周数</returns>
-        public static int WeeksOfYear(this in DateOnly @this)
+        public static int WeeksOfYear(this in DateTime @this)
         {
-            var end = new DateOnly(@this.Year, 12, 31);
+            var end = new DateTime(@this.Year, 12, 31);
             var gc = new System.Globalization.DateTimeFormatInfo().Calendar;
-            return gc.GetWeekOfYear(end.ToDateTime(TimeOnly.MinValue), System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
+            return gc.GetWeekOfYear(end, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
         }
         /// <summary>
         /// 返回本年有多少天
         /// </summary>
         /// <param name="this">时间</param>
         /// <returns>本年的天数</returns>
-        public static int DaysOfYear(this in DateOnly @this)
+        public static int DaysOfYear(this in DateTime @this)
         {
             return DateTime.IsLeapYear(@this.Year) ? 366 : 365;
         }
@@ -136,12 +136,12 @@ namespace Hikari.Common
         /// </summary>
         /// <param name="this">时间</param>
         /// <returns>天数</returns>
-        public static int DaysOfMonth(this in DateOnly @this)
+        public static int DaysOfMonth(this in DateTime @this)
         {
             return @this.Month switch
             {
                 1 => 31,
-                2 => (DateTime.IsLeapYear(@this.Year) ? 29 : 28),
+                2 => DateTime.IsLeapYear(@this.Year) ? 29 : 28,
                 3 => 31,
                 4 => 30,
                 5 => 31,
@@ -162,13 +162,75 @@ namespace Hikari.Common
         /// <param name="this">日期</param>
         /// <param name="cultureName">区域性名称, 如zh-CN</param>
         /// <returns>星期名称</returns>
-        public static string DayNameOfWeek(this in DateOnly @this, string cultureName = "")
+        public static string DayNameOfWeek(this in DateTime @this, string cultureName = "")
         {
             if (string.IsNullOrWhiteSpace(cultureName))
             {
                 cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
             }
             return System.Globalization.CultureInfo.GetCultureInfo(cultureName).DateTimeFormat.GetDayName(@this.DayOfWeek);
+        }
+
+        private static readonly DateTime UnixEpochDateTimeUtc = new DateTime(621355968000000000L, DateTimeKind.Utc);  // Unix纪元开始的Utc时间
+        private static readonly DateTime MinDateTimeUtc = new DateTime(1, 1, 1, 0, 0, 0, DateTimeKind.Utc);  // 最小utc时间
+        /// <summary>
+        /// Unix时间戳格式到秒
+        /// </summary>
+        /// <param name="this"></param>
+        /// <returns></returns>
+        public static long ToUnixTimeSeconds(this in DateTime @this)
+        {
+            return (long)@this.ToDateTimeSinceUnixEpoch().TotalSeconds;
+            // ToDateTimeSinceUnixEpoch(@this).Ticks / 10000000L;
+        }
+        /// <summary>
+        /// Unix时间戳格式到毫秒
+        /// </summary>
+        /// <param name="this"></param>
+        /// <returns></returns>
+        public static long ToUnixTimeMilliseconds(this in DateTime @this)
+        {
+            return (long)@this.ToDateTimeSinceUnixEpoch().TotalMilliseconds;
+            // ToDateTimeSinceUnixEpoch(@this).Ticks / 10000000L;
+        }
+        /// <summary>
+        /// 自 Unix 纪元至今的时间
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        private static TimeSpan ToDateTimeSinceUnixEpoch(this DateTime dateTime)
+        {
+            DateTime dateTime1 = dateTime;
+            if (dateTime.Kind != DateTimeKind.Utc)
+                dateTime1 = dateTime.Kind != DateTimeKind.Unspecified || !(dateTime > DateTime.MinValue) || !(dateTime < DateTime.MaxValue) ? dateTime.ToStableUniversalTime() : DateTime.SpecifyKind(dateTime.Subtract(TimeZoneInfo.Local.GetUtcOffset(dateTime)), DateTimeKind.Utc);
+            return dateTime1.Subtract(UnixEpochDateTimeUtc);
+        }
+        /// <summary>
+        /// 转到世界标准时间
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        public static DateTime ToStableUniversalTime(this DateTime dateTime)
+        {
+            if (dateTime.Kind == DateTimeKind.Utc) return dateTime;
+
+            if (dateTime == DateTime.MinValue)
+            {
+                return MinDateTimeUtc;
+            }
+            else
+            {
+                return TimeZoneInfo.ConvertTimeToUtc(dateTime, TimeZoneInfo.Local);
+            }
+        }
+        /// <summary>
+        /// 转到ISO8601标准时间
+        /// </summary>
+        /// <param name="this"></param>
+        /// <returns></returns>
+        public static string ToISO8601DateTime(this in DateTime @this)
+        {
+            return @this.ToString("yyyy-MM-ddTHH:mm:ss.fffzzz");
         }
     }
 }

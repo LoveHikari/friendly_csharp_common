@@ -645,5 +645,90 @@ namespace Hikari.Common
             return decimalValue * sign;
 
         }
+
+        /// <summary>
+        /// 任意进制转十进制
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="base">进制</param>
+        /// <returns></returns>
+        public static long FromBase(this string str, byte @base)
+        {
+
+            if (string.IsNullOrEmpty(str))
+                throw new ArgumentException("Input number cannot be null or empty.");
+
+            if (@base < 2 || @base > 36)
+                throw new ArgumentException("Base must be between 2 and 36.");
+
+            long result = 0;
+            long multiplier = 1;
+
+            // Process the string from right to left
+            for (int i = str.Length - 1; i >= 0; i--)
+            {
+                char digitChar = str[i];
+
+                int digitValue;
+                if (char.IsDigit(digitChar))
+                    digitValue = digitChar - '0';
+                else if (char.IsLetter(digitChar))
+                    digitValue = char.ToUpper(digitChar) - 'A' + 10;
+                else
+                    throw new ArgumentException($"Invalid character '{digitChar}' in the number.");
+
+                if (digitValue >= @base)
+                    throw new ArgumentException($"Invalid digit '{digitChar}' for base {@base}.");
+
+                result += digitValue * multiplier;
+                multiplier *= @base;
+
+                // Check for overflow
+                if (result < 0)
+                    throw new OverflowException("The number is too large to fit in a long.");
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 任意进制转大数十进制
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="base">进制</param>
+        /// <returns></returns>
+        public static BigInteger FromBaseBigInteger(this string str, byte @base)
+        {
+            if (string.IsNullOrEmpty(str))
+                throw new ArgumentException("Input number cannot be null or empty.");
+
+            if (@base < 2 || @base > 36)
+                throw new ArgumentException("Base must be between 2 and 36.");
+
+            BigInteger result = BigInteger.Zero;
+            BigInteger multiplier = BigInteger.One;
+
+            // Process the string from right to left
+            for (int i = str.Length - 1; i >= 0; i--)
+            {
+                char digitChar = str[i];
+
+                int digitValue;
+                if (char.IsDigit(digitChar))
+                    digitValue = digitChar - '0';
+                else if (char.IsLetter(digitChar))
+                    digitValue = char.ToUpper(digitChar) - 'A' + 10;
+                else
+                    throw new ArgumentException($"Invalid character '{digitChar}' in the number.");
+
+                if (digitValue >= @base)
+                    throw new ArgumentException($"Invalid digit '{digitChar}' for base {@base}.");
+
+                result += digitValue * multiplier;
+                multiplier *= @base;
+            }
+
+            return result;
+        }
     }
 }

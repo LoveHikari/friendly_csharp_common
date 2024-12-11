@@ -94,6 +94,8 @@ namespace Hikari.Common
             return @this.ToString().Length;
         }
 
+        #region 十进制转任意进制
+
         /// <summary>
         /// 十进制转任意进制
         /// </summary>
@@ -149,7 +151,10 @@ namespace Hikari.Common
             // 反转数组
             Array.Reverse(resultArray);
             return string.Join("", resultArray.Select(i => Convert.ToString(i, targetBase)));
-            
+
         }
+
+        #endregion
+
     }
 }

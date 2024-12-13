@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Threading;
 
-namespace Hikari.Mvvm.DatePickerExtend
+namespace Hikari.Mvvm.Attached
 {
     /// <summary>
     /// 扩展DatePicker选择到年、月日期控件

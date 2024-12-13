@@ -6,7 +6,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-namespace Hikari.Mvvm.DatePickerExtend
+namespace Hikari.Mvvm.Attached
 {
     /// <summary>
     /// DatePicker日期格式化

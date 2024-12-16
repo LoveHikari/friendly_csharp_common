@@ -9,7 +9,7 @@
 	  <Product>Hikari.Mvvm</Product>
 	  <Company>5cm R &amp; D department</Company>
 	  <Description>WPF MVVM</Description>
-	  <Version>1.0.1</Version>
+	  <Version>1.0.2</Version>
 	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
 	  <PackageProjectUrl>https://github.com/LoveHikari/friendly_csharp_common</PackageProjectUrl>
 	  <PackageTags>WPF MVVM</PackageTags>

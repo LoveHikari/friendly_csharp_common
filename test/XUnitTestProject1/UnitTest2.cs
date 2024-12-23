@@ -3,8 +3,10 @@ using NPOI.SS.Formula.Functions;
 using System.Collections.Generic;
 using System.Data;
 using System.Text.Json;
+using System.Xml.Linq;
 using Hikari.Common;
 using Hikari.Common.Collection;
+using Hikari.Common.Xml;
 using Masuit.Tools.Systems;
 using Xunit;
 using Xunit.Abstractions;
@@ -111,10 +113,10 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            var w = new WaterPowerNoticDto();
-            w.ToDictionary();
-            System.Diagnostics.Debug.WriteLine(JsonSerializer.Serialize(typeof(Enum1).ToDictionary()));
-            //System.Diagnostics.Debug.WriteLine(JsonSerializer.Serialize("1A3F".FromBaseBigInteger(16).ToString()));
+            var v = new XmlDocumentHelper(@"D:\settings.xml");
+            System.Diagnostics.Debug.WriteLine(v.GetSingleNode(@"PredefinedParm"));
+            var xdoc = XDocument.Load(@"D:\settings.xml");
+            var y = xdoc.Root.Element("PredefinedParm");
             //value = 2.5;
             //fraction = new Fraction(value);
             //System.Diagnostics.Debug.WriteLine($"{value} as a fraction is: {fraction}");

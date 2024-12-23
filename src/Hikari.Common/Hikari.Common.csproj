@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net9.0</TargetFramework>
+		<TargetFrameworks>net6.0;net9.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<PackageId>Hikari.Common</PackageId>
@@ -9,7 +9,7 @@
 		<Product>Hikari.Common</Product>
 		<Company>5cm R &amp; D department</Company>
 		<Description>公共库 公共庫</Description>
-		<Version>8.0.10</Version>
+		<Version>8.0.11</Version>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<PackageReleaseNotes>
 			修复了一些错误

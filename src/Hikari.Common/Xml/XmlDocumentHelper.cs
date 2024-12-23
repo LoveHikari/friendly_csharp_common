@@ -9,7 +9,7 @@ namespace Hikari.Common.Xml
     public class XmlDocumentHelper
     {
         private System.Xml.XmlDocument _xml;
-        private string _filePath;
+        private string? _filePath;
         /// <summary>
         /// 从指定的 URL 加载 XML 文档。
         /// </summary>
@@ -26,24 +26,20 @@ namespace Hikari.Common.Xml
         /// <summary>
         /// 从指定的 URL 加载 XML 文档。
         /// </summary>
-        /// <param name="filePath">含要加载的 XML 文档的文件的 URL。
-        ///    URL 既可以是本地文件，也可以是 HTTP URL（Web 地址）。</param>
-        /// <param name="inStream"></param>
+        /// <param name="inStream">含要加载的 XML 文档的文件的 URL。URL 既可以是本地文件，也可以是 HTTP URL（Web 地址）。</param>
         public XmlDocumentHelper(System.IO.Stream inStream)
         {
-            //this._filePath = filePath;
-
             this._xml = new XmlDocument();
             this._xml.Load(inStream);
         }
         /// <summary>
-        /// 
+        /// 获得节点
         /// </summary>
         /// <param name="xPath"></param>
         /// <returns></returns>
-        public string SelectSingleNode(string xPath)
+        public string GetSingleNode(string xPath)
         {
-            XmlNode xmlNode = _xml.SelectSingleNode(xPath);
+            XmlNode? xmlNode = _xml.SelectSingleNode(xPath);
             if (xmlNode != null)
             {
                 return xmlNode.InnerText;
@@ -54,13 +50,13 @@ namespace Hikari.Common.Xml
             }
         }
         /// <summary>
-        /// 保存节点，如果不存在则添加
+        /// 设置节点，如果不存在则添加
         /// </summary>
         /// <param name="xPath"></param>
         /// <param name="value"></param>
-        public void SaveXmlNode(string xPath, string value)
+        public void SetSingleNode(string xPath, string value)
         {
-            XmlNode xmlNode = _xml.SelectSingleNode(xPath);
+            XmlNode? xmlNode = _xml.SelectSingleNode(xPath);
             if (xmlNode == null)
             {
                 string[] ss = xPath.Split("/", StringSplitOptions.RemoveEmptyEntries);
@@ -71,8 +67,26 @@ namespace Hikari.Common.Xml
                 xmlNode = _xml.SelectSingleNode(xPath);
             }
             if (xmlNode != null) xmlNode.InnerText = value;
-            _xml.Save(_filePath);
 
+        }
+        /// <summary>
+        /// 保存文件
+        /// </summary>
+        /// <param name="filePath"></param>
+        public void Save(string? filePath = null)
+        {
+            if (!string.IsNullOrWhiteSpace(filePath))
+            {
+                _xml.Save(filePath);
+            } else if (!string.IsNullOrWhiteSpace(_filePath))
+            {
+                _xml.Save(_filePath);
+            }
+            else
+            {
+                throw new Exception("文件路径为空");
+            }
+                
         }
     }
 }

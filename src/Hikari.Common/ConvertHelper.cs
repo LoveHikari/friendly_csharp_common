@@ -55,36 +55,48 @@ namespace Hikari.Common
         }
 
         /// <summary>
-        /// 将byte[]转换成int
+        /// 大端序字节数组转十进制
         /// </summary>
-        /// <param name="data">需要转换成整数的byte数组</param>
+        /// <param name="bytes"></param>
         /// <returns></returns>
-        public static int BytesToInt32(byte[] data)
+        public static int BigEndianToInt32(byte[]? bytes)
         {
-            //如果传入的字节数组长度小于4,则返回0
-            if (data.Length < 4)
+            if (bytes == null || bytes.Length == 0)
             {
                 return 0;
             }
 
-            //定义要返回的整数
-            int num = 0;
+            int result = 0;
 
-            //如果传入的字节数组长度大于4,需要进行处理
-            if (data.Length >= 4)
+            // 大端序按位计算
+            for (int i = 0; i < bytes.Length; i++)
             {
-                //创建一个临时缓冲区
-                byte[] tempBuffer = new byte[4];
-
-                //将传入的字节数组的前4个字节复制到临时缓冲区
-                Buffer.BlockCopy(data, 0, tempBuffer, 0, 4);
-
-                //将临时缓冲区的值转换成整数，并赋给num
-                num = BitConverter.ToInt32(tempBuffer, 0);
+                result = (result << 8) | bytes[i];
             }
 
-            //返回整数
-            return num;
+            return result;
+        }
+
+        /// <summary>
+        /// 小端序字节数组转十进制
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
+        public static int LittleEndianToToInt32(byte[]? bytes)
+        {
+            if (bytes == null || bytes.Length == 0)
+            {
+                return 0;
+            }
+
+            int result = 0;
+
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                result |= bytes[i] << (8 * i); // 按照小端序的位移计算
+            }
+
+            return result;
         }
         /// <summary>
         /// 字节数组转16进制字符串

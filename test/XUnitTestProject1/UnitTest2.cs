@@ -113,10 +113,8 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            var v = new XmlDocumentHelper(@"D:\settings.xml");
-            System.Diagnostics.Debug.WriteLine(v.GetSingleNode(@"PredefinedParm"));
-            var xdoc = XDocument.Load(@"D:\settings.xml");
-            var y = xdoc.Root.Element("PredefinedParm");
+             byte[] index = new byte[] { 0x12, 0xc };
+             var r = ConvertHelper.BytesToInt32(index);
             //value = 2.5;
             //fraction = new Fraction(value);
             //System.Diagnostics.Debug.WriteLine($"{value} as a fraction is: {fraction}");
@@ -126,6 +124,19 @@ namespace XUnitTestProject1
             //System.Diagnostics.Debug.WriteLine($"{value} as a fraction is: {fraction}");
             Assert.True(true);
         }
+        byte[] DecimalToHexByteArray(int decimalValue)
+        {
+            // 转换为 2 字节的 byte[]
+            byte[] bytes = BitConverter.GetBytes(decimalValue);
 
+            // 确保高字节在前（大端序）
+            if (BitConverter.IsLittleEndian)
+            {
+                Array.Reverse(bytes);
+            }
+
+            // 取高位和低位的两个字节
+            return new byte[] { bytes[bytes.Length - 2], bytes[bytes.Length - 1] };
+        }
     }
 }

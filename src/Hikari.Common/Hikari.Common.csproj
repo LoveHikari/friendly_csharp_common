@@ -44,7 +44,6 @@
 		<PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.0">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<!--<PackageReference Include="ThoughtWorks.QRCode.Core" Version="1.0.1.2" />-->
 		<PackageReference Include="System.Management" Version="9.0.0">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>

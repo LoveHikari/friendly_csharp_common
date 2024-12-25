@@ -18,10 +18,17 @@ namespace Hikari.Common
     /// </summary>
     public class LogHelper
     {
-        private static readonly Lock _locker = new();
+        private static readonly Lock Locker = new();
 
-        private static string _loginfoDir => GetLogger("loginfo");
-        private static string _logerrorDir => GetLogger("logerror");
+        private static string GetLogInfoDir()
+        {
+            return GetLogger("loginfo");
+        }
+
+        private static string GetLogErrorDir()
+        {
+            return GetLogger("logerror");
+        }
 
         /// <summary>
         /// 输出log
@@ -29,9 +36,9 @@ namespace Hikari.Common
         /// <param name="info">消息</param>
         public static void WriteLog(string info)
         {
-            lock (_locker)
+            lock (Locker)
             {
-                string directPath = System.IO.Path.Combine(_loginfoDir, $"{DateTime.Now:yyyy-MM-dd}_LogInfo.log");
+                string directPath = System.IO.Path.Combine(GetLogInfoDir(), $"{DateTime.Now:yyyy-MM-dd}_LogInfo.log");
                 using System.IO.StreamWriter sw = !System.IO.File.Exists(directPath) ? System.IO.File.CreateText(directPath) : System.IO.File.AppendText(directPath);    //判断文件是否存在如果不存在则创建，如果存在则添加。
 
                 //把信息输出到文件
@@ -47,9 +54,9 @@ namespace Hikari.Common
         /// <param name="ex">异常</param>
         public static void WriteError(Exception ex)
         {
-            lock (_locker)
+            lock (Locker)
             {
-                string directPath = System.IO.Path.Combine(_logerrorDir, $"{DateTime.Now:yyyy-MM-dd}_LogError.log");
+                string directPath = System.IO.Path.Combine(GetLogErrorDir(), $"{DateTime.Now:yyyy-MM-dd}_LogError.log");
 
                 using System.IO.StreamWriter sw = !System.IO.File.Exists(directPath) ? System.IO.File.CreateText(directPath) : System.IO.File.AppendText(directPath);    //判断文件是否存在如果不存在则创建，如果存在则添加。
 
@@ -57,7 +64,7 @@ namespace Hikari.Common
                 sw.WriteLine("当前时间：" + DateTime.Now);
                 sw.WriteLine("异常信息：" + ex.Message);
                 sw.WriteLine("异常对象：" + ex.Source);
-                sw.WriteLine("调用堆栈：\n" + ex.StackTrace.Trim());
+                sw.WriteLine("调用堆栈：\n" + ex.StackTrace?.Trim());
                 sw.WriteLine("触发方法：" + ex.TargetSite);
                 sw.WriteLine("***********************************************************************");
                 sw.WriteLine();
@@ -71,9 +78,9 @@ namespace Hikari.Common
         /// <param name="tag">传入标签（这里用于标识函数由哪个线程调用）</param>
         public static void WriteError(Exception ex, string tag)
         {
-            lock (_locker)
+            lock (Locker)
             {
-                string directPath = System.IO.Path.Combine(_logerrorDir, $"{DateTime.Now:yyyy-MM-dd}_LogError.log");
+                string directPath = System.IO.Path.Combine(GetLogErrorDir(), $"{DateTime.Now:yyyy-MM-dd}_LogError.log");
 
                 using System.IO.StreamWriter sw = !System.IO.File.Exists(directPath) ? System.IO.File.CreateText(directPath) : System.IO.File.AppendText(directPath);//判断文件是否存在如果不存在则创建，如果存在则添加。
 
@@ -81,7 +88,7 @@ namespace Hikari.Common
                 sw.WriteLine(string.Concat('[', DateTime.Now, "] Tag:" + tag));
                 sw.WriteLine("异常信息：" + ex.Message);
                 sw.WriteLine("异常对象：" + ex.Source);
-                sw.WriteLine("调用堆栈：\n" + ex.StackTrace.Trim());
+                sw.WriteLine("调用堆栈：\n" + ex.StackTrace?.Trim());
                 sw.WriteLine("触发方法：" + ex.TargetSite);
                 sw.WriteLine("***********************************************************************");
                 sw.WriteLine();

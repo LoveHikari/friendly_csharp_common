@@ -77,7 +77,7 @@ namespace XUnitTestProject1
         [Fact]
         public void Test3()
         {
-            
+
             DataTable dt = new DataTable("cart");
             DataColumn dc1 = new DataColumn("prizename");
             dt.Columns.Add(dc1);
@@ -113,30 +113,38 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-             byte[] index = new byte[] { 0x12, 0xc };
-             var r = ConvertHelper.BytesToInt32(index);
-            //value = 2.5;
-            //fraction = new Fraction(value);
-            //System.Diagnostics.Debug.WriteLine($"{value} as a fraction is: {fraction}");
 
-            //value = 0.3333333333333333; // 近似 1/3
-            //fraction = new Fraction(value);
-            //System.Diagnostics.Debug.WriteLine($"{value} as a fraction is: {fraction}");
+            var s = 1237892.56M;
+            var r1 = s.ToChineseMoney();
+            var r2 = r1.ToArabicNumber();
+            System.Diagnostics.Debug.WriteLine(s + " " + r1 + " " + r2);
+             s = 2341237892.56M;
+             r1 = s.ToChineseMoney();
+             r2 = r1.ToArabicNumber();
+            System.Diagnostics.Debug.WriteLine(s + " " + r1 + " " + r2);
+            s = 237892.56M;
+            r1 = s.ToChineseMoney();
+            r2 = r1.ToArabicNumber();
+            System.Diagnostics.Debug.WriteLine(s + " " + r1 + " " + r2);
+            s = 1002007.567M;
+
+            r1 = s.ToChineseMoney();
+            r2 = r1.ToArabicNumber();
+            System.Diagnostics.Debug.WriteLine(s + " " + r1 + " " + r2);
+
+            s = 1000000M;
+            r1 = s.ToChineseMoney();
+            r2 = r1.ToArabicNumber();
+            System.Diagnostics.Debug.WriteLine(s + " " + r1 + " " + r2);
+            s = 1002007.56M;
+            r1 = s.ToChineseMoney();
+            r2 = r1.ToArabicNumber();
+            System.Diagnostics.Debug.WriteLine(s + " " + r1 + " " + r2);
+            s = 0.56M;
+            r1 = s.ToChineseMoney();
+            r2 = r1.ToArabicNumber();
+            System.Diagnostics.Debug.WriteLine(s + " " + r1 + " " + r2);
             Assert.True(true);
-        }
-        byte[] DecimalToHexByteArray(int decimalValue)
-        {
-            // 转换为 2 字节的 byte[]
-            byte[] bytes = BitConverter.GetBytes(decimalValue);
-
-            // 确保高字节在前（大端序）
-            if (BitConverter.IsLittleEndian)
-            {
-                Array.Reverse(bytes);
-            }
-
-            // 取高位和低位的两个字节
-            return new byte[] { bytes[bytes.Length - 2], bytes[bytes.Length - 1] };
         }
     }
 }

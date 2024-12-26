@@ -3,20 +3,40 @@
 [![MIT Licence](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/mit-license.php)
 <a href="https://github.com/LoveHikari/friendly_csharp_common"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Font_Awesome_5_brands_github.svg/54px-Font_Awesome_5_brands_github.svg.png" height="24"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/GitHub_logo_2013.svg/128px-GitHub_logo_2013.svg.png" height="24"></a>
 
-C# Public libraries, including .net standard
+<p align="center">
+    <a href="https://github.com/LoveHikari/friendly_csharp_common/blob/master/README.md">中文</a>
+    ❤
+    <a href="https://github.com/LoveHikari/friendly_csharp_common/blob/master/README.en.md">English</a>
+	❤
+    <a href="https://github.com/LoveHikari/friendly_csharp_common/blob/master/README.jp.md">日本語</a>
+</p>
 
-项目开发模式：日常代码积累+网络搜集
+A universal C#.NET utility library friendly for all ages and skill levels—whether you're a beginner or an advanced user, you can easily get started. This library includes several commonly used utility classes, most of which are static, covering tasks such as encryption and decryption, reflection operations, tree structures, file detection, weighted random selection algorithms, distributed short IDs, expression trees, LINQ extensions, file compression, multithreaded downloads, hardware information, string extension methods, date-time extensions, Chinese lunar calendar, large file copying, image cropping, CAPTCHA, breakpoint resume, collection extensions, and Excel export, among other commonly used encapsulations.
 
-## 请注意：
-一旦使用本开源项目以及引用了本项目或包含本项目代码的公司因为违反劳动法（包括但不限定非法裁员、超时用工、雇佣童工等）在任何法律诉讼中败诉的，项目作者有权利追讨本项目的使用费，或者直接不允许使用任何包含本项目的源代码！任何性质的`外包公司`或`996公司`需要使用本类库，请联系作者进行商业授权！其他企业或个人可随意使用不受限。
+**With numerous features all in one, the total code size is under 2MB!**
 
-## 建议开发环境
-操作系统：Windows 11 22000.120及以上版本
-开发工具：VisualStudio2022 v17.0.0 Preview 2.1及以上版本
-SDK：.Net 6.0及以上版本
+Project development model: daily code accumulation + online research.
 
-## 安装程序包
-.NET 6.0以上
+⭐⭐⭐If you like this project, don't forget to give it a Star, Fork, and Follow!⭐⭐⭐
+
+If you have any questions about this project or encounter any issues during use, feel free to open an issue or contact me privately. I will provide you with completely free technical support. Of course, if you feel uncomfortable accepting free guidance, any kind of tip or donation will be graciously accepted!🤣🤣🤣
+
+## This project has received support from [JetBrains](https://www.jetbrains.com/shop/eform/opensource)！
+
+<img src="https://www.jetbrains.com/shop/static/images/jetbrains-logo-inv.svg" height="100">
+
+## Please Note：
+If any company that uses this open-source project or incorporates its code into their products is found guilty in any legal lawsuit due to violations of labor laws (including but not limited to illegal layoffs, excessive working hours, child labor, etc.), the author of this project reserves the right to claim a usage fee for the project (**2-5 times the company's registered capital as the licensing fee**), or to prohibit the use of any source code containing this project! `Labor outsourcing companies` or `007 companies` that wish to use this library must contact the author for commercial licensing! Other enterprises or individuals may freely use it without restriction. The term "007" refers to employing people as tools, which is unproductive. The 8-hour workday is essential for self-improvement and future competitiveness. Opposing the "007" mentality is everyone's responsibility!
+
+## Recommended Development Environment
+Operating System: Windows 11 23H2 or above
+
+Development Tool: Visual Studio 2022 v17.8 or above
+
+SDK: .NET 6.0 or above (all versions)
+
+## Installation Package
+.NET 6.0 or above
 ```shell
 PM> Install-Package Hikari.Common
 ```

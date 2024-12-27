@@ -2,10 +2,12 @@
 using NPOI.SS.Formula.Functions;
 using System.Collections.Generic;
 using System.Data;
+using System.Reflection;
 using System.Text.Json;
 using System.Xml.Linq;
 using Hikari.Common;
 using Hikari.Common.Collection;
+using Hikari.Common.Mime;
 using Hikari.Common.Xml;
 using Masuit.Tools.Systems;
 using Xunit;
@@ -114,36 +116,9 @@ namespace XUnitTestProject1
         public async void Test4()
         {
 
-            var s = 1237892.56M;
-            var r1 = s.ToChineseMoney();
-            var r2 = r1.ToArabicNumber();
-            System.Diagnostics.Debug.WriteLine(s + " " + r1 + " " + r2);
-             s = 2341237892.56M;
-             r1 = s.ToChineseMoney();
-             r2 = r1.ToArabicNumber();
-            System.Diagnostics.Debug.WriteLine(s + " " + r1 + " " + r2);
-            s = 237892.56M;
-            r1 = s.ToChineseMoney();
-            r2 = r1.ToArabicNumber();
-            System.Diagnostics.Debug.WriteLine(s + " " + r1 + " " + r2);
-            s = 1002007.567M;
-
-            r1 = s.ToChineseMoney();
-            r2 = r1.ToArabicNumber();
-            System.Diagnostics.Debug.WriteLine(s + " " + r1 + " " + r2);
-
-            s = 1000000M;
-            r1 = s.ToChineseMoney();
-            r2 = r1.ToArabicNumber();
-            System.Diagnostics.Debug.WriteLine(s + " " + r1 + " " + r2);
-            s = 1002007.56M;
-            r1 = s.ToChineseMoney();
-            r2 = r1.ToArabicNumber();
-            System.Diagnostics.Debug.WriteLine(s + " " + r1 + " " + r2);
-            s = 0.56M;
-            r1 = s.ToChineseMoney();
-            r2 = r1.ToArabicNumber();
-            System.Diagnostics.Debug.WriteLine(s + " " + r1 + " " + r2);
+            IMimeMapper mapper = new MimeMapper();
+            var v = mapper.GetMimeFromExtension(".jpg");
+            var v1 = mapper.GetExtensionFromMime(v);
             Assert.True(true);
         }
     }

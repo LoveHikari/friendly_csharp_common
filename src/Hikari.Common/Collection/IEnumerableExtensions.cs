@@ -59,7 +59,7 @@ namespace Hikari.Common.Collection
                     {
                         object? value = (object?)type.GetProperty(pro.Name)?.GetValue(o, null);
 
-                        pro.SetValue(t, ConvertHelper.ChangeType(value, pro.PropertyType), null);
+                        pro.SetValue(t, value.ChangeTypeTo(pro.PropertyType), null);
 
 
                     }
@@ -120,7 +120,7 @@ namespace Hikari.Common.Collection
             foreach (var chapter in menuList)
             {
 
-                dic.Add(chapter.GetValue(idField), ConvertHelper.ChangeType<T2>(chapter));
+                dic.Add(chapter.GetValue(idField), chapter.ChangeTypeTo<T2>());
             }
             var ids = new List<string>();
             foreach (var chapter in dic.Values)

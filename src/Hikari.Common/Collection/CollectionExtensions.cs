@@ -34,7 +34,7 @@ namespace Hikari.Common.Collection
                     //取值
                     object? value = nvc[tempName];
                     //如果非空，则赋给对象的属性
-                    pi.SetValue(t, ConvertHelper.ChangeType(value, pi.PropertyType), null);
+                    pi.SetValue(t, value.ChangeTypeTo(pi.PropertyType), null);
 
 
                 }
@@ -260,7 +260,7 @@ namespace Hikari.Common.Collection
                     //取值
                     object? value = nvc[tempName];
                     //如果非空，则赋给对象的属性
-                    pi.SetValue(t, ConvertHelper.ChangeType(value, pi.PropertyType), null);
+                    pi.SetValue(t, value.ChangeTypeTo(pi.PropertyType), null);
 
 
                 }

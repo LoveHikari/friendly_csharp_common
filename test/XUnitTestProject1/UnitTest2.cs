@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Xml.Linq;
 using Hikari.Common;
 using Hikari.Common.Collection;
+using Hikari.Common.Mathematics;
 using Hikari.Common.Mime;
 using Hikari.Common.Xml;
 using Masuit.Tools.Systems;
@@ -116,9 +117,8 @@ namespace XUnitTestProject1
         public async void Test4()
         {
 
-            IMimeMapper mapper = new MimeMapper();
-            var v = mapper.GetMimeFromExtension(".jpg");
-            var v1 = mapper.GetExtensionFromMime(v);
+            Point2D point = new Point2D(2,3);
+            var cv = point + 2;
             Assert.True(true);
         }
     }

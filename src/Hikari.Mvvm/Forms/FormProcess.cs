@@ -16,7 +16,7 @@
 
 using System;
 
-namespace Hikari.Common.Forms
+namespace Hikari.Mvvm.Forms
 {
     /// <summary>
     /// 窗体处理类

@@ -1,17 +1,8 @@
 ﻿using System;
-using NPOI.SS.Formula.Functions;
-using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
-using System.Reflection;
-using System.Text.Json;
-using System.Xml.Linq;
-using Hikari.Common;
-using Hikari.Common.Collection;
 using Hikari.Common.Mathematics;
-using Hikari.Common.Mime;
-using Hikari.Common.Xml;
-using Masuit.Tools.Systems;
+using NPOI.SS.Formula.Functions;
+using System.Data;
+using Hikari.Common.DateTimeExt;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -117,7 +108,8 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            Polygon polygon = new Polygon();
+            ChineseCalendar calendar = new ChineseCalendar(DateTime.Now.AddDays(1));
+            _output.WriteLine(calendar.ChineseDateString);
             
             Assert.True(true);
         }

@@ -6,7 +6,7 @@
 public class Circle
 {
     /// <summary>
-    /// 圆形
+    /// 构造函数
     /// </summary>
     /// <param name="center">圆心坐标</param>
     /// <param name="radius">半径</param>

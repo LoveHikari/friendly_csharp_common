@@ -9,7 +9,10 @@ public class Sphere
     /// 地球
     /// </summary>
     public static Sphere Earth => new(6371.393);
-
+    /// <summary>
+    /// 构造函数
+    /// </summary>
+    /// <param name="radius">半径</param>
     public Sphere(double radius)
     {
         Radius = radius;
@@ -24,7 +27,7 @@ public class Sphere
     /// 角度转弧度
     /// </summary>
     /// <param name="d">角度</param>
-    /// <returns></returns>
+    /// <returns>弧度</returns>
     private static double Angle2Radian(double d)
     {
         return d / 180.0 * Math.PI;

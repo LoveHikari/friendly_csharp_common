@@ -2,6 +2,7 @@
 using System.Windows.Input;
 
 namespace Hikari.Mvvm.Command;
+[Obsolete("请使用CommunityToolkit.Mvvm")]
 public class DelegateCommand<T> : ICommand
 {
     private readonly Action<T> _executeMethod;
@@ -69,7 +70,7 @@ public class DelegateCommand<T> : ICommand
     #endregion
 }
 
-
+[Obsolete("请使用CommunityToolkit.Mvvm")]
 public class DelegateCommand : DelegateCommand<object>
 {
     public DelegateCommand(Action<object> executeMethod) : base(executeMethod)

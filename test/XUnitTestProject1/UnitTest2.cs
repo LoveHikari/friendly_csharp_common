@@ -2,6 +2,7 @@
 using NPOI.SS.Formula.Functions;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Reflection;
 using System.Text.Json;
 using System.Xml.Linq;
@@ -116,9 +117,8 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-
-            Point2D point = new Point2D(2,3);
-            var cv = point + 2;
+            Polygon polygon = new Polygon();
+            
             Assert.True(true);
         }
     }

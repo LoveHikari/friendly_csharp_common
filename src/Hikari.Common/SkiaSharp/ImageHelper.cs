@@ -221,9 +221,8 @@ namespace Hikari.Common.SkiaSharp
             SKBitmap scaledBitmap = new SKBitmap(width, height);
 
             // 使用SKBitmap.Resize方法进行缩放
-            bitmap.ScalePixels(scaledBitmap, SKFilterQuality.High);
-
-            return SKImage.FromBitmap(bitmap);
+            bitmap.ScalePixels(scaledBitmap, new SKSamplingOptions(SKFilterMode.Nearest));
+            return SKImage.FromBitmap(scaledBitmap);
         }
         /// <summary>
         /// 缩放图片
@@ -244,7 +243,7 @@ namespace Hikari.Common.SkiaSharp
             SKBitmap scaledBitmap = new SKBitmap(scaledWidth, scaledHeight);
 
             // 使用SKBitmap.Resize方法进行缩放
-            bitmap.ScalePixels(scaledBitmap, SKFilterQuality.High);
+            bitmap.ScalePixels(scaledBitmap, new SKSamplingOptions(SKFilterMode.Nearest));
 
             return SKImage.FromBitmap(bitmap);
         }
@@ -273,43 +272,27 @@ namespace Hikari.Common.SkiaSharp
 
         #region 剪裁
 
-      //  /// <summary>
-      //  /// 剪裁 -- 用GDI+
-      //  /// </summary>
-      //  /// <param name="b">原始Bitmap</param>
-      //  /// <param name="startX">开始坐标X</param>
-      //  /// <param name="startY">开始坐标Y</param>
-      //  /// <param name="iWidth">宽度</param>
-      //  /// <param name="iHeight">高度</param>
-      //  /// <returns>剪裁后的Bitmap，失败返回null</returns>
-      //  public static Bitmap? KiCut(Bitmap b, int startX, int startY, int iWidth, int iHeight)
-      //  {
-      //      int w = b.Width;
-      //      int h = b.Height;
+        /// <summary>
+        /// 剪裁
+        /// </summary>
+        /// <param name="original">原始Bitmap</param>
+        /// <param name="startX">开始坐标X</param>
+        /// <param name="startY">开始坐标Y</param>
+        /// <param name="iWidth">宽度</param>
+        /// <param name="iHeight">高度</param>
+        /// <returns>剪裁后的Image，失败返回null</returns>
+        public static SKImage KiCut(SKImage original, int startX, int startY, int iWidth, int iHeight)
+        {
+            using var skBitmap = SKBitmap.FromImage(original);
+            using var pixmap = new SKPixmap(skBitmap.Info, skBitmap.GetPixels());
+            var rectI = new SKRectI(startX, startY, iWidth + startX, iHeight + startY);
 
-      //      if (startX >= w || startY >= h)
-      //      {
-      //          return null;
-      //      }
+            var subset = pixmap.ExtractSubset(rectI);
 
-      //      if (startX + iWidth > w)
-      //      {
-      //          iWidth = w - startX;
-      //      }
+            using var data = subset.Encode(SKPngEncoderOptions.Default);
 
-      //      if (startY + iHeight > h)
-      //      {
-      //          iHeight = h - startY;
-      //      }
-						//// 创建新图位图
-      //      using Bitmap bmpOut = new Bitmap(iWidth, iHeight, PixelFormat.Format24bppRgb);
-      //  		//创建作图区域
-      //      using Graphics g = Graphics.FromImage(bmpOut);
-      //      // 截取原图相应区域写入作图区
-      //      g.DrawImage(b, new Rectangle(0, 0, iWidth, iHeight), new Rectangle(startX, startY, iWidth, iHeight), GraphicsUnit.Pixel);
-
-      //      return bmpOut;
-      //  }
+            return SKImage.FromEncodedData(data);
+        }
 
         #endregion
 

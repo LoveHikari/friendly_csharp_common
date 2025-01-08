@@ -1,8 +1,7 @@
-﻿using System;
-using Hikari.Common.Mathematics;
+﻿using Hikari.Common.SkiaSharp;
 using NPOI.SS.Formula.Functions;
+using SkiaSharp;
 using System.Data;
-using Hikari.Common.DateTimeExt;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -108,9 +107,10 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            ChineseCalendar calendar = new ChineseCalendar(DateTime.Now.AddDays(1));
-            _output.WriteLine(calendar.ChineseDateString);
-            
+            using var input = ImageHelper.Read(@"D:\project\MvCameraControlNet_V2\BasicDemo\bin\Debug\Image_w3072_h2048_fn1246.Png");
+            var v = ImageHelper.ResizeImage(input, 3072, 393);
+            ImageHelper.Save(v, @"D:\4.png", SKEncodedImageFormat.Png);
+
             Assert.True(true);
         }
     }

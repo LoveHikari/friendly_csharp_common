@@ -107,8 +107,8 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            using var input = ImageHelper.Read(@"D:\project\MvCameraControlNet_V2\BasicDemo\bin\Debug\Image_w3072_h2048_fn1246.Png");
-            var v = ImageHelper.ResizeImage(input, 3072, 393);
+            using var input = ImageHelper.Read(@"D:\Image_w3072_h2048_fn611.Png");
+            var v = ImageHelper.KiCut(input, 286,864,2500, 320);
             ImageHelper.Save(v, @"D:\4.png", SKEncodedImageFormat.Png);
 
             Assert.True(true);

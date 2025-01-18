@@ -1,4 +1,6 @@
-﻿namespace XUnitTestProject1;
+﻿using System;
+
+namespace XUnitTestProject1;
 
 public class Class1
 {

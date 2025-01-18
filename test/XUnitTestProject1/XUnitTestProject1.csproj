@@ -6,6 +6,7 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+
   <ItemGroup>
     <PackageReference Include="CZGL.SystemInfo" Version="2.2.0" />
     <PackageReference Include="Hardware.Info" Version="101.0.0" />

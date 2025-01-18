@@ -11,17 +11,16 @@
 		<Description>公共库 公共庫</Description>
 		<Version>8.0.12</Version>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<PackageReleaseNotes>
-			修复了一些错误
-			いくつかのバグを修正しました
-			Fixed some bugs
-		</PackageReleaseNotes>
+		<PackageReleaseNotes>修复了一些错误
+いくつかのバグを修正しました
+Fixed some bugs	</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/LoveHikari/friendly_csharp_common</PackageProjectUrl>
 		<PackageTags>common</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Copyright>Copyright (c) Hikari.</Copyright>
 		<LangVersion>latest</LangVersion>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 	</PropertyGroup>
 
 	<ItemGroup>

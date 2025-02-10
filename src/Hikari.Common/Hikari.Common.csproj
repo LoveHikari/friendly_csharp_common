@@ -40,16 +40,16 @@ Fixed some bugs	</PackageReleaseNotes>
 		<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 
-		<PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.0">
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.1">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="System.Management" Version="9.0.0">
+		<PackageReference Include="System.Management" Version="9.0.1">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0">
+		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.1">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.20">
+		<PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.21">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<!--<PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.12">

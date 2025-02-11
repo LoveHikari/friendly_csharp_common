@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Hikari.Common.Text.Json
 {
@@ -32,5 +34,20 @@ namespace Hikari.Common.Text.Json
             }
             return resultData;
         }
+#if NET9_0
+        public static void IgnoreCondition(this JsonSerializerOptions @this, JsonIgnoreCondition condition)
+        {
+            typeof(JsonSerializerOptions).GetRuntimeFields()
+                .Single(f => f.Name == "_defaultIgnoreCondition")
+                .SetValue(JsonSerializerOptions.Default, condition);
+        }
+        public static void DefaultOptions(this JsonSerializerOptions @this, JsonSerializerOptions options)
+        {
+            typeof(JsonSerializerOptions).GetRuntimeFields()
+                .Single(f => f.Name == "s_defaultOptions")
+                .SetValue(JsonSerializerOptions.Default, options);
+        }
+#endif
+
     }
 }

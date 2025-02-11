@@ -35,13 +35,23 @@ namespace Hikari.Common.Text.Json
             return resultData;
         }
 #if NET9_0
-        public static void IgnoreCondition(this JsonSerializerOptions @this, JsonIgnoreCondition condition)
+        /// <summary>
+        /// 设置默认如何忽略
+        /// </summary>
+        /// <param name="this"></param>
+        /// <param name="condition"></param>
+        public static void SetIgnoreCondition(this JsonSerializerOptions @this, JsonIgnoreCondition condition)
         {
             typeof(JsonSerializerOptions).GetRuntimeFields()
                 .Single(f => f.Name == "_defaultIgnoreCondition")
                 .SetValue(JsonSerializerOptions.Default, condition);
         }
-        public static void DefaultOptions(this JsonSerializerOptions @this, JsonSerializerOptions options)
+        /// <summary>
+        /// 设置默认配置
+        /// </summary>
+        /// <param name="this"></param>
+        /// <param name="options"></param>
+        public static void SetDefaultOptions(this JsonSerializerOptions @this, JsonSerializerOptions options)
         {
             typeof(JsonSerializerOptions).GetRuntimeFields()
                 .Single(f => f.Name == "s_defaultOptions")

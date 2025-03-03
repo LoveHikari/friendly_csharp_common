@@ -34,7 +34,7 @@ namespace Hikari.Common.Text.Json
             }
             return resultData;
         }
-#if NET9_0
+#if true
         /// <summary>
         /// 设置默认如何忽略 https://stackoverflow.com/questions/58331479/how-to-globally-set-default-options-for-system-text-json-jsonserializer
         /// </summary>

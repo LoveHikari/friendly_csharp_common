@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;net9.0</TargetFrameworks>
+		<TargetFrameworks>net6.0;net10.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<PackageId>Hikari.Common</PackageId>
@@ -11,9 +11,11 @@
 		<Description>公共库 公共庫</Description>
 		<Version>8.0.12</Version>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<PackageReleaseNotes>修复了一些错误
-いくつかのバグを修正しました
-Fixed some bugs	</PackageReleaseNotes>
+		<PackageReleaseNotes>
+			修复了一些错误
+			いくつかのバグを修正しました
+			Fixed some bugs
+		</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/LoveHikari/friendly_csharp_common</PackageProjectUrl>
 		<PackageTags>common</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -37,16 +39,16 @@ Fixed some bugs	</PackageReleaseNotes>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="SkiaSharp" Version="3.118.0-preview.2.3">
-		<PrivateAssets>all</PrivateAssets>
+			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 
-		<PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.1">
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.0-preview.1.25080.5">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="System.Management" Version="9.0.1">
+		<PackageReference Include="System.Management" Version="10.0.0-preview.1.25080.5">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.1">
+		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0-preview.1.25080.5">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.21">
@@ -57,8 +59,9 @@ Fixed some bugs	</PackageReleaseNotes>
 		</PackageReference>-->
 	</ItemGroup>
 
-	<ItemGroup Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net9.0'))">
+	<ItemGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">
 		<PackageReference Include="Backport.System.Threading.Lock" Version="3.1.4" />
+		<PackageReference Include="System.Text.Json" Version="8.0.5" />
 	</ItemGroup>
 
 	<ItemGroup>

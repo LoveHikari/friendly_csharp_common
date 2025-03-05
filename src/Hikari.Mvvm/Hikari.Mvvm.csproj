@@ -9,15 +9,11 @@
 	  <Product>Hikari.Mvvm</Product>
 	  <Company>5cm R &amp; D department</Company>
 	  <Description>WPF MVVM</Description>
-	  <Version>1.0.3</Version>
+	  <Version>1.1.0</Version>
 	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
 	  <PackageProjectUrl>https://github.com/LoveHikari/friendly_csharp_common</PackageProjectUrl>
 	  <PackageTags>WPF MVVM</PackageTags>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DocumentationFile>bin\Debug\net9.0-windows\Hikari.Mvvm.xml</DocumentationFile>
-	</PropertyGroup>
 
 </Project>

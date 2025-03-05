@@ -24,10 +24,6 @@ Project development model: daily code accumulation + online research.
 
 If you have any questions about this project or encounter any issues during use, feel free to open an issue or contact me privately. I will provide you with completely free technical support. Of course, if you feel uncomfortable accepting free guidance, any kind of tip or donation will be graciously accepted!🤣🤣🤣
 
-## This project has received support from [JetBrains](https://www.jetbrains.com/shop/eform/opensource)！
-
-<img src="https://www.jetbrains.com/shop/static/images/jetbrains-logo-inv.svg" height="100">
-
 ## Please Note：
 If any company that uses this open-source project or incorporates its code into their products is found guilty in any legal lawsuit due to violations of labor laws (including but not limited to illegal layoffs, excessive working hours, child labor, etc.), the author of this project reserves the right to claim a usage fee for the project (**2-5 times the company's registered capital as the licensing fee**), or to prohibit the use of any source code containing this project! `Labor outsourcing companies` or `007 companies` that wish to use this library must contact the author for commercial licensing! Other enterprises or individuals may freely use it without restriction. The term "007" refers to employing people as tools, which is unproductive. The 8-hour workday is essential for self-improvement and future competitiveness. Opposing the "007" mentality is everyone's responsibility!
 

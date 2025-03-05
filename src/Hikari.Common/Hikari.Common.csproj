@@ -9,7 +9,7 @@
 		<Product>Hikari.Common</Product>
 		<Company>5cm R &amp; D department</Company>
 		<Description>公共库 公共庫</Description>
-		<Version>8.0.12</Version>
+		<Version>8.1.0</Version>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<PackageReleaseNotes>
 			修复了一些错误
@@ -59,7 +59,7 @@
 		</PackageReference>-->
 	</ItemGroup>
 
-	<ItemGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
 		<PackageReference Include="Backport.System.Threading.Lock" Version="3.1.4" />
 		<PackageReference Include="System.Text.Json" Version="8.0.5" />
 	</ItemGroup>

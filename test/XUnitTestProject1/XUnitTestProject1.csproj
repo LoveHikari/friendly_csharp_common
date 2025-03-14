@@ -10,7 +10,7 @@
   <ItemGroup>
     <PackageReference Include="CZGL.SystemInfo" Version="2.2.0" />
     <PackageReference Include="Hardware.Info" Version="101.0.1" />
-    <PackageReference Include="Masuit.Tools.Core" Version="2025.1.4" />
+    <PackageReference Include="Masuit.Tools.Core" Version="2025.1.7" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0-preview.1.25080.5" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.0-preview-25107-01" />
     <PackageReference Include="NSoup.Standard" Version="2.0.1" />

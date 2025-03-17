@@ -25,7 +25,7 @@ public static class EnumExtensions
         var names = new Dictionary<int, string>(enumItems.Length);
         foreach (var enumItem in enumItems)
         {
-            names[(int)enumItem.GetValue(enumType)] = enumItem.Name;
+            names[(int)enumItem.GetValue(enumType)!] = enumItem.Name;
         }
 
         return names;

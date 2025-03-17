@@ -26,6 +26,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="FluentFTP" Version="52.1.0" >
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
 		<PackageReference Include="JavaScriptEngineSwitcher.ChakraCore" Version="3.27.3">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
@@ -42,9 +45,9 @@
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 
-		<PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.0-preview.1.25080.5">
+		<!--<PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.0-preview.1.25080.5">
 			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
+		</PackageReference>-->
 		<PackageReference Include="System.Management" Version="10.0.0-preview.1.25080.5">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
@@ -61,7 +64,7 @@
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
 		<PackageReference Include="Backport.System.Threading.Lock" Version="3.1.4" />
-		<PackageReference Include="System.Text.Json" Version="10.0.0-preview.1.25080.5" />
+		<!--<PackageReference Include="System.Text.Json" Version="10.0.0-preview.1.25080.5" />-->
 	</ItemGroup>
 
 	<ItemGroup>

@@ -104,8 +104,8 @@ namespace Hikari.Common
 
             //文字距中
             using SKPaint paint = new SKPaint { IsAntialias = true };
-            paint.TextAlign = SKTextAlign.Center;
-            paint.TextSize = 14;
+            //paint.TextAlign = SKTextAlign.Center;
+            //paint.TextSize = 14;
 
             //定义颜色
             SKColor[] colors = { SKColors.Black, SKColors.Red, SKColors.DarkBlue, SKColors.Green, SKColors.Orange, SKColors.Brown, SKColors.DarkCyan, SKColors.Purple };
@@ -119,7 +119,8 @@ namespace Hikari.Common
             {
                 int findex = random.Next(5);
                 using SKTypeface typeface = SKTypeface.FromFamilyName(fonts[findex], SKFontStyle.Bold);
-                paint.Typeface = typeface;
+                SKFont font = new SKFont(typeface, 14);
+                //paint.Typeface = typeface;
                 paint.Color = colors[cindex];
                 SKPoint dot = new SKPoint(14, 14);
                 float angle = random.NextSingle() * 2 * randAngle - randAngle;  // 转动的度数
@@ -127,14 +128,14 @@ namespace Hikari.Common
                 {
                     //加减乘运算符不进行旋转
                     canvas.Translate(dot.X, dot.Y);//移动光标到指定位置
-                    canvas.DrawText(t.ToString(), 1, 1, paint);
+                    canvas.DrawText(t.ToString(), 1, 1, SKTextAlign.Center,font, paint);
                     canvas.Translate(-2, -dot.Y);//移动光标到指定位置，每个字符紧凑显示，避免被软件识别
                 }
                 else
                 {
                     canvas.Translate(dot.X, dot.Y);//移动光标到指定位置
                     canvas.RotateDegrees(angle);
-                    canvas.DrawText(t.ToString(), 1, 1, paint);
+                    canvas.DrawText(t.ToString(), 1, 1, SKTextAlign.Center, font, paint);
                     canvas.RotateDegrees(-angle);//转回去
                     canvas.Translate(-2, -dot.Y);//移动光标到指定位置，每个字符紧凑显示，避免被软件识别
                 }

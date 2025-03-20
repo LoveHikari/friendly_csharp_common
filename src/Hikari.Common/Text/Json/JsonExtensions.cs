@@ -34,7 +34,7 @@ namespace Hikari.Common.Text.Json
             }
             return resultData;
         }
-#if true
+
         /// <summary>
         /// 设置默认如何忽略 https://stackoverflow.com/questions/58331479/how-to-globally-set-default-options-for-system-text-json-jsonserializer
         /// </summary>
@@ -45,6 +45,7 @@ namespace Hikari.Common.Text.Json
             typeof(JsonSerializerOptions).GetRuntimeFields()
                 .Single(f => f.Name == "_defaultIgnoreCondition")
                 .SetValue(JsonSerializerOptions.Default, condition);
+
         }
         /// <summary>
         /// 设置默认配置
@@ -56,8 +57,8 @@ namespace Hikari.Common.Text.Json
             typeof(JsonSerializerOptions).GetRuntimeFields()
                 .Single(f => f.Name == "s_defaultOptions")
                 .SetValue(JsonSerializerOptions.Default, options);
+
         }
-#endif
 
     }
 }

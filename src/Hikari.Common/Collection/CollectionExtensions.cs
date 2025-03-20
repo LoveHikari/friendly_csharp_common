@@ -207,7 +207,6 @@ namespace Hikari.Common.Collection
         /// <summary>
         /// 向上筛选树结构, 返回包含的树
         /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="tree">树形列表</param>
         /// <param name="func"></param>
         /// <param name="childrenField">指定子项列表字段，默认为Children</param>

@@ -64,7 +64,7 @@ namespace Hikari.Common.Security
         /// <returns></returns>
         public SecureHelper HmacMd5(string key)
         {
-            var hmac = HMAC.Create("HMACMD5");
+            using var hmac = new HMACMD5();
             hmac.Key = System.Text.Encoding.UTF8.GetBytes(key);
             _hashAlgorithm = hmac;
             return this;
@@ -76,7 +76,7 @@ namespace Hikari.Common.Security
         /// <returns></returns>
         public SecureHelper HmacSha1(string key)
         {
-            var hmac = HMAC.Create("HMACSHA1");
+            var hmac = new HMACSHA1();
             hmac.Key = System.Text.Encoding.UTF8.GetBytes(key);
             _hashAlgorithm = hmac;
             return this;
@@ -88,7 +88,7 @@ namespace Hikari.Common.Security
         /// <returns></returns>
         public SecureHelper HmacSha256(string key)
         {
-            var hmac = HMAC.Create("HMACSHA256");
+            var hmac = new HMACSHA256();
             hmac.Key = System.Text.Encoding.UTF8.GetBytes(key);
             _hashAlgorithm = hmac;
             return this;

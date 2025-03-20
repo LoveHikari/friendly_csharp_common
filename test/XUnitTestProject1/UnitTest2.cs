@@ -1,7 +1,7 @@
-﻿using Hikari.Common.SkiaSharp;
-using NPOI.SS.Formula.Functions;
-using SkiaSharp;
+﻿using Hikari.Common.Text.Json;
 using System.Data;
+using System.Text.Json;
+using Hikari.Common;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -107,9 +107,19 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            using var input = ImageHelper.Read(@"D:\Image_w3072_h2048_fn611.Png");
-            var v = ImageHelper.KiCut(input, 286,864,2500, 320);
-            ImageHelper.Save(v, @"D:\4.png", SKEncodedImageFormat.Png);
+            //var options = new JsonSerializerOptions
+            //{
+            //    //属性名使用驼峰式命名
+            //    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            //    //字典的Key使用驼峰式命名
+            //    DictionaryKeyPolicy = JsonNamingPolicy.CamelCase
+            //};
+            //new JsonSerializerOptions().SetDefaultOptions(options);
+            
+            //var class1 = new WaterPowerNoticEt();
+
+            //var vv = System.Text.Json.JsonSerializer.Serialize(class1);
+            var v = CaptchaHelper.CreateCaptcha();
 
             Assert.True(true);
         }

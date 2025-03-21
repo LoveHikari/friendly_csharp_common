@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Models.Interfaces;
+using Microsoft.OpenApi.Models.References;
 
 namespace Hikari.Common.Web.AspNetCore.OpenApi.Filter;
 
@@ -12,7 +14,7 @@ public sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvide
         if (authenticationSchemes.Any(authScheme => authScheme.Name == "Bearer"))
         {
             // Add the security scheme at the document level
-            var requirements = new Dictionary<string, OpenApiSecurityScheme>
+            var requirements = new Dictionary<string, IOpenApiSecurityScheme>
             {
                 ["Bearer"] = new OpenApiSecurityScheme
                 {
@@ -30,14 +32,7 @@ public sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvide
             {
                 operation.Value.Security.Add(new OpenApiSecurityRequirement
                 {
-                    [new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Id = "Bearer",
-                            Type = ReferenceType.SecurityScheme
-                        }
-                    }] = Array.Empty<string>()
+                   [new OpenApiSecuritySchemeReference("Bearer", document)] = Array.Empty<string>()
                 });
             }
         }

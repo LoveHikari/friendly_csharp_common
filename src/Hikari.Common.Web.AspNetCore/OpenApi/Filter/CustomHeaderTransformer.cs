@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Models.Interfaces;
 
 namespace Hikari.Common.Web.AspNetCore.OpenApi.Filter
 {
@@ -28,7 +29,7 @@ namespace Hikari.Common.Web.AspNetCore.OpenApi.Filter
 
                         if (hasCaptchaAttribute)
                         {
-                            operation.Value.Parameters ??= new List<OpenApiParameter>();
+                            operation.Value.Parameters ??= new List<IOpenApiParameter>();
 
                             // 检查是否已经存在X-Client-ID header
                             var existingHeader = operation.Value.Parameters

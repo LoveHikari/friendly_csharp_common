@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Hikari.Common.Web.AspNetCore.Swagger.Filter
+﻿namespace Hikari.Common.Web.AspNetCore.OpenApi.Filter
 {
     /// <summary>
     /// 验证码过滤器

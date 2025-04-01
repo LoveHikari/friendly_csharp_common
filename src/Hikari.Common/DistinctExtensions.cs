@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-/******************************************************************************************************************
+﻿/******************************************************************************************************************
  * 
  * 
  * 标  题： Distinct 扩展类(版本：Version1.0.0)
@@ -16,86 +12,84 @@ using System.Linq;
  *
  * 
  * ***************************************************************************************************************/
-namespace Hikari.Common
+namespace Hikari.Common;
+/// <summary>
+/// Distinct 扩展类
+/// </summary>
+[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), System.ComponentModel.Browsable(false)]
+public static class DistinctExtensions
 {
     /// <summary>
-    /// Distinct 扩展类
+    /// Distinct lambda 扩展，可以使用一个简单的 lambda 作为参数
+    /// 调用示例：var p1 = products.Distinct(p => p.ID);
     /// </summary>
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), System.ComponentModel.Browsable(false)]
-    public static class DistinctExtensions
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="TV"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="keySelector">lambda表达式</param>
+    /// <returns></returns>
+    public static IEnumerable<T> Distinct<T, TV>(this IEnumerable<T> source, Func<T, TV> keySelector)
     {
-        /// <summary>
-        /// Distinct lambda 扩展，可以使用一个简单的 lambda 作为参数
-        /// 调用示例：var p1 = products.Distinct(p => p.ID);
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TV"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="keySelector">lambda表达式</param>
-        /// <returns></returns>
-        public static IEnumerable<T> Distinct<T, TV>(this IEnumerable<T> source, Func<T, TV> keySelector)
-        {
-            return source.Distinct(new CommonEqualityComparer<T, TV>(keySelector));
-        }
-        /// <summary>
-        /// Distinct lambda 扩展，可以使用一个简单的 lambda 作为参数
-        /// 调用示例：var p1 = products.Distinct(p => p.ID, StringComparer.CurrentCultureIgnoreCase);
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TV"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="keySelector">lambda表达式</param>
-        /// <param name="comparer"></param>
-        /// <returns></returns>
-        public static IEnumerable<T> Distinct<T, TV>(this IEnumerable<T> source, Func<T, TV> keySelector, IEqualityComparer<TV> comparer)
-        {
-            return source.Distinct(new CommonEqualityComparer<T, TV>(keySelector, comparer));
-        }
+        return source.Distinct(new CommonEqualityComparer<T, TV>(keySelector));
+    }
+    /// <summary>
+    /// Distinct lambda 扩展，可以使用一个简单的 lambda 作为参数
+    /// 调用示例：var p1 = products.Distinct(p => p.ID, StringComparer.CurrentCultureIgnoreCase);
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="TV"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="keySelector">lambda表达式</param>
+    /// <param name="comparer"></param>
+    /// <returns></returns>
+    public static IEnumerable<T> Distinct<T, TV>(this IEnumerable<T> source, Func<T, TV> keySelector, IEqualityComparer<TV> comparer)
+    {
+        return source.Distinct(new CommonEqualityComparer<T, TV>(keySelector, comparer));
+    }
+}
+/// <summary>
+/// 
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <typeparam name="TV"></typeparam>
+public class CommonEqualityComparer<T, TV> : IEqualityComparer<T>
+{
+    private readonly Func<T, TV> _keySelector;
+    private readonly IEqualityComparer<TV> _comparer;
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="keySelector"></param>
+    /// <param name="comparer"></param>
+    public CommonEqualityComparer(Func<T, TV> keySelector, IEqualityComparer<TV> comparer)
+    {
+        this._keySelector = keySelector;
+        this._comparer = comparer;
     }
     /// <summary>
     /// 
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <typeparam name="TV"></typeparam>
-    public class CommonEqualityComparer<T, TV> : IEqualityComparer<T>
+    /// <param name="keySelector"></param>
+    public CommonEqualityComparer(Func<T, TV> keySelector)
+        : this(keySelector, EqualityComparer<TV>.Default)
+    { }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    public bool Equals(T x, T y)
     {
-        private readonly Func<T, TV> _keySelector;
-        private readonly IEqualityComparer<TV> _comparer;
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="keySelector"></param>
-        /// <param name="comparer"></param>
-        public CommonEqualityComparer(Func<T, TV> keySelector, IEqualityComparer<TV> comparer)
-        {
-            this._keySelector = keySelector;
-            this._comparer = comparer;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="keySelector"></param>
-        public CommonEqualityComparer(Func<T, TV> keySelector)
-            : this(keySelector, EqualityComparer<TV>.Default)
-        { }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        public bool Equals(T x, T y)
-        {
-            return _comparer.Equals(_keySelector(x), _keySelector(y));
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public int GetHashCode(T obj)
-        {
-            return _comparer.GetHashCode(_keySelector(obj));
-        }
+        return _comparer.Equals(_keySelector(x), _keySelector(y));
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public int GetHashCode(T obj)
+    {
+        return _comparer.GetHashCode(_keySelector(obj));
     }
 }

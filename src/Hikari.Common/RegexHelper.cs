@@ -22,7 +22,7 @@ namespace Hikari.Common
         /// </summary>
         /// <param name="str"></param>
         /// <returns>如果是则返回true，不是则返回false</returns>
-        public static bool IsNumeric(string str)
+        public static bool IsNumeric(string? str)
         {
             if (str != null && IsMatch("^-?\\d+(\\.\\d+)?$", str))
                 return true;

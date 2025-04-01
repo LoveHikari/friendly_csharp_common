@@ -364,7 +364,7 @@ public static class DecimalExtensions
             }
             else if (chineseUnits.TryGetValue(c, out int unit))
             {
-                if (unit == 10000 || unit == 100000000) // 处理“万”和“亿”
+                if (unit is 10000 or 100000000) // 处理“万”和“亿”
                 {
                     result -= resultTemp;
                     result += (resultTemp + currentUnitValue) * unit;

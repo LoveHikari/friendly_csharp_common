@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Reflection;
 
 /******************************************************************************************************************
@@ -17,123 +15,122 @@ using System.Reflection;
  *
  * 
  * ***************************************************************************************************************/
-namespace Hikari.Common
+namespace Hikari.Common;
+/// <summary>
+/// <see cref="IDataReader"/> 扩展类
+/// </summary>
+[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), System.ComponentModel.Browsable(false)]
+public static class IDataReaderExtensions
 {
     /// <summary>
-    /// <see cref="IDataReader"/> 扩展类
+    ///  将IDataReader转换为DataTable
     /// </summary>
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), System.ComponentModel.Browsable(false)]
-    public static class IDataReaderExtensions
+    /// <param name="reader"></param>
+    /// <returns></returns>
+    public static DataTable ToDataTable(this IDataReader reader)
     {
-        /// <summary>
-        ///  将IDataReader转换为DataTable
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
-        public static DataTable ToDataTable(this IDataReader reader)
+        DataTable objDataTable = new DataTable("Table1");
+        int intFieldCount = reader.FieldCount;
+        for (int intCounter = 0; intCounter < intFieldCount; ++intCounter)
         {
-            DataTable objDataTable = new DataTable("Table1");
-            int intFieldCount = reader.FieldCount;
-            for (int intCounter = 0; intCounter < intFieldCount; ++intCounter)
-            {
-                objDataTable.Columns.Add(reader.GetName(intCounter).ToUpper(), reader.GetFieldType(intCounter));
-            }
-            objDataTable.BeginLoadData();
-            object[] objValues = new object[intFieldCount];
-            while (reader.Read())
-            {
-                reader.GetValues(objValues);
-                objDataTable.LoadDataRow(objValues, true);
-            }
-            reader.Close();
-            objDataTable.EndLoadData();
-            return objDataTable;
+            objDataTable.Columns.Add(reader.GetName(intCounter).ToUpper(), reader.GetFieldType(intCounter));
         }
-        /// <summary>
-        /// 将IDataReader转换为实体类型
-        /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
-        /// <param name="dr"></param>
-        /// <returns></returns>
-        public static T ToEntity<T>(this IDataReader dr)
+        objDataTable.BeginLoadData();
+        object[] objValues = new object[intFieldCount];
+        while (reader.Read())
         {
-            using (dr)
-            {
-                if (dr.Read())
-                {
-                    List<string> list = new List<string>(dr.FieldCount);
-                    for (int i = 0; i < dr.FieldCount; i++)
-                    {
-                        list.Add(dr.GetName(i).ToLower());
-                    }
-                    T model = Activator.CreateInstance<T>();
-                    foreach (PropertyInfo pi in model.GetType().GetProperties(BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Instance))
-                    {
-                        if (list.Contains(pi.Name.ToLower()))
-                        {
-                            if (!IsNullOrDBNull(dr[pi.Name]))
-                            {
-                                pi.SetValue(model, HackType(dr[pi.Name], pi.PropertyType), null);
-                            }
-                        }
-                    }
-                    return model;
-                }
-            }
-            return default(T);
+            reader.GetValues(objValues);
+            objDataTable.LoadDataRow(objValues, true);
         }
-        /// <summary>
-        /// 将IDataReader转换为List
-        /// </summary>
-        /// <typeparam name="T">实体类型</typeparam>
-        /// <param name="dr"></param>
-        /// <returns></returns>
-        public static List<T> ToList<T>(this IDataReader dr)
+        reader.Close();
+        objDataTable.EndLoadData();
+        return objDataTable;
+    }
+    /// <summary>
+    /// 将IDataReader转换为实体类型
+    /// </summary>
+    /// <typeparam name="T">实体类型</typeparam>
+    /// <param name="dr"></param>
+    /// <returns></returns>
+    public static T ToEntity<T>(this IDataReader dr)
+    {
+        using (dr)
         {
-            using (dr)
+            if (dr.Read())
             {
-                List<string> field = new List<string>(dr.FieldCount);
+                List<string> list = new List<string>(dr.FieldCount);
                 for (int i = 0; i < dr.FieldCount; i++)
                 {
-                    field.Add(dr.GetName(i).ToLower());
+                    list.Add(dr.GetName(i).ToLower());
                 }
-                List<T> list = new List<T>();
-                while (dr.Read())
+                T model = Activator.CreateInstance<T>();
+                foreach (PropertyInfo pi in model.GetType().GetProperties(BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Instance))
                 {
-                    T model = Activator.CreateInstance<T>();
-                    foreach (PropertyInfo property in model.GetType().GetProperties(BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Instance))
+                    if (list.Contains(pi.Name.ToLower()))
                     {
-                        if (field.Contains(property.Name.ToLower()))
+                        if (!IsNullOrDBNull(dr[pi.Name]))
                         {
-                            if (!IsNullOrDBNull(dr[property.Name]))
-                            {
-                                property.SetValue(model, HackType(dr[property.Name], property.PropertyType), null);
-                            }
+                            pi.SetValue(model, HackType(dr[pi.Name], pi.PropertyType), null);
                         }
                     }
-                    list.Add(model);
                 }
-                return list;
+                return model;
             }
         }
-
-        //这个类对可空类型进行判断转换，要不然会报错
-        private static object HackType(object value, Type conversionType)
+        return default(T);
+    }
+    /// <summary>
+    /// 将IDataReader转换为List
+    /// </summary>
+    /// <typeparam name="T">实体类型</typeparam>
+    /// <param name="dr"></param>
+    /// <returns></returns>
+    public static List<T> ToList<T>(this IDataReader dr)
+    {
+        using (dr)
         {
-            if (conversionType.IsGenericType && conversionType.GetGenericTypeDefinition() == typeof(Nullable<>))
+            List<string> field = new List<string>(dr.FieldCount);
+            for (int i = 0; i < dr.FieldCount; i++)
             {
-                if (value == null)
-                    return null;
-
-                System.ComponentModel.NullableConverter nullableConverter = new System.ComponentModel.NullableConverter(conversionType);
-                conversionType = nullableConverter.UnderlyingType;
+                field.Add(dr.GetName(i).ToLower());
             }
-            return Convert.ChangeType(value, conversionType);
-        }
-
-        private static bool IsNullOrDBNull(object obj)
-        {
-            return ((obj is DBNull) || string.IsNullOrEmpty(obj.ToString()));
+            List<T> list = new List<T>();
+            while (dr.Read())
+            {
+                T model = Activator.CreateInstance<T>();
+                foreach (PropertyInfo property in model.GetType().GetProperties(BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Instance))
+                {
+                    if (field.Contains(property.Name.ToLower()))
+                    {
+                        if (!IsNullOrDBNull(dr[property.Name]))
+                        {
+                            property.SetValue(model, HackType(dr[property.Name], property.PropertyType), null);
+                        }
+                    }
+                }
+                list.Add(model);
+            }
+            return list;
         }
     }
+
+    //这个类对可空类型进行判断转换，要不然会报错
+    private static object HackType(object value, Type conversionType)
+    {
+        if (conversionType.IsGenericType && conversionType.GetGenericTypeDefinition() == typeof(Nullable<>))
+        {
+            if (value == null)
+                return null;
+
+            System.ComponentModel.NullableConverter nullableConverter = new System.ComponentModel.NullableConverter(conversionType);
+            conversionType = nullableConverter.UnderlyingType;
+        }
+        return Convert.ChangeType(value, conversionType);
+    }
+
+    private static bool IsNullOrDBNull(object obj)
+    {
+        return ((obj is DBNull) || string.IsNullOrEmpty(obj.ToString()));
+    }
 }
+

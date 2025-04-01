@@ -4,7 +4,7 @@
     /// 分页
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Pager<T>
+    public class Paginated<T>
     {
         /// <summary>
         /// 当前页
@@ -33,6 +33,6 @@
         /// <summary>
         /// 内容
         /// </summary>
-        public List<T>? Content { get; set; }
+        public List<T>? Data { get; set; }
     }
 }

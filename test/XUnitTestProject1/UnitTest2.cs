@@ -1,7 +1,9 @@
 ﻿using Hikari.Common.Text.Json;
 using System.Data;
+using System.Net;
 using System.Text.Json;
 using Hikari.Common;
+using Hikari.Common.Net;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -107,20 +109,7 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            //var options = new JsonSerializerOptions
-            //{
-            //    //属性名使用驼峰式命名
-            //    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            //    //字典的Key使用驼峰式命名
-            //    DictionaryKeyPolicy = JsonNamingPolicy.CamelCase
-            //};
-            //new JsonSerializerOptions().SetDefaultOptions(options);
-            
-            //var class1 = new WaterPowerNoticEt();
-
-            //var vv = System.Text.Json.JsonSerializer.Serialize(class1);
-            var v = CaptchaHelper.CreateCaptcha();
-
+            var v = new IdcardValidatorHelper();
             Assert.True(true);
         }
     }

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Text;
-using FluentFTP;
+﻿using FluentFTP;
 
-namespace Hikari.Common
-{
+namespace Hikari.Common;
     /// <summary>
     /// ftp操作类
     /// </summary>
@@ -198,4 +192,3 @@ namespace Hikari.Common
             }
         }
     }
-}

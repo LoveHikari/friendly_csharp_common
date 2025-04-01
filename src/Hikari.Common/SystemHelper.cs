@@ -22,8 +22,8 @@ namespace Hikari.Common
         {
             XmlDocument doc = new XmlDocument();
             doc.Load("http://api.map.baidu.com/geocoder?address=" + address);
-            DataTable dt = ConvertHelper.XmlToDataSet(doc.InnerXml).Tables["location"];
-            if (dt != null && dt.Rows.Count > 0)
+            DataTable? dt = ConvertHelper.XmlToDataSet(doc.InnerXml).Tables["location"];
+            if (dt is { Rows.Count: > 0 })
             {
                 lng = dt.Rows[0]["lng"].ToString();
                 lat = dt.Rows[0]["lat"].ToString();

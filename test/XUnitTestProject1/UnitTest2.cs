@@ -109,7 +109,9 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            var v = new IdcardValidatorHelper();
+            string version = "10.0.100-preview.2.25164.34";
+            _output.WriteLine(version.SplitLeft(".2", 2));
+            _output.WriteLine(version.SplitRight(".", 2));
             Assert.True(true);
         }
     }

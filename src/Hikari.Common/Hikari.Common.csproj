@@ -59,10 +59,10 @@
 		</PackageReference>-->
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' != 'net6.0'">
-		<PackageReference Include="System.Management" Version="10.0.0-preview.2.25163.2">
+		<PackageReference Include="System.Management" Version="10.0.0-preview.3.25171.5">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0-preview.2.25163.2">
+		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0-preview.3.25171.5">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 	</ItemGroup>

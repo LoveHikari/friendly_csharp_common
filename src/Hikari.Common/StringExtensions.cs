@@ -104,48 +104,57 @@ namespace Hikari.Common
 
             return value.Substring(value.Length - length);
         }
+
         /// <summary>
-        /// 获取拆分符左边的字符串，不包括拆分符
+        /// 获取第index个拆分符左边的字符串，不包括拆分符
         /// </summary>
         /// <param name="value"></param>
         /// <param name="split">拆分符</param>
+        /// <param name="index">默认第一个拆分符</param>
         /// <returns></returns>
-        public static string SplitLeft(this string value, string split)
+        public static string SplitLeft(this string value, string split, int index = 1)
         {
             if (string.IsNullOrEmpty(value))
             {
                 return "";
             }
-            int index = value.IndexOf(split, StringComparison.Ordinal);
-            if (index > 0)
+            string[] parts = value.Split(split, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length >= index)
             {
-                return value.Substring(0, index);
+                string result = string.Join(split, parts.Take(index)); // 合并前index个元素
+                return result;
             }
             else
             {
                 return value;
             }
         }
+
         /// <summary>
-        /// 获取拆分符右边的字符串，不包括拆分符
+        /// 获取第index个拆分符右边的字符串，不包括拆分符
         /// </summary>
         /// <param name="value"></param>
         /// <param name="split">拆分符</param>
+        /// <param name="index">默认第一个拆分符</param>
         /// <returns></returns>
-        public static string SplitRight(this string value, string split)
+        public static string SplitRight(this string value, string split, int index = 1)
         {
             if (string.IsNullOrEmpty(value))
             {
                 return "";
             }
-            int index = value.IndexOf(split, StringComparison.Ordinal);
-            if (index > 0)
+            string[] parts = value.Split(split, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length >= index + 1)
             {
-                return value.Substring(index + split.Length);
+                // 提取从索引 2 开始的所有元素
+                string[] remainingParts = parts.Skip(index).ToArray();
+                // 重新用 "." 拼接成完整字符串
+                string result = string.Join(split, remainingParts);
+                return result;
             }
             else
             {
-                return value;
+                return "";
             }
         }
         /// <summary>

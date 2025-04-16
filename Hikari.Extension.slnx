@@ -2,6 +2,7 @@
   <Folder Name="/src/">
     <Project Path="src/FsLib.TuChuangUtils/FsLib.TuChuangUtils.csproj" />
     <Project Path="src/Hikari.Common.CreditCard/Hikari.Common.CreditCard.csproj" />
+    <Project Path="src/Hikari.Common.DotNet6/Hikari.Common.DotNet6.csproj" Id="9f84a6c9-d3bb-4b30-82e4-1cff313b9606" />
     <Project Path="src/Hikari.Common.EfCore/Hikari.Common.EfCore.csproj" />
     <Project Path="src/Hikari.Common.ElasticSearch/Hikari.Common.ElasticSearch.csproj" />
     <Project Path="src/Hikari.Common.Office/Hikari.Common.Office.csproj" />

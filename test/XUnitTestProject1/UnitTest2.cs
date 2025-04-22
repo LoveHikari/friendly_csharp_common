@@ -121,17 +121,14 @@ namespace XUnitTestProject1
 }
 
 
-file static class Extensions
+public static class Extensions
 {
     extension(IEnumerable<int> source)
     {
         public IEnumerable<int> WhereGreaterThan(int threshold)
-    {
-        Console.WriteLine("Extensions.WhereGreaterThan");
-        return source.Where(x => x > threshold);
-    }
+            => source.Where(x => x > threshold);
 
     public bool IsEmpty
-            => !source.Any();
+        => !source.Any();
 }
 }

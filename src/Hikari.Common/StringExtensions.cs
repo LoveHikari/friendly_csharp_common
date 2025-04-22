@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -503,6 +504,7 @@ namespace Hikari.Common
         /// </summary>
         /// <param name="this"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DateTime? ToDateTime(this string @this)
         {
             if (string.IsNullOrWhiteSpace(@this)) return null;
@@ -515,6 +517,7 @@ namespace Hikari.Common
         /// <param name="this"></param>
         /// <param name="value">失败时间</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DateTime ToDateTime(this string @this, DateTime value)
         {
             if (string.IsNullOrWhiteSpace(@this)) return value;
@@ -526,6 +529,7 @@ namespace Hikari.Common
         /// </summary>
         /// <param name="this"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DateOnly? ToDateOnly(this string @this)
         {
             if (string.IsNullOrWhiteSpace(@this)) return null;
@@ -537,6 +541,7 @@ namespace Hikari.Common
         /// <param name="this"></param>
         /// <param name="value">失败时间</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DateOnly ToDateOnly(this string @this, DateOnly value)
         {
             if (string.IsNullOrWhiteSpace(@this)) return value;

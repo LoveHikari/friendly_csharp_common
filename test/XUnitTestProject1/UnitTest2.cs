@@ -1,5 +1,8 @@
-﻿using Hikari.Common.Text.Json;
+﻿using System;
+using System.Collections.Generic;
+using Hikari.Common.Text.Json;
 using System.Data;
+using System.Linq;
 using System.Net;
 using System.Text.Json;
 using Hikari.Common;
@@ -115,4 +118,20 @@ namespace XUnitTestProject1
             Assert.True(true);
         }
     }
-} 
+}
+
+
+file static class Extensions
+{
+    extension(IEnumerable<int> source)
+    {
+        public IEnumerable<int> WhereGreaterThan(int threshold)
+    {
+        Console.WriteLine("Extensions.WhereGreaterThan");
+        return source.Where(x => x > threshold);
+    }
+
+    public bool IsEmpty
+            => !source.Any();
+}
+}

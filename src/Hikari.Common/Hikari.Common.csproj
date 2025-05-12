@@ -25,7 +25,6 @@
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 	</PropertyGroup>
 
-
 	<ItemGroup>
 		<PackageReference Include="FluentFTP" Version="52.1.0">
 			<PrivateAssets>all</PrivateAssets>
@@ -42,7 +41,7 @@
 		<PackageReference Include="SharpZipLib" Version="1.4.2">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="SkiaSharp" Version="3.119.0-preview.1.2">
+		<PackageReference Include="SkiaSharp" Version="3.119.0">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 

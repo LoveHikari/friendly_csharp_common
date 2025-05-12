@@ -112,23 +112,22 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            string version = "10.0.100-preview.2.25164.34";
-            _output.WriteLine(version.SplitLeft(".2", 2));
-            _output.WriteLine(version.SplitRight(".", 2));
+            int i = 1;
+            var vv = i.IsOdd;
             Assert.True(true);
         }
     }
 }
 
 
-public static class Extensions
-{
-    extension(IEnumerable<int> source)
-    {
-        public IEnumerable<int> WhereGreaterThan(int threshold)
-            => source.Where(x => x > threshold);
+//public static class Extensions
+//{
+//    extension(IEnumerable<int> source)
+//    {
+//        public IEnumerable<int> WhereGreaterThan(int threshold)
+//            => source.Where(x => x > threshold);
 
-    public bool IsEmpty
-        => !source.Any();
-}
-}
+//        public bool IsEmpty
+//            => !source.Any();
+//    }
+//}

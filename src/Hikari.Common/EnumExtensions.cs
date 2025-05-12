@@ -50,5 +50,29 @@ public static class EnumExtensions
 
         return string.Empty;
     }
+#if NET10_0
+    extension(Enum obj)
+    {
+        /// <summary>
+        /// 获得描述
+        /// </summary>
+        /// <returns></returns>
+        public string Description {
+            get
+            {
+                object[]? array = obj.GetType().GetField(obj.ToString())?.GetCustomAttributes(typeof(DescriptionAttribute), inherit: true);
+                if (array is not null)
+                {
+                    var attr = array.FirstOrDefault(x => x is DescriptionAttribute);
+                    if (attr is not null)
+                    {
+                        return ((DescriptionAttribute)attr).Description;
+                    }
 
+                }
+
+                return string.Empty;
+            } }
+    }
+#endif
 }

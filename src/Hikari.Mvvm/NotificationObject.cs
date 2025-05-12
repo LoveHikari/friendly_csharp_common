@@ -7,7 +7,7 @@ namespace Hikari.Mvvm
     /// <summary>
     /// INotifyPropertyChanged 用于通知属性改变（实现ViewModel向View喊话，所有绑定该属性的都会得到通知）
     /// </summary>
-    [Obsolete("请使用CommunityToolkit.Mvvm")]
+    [Obsolete("请使用CommunityToolkit.Mvvm", true)]
     public class NotificationObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

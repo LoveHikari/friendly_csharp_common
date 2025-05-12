@@ -1,11 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<PackageId>Hikari.Common.Office</PackageId>
+		<Authors>Asanoame</Authors>
+		<Product>Hikari.Common.Office</Product>
+		<Company>5cm R &amp; D department</Company>
+		<Description>Office操作库</Description>
+		<Version>1.0.1</Version>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<PackageReleaseNotes>
+			修复了一些错误
+			いくつかのバグを修正しました
+			Fixed some bugs
+		</PackageReleaseNotes>
+		<PackageProjectUrl>https://github.com/LoveHikari/friendly_csharp_common</PackageProjectUrl>
+		<PackageTags>common</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<Copyright>Copyright (c) Hikari.</Copyright>
+		<LangVersion>latest</LangVersion>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="NPOI" Version="2.7.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="NPOI" Version="2.7.3" />
+	</ItemGroup>
 
 </Project>

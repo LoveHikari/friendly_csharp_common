@@ -53,46 +53,6 @@ public static class IntegerExtensions
     }
 
     /// <summary>
-    /// 是否是奇数
-    /// </summary>
-    /// <param name="this"></param>
-    /// <returns>true：是奇数</returns>
-    public static bool IsOdd(this int @this)
-    {
-        return @this % 2 == 1;
-    }
-    /// <summary>
-    /// 判断给定的数字是否为素数(质数)
-    /// </summary>
-    /// <param name="this"></param>
-    /// <returns>true为质数</returns>
-    public static bool IsPrime(this in int @this)
-    {
-        if (@this < 2)
-        {
-            return false;
-        }
-
-        for (int i = 2; i * i <= @this; i++)
-        {
-            if (@this % i == 0)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-    /// <summary>
-    /// 获得当前整数的长度
-    /// </summary>
-    /// <param name="this"></param>
-    /// <returns></returns>
-    public static int Count(this in int @this)
-    {
-        return @this.ToString().Length;
-    }
-    /// <summary>
     /// 数字转ip地址
     /// </summary>
     /// <param name="ipInt">ip数字</param>
@@ -169,4 +129,83 @@ public static class IntegerExtensions
 
     #endregion
 
+    /// <summary>
+    /// 是否是奇数
+    /// </summary>
+    /// <param name="this"></param>
+    /// <returns>true：是奇数</returns>
+    public static bool IsOdd(this int @this)
+    {
+        return @this % 2 == 1;
+    }
+    /// <summary>
+    /// 判断给定的数字是否为素数(质数)
+    /// </summary>
+    /// <param name="this"></param>
+    /// <returns>true为质数</returns>
+    public static bool IsPrime(this in int @this)
+    {
+        if (@this < 2)
+        {
+            return false;
+        }
+
+        for (int i = 2; i * i <= @this; i++)
+        {
+            if (@this % i == 0)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+    /// <summary>
+    /// 获得当前整数的长度
+    /// </summary>
+    /// <param name="this"></param>
+    /// <returns></returns>
+    public static int Count(this in int @this)
+    {
+        return @this.ToString().Length;
+    }
+#if NET10_0
+    extension(int @this)
+    {
+        /// <summary>
+        /// 是否是奇数
+        /// </summary>
+        /// <returns>true：是奇数</returns>
+        public bool IsOdd { get { return @this % 2 == 1; } }
+        /// <summary>
+        /// 判断给定的数字是否为素数(质数)
+        /// </summary>
+        /// <returns>true为质数</returns>
+        public bool IsPrime
+        {
+            get
+            {
+                if (@this < 2)
+                {
+                    return false;
+                }
+
+                for (int i = 2; i * i <= @this; i++)
+                {
+                    if (@this % i == 0)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        }
+        /// <summary>
+        /// 获得当前整数的长度
+        /// </summary>
+        /// <returns>长度</returns>
+        public int Count { get { return @this.ToString().Length; } }
+    }
+#endif
 }

@@ -2,7 +2,7 @@
 using System.Windows.Input;
 
 namespace Hikari.Mvvm.Command;
-[Obsolete("请使用CommunityToolkit.Mvvm")]
+[Obsolete("请使用CommunityToolkit.Mvvm", true)]
 public class DelegateCommand<T> : ICommand
 {
     private readonly Action<T> _executeMethod;

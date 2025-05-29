@@ -32,7 +32,7 @@ public sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvide
             {
                 operation.Value.Security.Add(new OpenApiSecurityRequirement
                 {
-                   [new OpenApiSecuritySchemeReference("Bearer", document)] = Array.Empty<string>()
+                   [new OpenApiSecuritySchemeReference("Bearer", document)] = Array.Empty<string>().ToList()
                 });
             }
         }

@@ -32,10 +32,10 @@ Operating System: Windows 11 23H2 or above
 
 Development Tool: Visual Studio 2022 v17.8 or above
 
-SDK: .NET 6.0 or above (all versions)
+SDK: .NET 8.0 or above (all versions)
 
 ## Installation Package
-.NET 6.0 or above
+.NET 8.0 or above
 ```shell
 PM> Install-Package Hikari.Common
 ```

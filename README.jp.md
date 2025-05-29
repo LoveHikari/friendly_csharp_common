@@ -32,10 +32,10 @@
 
 開発ツール：VisualStudio2022 v17.8以降
 
-SDK：.Net 6.0以降 **すべてのバージョン**
+SDK：.Net 8.0以降 **すべてのバージョン**
 
 ## インストールパッケージ
-.NET 6.0以降
+.NET 8.0以降
 ```shell
 PM> Install-Package Hikari.Common
 ```

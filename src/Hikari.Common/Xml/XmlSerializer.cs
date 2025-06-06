@@ -1,7 +1,3 @@
-using System;
-using System.IO;
-using System.Xml.Serialization;
-
 /******************************************************************************************************************
  * 
  * 
@@ -16,12 +12,12 @@ using System.Xml.Serialization;
  *
  * 
  * ***************************************************************************************************************/
-namespace Hikari.Common
+namespace Hikari.Common.Xml
 {
     /// <summary>
 	/// XML序列化支持类
 	/// </summary>
-	public class XmlHelper
+	public class XmlSerializer
     {
         #region 序列化
 
@@ -30,23 +26,19 @@ namespace Hikari.Common
         /// </summary>
         /// <param name="objectToSerialize">要序列化的对象</param>
         /// <param name="fliePath">保存到的目标文件路径</param>
-        public static void XmlSerilizeToFile(object objectToSerialize, string fliePath)
+        public static void SerilizeToFile(object objectToSerialize, string fliePath)
         {
-            string dir = Path.GetDirectoryName(fliePath);
+            string? dir = Path.GetDirectoryName(fliePath);
             if (!string.IsNullOrWhiteSpace(dir))
             {
-                if (!System.IO.Directory.Exists(dir))
+                if (!Directory.Exists(dir))
                 {
                     Directory.CreateDirectory(dir);
                 }
             }
-            
 
-            using (var stream = new FileStream(fliePath, FileMode.Create))
-            {
-                XmlSerializeToStream(objectToSerialize, stream);
-                stream.Dispose();
-            }
+            using var stream = new FileStream(fliePath, FileMode.Create);
+            XmlSerializeToStream(objectToSerialize, stream);
         }
 
         /// <summary>
@@ -54,16 +46,18 @@ namespace Hikari.Common
         /// </summary>
         /// <param name="objectToSerialize">要序列化的对象</param>
         /// <returns>保存信息的 <see cref="T:System.String"/></returns>
-        public static string XmlSerializeToString(object objectToSerialize)
+        public static string? Serialize(object? objectToSerialize)
         {
             if (objectToSerialize == null)
                 return null;
 
-            using (var ms = XmlSerializeToStream(objectToSerialize))
+            using var ms = SerializeToStream(objectToSerialize);
+            if (ms != null)
             {
-                ms.Dispose();
                 return System.Text.Encoding.UTF8.GetString(ms.ToArray());
             }
+
+            return null;
         }
 
         /// <summary>
@@ -71,7 +65,7 @@ namespace Hikari.Common
         /// </summary>
         /// <param name="objectToSerialize">要序列化的对象</param>
         /// <returns>保存序列化信息的 <see cref="T:System.IO.MemoryStream"/></returns>
-        public static MemoryStream XmlSerializeToStream(object objectToSerialize)
+        public static MemoryStream? SerializeToStream(object? objectToSerialize)
         {
             if (objectToSerialize == null)
                 return null;
@@ -93,9 +87,9 @@ namespace Hikari.Common
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="stream">流对象</param>
         /// <returns>反序列化结果</returns>
-        public static T XmlDeserialize<T>(Stream stream) where T : class
+        public static T? Deserialize<T>(Stream stream) where T : class
         {
-            T res = XmlDeserialize(stream, typeof(T)) as T;
+            T? res = XmlDeserialize(stream, typeof(T)) as T;
 
             return res;
         }
@@ -106,9 +100,9 @@ namespace Hikari.Common
         /// <typeparam name="T">反序列化的对象类型</typeparam>
         /// <param name="content">文件路径或xml文本</param>
         /// <returns>反序列化对象</returns>
-        public static T XmlDeserialize<T>(string content) where T : class
+        public static T? Deserialize<T>(string content) where T : class
         {
-            return (T)XmlDeserialize(content, typeof(T));
+            return (T?)XmlDeserialize(content, typeof(T));
         }
 
         #endregion
@@ -120,12 +114,12 @@ namespace Hikari.Common
         /// </summary>
         /// <param name="objectToSerialize">要序列化的对象</param>
         /// <param name="stream">目标流</param>
-        private static void XmlSerializeToStream(object objectToSerialize, Stream stream)
+        private static void XmlSerializeToStream(object? objectToSerialize, Stream? stream)
         {
             if (objectToSerialize == null || stream == null)
                 return;
 
-            var xso = new XmlSerializer(objectToSerialize.GetType());
+            var xso = new System.Xml.Serialization.XmlSerializer(objectToSerialize.GetType());
             xso.Serialize(stream, objectToSerialize);
         }
         /// <summary>
@@ -134,12 +128,11 @@ namespace Hikari.Common
         /// <param name="objType">反序列化的对象类型</param>
         /// <param name="filePath">文件路径</param>
         /// <returns>对象</returns>
-        private static object XmlDeserializeFromFile(string filePath, System.Type objType)
+        private static object? XmlDeserializeFromFile(string filePath, Type objType)
         {
             using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                object res = XmlDeserialize(stream, objType);
-                stream.Dispose();
+                object? res = XmlDeserialize(stream, objType);
                 return res;
             }
         }
@@ -149,7 +142,7 @@ namespace Hikari.Common
         /// <param name="type">目标类型</param>
         /// <param name="content">文件路径或XML文本</param>
         /// <returns>反序列化的结果</returns>
-        private static object XmlDeserialize(string content, Type type)
+        private static object? XmlDeserialize(string content, Type type)
         {
             content = content.Trim();
 
@@ -178,10 +171,10 @@ namespace Hikari.Common
         /// <param name="objType">对象类型</param>
         /// <param name="stream">流对象</param>
         /// <returns>反序列结果</returns>
-        private static object XmlDeserialize(Stream stream, System.Type objType)
+        private static object? XmlDeserialize(Stream stream, Type objType)
         {
-            var xso = new XmlSerializer(objType);
-            object res = xso.Deserialize(stream);
+            var xso = new System.Xml.Serialization.XmlSerializer(objType);
+            object? res = xso.Deserialize(stream);
 
             return res;
         }

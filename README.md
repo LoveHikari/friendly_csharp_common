@@ -1,6 +1,6 @@
 # Hikari.Common
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
-<img alt="dotnet-version" src="https://img.shields.io/badge/.net-%3E%3D6.0-blue.svg"></img>
+<img alt="dotnet-version" src="https://img.shields.io/badge/.net-%3E%3D8.0-blue.svg"></img>
 <img alt="csharp-version" src="https://img.shields.io/badge/C%23-latest-blue.svg"></img>
 <img alt="IDE-version" src="https://img.shields.io/badge/IDE-vs2022-blue.svg"></img>
 [![MIT Licence](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/mit-license.php)

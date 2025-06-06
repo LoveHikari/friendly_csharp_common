@@ -114,6 +114,7 @@ namespace XUnitTestProject1
         {
             int i = 1;
             var vv = i.IsOdd;
+            System.Text.Json.JsonSerializer.Serialize()
             Assert.True(true);
         }
     }

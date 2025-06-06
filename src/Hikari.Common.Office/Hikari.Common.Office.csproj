@@ -27,6 +27,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="NPOI" Version="2.7.3" />
+		<PackageReference Include="itext7.pdfhtml" Version="6.2.0" />
 	</ItemGroup>
 
 </Project>

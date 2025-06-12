@@ -19,15 +19,12 @@
 		<PackageProjectUrl>https://github.com/LoveHikari/friendly_csharp_common</PackageProjectUrl>
 		<PackageTags>common</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Copyright>Copyright (c) Hikari.</Copyright>
-		<LangVersion>latest</LangVersion>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="NPOI" Version="2.7.3" />
-		<PackageReference Include="itext7.pdfhtml" Version="6.2.0" />
 	</ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace Hikari.Common.EfCore.EntityFrameworkCore
+﻿namespace Hikari.Common.EntityFrameworkCore.DatabaseProvider
 {
     /// <summary>
     /// 数据库类型

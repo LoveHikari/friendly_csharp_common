@@ -1,4 +1,4 @@
-﻿namespace Hikari.Common.EfCore.Domain
+﻿namespace Hikari.Common.EntityFrameworkCore.Domain
 {
     /// <summary>
     /// Unit of Work：维护受业务事务影响的对象列表，并协调变化的写入和并发问题的解决

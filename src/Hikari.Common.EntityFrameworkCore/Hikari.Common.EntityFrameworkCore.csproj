@@ -4,24 +4,33 @@
 		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<PackageId>Hikari.Common.EfCore</PackageId>
-		<Authors>Yu XiaoWei</Authors>
-		<Product>Hikari.Common.EfCore</Product>
+		<PackageId>Hikari.Common.EntityFrameworkCore</PackageId>
+		<Authors>Asanoame</Authors>
+		<Product>Hikari.Common.EntityFrameworkCore</Product>
 		<Company>5cm R &amp; D department</Company>
 		<Description>efcore基础类</Description>
-		<Version>6.0.2.0</Version>
+		<Version>9.0.0</Version>
 		<Language>zh-CN</Language>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PackageReleaseNotes>修复了一些错误
+いくつかのバグを修正しました
+Fixed some bugs</PackageReleaseNotes>
+		<PackageProjectUrl>https://github.com/LoveHikari/friendly_csharp_common</PackageProjectUrl>
+		<PackageTags>common</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Copyright>Copyright (c) Hikari.</Copyright>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.0-preview.4.25258.110">
+		<PackageReference Include="Hikari.Common" Version="8.1.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.6">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.0-preview.4.25258.110">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.6">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0-preview.3">
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<!--<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2">
@@ -30,14 +39,10 @@
 		<PackageReference Include="MySql.EntityFrameworkCore" Version="9.0.3">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0-preview.4.25258.110">
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.6">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="System.Linq.Async.Queryable" Version="6.0.1" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\Hikari.Common\Hikari.Common.csproj" />
 	</ItemGroup>
 
 </Project>

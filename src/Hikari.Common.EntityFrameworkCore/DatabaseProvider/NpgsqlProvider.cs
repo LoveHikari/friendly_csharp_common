@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Hikari.Common.Web.AspNetCore.EntityFrameworkCore;
+namespace Hikari.Common.EntityFrameworkCore.DatabaseProvider;
 
 internal class NpgsqlProvider
 {

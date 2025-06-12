@@ -1,4 +1,4 @@
-﻿namespace Hikari.Common.EfCore
+﻿namespace Hikari.Common.EntityFrameworkCore
 {
     /// <summary>
     /// 分页

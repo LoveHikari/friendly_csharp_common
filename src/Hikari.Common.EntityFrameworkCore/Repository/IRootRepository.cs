@@ -1,14 +1,14 @@
-﻿using Hikari.Common.EfCore.Domain;
-using System.Data;
+﻿using System.Data;
 using System.Linq.Expressions;
+using Hikari.Common.EntityFrameworkCore.Domain;
 
-namespace Hikari.Common.EfCore.Repository
+namespace Hikari.Common.EntityFrameworkCore.Repository
 {
     /// <summary>
     /// 仓储接口基类
     /// </summary>
     /// <typeparam name="TAggregateRoot">类型</typeparam>
-    public interface IBaseRepository<TAggregateRoot> where TAggregateRoot : class, IAggregateRoot
+    public interface IRootRepository<TAggregateRoot> where TAggregateRoot : class, IAggregateRoot
     {
         /// <summary>
         /// 查询记录数

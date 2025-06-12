@@ -1,22 +1,22 @@
-﻿using Hikari.Common.EfCore.Domain;
-using Microsoft.EntityFrameworkCore;
-using System.Data;
+﻿using System.Data;
 using System.Linq.Expressions;
+using Hikari.Common.EntityFrameworkCore.Domain;
+using Microsoft.EntityFrameworkCore;
 
-namespace Hikari.Common.EfCore.Repository
+namespace Hikari.Common.EntityFrameworkCore.Repository
 {
     /// <summary>
     /// 仓储基类
     /// </summary>
     /// <typeparam name="TAggregateRoot">类型</typeparam>
-    public class BaseRepository<TAggregateRoot> : IBaseRepository<TAggregateRoot> where TAggregateRoot : class, IAggregateRoot
+    public class RootRepository<TAggregateRoot> : IRootRepository<TAggregateRoot> where TAggregateRoot : class, IAggregateRoot
     {
         protected IDbContext _nContext;  // 连接上下文
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="dbContext"></param>
-        public BaseRepository(IDbContext dbContext)
+        public RootRepository(IDbContext dbContext)
         {
             _nContext = dbContext;
         }

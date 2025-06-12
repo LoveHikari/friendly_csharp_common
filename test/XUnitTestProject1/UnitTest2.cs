@@ -4,9 +4,11 @@ using Hikari.Common.Text.Json;
 using System.Data;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Text.Json;
 using Hikari.Common;
 using Hikari.Common.Net;
+using RJCP.IO.Ports;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -114,8 +116,44 @@ namespace XUnitTestProject1
         {
             int i = 1;
             var vv = i.IsOdd;
-            System.Text.Json.JsonSerializer.Serialize()
+            
             Assert.True(true);
+        }
+        [Fact]
+        public async void Test5()
+        {
+            using (SerialPortStream serialPort = new SerialPortStream("COM3"))
+            {
+                // 基础功能：打开串口、配置参数
+                serialPort.Open();
+                serialPort.BaudRate = 115200;
+                serialPort.Parity = Parity.Odd;
+                serialPort.DataBits = 8;
+                serialPort.StopBits = StopBits.One;
+
+                // 高级功能：数据接收事件处理
+                serialPort.DataReceived += (sender, e) =>
+                {
+                    byte[] receivedData = new byte[serialPort.BytesToRead];
+                    serialPort.Read(receivedData, 0, receivedData.Length);
+                    Console.WriteLine($"Received: {Encoding.UTF8.GetString(receivedData)}");
+                };
+
+                // 发送数据
+                byte[] dataToSend = Encoding.UTF8.GetBytes("Hello, Serial!");
+                serialPort.Write(dataToSend, 0, dataToSend.Length);
+
+                // 等待一段时间以接收数据
+                Console.WriteLine("Waiting for data...");
+                Console.ReadLine();
+            }
+            Assert.True(true);
+        }
+
+        public string Message
+        {
+            get;
+            set => field = value ?? throw new ArgumentNullException(nameof(value));
         }
     }
 }
@@ -132,3 +170,4 @@ namespace XUnitTestProject1
 //            => !source.Any();
 //    }
 //}
+

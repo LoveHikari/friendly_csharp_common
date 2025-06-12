@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Hikari.Common.Web.AspNetCore.EntityFrameworkCore;
+namespace Hikari.Common.EntityFrameworkCore.DatabaseProvider;
 
-internal class SqlServerProvider
+internal class SqliteProvider
 {
     public static DbContextOptionsBuilder Use(DbContextOptionsBuilder options, string connectionString, string assemblyName)
     {
-        return options.UseSqlServer(connectionString,
+        return options.UseSqlite(connectionString,
                     builder => { builder.MigrationsAssembly(assemblyName).UseRelationalNulls(); });
     }
 }

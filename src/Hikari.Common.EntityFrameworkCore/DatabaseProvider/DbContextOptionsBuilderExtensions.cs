@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Hikari.Common.EfCore.EntityFrameworkCore
+namespace Hikari.Common.EntityFrameworkCore.DatabaseProvider
 {
     /// <summary>
     /// <see cref="DbContextOptionsBuilder"/> 扩展类
@@ -20,18 +20,10 @@ namespace Hikari.Common.EfCore.EntityFrameworkCore
         {
             return dbTypeName switch
             {
-                DbTypeEnum.SqlServer => options.UseSqlServer(connectionString,
-                    builder => { builder.MigrationsAssembly(assemblyName).UseRelationalNulls(); }),
-                DbTypeEnum.MySql => options.UseMySQL(connectionString,
-                    builder =>
-                    {
-                        builder.MigrationsAssembly(assemblyName).UseRelationalNulls();
-                        //builder.ServerVersion(new Version(5, 7, 17), ServerType.MySql);
-                    }),
-                DbTypeEnum.Sqlite => options.UseSqlite(connectionString,
-                    builder => { builder.MigrationsAssembly(assemblyName).UseRelationalNulls(); }),
-                DbTypeEnum.Npgsql => options.UseNpgsql(connectionString,
-                    builder => { builder.MigrationsAssembly(assemblyName).UseRelationalNulls(); }),
+                DbTypeEnum.SqlServer => SqlServerProvider.Use(options, connectionString, assemblyName),
+                DbTypeEnum.MySql => MySqlProvider.Use(options, connectionString, assemblyName),
+                DbTypeEnum.Sqlite => SqliteProvider.Use(options, connectionString, assemblyName),
+                DbTypeEnum.Npgsql => NpgsqlProvider.Use(options, connectionString, assemblyName),
                 _ => throw new System.Exception("未实现的数据库")
             };
 

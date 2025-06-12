@@ -1,10 +1,8 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Hikari.Common.EfCore.Domain
+namespace Hikari.Common.EntityFrameworkCore.Domain
 {
     public interface IDbContext
     {

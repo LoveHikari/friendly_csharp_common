@@ -21,7 +21,6 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Copyright>Copyright (c) Hikari.</Copyright>
-		<LangVersion>latest</LangVersion>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 	</PropertyGroup>
 
@@ -56,10 +55,10 @@
 		<!--<PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.12">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>-->
-		<PackageReference Include="System.Management" Version="10.0.0-preview.4.25258.110">
+		<PackageReference Include="System.Management" Version="10.0.0-preview.5.25277.114">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0-preview.4.25258.110">
+		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0-preview.5.25277.114">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 	</ItemGroup>

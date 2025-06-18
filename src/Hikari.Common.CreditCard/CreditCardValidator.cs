@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using Hikari.Common.CreditCard.BINValidators;
 using System.Text.RegularExpressions;
-using Hikari.Common.CreditCard.BINValidators;
 
 /******************************************************************************************************************
  * 
@@ -32,9 +30,9 @@ namespace Hikari.Common.CreditCard
         /// <param name="cardNumber">卡号</param>
         /// <param name="formatValidators">BIN格式验证器</param>
         /// <returns></returns>
-        public CreditCardValidationResult ValidCardNumber(string cardNumber, ICardTypeValidator[] formatValidators = null)
+        public CreditCardValidationResult ValidCardNumber(string cardNumber, ICardTypeValidator[]? formatValidators = null)
         {
-            static CreditCardValidationResult CreateResult(CardNumberFormat format, string[] cardTypes = null)
+            CreditCardValidationResult CreateResult(CardNumberFormat format, string[]? cardTypes = null)
             {
                 return new CreditCardValidationResult
                 {
@@ -84,8 +82,8 @@ namespace Hikari.Common.CreditCard
                 matchedCardTypes.AddRange(more);
             }
 
-            return matchedCardTypes.Any() ? 
-                CreateResult(CardNumberFormat.Valid_BINTest, matchedCardTypes.ToArray()) : 
+            return matchedCardTypes.Any() ?
+                CreateResult(CardNumberFormat.Valid_BINTest, matchedCardTypes.ToArray()) :
                 CreateResult(CardNumberFormat.Valid_LuhnOnly);
         }
 

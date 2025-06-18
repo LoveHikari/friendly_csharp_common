@@ -170,7 +170,7 @@ public class FileHelper
 
         // 把 Stream 转换成 byte[] 
         byte[] bytes = new byte[stream.Length];
-        await stream.ReadAsync(bytes, 0, bytes.Length);
+        await stream.ReadExactlyAsync(bytes, 0, bytes.Length);
         // 设置当前流的位置为流的开始 
         stream.Seek(0, SeekOrigin.Begin);
         // 把 byte[] 写入文件 
@@ -189,7 +189,7 @@ public class FileHelper
 
         // 把 Stream 转换成 byte[] 
         byte[] bytes = new byte[stream.Length];
-        stream.Read(bytes, 0, bytes.Length);
+        stream.ReadExactly(bytes, 0, bytes.Length);
         // 设置当前流的位置为流的开始 
         stream.Seek(0, SeekOrigin.Begin);
         // 把 byte[] 写入文件 
@@ -236,7 +236,7 @@ public class FileHelper
         await using FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
         // 读取文件的 byte[] 
         byte[] bytes = new byte[fileStream.Length];
-        await fileStream.ReadAsync(bytes, 0, bytes.Length);
+        await fileStream.ReadExactlyAsync(bytes, 0, bytes.Length);
         // 把 byte[] 转换成 Stream 
         Stream stream = new MemoryStream(bytes);
         return stream;
@@ -252,7 +252,7 @@ public class FileHelper
         using FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
         // 读取文件的 byte[] 
         byte[] bytes = new byte[fileStream.Length];
-        fileStream.Read(bytes, 0, bytes.Length);
+        fileStream.ReadExactly(bytes, 0, bytes.Length);
         // 把 byte[] 转换成 Stream 
         Stream stream = new MemoryStream(bytes);
         return stream;

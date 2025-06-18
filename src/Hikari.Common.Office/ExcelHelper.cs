@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using NPOI.HSSF.UserModel;
+﻿using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.Streaming;
 using NPOI.XSSF.UserModel;
+using System.Data;
 
 namespace Hikari.Common.Office;
 
@@ -59,7 +56,7 @@ public class ExcelHelper
             {
                 var item = row.ItemArray[j];
                 ICell sheetCell = sheetRow.CreateCell(j);
-                sheetCell.SetCellValue(item.ToString());
+                sheetCell.SetCellValue(item?.ToString());
             }
         }
         using MemoryStream stream = new MemoryStream();
@@ -74,7 +71,7 @@ public class ExcelHelper
     /// <param name="sourceData">要写入的数据</param>
     /// <param name="sheetName">excel表中的sheet的名称，可以根据情况自己起</param>
     /// <param name="target">目标文件Excel文件的后缀名，默认2007以上版本</param>
-    public static byte[] TwoArrayToExcel(List<List<string>> sourceData, string sheetName, string target = "xlsx")
+    public static byte[] TwoArrayToExcel(List<List<string>> sourceData, string sheetName = "Sheet1", string target = "xlsx")
     {
         // 新建工作簿
         IWorkbook workbook = target.ToLower() switch
@@ -113,7 +110,7 @@ public class ExcelHelper
     /// <param name="sheetName">excel文件中工作表名称</param>
     /// <param name="isHasColumnName">文件是否有列名</param>
     /// <returns>从Excel读取到数据的DataTable结果集</returns>
-    public static DataTable ExcelToDataTable(string sourceFileNamePath, string sheetName = "", bool isHasColumnName = true)
+    public static DataTable? ExcelToDataTable(string sourceFileNamePath, string sheetName = "", bool isHasColumnName = true)
     {
         if (!File.Exists(sourceFileNamePath))
         {
@@ -213,7 +210,7 @@ public class ExcelHelper
     /// <param name="sheetName">excel文件中工作表名称</param>
     /// <param name="isHasColumnName">文件是否有列名</param>
     /// <returns>从Excel读取到数据的DataTable结果集</returns>
-    public static DataTable ExcelToDataTable(Stream stream, string sheetName = "", bool isHasColumnName = true)
+    public static DataTable? ExcelToDataTable(Stream stream, string sheetName = "", bool isHasColumnName = true)
     {
         // 新建工作簿
         IWorkbook workbook = new XSSFWorkbook(stream);
@@ -231,8 +228,8 @@ public class ExcelHelper
         if (isHasColumnName)
         {
             //获取要读取的工作表的第一行
-            IRow columnNameRow = sheet.GetRow(0);   //0代表第一行
-                                                    //获取该行的列数(即该行的长度)
+            IRow columnNameRow = sheet.GetRow(0);   //0 代表第一行
+            //获取该行的列数(即该行的长度)
             int cellLength = columnNameRow.LastCellNum;
 
             //遍历读取
@@ -263,7 +260,7 @@ public class ExcelHelper
             IRow currentRow = sheet.GetRow(i);   //RowIndex代表第RowIndex+1行
 
             if (currentRow == null) continue;  //表示当前行没有数据，则继续
-                                               //获取第Row行中的列数，即Row行中的长度
+            //获取第Row行中的列数，即Row行中的长度
             int currentColumnLength = currentRow.LastCellNum;
 
             //创建DataTable的数据行

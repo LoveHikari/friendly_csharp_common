@@ -3,10 +3,12 @@ using Dapper.Contrib.Extensions;
 using System.Data;
 using System.Data.Common;
 using System.Reflection;
-using System.Text;
 
 namespace Hikari.Dapper.Contrib;
-
+/// <summary>
+/// 基类
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public class BaseDapper<T> where T : class, new()
 {
     /// <summary>
@@ -53,12 +55,12 @@ public class BaseDapper<T> where T : class, new()
     {
         DbProviderFactory f = _dbProvider switch
         {
-            DbProviderEnum.SqlServer => System.Data.SqlClient.SqlClientFactory.Instance,
-            DbProviderEnum.Oracle => System.Data.OracleClient.OracleClientFactory.Instance,
+            DbProviderEnum.SqlServer => Microsoft.Data.SqlClient.SqlClientFactory.Instance,
+            DbProviderEnum.Oracle => Oracle.ManagedDataAccess.Client.OracleClientFactory.Instance,
             DbProviderEnum.MySql => MySql.Data.MySqlClient.MySqlClientFactory.Instance,
-            DbProviderEnum.Sqlite => System.Data.SQLite.SQLiteFactory.Instance,
+            DbProviderEnum.Sqlite => Microsoft.Data.Sqlite.SqliteFactory.Instance,
             DbProviderEnum.Npgsql => Npgsql.NpgsqlFactory.Instance,
-            _ => System.Data.SqlClient.SqlClientFactory.Instance
+            _ => Microsoft.Data.SqlClient.SqlClientFactory.Instance
         };
         return f;
     }

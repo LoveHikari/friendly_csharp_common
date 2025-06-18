@@ -3,14 +3,22 @@ using Microsoft.AspNetCore.Http;
 
 namespace Hikari.Common.Web.AspNetCore
 {
+    /// <summary>
+    /// HttpContext扩展
+    /// </summary>
     public static class HttpContextExtensions
     {
+        /// <summary>
+        /// 获取用户IP
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public static string GetUserIp(this HttpContext context)
         {
             var ip = context.Request.Headers["X-Forwarded-For"].FirstOrDefault();
             if (string.IsNullOrEmpty(ip))
             {
-                ip = context.Connection.RemoteIpAddress.ToString();
+                ip = context.Connection.RemoteIpAddress?.ToString();
             }
             if (ip == null || !IsIp(ip))
             {

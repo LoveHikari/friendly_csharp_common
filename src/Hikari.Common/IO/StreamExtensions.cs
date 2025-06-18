@@ -14,7 +14,7 @@ public static class StreamExtensions
     public static async Task<byte[]> ToBytesAsync(this Stream @this)
     {
         byte[] bytes = new byte[@this.Length];
-        await @this.ReadAsync(bytes, 0, bytes.Length);
+        await @this.ReadExactlyAsync(bytes, 0, bytes.Length);
         // 设置当前流的位置为流的开始 
         @this.Seek(0, SeekOrigin.Begin);
         return bytes;
@@ -27,7 +27,7 @@ public static class StreamExtensions
     public static byte[] ToBytes(this Stream @this)
     {
         byte[] bytes = new byte[@this.Length];
-        @this.Read(bytes, 0, bytes.Length);
+        @this.ReadExactly(bytes, 0, bytes.Length);
         // 设置当前流的位置为流的开始 
         @this.Seek(0, SeekOrigin.Begin);
         return bytes;

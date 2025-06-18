@@ -189,7 +189,7 @@ namespace Hikari.Common
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             System.Text.Encoding encode = System.Text.Encoding.GetEncoding("gbk");
-            ZipStrings.CodePage = encode.CodePage;
+            StringCodec.FromCodePage(encode.CodePage);
 
             using var zipOutput = new ZipOutputStream(File.Create(zipFileName));
             zipOutput.SetLevel(compressionLevel);

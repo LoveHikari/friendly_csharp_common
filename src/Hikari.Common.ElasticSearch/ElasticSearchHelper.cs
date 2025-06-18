@@ -34,7 +34,7 @@ public class ElasticSearchHelper(string cloudId, string apiKey, string index)
             s.Query(q =>
                 q.Bool(b =>
                     b.Must(queryList.ToArray()))
-            ).Index(index));
+            ).Indices(index));
         if (searchRes.Total > 0)
         {
             var models = searchRes.Documents.ToList();
@@ -75,7 +75,7 @@ public class ElasticSearchHelper(string cloudId, string apiKey, string index)
             s.Query(q =>
                 q.Bool(b =>
                     b.Must(queryList.ToArray()))
-            ).Size(size).From(from).Index(index));
+            ).Size(size).From(from).Indices(index));
         if (searchRes.Total > 0)
         {
             var models = searchRes.Documents.ToList();

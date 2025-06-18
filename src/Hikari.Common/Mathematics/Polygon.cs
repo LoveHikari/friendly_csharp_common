@@ -8,7 +8,7 @@ public class Polygon
     /// 多边形的顶点列表
     /// </summary>
     public List<Point2D> Vertices { get; set; }
-
+#if NET10_0
     /// <summary>
     /// 构造函数
     /// </summary>
@@ -22,6 +22,22 @@ public class Polygon
 
         Vertices = vertices;
     }
+#else
+    /// <summary>
+    /// 构造函数
+    /// </summary>
+    /// <param name="vertices">多边形的顶点列表</param>
+    public Polygon(List<Point2D> vertices)
+    {
+        if (vertices == null || vertices.Count < 3)
+        {
+            throw new ArgumentException("多边形必须至少有三个顶点");
+        }
+
+        Vertices = vertices;
+    }
+#endif
+
 
     /// <summary>
     /// 计算多边形的周长

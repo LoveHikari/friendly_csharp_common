@@ -11,6 +11,9 @@ namespace Hikari.Common.EntityFrameworkCore.Repository
     /// <typeparam name="TAggregateRoot">类型</typeparam>
     public class RootRepository<TAggregateRoot> : IRootRepository<TAggregateRoot> where TAggregateRoot : class, IAggregateRoot
     {
+        /// <summary>
+        /// 数据库上下文
+        /// </summary>
         protected IDbContext _nContext;  // 连接上下文
         /// <summary>
         /// 构造函数

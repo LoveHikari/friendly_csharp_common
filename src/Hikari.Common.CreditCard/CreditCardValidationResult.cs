@@ -12,6 +12,6 @@
         /// <summary>
         /// 卡类型
         /// </summary>
-        public string[] CardTypes { get; set; }
+        public string[]? CardTypes { get; set; }
     }
 }

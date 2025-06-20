@@ -114,8 +114,7 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            int i = 1;
-            var vv = i.IsOdd();
+            var cmd = await SystemHelper.ExecuteCommandAsync("java -version");
             
             Assert.True(true);
         }

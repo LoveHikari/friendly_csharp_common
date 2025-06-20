@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Diagnostics;
+using System.Text;
 using System.Xml;
 
 namespace Hikari.Common
@@ -53,7 +54,7 @@ namespace Hikari.Common
             p.Start();
             string result = p.StandardOutput.ReadToEnd().ToLower();//最后都转换成小写字母
             System.Net.IPAddress[] addressList = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList;
-            List<string> ipList = new List<string> {"127.0.0.1", "0.0.0.0"};
+            List<string> ipList = new List<string> { "127.0.0.1", "0.0.0.0" };
             foreach (System.Net.IPAddress t in addressList)
             {
                 ipList.Add(t.ToString());
@@ -109,30 +110,89 @@ namespace Hikari.Common
         /// </summary>
         /// <param name="cmd">cmd命令</param>
         /// <returns>执行结果</returns>
-        public static string RunCmd(string cmd)
+        public static async Task<string> ExecuteCommandAsync(string cmd)
         {
             var fileName = cmd.SplitLeft(" ");
             var arguments = cmd.TrimStart(fileName).TrimStart(' ');
-            using Process p = new Process();
-            p.StartInfo.FileName = fileName;
-            p.StartInfo.Arguments = arguments;
-            p.StartInfo.UseShellExecute = false; //是否使用操作系统shell启动
-            p.StartInfo.RedirectStandardInput = true; //接受来自调用程序的输入信息
-            p.StartInfo.RedirectStandardOutput = true; //由调用程序获取输出信息
-            p.StartInfo.RedirectStandardError = true; //重定向标准错误输出
-            p.StartInfo.CreateNoWindow = true; //不显示程序窗口
+            ProcessStartInfo psi = new ProcessStartInfo
+            {
+                FileName = fileName,
+                Arguments = arguments,
+                UseShellExecute = false, //是否使用操作系统shell启动
+                RedirectStandardInput = true, //接受来自调用程序的输入信息
+                RedirectStandardOutput = true, //由调用程序获取输出信息
+                RedirectStandardError = true, //重定向标准错误输出
+                CreateNoWindow = true //不显示程序窗口
+            };
 
+            using Process? process = Process.Start(psi);
+            if (process != null)
+            {
+                string output = await process.StandardOutput.ReadToEndAsync();
+                if (string.IsNullOrWhiteSpace(output))
+                {
+                    output = await process.StandardError.ReadToEndAsync();
+                }
+                await process.WaitForExitAsync();
+                return output;
+            }
+            return "";
 
-            p.Start(); //启动程序
-
-            p.StandardInput.AutoFlush = true;
-
-            //获取输出信息
-            string output = p.StandardOutput.ReadToEnd();
-
-            p.WaitForExit(); // 等待程序执行完退出进程
-            p.Close();
-            return output;
         }
+        /// <summary>
+        /// 执行cmd命令
+        /// </summary>
+        /// <param name="commands">cmd命令</param>
+        /// <returns>执行结果</returns>
+        public static async Task<string> ExecuteCommandAsync(params string[] commands)
+        {
+            ProcessStartInfo psi = new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                RedirectStandardInput = true,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                RedirectStandardError = true, //重定向标准错误输出
+                CreateNoWindow = true
+            };
+            var outputBuilder = new StringBuilder();
+
+            using Process process = new Process();
+            process.StartInfo = psi;
+
+            // 异步读取输出和错误流
+            process.OutputDataReceived += (sender, e) =>
+            {
+                if (!string.IsNullOrEmpty(e.Data))
+                    outputBuilder.AppendLine(e.Data);
+            };
+
+            process.ErrorDataReceived += (sender, e) =>
+            {
+                if (!string.IsNullOrEmpty(e.Data))
+                    outputBuilder.AppendLine(e.Data);
+            };
+
+            process.Start();
+            // 开始异步读取
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+            // 写入多条命令
+            await using StreamWriter sw = process.StandardInput;
+            await sw.WriteLineAsync("echo off");  // 关闭命令回显
+            foreach (var cmd in commands)
+            {
+                await sw.WriteLineAsync(cmd);
+            }
+            // 必须显式退出命令提示符
+            await sw.WriteLineAsync("exit");
+
+            await process.WaitForExitAsync();
+            
+            var output = outputBuilder.ToString();
+
+            return output.Trim();
+        }
+
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Diagnostics;
 using System.Xml;
 
@@ -25,8 +23,8 @@ namespace Hikari.Common
             DataTable? dt = ConvertHelper.XmlToDataSet(doc.InnerXml).Tables["location"];
             if (dt is { Rows.Count: > 0 })
             {
-                lng = dt.Rows[0]["lng"].ToString();
-                lat = dt.Rows[0]["lat"].ToString();
+                lng = dt.Rows[0]["lng"].ToString() ?? "";
+                lat = dt.Rows[0]["lat"].ToString() ?? "";
             }
             else
             {
@@ -81,7 +79,7 @@ namespace Hikari.Common
         /// <remarks>http://blog.chinaunix.net/uid-25498312-id-4085179.html</remarks>
         public static void SetVariable(string variable, string value)
         {
-            string pathlist = Environment.GetEnvironmentVariable(variable, EnvironmentVariableTarget.Machine);
+            string? pathlist = Environment.GetEnvironmentVariable(variable, EnvironmentVariableTarget.Machine);
             if (pathlist != null)
             {
                 pathlist = pathlist.TrimEnd(';');
@@ -115,20 +113,15 @@ namespace Hikari.Common
         {
             var fileName = cmd.SplitLeft(" ");
             var arguments = cmd.TrimStart(fileName).TrimStart(' ');
-            using Process p = new Process
-            {
-                StartInfo =
-                {
-                    FileName = fileName,
-                    Arguments = arguments,
-                    UseShellExecute = false,  //是否使用操作系统shell启动
-                    RedirectStandardInput = true,  //接受来自调用程序的输入信息
-                    RedirectStandardOutput = true,  //由调用程序获取输出信息
-                    RedirectStandardError = true,  //重定向标准错误输出
-                    CreateNoWindow = true  //不显示程序窗口
-                }
-            };
-            
+            using Process p = new Process();
+            p.StartInfo.FileName = fileName;
+            p.StartInfo.Arguments = arguments;
+            p.StartInfo.UseShellExecute = false; //是否使用操作系统shell启动
+            p.StartInfo.RedirectStandardInput = true; //接受来自调用程序的输入信息
+            p.StartInfo.RedirectStandardOutput = true; //由调用程序获取输出信息
+            p.StartInfo.RedirectStandardError = true; //重定向标准错误输出
+            p.StartInfo.CreateNoWindow = true; //不显示程序窗口
+
 
             p.Start(); //启动程序
 

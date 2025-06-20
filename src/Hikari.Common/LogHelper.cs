@@ -17,7 +17,11 @@ namespace Hikari.Common;
 /// </summary>
 public class LogHelper
 {
+#if NET8_0
+    private static readonly object Locker = new();
+#else
     private static readonly Lock Locker = new();
+#endif
 
     private static string GetLogInfoDir()
     {

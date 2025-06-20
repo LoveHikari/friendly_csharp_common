@@ -115,7 +115,7 @@ namespace XUnitTestProject1
         public async void Test4()
         {
             int i = 1;
-            var vv = i.IsOdd;
+            var vv = i.IsOdd();
             
             Assert.True(true);
         }
@@ -148,12 +148,6 @@ namespace XUnitTestProject1
                 Console.ReadLine();
             }
             Assert.True(true);
-        }
-
-        public string Message
-        {
-            get;
-            set => field = value ?? throw new ArgumentNullException(nameof(value));
         }
     }
 }

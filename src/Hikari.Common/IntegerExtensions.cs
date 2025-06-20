@@ -169,43 +169,4 @@ public static class IntegerExtensions
     {
         return @this.ToString().Length;
     }
-#if NET10_0
-    extension(int @this)
-    {
-        /// <summary>
-        /// 是否是奇数
-        /// </summary>
-        /// <returns>true：是奇数</returns>
-        public bool IsOdd { get { return @this % 2 == 1; } }
-        /// <summary>
-        /// 判断给定的数字是否为素数(质数)
-        /// </summary>
-        /// <returns>true为质数</returns>
-        public bool IsPrime
-        {
-            get
-            {
-                if (@this < 2)
-                {
-                    return false;
-                }
-
-                for (int i = 2; i * i <= @this; i++)
-                {
-                    if (@this % i == 0)
-                    {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-        }
-        /// <summary>
-        /// 获得当前整数的长度
-        /// </summary>
-        /// <returns>长度</returns>
-        public int Count { get { return @this.ToString().Length; } }
-    }
-#endif
 }

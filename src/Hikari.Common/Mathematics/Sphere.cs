@@ -8,16 +8,31 @@ public class Sphere
     /// <summary>
     /// 地球
     /// </summary>
-    public static Sphere Earth => new(6371.393);
+    public static Sphere Earth => new(new Point3D(0, 0, 0), 6371.393);
+
     /// <summary>
     /// 构造函数
     /// </summary>
+    /// <param name="center">球心坐标</param>
     /// <param name="radius">半径</param>
-    public Sphere(double radius)
+    public Sphere(Point3D center, double radius)
     {
+        if (radius < 0)
+        {
+            throw new ArgumentException("半径不能为负数", nameof(radius));
+        }
+        Center = center;
         Radius = radius;
     }
-
+    /// <summary>
+    /// 重载构造函数 - 只传入半径，中心默认为原点
+    /// </summary>
+    /// <param name="radius">半径</param>
+    public Sphere(double radius) : this(new Point3D(0, 0, 0), radius) { }
+    /// <summary>
+    /// 球心坐标
+    /// </summary>
+    public Point3D Center { get; }
     /// <summary>
     /// 半径
     /// </summary>
@@ -51,35 +66,55 @@ public class Sphere
     /// <summary>
     /// 是否相交
     /// </summary>
-    /// <param name="circle1"></param>
-    /// <param name="circle2"></param>
+    /// <param name="other"></param>
     /// <returns></returns>
-    public bool IsCrossWith(Circle circle1, Circle circle2)
+    public bool IsIntersectWith(Sphere other)
     {
-        var dis = GetDistance(circle1.Center.X, circle1.Center.Y, circle2.Center.X, circle2.Center.Y);
-        return circle1.Radius - circle2.Radius < dis && dis < circle1.Radius + circle2.Radius;
+        return !IsExternallyTangentWith(other) && !IsInternallyTangentWith(other) && !IsSeparateWith(other) && !IsContainWith(other);
     }
 
     /// <summary>
-    /// 是否相切
+    /// 是否外切
     /// </summary>
-    /// <param name="circle1"></param>
-    /// <param name="circle2"></param>
+    /// <param name="other"></param>
     /// <returns></returns>
-    public bool IsIntersectWith(Circle circle1, Circle circle2)
+    public bool IsExternallyTangentWith(Sphere other)
     {
-        var dis = GetDistance(circle1.Center.X, circle1.Center.Y, circle2.Center.X, circle2.Center.Y);
-        return Math.Abs(circle1.Radius - circle2.Radius - dis) < 1e-7 || Math.Abs(dis - (circle1.Radius + circle2.Radius)) < 1e-7;
+        double distance = Center.DistanceTo(other.Center);
+        double sumOfRadii = Radius + other.Radius;
+        return Math.Abs(distance - sumOfRadii) < double.Epsilon;
     }
-
+    /// <summary>
+    /// 是否内切
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    public bool IsInternallyTangentWith(Sphere other)
+    {
+        double distance = Center.DistanceTo(other.Center);
+        double diffOfRadii = Math.Abs(Radius - other.Radius);
+        return Math.Abs(distance - diffOfRadii) < double.Epsilon;
+    }
     /// <summary>
     /// 是否相离
     /// </summary>
-    /// <param name="circle1"></param>
-    /// <param name="circle2"></param>
+    /// <param name="other"></param>
     /// <returns></returns>
-    public bool IsSeparateWith(Circle circle1, Circle circle2)
+    public bool IsSeparateWith(Sphere other)
     {
-        return !IsCrossWith(circle1, circle2) && !IsIntersectWith(circle1, circle2);
+        double distance = Center.DistanceTo(other.Center);
+        double sumOfRadii = Radius + other.Radius;
+        return distance > sumOfRadii;
+    }
+    /// <summary>
+    /// 是否包含
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    public bool IsContainWith(Sphere other)
+    {
+        double distance = Center.DistanceTo(other.Center);
+        double diffOfRadii = Math.Abs(Radius - other.Radius);
+        return distance < diffOfRadii;
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
 /******************************************************************************************************************
@@ -23,6 +21,16 @@ namespace Hikari.Common.Cryptography
     /// </summary>
     public class RSACrypto : CryptoBase
     {
+        private readonly string _pass;
+        /// <summary>
+        /// rsa加解密
+        /// </summary>
+        /// <param name="pass">公钥/私钥</param>
+        /// <param name="encoding">编码</param>
+        public RSACrypto(string pass, string encoding = "utf-8") : base(encoding)
+        {
+            _pass = pass;
+        }
         /// <summary>
         /// 读取秘钥文件
         /// </summary>
@@ -47,64 +55,48 @@ namespace Hikari.Common.Cryptography
         /// 私钥解密
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="pass">私钥</param>
-        /// <param name="encoding"></param>
         /// <returns></returns>
-        public override byte[]? DecryptEx(byte[] data, string pass, string encoding = "utf-8")
+        public override byte[] Decrypt(byte[] data)
         {
-            using (RSACryptoServiceProvider rsa = DecodePemPrivateKey(pass))
-            {
-                var cipherbytes = rsa.Decrypt(data, false);
+            using RSACryptoServiceProvider rsa = DecodePemPrivateKey(_pass);
+            var cipherbytes = rsa.Decrypt(data, false);
 
-                return cipherbytes;
-            }
+            return cipherbytes;
         }
+
         /// <summary>
         /// 公钥加密
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="pass">公钥</param>
-        /// <param name="encoding"></param>
         /// <returns></returns>
-        public override byte[]? EncryptEx(byte[] data, string pass, string encoding = "utf-8")
+        public override byte[] Encrypt(byte[] data)
         {
-            RSAParameters paraPub = ConvertFromPublicKey(pass);
-            using (var rsa = new RSACryptoServiceProvider())
-            {
-                rsa.ImportParameters(paraPub);
-                var cipherbytes = rsa.Encrypt(data, false);
-                return cipherbytes;
-            }
+            RSAParameters paraPub = ConvertFromPublicKey(_pass);
+            using var rsa = new RSACryptoServiceProvider();
+            rsa.ImportParameters(paraPub);
+            var cipherbytes = rsa.Encrypt(data, false);
+            return cipherbytes;
         }
 
         /// <summary>
         /// 私钥签名
         /// </summary>
         /// <param name="content">待签名字符串</param>
-        /// <param name="privateKey">私钥</param>
-        /// <param name="charset">编码格式</param>
         /// <param name="signType">签名类型</param>
         /// <returns>签名后字符串</returns>
-        public string Signature(string content, string privateKey, string charset = "utf-8", string signType = "MD5")
+        public string Signature(string content, string signType = "MD5")
         {
-            byte[] data = Encoding.GetEncoding(charset).GetBytes(content);
-            RSACryptoServiceProvider rsa = DecodePemPrivateKey(privateKey);
-            HashAlgorithm crypto = null;
-            if (signType.ToLower() == "md5")
+            byte[] data = _encoding.GetBytes(content);
+            using RSACryptoServiceProvider rsa = DecodePemPrivateKey(_pass);
+            using HashAlgorithm crypto = signType.ToLower() switch
             {
-                crypto = MD5.Create();
-            }
+                "md5" => MD5.Create(),
+                "sha1" => SHA1.Create(),
+                _ => MD5.Create(),
+            };
 
-            if (signType.ToLower() == "sha1")
-            {
-                crypto = SHA1.Create();;
-            }
-
-            using (crypto)
-            {
-                byte[] signData = rsa.SignData(data, crypto);
-                return Convert.ToBase64String(signData);
-            }
+            byte[] signData = rsa.SignData(data, crypto);
+            return Convert.ToBase64String(signData);
 
         }
 
@@ -113,37 +105,24 @@ namespace Hikari.Common.Cryptography
         /// </summary>
         /// <param name="content">待验签字符串</param>
         /// <param name="signedString">签名</param>
-        /// <param name="publicKey">公钥</param>
-        /// <param name="charset">编码格式</param>
         /// <param name="signType">签名类型</param>
         /// <returns>true(通过)，false(不通过)</returns>
-        public bool Verify(string content, string signedString, string publicKey, string charset = "utf-8", string signType = "MD5")
+        public bool Verify(string content, string signedString, string signType = "MD5")
         {
-            bool result = false;
-
-            byte[] data = Encoding.GetEncoding(charset).GetBytes(content);
+            byte[] data = _encoding.GetBytes(content);
             byte[] signData = Convert.FromBase64String(signedString);
-            RSAParameters paraPub = ConvertFromPublicKey(publicKey);
-            using (RSACryptoServiceProvider rsaPub = new RSACryptoServiceProvider())
+            RSAParameters paraPub = ConvertFromPublicKey(_pass);
+            using RSACryptoServiceProvider rsaPub = new RSACryptoServiceProvider();
+            rsaPub.ImportParameters(paraPub);
+            using HashAlgorithm crypto = signType.ToLower() switch
             {
-                rsaPub.ImportParameters(paraPub);
-                HashAlgorithm crypto = null;
-                if (signType.ToLower() == "md5")
-                {
-                    crypto = MD5.Create();
-                }
+                "md5" => MD5.Create(),
+                "sha1" => SHA1.Create(),
+                _ => MD5.Create(),
+            };
 
-                if (signType.ToLower() == "sha1")
-                {
-                    crypto = SHA1.Create();
-                }
-                using (crypto)
-                {
-                    result = rsaPub.VerifyData(data, crypto, signData);
-                    return result;
-                }
-            }
-
+            var result = rsaPub.VerifyData(data, crypto, signData);
+            return result;
         }
 
 

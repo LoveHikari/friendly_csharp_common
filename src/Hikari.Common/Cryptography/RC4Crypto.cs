@@ -7,29 +7,43 @@ namespace Hikari.Common.Cryptography
     /// </summary>
     public class RC4Crypto : CryptoBase
     {
+        private readonly byte[] _pass;
+        /// <summary>
+        /// RC4加解密
+        /// </summary>
+        /// <param name="pass">加密密码</param>
+        /// <param name="encoding">编码</param>
+        public RC4Crypto(string pass, string encoding = "utf-8") : base(encoding)
+        {
+            _pass = _encoding.GetBytes(pass);
+        }
+        /// <summary>
+        /// RC4加解密
+        /// </summary>
+        /// <param name="pass">加密密码</param>
+        /// <param name="encoding">编码</param>
+        public RC4Crypto(byte[] pass, string encoding = "utf-8") : base(encoding)
+        {
+            _pass = pass;
+        }
         /// <summary>
         /// 加密
         /// </summary>
         /// <param name="data">待加密数据</param>
-        /// <param name="pass">加密密码</param>
-        /// <param name="encoding">编码</param>
         /// <returns>加密字符串</returns>
-        public override Byte[]? EncryptEx(Byte[]? data, String? pass, string encoding = "utf-8")
+        public override Byte[] Encrypt(Byte[] data)
         {
-            if (data == null || pass == null) return null;
             Byte[] output = new Byte[data.Length];
             Int64 i = 0;
             Int64 j = 0;
-            Byte[] mBox = GetKey(System.Text.Encoding.GetEncoding(encoding).GetBytes(pass), 256);
+            Byte[] mBox = GetKey(_pass, 256);
 
             // 加密
             for (Int64 offset = 0; offset < data.Length; offset++)
             {
                 i = (i + 1) % mBox.Length;
                 j = (j + mBox[i]) % mBox.Length;
-                Byte temp = mBox[i];
-                mBox[i] = mBox[j];
-                mBox[j] = temp;
+                (mBox[i], mBox[j]) = (mBox[j], mBox[i]);
                 Byte a = data[offset];
                 //Byte b = mBox[(mBox[i] + mBox[j] % mBox.Length) % mBox.Length];
                 // mBox[j] 一定比 mBox.Length 小，不需要在取模
@@ -43,13 +57,11 @@ namespace Hikari.Common.Cryptography
         /// 解密
         /// </summary>
         /// <param name="data">待解密数据</param>
-        /// <param name="pass">密码</param>
-        /// <param name="encoding">编码</param>
         /// <returns>解密字符串</returns>
-        public override byte[]? DecryptEx(byte[] data, String pass, string encoding = "utf-8")
+        public override byte[] Decrypt(byte[] data)
         {
 
-            return EncryptEx(data, pass, encoding);
+            return Encrypt(data);
         }
         /// <summary>
         /// 打乱密码
@@ -69,9 +81,7 @@ namespace Hikari.Common.Cryptography
             for (Int64 i = 0; i < kLen; i++)
             {
                 j = (j + mBox[i] + pass[i % pass.Length]) % kLen;
-                Byte temp = mBox[i];
-                mBox[i] = mBox[j];
-                mBox[j] = temp;
+                (mBox[i], mBox[j]) = (mBox[j], mBox[i]);
             }
             return mBox;
         }

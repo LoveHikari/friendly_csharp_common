@@ -19,7 +19,8 @@ public class Polygon
         {
             throw new ArgumentException("多边形必须至少有三个顶点");
         }
-
+        // 自动按顺时针/逆时针排序顶点
+        vertices = ComputeConvexHull(vertices).ToList();
         Vertices = vertices;
     }
 #else
@@ -33,12 +34,67 @@ public class Polygon
         {
             throw new ArgumentException("多边形必须至少有三个顶点");
         }
-
+        // 自动按顺时针/逆时针排序顶点
+        vertices = ComputeConvexHull(vertices).ToList();
         Vertices = vertices;
     }
 #endif
 
+    /// <summary>
+    /// 按质心角度排序顶点
+    /// </summary>
+    /// <param name="points"></param>
+    /// <returns></returns>
+    private IEnumerable<Point2D> SortVertices(List<Point2D> points)
+    {
+        // 计算质心
+        double centerX = points.Average(p => p.X);
+        double centerY = points.Average(p => p.Y);
+        Point2D center = new Point2D(centerX, centerY);
 
+        // 按相对于质心的极角排序
+        return points.OrderBy(p => Math.Atan2(p.Y - center.Y, p.X - centerX));
+    }
+    /// <summary>
+    /// 使用Andrew's monotone chain算法计算凸包
+    /// </summary>
+    /// <param name="points"></param>
+    /// <returns></returns>
+    private List<Point2D> ComputeConvexHull(List<Point2D> points)
+    {
+        if (points.Count <= 1)
+            return points;
+
+        points = points.OrderBy(p => p.X).ThenBy(p => p.Y).ToList();
+
+        List<Point2D> hull = new List<Point2D>();
+
+        // 计算下凸包
+        foreach (var pt in points)
+        {
+            while (hull.Count >= 2 && Cross(hull[hull.Count - 2], hull[hull.Count - 1], pt) <= 0)
+                hull.RemoveAt(hull.Count - 1);
+            hull.Add(pt);
+        }
+
+        // 计算上凸包
+        int t = hull.Count + 1;
+        for (int i = points.Count - 1; i >= 0; i--)
+        {
+            Point2D pt = points[i];
+            while (hull.Count >= t && Cross(hull[hull.Count - 2], hull[hull.Count - 1], pt) <= 0)
+                hull.RemoveAt(hull.Count - 1);
+            hull.Add(pt);
+        }
+
+        hull.RemoveAt(hull.Count - 1);
+        return hull;
+    }
+
+    private double Cross(Point2D O, Point2D A, Point2D B)
+    {
+        return (A.X - O.X) * (B.Y - O.Y) - (A.Y - O.Y) * (B.X - O.X);
+    }
     /// <summary>
     /// 计算多边形的周长
     /// </summary>

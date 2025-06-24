@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using Hikari.Common;
+using Hikari.Common.Mathematics;
 using Hikari.Common.Net;
 using RJCP.IO.Ports;
 using Xunit;
@@ -114,8 +115,12 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            var cmd = await SystemHelper.ExecuteCommandAsync("java -version");
-            
+            Polygon polygon = new Polygon(new Point2D(1, 1),
+                new Point2D(0, 0),
+                new Point2D(1, 0),new Point2D(2, 0.5),
+                new Point2D(0, 1));
+            var perimeter = polygon.CalculatePerimeter();
+
             Assert.True(true);
         }
         [Fact]

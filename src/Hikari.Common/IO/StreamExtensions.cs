@@ -42,4 +42,24 @@ public static class StreamExtensions
         Stream stream = new MemoryStream(@this);
         return stream;
     }
+    /// <summary>
+    /// 生成摘要，并转为16进制字符串
+    /// </summary>
+    /// <param name="this"></param>
+    /// <returns>摘要</returns>
+    public static string DigestHex(this byte[] @this)
+    {
+        string t2 = System.BitConverter.ToString(@this);
+        t2 = t2.Replace("-", "").ToLower();
+        return t2;
+    }
+    /// <summary>
+    /// 生成摘要，并转为base64字符串
+    /// </summary>
+    /// <param name="this"></param>
+    /// <returns></returns>
+    public static string DigestBase64(this byte[] @this)
+    {
+        return Convert.ToBase64String(@this);
+    }
 }

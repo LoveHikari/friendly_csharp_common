@@ -18,7 +18,7 @@
 		<PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.0-preview.5.25277.114" />
 		<PackageReference Include="MySql.Data" Version="9.3.0" />
 		<PackageReference Include="Npgsql" Version="9.0.3" />
-		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.0-preview1.25120.4" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.0-preview2.25178.5" />
 		<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.8.0" />
 	</ItemGroup>
 

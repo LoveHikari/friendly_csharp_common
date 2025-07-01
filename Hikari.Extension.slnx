@@ -1,6 +1,5 @@
 <Solution>
   <Folder Name="/src/">
-    <Project Path="src/FsLib.TuChuangUtils/FsLib.TuChuangUtils.csproj" />
     <Project Path="src/Hikari.Common.CreditCard/Hikari.Common.CreditCard.csproj" />
     <Project Path="src/Hikari.Common.EntityFrameworkCore/Hikari.Common.EntityFrameworkCore.csproj" />
     <Project Path="src/Hikari.Common.ElasticSearch/Hikari.Common.ElasticSearch.csproj" />

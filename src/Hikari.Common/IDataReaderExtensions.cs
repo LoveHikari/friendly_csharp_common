@@ -50,27 +50,27 @@ public static class IDataReaderExtensions
     /// 将IDataReader转换为实体类型
     /// </summary>
     /// <typeparam name="T">实体类型</typeparam>
-    /// <param name="dr"></param>
+    /// <param name="reader"></param>
     /// <returns></returns>
-    public static T ToEntity<T>(this IDataReader dr)
+    public static T? ToEntity<T>(this IDataReader reader)
     {
-        using (dr)
+        using (reader)
         {
-            if (dr.Read())
+            if (reader.Read())
             {
-                List<string> list = new List<string>(dr.FieldCount);
-                for (int i = 0; i < dr.FieldCount; i++)
+                List<string> list = new List<string>(reader.FieldCount);
+                for (int i = 0; i < reader.FieldCount; i++)
                 {
-                    list.Add(dr.GetName(i).ToLower());
+                    list.Add(reader.GetName(i).ToLower());
                 }
                 T model = Activator.CreateInstance<T>();
                 foreach (PropertyInfo pi in model.GetType().GetProperties(BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Instance))
                 {
                     if (list.Contains(pi.Name.ToLower()))
                     {
-                        if (!IsNullOrDBNull(dr[pi.Name]))
+                        if (!IsNullOrDbNull(reader[pi.Name]))
                         {
-                            pi.SetValue(model, HackType(dr[pi.Name], pi.PropertyType), null);
+                            pi.SetValue(model, HackType(reader[pi.Name], pi.PropertyType), null);
                         }
                     }
                 }
@@ -83,28 +83,28 @@ public static class IDataReaderExtensions
     /// 将IDataReader转换为List
     /// </summary>
     /// <typeparam name="T">实体类型</typeparam>
-    /// <param name="dr"></param>
+    /// <param name="reader"></param>
     /// <returns></returns>
-    public static List<T> ToList<T>(this IDataReader dr)
+    public static List<T> ToList<T>(this IDataReader reader)
     {
-        using (dr)
+        using (reader)
         {
-            List<string> field = new List<string>(dr.FieldCount);
-            for (int i = 0; i < dr.FieldCount; i++)
+            List<string> field = new List<string>(reader.FieldCount);
+            for (int i = 0; i < reader.FieldCount; i++)
             {
-                field.Add(dr.GetName(i).ToLower());
+                field.Add(reader.GetName(i).ToLower());
             }
             List<T> list = new List<T>();
-            while (dr.Read())
+            while (reader.Read())
             {
                 T model = Activator.CreateInstance<T>();
                 foreach (PropertyInfo property in model.GetType().GetProperties(BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Instance))
                 {
                     if (field.Contains(property.Name.ToLower()))
                     {
-                        if (!IsNullOrDBNull(dr[property.Name]))
+                        if (!IsNullOrDbNull(reader[property.Name]))
                         {
-                            property.SetValue(model, HackType(dr[property.Name], property.PropertyType), null);
+                            property.SetValue(model, HackType(reader[property.Name], property.PropertyType), null);
                         }
                     }
                 }
@@ -115,7 +115,7 @@ public static class IDataReaderExtensions
     }
 
     //这个类对可空类型进行判断转换，要不然会报错
-    private static object HackType(object value, Type conversionType)
+    private static object? HackType(object? value, Type conversionType)
     {
         if (conversionType.IsGenericType && conversionType.GetGenericTypeDefinition() == typeof(Nullable<>))
         {
@@ -127,10 +127,14 @@ public static class IDataReaderExtensions
         }
         return Convert.ChangeType(value, conversionType);
     }
-
-    private static bool IsNullOrDBNull(object obj)
+    /// <summary>
+    /// 判断是否为空
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    private static bool IsNullOrDbNull(object? obj)
     {
-        return ((obj is DBNull) || string.IsNullOrEmpty(obj.ToString()));
+        return ((obj is DBNull) || string.IsNullOrEmpty(obj?.ToString()));
     }
 }
 

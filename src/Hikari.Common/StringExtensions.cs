@@ -441,7 +441,7 @@ namespace Hikari.Common
         /// <param name="str"></param>
         /// <param name="culture">一个对象，用于提供区域性特定的大小写规则</param>
         /// <returns></returns>
-        public static string ToFirstUpper(this string str, CultureInfo culture = null)
+        public static string ToFirstUpper(this string str, CultureInfo? culture = null)
         {
             if (string.IsNullOrEmpty(str))
             {
@@ -449,11 +449,11 @@ namespace Hikari.Common
             }
             if (culture == null)
             {
-                str = str.Substring(0, 1).ToUpper() + str.Substring(1);
+                str = str[..1].ToUpper() + str[1..];
             }
             else
             {
-                str = str.Substring(0, 1).ToUpper(culture) + str.Substring(1);
+                str = str[..1].ToUpper(culture) + str[1..];
             }
             return str;
             //s = System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(s)
@@ -465,7 +465,7 @@ namespace Hikari.Common
         /// <param name="str"></param>
         /// <param name="culture">一个对象，用于提供区域性特定的大小写规则</param>
         /// <returns></returns>
-        public static string ToFirstLower(this string str, CultureInfo culture = null)
+        public static string ToFirstLower(this string str, CultureInfo? culture = null)
         {
             if (string.IsNullOrEmpty(str))
             {
@@ -473,11 +473,11 @@ namespace Hikari.Common
             }
             if (culture == null)
             {
-                str = str.Substring(0, 1).ToLower() + str.Substring(1);
+                str = str[..1].ToLower() + str[1..];
             }
             else
             {
-                str = str.Substring(0, 1).ToLower(culture) + str.Substring(1);
+                str = str[..1].ToLower(culture) + str[1..];
             }
             return str;
         }

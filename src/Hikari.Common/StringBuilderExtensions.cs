@@ -24,41 +24,41 @@ namespace Hikari.Common
         /// <summary>
         /// 向此实例追加指定字符串的副本。
         /// </summary>
-        /// <param name="sb"></param>
+        /// <param name="this"></param>
         /// <param name="spaceNum">空格数</param>
         /// <param name="text">要追加的字符串</param>
         /// <returns></returns>
-        public static StringBuilder AppendSpace(this StringBuilder sb, int spaceNum, string text)
+        public static StringBuilder AppendSpace(this StringBuilder @this, int spaceNum, string text)
         {
-            sb.Append(StringHelper.Space(spaceNum));
-            sb.Append(text);
-            return sb;
+            @this.Append(StringHelper.Space(spaceNum));
+            @this.Append(text);
+            return @this;
         }
         /// <summary>
         /// 将后面跟有默认行终止符的指定字符串的副本追加到当前 StringBuilder 对象的末尾
         /// </summary>
-        /// <param name="sb"></param>
+        /// <param name="this"></param>
         /// <param name="spaceNum">空格数</param>
         /// <param name="text">要追加的字符串</param>
         /// <returns></returns>
-        public static StringBuilder AppendSpaceLine(this StringBuilder sb, int spaceNum, string text)
+        public static StringBuilder AppendSpaceLine(this StringBuilder @this, int spaceNum, string text)
         {
-            sb.Append(StringHelper.Space(spaceNum));
-            sb.AppendLine(text);
-            return sb;
+            @this.Append(StringHelper.Space(spaceNum));
+            @this.AppendLine(text);
+            return @this;
         }
         /// <summary>
         /// 将后面跟有默认行终止符的指定字符串的副本追加到当前 StringBuilder 对象的末尾
         /// </summary>
-        /// <param name="sb"></param>
+        /// <param name="this"></param>
         /// <param name="format"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static StringBuilder AppendFormatLine(this StringBuilder sb, string format, params object[] args)
+        public static StringBuilder AppendFormatLine(this StringBuilder @this, string format, params object[] args)
         {
-            sb.AppendFormat(format, args);
-            sb.AppendLine();
-            return sb;
+            @this.AppendFormat(format, args);
+            @this.AppendLine();
+            return @this;
         }
        
     }

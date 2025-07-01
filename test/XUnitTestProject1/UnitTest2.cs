@@ -6,7 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using FsLib.TuChuangUtils;
 using Hikari.Common;
+using Hikari.Common.IO;
 using Hikari.Common.Mathematics;
 using Hikari.Common.Net;
 using RJCP.IO.Ports;
@@ -115,11 +117,8 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            Polygon polygon = new Polygon(new Point2D(1, 1),
-                new Point2D(0, 0),
-                new Point2D(1, 0),new Point2D(2, 0.5),
-                new Point2D(0, 1));
-            var perimeter = polygon.CalculatePerimeter();
+            var ran = new Random();
+            ran.StrictNext();
 
             Assert.True(true);
         }

@@ -3,6 +3,7 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using Hikari.Common.Collection;
 
 namespace Hikari.Common
 {
@@ -295,6 +296,28 @@ namespace Hikari.Common
             {
                 return "";
             }
+        }
+        /// <summary>
+        /// 检测字符串中是否以列表中的关键词开始
+        /// </summary>
+        /// <param name="s">源字符串</param>
+        /// <param name="keys">关键词列表</param>
+        /// <param name="ignoreCase">忽略大小写</param>
+        /// <returns></returns>
+        public static bool StartsWith(this string s, IEnumerable<string> keys, bool ignoreCase = true)
+        {
+            if (keys is not ICollection<string> array)
+            {
+                array = keys.ToArray();
+            }
+
+            if (array.Count == 0 || string.IsNullOrEmpty(s))
+            {
+                return false;
+            }
+
+            var pattern = $"^({array.Select(Regex.Escape).Join("|")})";
+            return ignoreCase ? Regex.IsMatch(s, pattern, RegexOptions.IgnoreCase) : Regex.IsMatch(s, pattern);
         }
         /// <summary>
         /// 从当前字符串删除字符串的所有尾随匹配项

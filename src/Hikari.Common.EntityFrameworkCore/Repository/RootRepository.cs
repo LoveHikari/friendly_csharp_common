@@ -133,7 +133,7 @@ namespace Hikari.Common.EntityFrameworkCore.Repository
         /// <param name="propertyName">排序属性名</param>
         /// <param name="isAsc">是否正序</param>
         /// <returns>排序后的IQueryable</returns>
-        protected IQueryable<TAggregateRoot> OrderBy(IQueryable<TAggregateRoot> source, string propertyName, bool isAsc)
+        private IQueryable<TAggregateRoot> OrderBy(IQueryable<TAggregateRoot> source, string propertyName, bool isAsc)
         {
             if (string.IsNullOrWhiteSpace(propertyName)) return source;
             var parameter = Expression.Parameter(source.ElementType);

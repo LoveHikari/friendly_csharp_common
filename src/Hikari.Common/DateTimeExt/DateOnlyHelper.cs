@@ -12,13 +12,13 @@ namespace Hikari.Common.DateTimeExt
         /// </summary>
         /// <param name="dtNow">当前日期（年月日）</param>
         /// <returns>开始日期,结束日期</returns>
-        public static (DateOnly firstDay, DateOnly lastDay) GetDateWeek(DateOnly dtNow)
+        public static DateOnlyRange GetDateWeek(DateOnly dtNow)
         {
             //今天是星期几
             int iNowOfWeek = (int)dtNow.DayOfWeek;
             DateOnly dtWeekSt = dtNow.AddDays(0 - iNowOfWeek);
             DateOnly dtWeekEd = dtNow.AddDays(6 - iNowOfWeek);
-            return (dtWeekSt, dtWeekEd);
+            return new DateOnlyRange(dtWeekSt, dtWeekEd);
         }
         /// <summary>
         /// 获取某年第某周的开始日期和结束日期
@@ -26,7 +26,7 @@ namespace Hikari.Common.DateTimeExt
         /// <param name="year">当前日期（年月日）</param>
         /// <param name="numWeek">第几周</param>
         /// <returns>开始日期,结束日期</returns>
-        public static (DateOnly firstDay, DateOnly lastDay) GetDateWeek(int year, int numWeek)
+        public static DateOnlyRange GetDateWeek(int year, int numWeek)
         {
             var dt = new DateOnly(year, 1, 1);
             dt = dt.AddDays((numWeek - 1) * 7);
@@ -38,23 +38,23 @@ namespace Hikari.Common.DateTimeExt
         /// </summary>
         /// <param name="dtNow">当前日期</param>
         /// <returns>月初,月末</returns>
-        public static (DateOnly firstDay, DateOnly lastDay) GetDateMonth(DateOnly dtNow)
+        public static DateOnlyRange GetDateMonth(DateOnly dtNow)
         {
             DateOnly dtFirstDay = dtNow.AddDays(1 - dtNow.Day);  //本月月初
             DateOnly dtLastDay = dtFirstDay.AddMonths(1).AddDays(-1);  //本月月末
             //dtMonthEd = dtMonthSt.AddDays((dtNow.AddMonths(1) - dtNow).Days - 1);  //本月月末
-            return (dtFirstDay, dtLastDay);
+            return new DateOnlyRange(dtFirstDay, dtLastDay);
         }
         /// <summary>
         /// 获取某日期所在的季度的开始日期和结束日期
         /// </summary>
         /// <param name="dtNow">当前日期</param>
         /// <returns>本季度初,本季度末</returns>
-        public static (DateOnly firstDay, DateOnly lastDay) GetDateQuarter(DateOnly dtNow)
+        public static DateOnlyRange GetDateQuarter(DateOnly dtNow)
         {
             var dtQuarterSt = dtNow.AddMonths(0 - (dtNow.Month - 1) % 3).AddDays(1 - dtNow.Day);  //本季度初  
             var dtQuarterEd = dtQuarterSt.AddMonths(3).AddDays(-1);  //本季度末
-            return (dtQuarterSt, dtQuarterEd);
+            return new DateOnlyRange(dtQuarterSt, dtQuarterEd);
         }
         /// <summary>
         /// 获取某季度的开始日期和结束日期
@@ -62,24 +62,24 @@ namespace Hikari.Common.DateTimeExt
         /// <param name="quarter">季度</param>
         /// <param name="year">年份，默认为当前年</param>
         /// <returns>本季度初,本季度末</returns>
-        public static (DateOnly firstDay, DateOnly lastDay) GetDateQuarter(int quarter, int? year = null)
+        public static DateOnlyRange GetDateQuarter(int quarter, int? year = null)
         {
             var nowYear = year ?? DateTime.Now.Year;  // 当前年
             var startMonth = quarter * 3 - 2;
             var dtQuarterSt = DateOnly.FromDateTime(new DateTime(nowYear, startMonth, 1));  //本季度初
             var dtQuarterEd = dtQuarterSt.AddMonths(3).AddDays(-1);  //本季度末
-            return (dtQuarterSt, dtQuarterEd);
+            return new DateOnlyRange(dtQuarterSt, dtQuarterEd);
         }
         /// <summary>
         /// 获取某日期所在的年的开始日期和结束日期
         /// </summary>
         /// <param name="dtNow">当前日期</param>
         /// <returns>年初,年末</returns>
-        public static (DateOnly firstDay, DateOnly lastDay) GetDateYear(DateOnly dtNow)
+        public static DateOnlyRange GetDateYear(DateOnly dtNow)
         {
             var dtYearSt = new DateOnly(dtNow.Year, 1, 1);  //本年年初  
             var dtYearEd = new DateOnly(dtNow.Year, 12, 31);  //本年年末
-            return (dtYearSt, dtYearEd);
+            return new DateOnlyRange(dtYearSt, dtYearEd);
         }
         /// <summary>
         /// 获得一年有几周

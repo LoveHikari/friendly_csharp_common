@@ -11,6 +11,17 @@ namespace Hikari.Common.Collection
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), System.ComponentModel.Browsable(false)]
     public static class IEnumerableExtensions
     {
+        public static string Join(this IEnumerable<string> strs, string separate = ", ", bool removeEmptyEntry = false)
+        {
+            return string.Join(separate, removeEmptyEntry ? strs.Where(s => !string.IsNullOrEmpty(s)) : strs);
+        }
+
+        public static string Join<T>(this IEnumerable<T> strs, string separate = ", ", bool removeEmptyEntry = false)
+        {
+            return string.Join(separate, removeEmptyEntry ? strs.Where(t => t != null) : strs);
+        }
+
+
         /// <summary>
         /// 确认序列中是否包含指定元素
         /// </summary>

@@ -52,7 +52,7 @@ namespace Hikari.Common.DateTimeExt
         public static int WeekOfQuarter(this in DateOnly @this)
         {
             // 该季度的第一天
-            var firstDay = DateOnlyHelper.GetDateQuarter(@this).firstDay;
+            var firstDay = DateOnlyHelper.GetDateQuarter(@this).Start;
 
             int week = @this.WeekOfYear();
             week = week - firstDay.WeekOfYear() + 1;
@@ -76,7 +76,7 @@ namespace Hikari.Common.DateTimeExt
         /// <returns>该季中的第几天</returns>
         public static int DayOfQuarter(this in DateOnly @this)
         {
-            var firstDay = DateOnlyHelper.GetDateQuarter(@this).firstDay;  // 该季度的第一天
+            var firstDay = DateOnlyHelper.GetDateQuarter(@this).Start;  // 该季度的第一天
             return (@this.ToDateTime(TimeOnly.MinValue) - firstDay.ToDateTime(TimeOnly.MinValue)).Days + 1;
 
         }
@@ -87,7 +87,7 @@ namespace Hikari.Common.DateTimeExt
         /// <returns>该季度中的第几月</returns>
         public static int MonthOfQuarter(this in DateOnly @this)
         {
-            var firstDay = DateOnlyHelper.GetDateQuarter(@this).firstDay;  // 该季度的第一天
+            var firstDay = DateOnlyHelper.GetDateQuarter(@this).Start;  // 该季度的第一天
             return @this.Month - firstDay.Month + 1;
         }
         /// <summary>
@@ -97,7 +97,7 @@ namespace Hikari.Common.DateTimeExt
         /// <returns>所在季度的周数</returns>
         public static int WeeksOfQuarter(this in DateOnly @this)
         {
-            var lastDay = DateOnlyHelper.GetDateQuarter(@this).lastDay;  // 该季度的最后一天
+            var lastDay = DateOnlyHelper.GetDateQuarter(@this).End;  // 该季度的最后一天
             return lastDay.WeekOfQuarter();
         }
         /// <summary>
@@ -107,7 +107,7 @@ namespace Hikari.Common.DateTimeExt
         /// <returns>所在季度的周数</returns>
         public static int WeeksOfMonth(this in DateOnly @this)
         {
-            var lastDay = DateOnlyHelper.GetDateMonth(@this).lastDay;
+            var lastDay = DateOnlyHelper.GetDateMonth(@this).End;
             return lastDay.WeekOfMonth();
         }
         /// <summary>
@@ -169,6 +169,27 @@ namespace Hikari.Common.DateTimeExt
                 cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
             }
             return System.Globalization.CultureInfo.GetCultureInfo(cultureName).DateTimeFormat.GetDayName(@this.DayOfWeek);
+        }
+        /// <summary>
+        /// 判断时间是否在区间内
+        /// </summary>
+        /// <param name="this"></param>
+        /// <param name="start">开始</param>
+        /// <param name="end">结束</param>
+        /// <param name="mode">模式</param>
+        /// <returns></returns>
+        public static bool In(this in DateOnly @this, DateOnly? start, DateOnly? end, RangeMode mode = RangeMode.Close)
+        {
+            start ??= DateOnly.MinValue;
+            end ??= DateOnly.MaxValue;
+            return mode switch
+            {
+                RangeMode.Open => start < @this && end > @this,
+                RangeMode.Close => start <= @this && end >= @this,
+                RangeMode.OpenClose => start < @this && end >= @this,
+                RangeMode.CloseOpen => start <= @this && end > @this,
+                _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+            };
         }
     }
 }

@@ -52,7 +52,7 @@ namespace Hikari.Common.DateTimeExt
         public static int WeekOfQuarter(this in DateTime @this)
         {
             // 该季度的第一天
-            var firstDay = DateTimeHelper.GetDateQuarter(@this).firstDay;
+            var firstDay = DateTimeHelper.GetDateQuarter(@this).Start;
 
             int week = @this.WeekOfYear();
             week = week - firstDay.WeekOfYear() + 1;
@@ -76,7 +76,7 @@ namespace Hikari.Common.DateTimeExt
         /// <returns>该季中的第几天</returns>
         public static int DayOfQuarter(this in DateTime @this)
         {
-            var firstDay = DateTimeHelper.GetDateQuarter(@this).firstDay;  // 该季度的第一天
+            var firstDay = DateTimeHelper.GetDateQuarter(@this).Start;  // 该季度的第一天
             return (@this.Date - firstDay).Days + 1;
 
         }
@@ -87,7 +87,7 @@ namespace Hikari.Common.DateTimeExt
         /// <returns>该季度中的第几月</returns>
         public static int MonthOfQuarter(this in DateTime @this)
         {
-            var firstDay = DateTimeHelper.GetDateQuarter(@this).firstDay;  // 该季度的第一天
+            var firstDay = DateTimeHelper.GetDateQuarter(@this).Start;  // 该季度的第一天
             return @this.Month - firstDay.Month + 1;
         }
         /// <summary>
@@ -97,7 +97,7 @@ namespace Hikari.Common.DateTimeExt
         /// <returns>所在季度的周数</returns>
         public static int WeeksOfQuarter(this in DateTime @this)
         {
-            var lastDay = DateTimeHelper.GetDateQuarter(@this).lastDay;  // 该季度的最后一天
+            var lastDay = DateTimeHelper.GetDateQuarter(@this).End;  // 该季度的最后一天
             return lastDay.WeekOfQuarter();
         }
         /// <summary>
@@ -107,7 +107,7 @@ namespace Hikari.Common.DateTimeExt
         /// <returns>所在季度的周数</returns>
         public static int WeeksOfMonth(this in DateTime @this)
         {
-            var lastDay = DateTimeHelper.GetDateMonth(@this).lastDay;
+            var lastDay = DateTimeHelper.GetDateMonth(@this).End;
             return lastDay.WeekOfMonth();
         }
         /// <summary>
@@ -171,6 +171,31 @@ namespace Hikari.Common.DateTimeExt
             return System.Globalization.CultureInfo.GetCultureInfo(cultureName).DateTimeFormat.GetDayName(@this.DayOfWeek);
         }
 
+        /// <summary>
+        /// 判断时间是否在区间内
+        /// </summary>
+        /// <param name="this"></param>
+        /// <param name="start">开始</param>
+        /// <param name="end">结束</param>
+        /// <param name="mode">模式</param>
+        /// <returns></returns>
+        public static bool In(this in DateTime @this, DateTime? start, DateTime? end, RangeMode mode = RangeMode.Close)
+        {
+            start ??= DateTime.MinValue;
+            end ??= DateTime.MaxValue;
+            return mode switch
+            {
+                RangeMode.Open => start < @this && end > @this,
+                RangeMode.Close => start <= @this && end >= @this,
+                RangeMode.OpenClose => start < @this && end >= @this,
+                RangeMode.CloseOpen => start <= @this && end > @this,
+                _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+            };
+        }
+
+
+
+
         private static readonly DateTime UnixEpochDateTimeUtc = new DateTime(621355968000000000L, DateTimeKind.Utc);  // Unix纪元开始的Utc时间
         private static readonly DateTime MinDateTimeUtc = new DateTime(1, 1, 1, 0, 0, 0, DateTimeKind.Utc);  // 最小utc时间
         /// <summary>
@@ -193,6 +218,25 @@ namespace Hikari.Common.DateTimeExt
             return (long)@this.ToDateTimeSinceUnixEpoch().TotalMilliseconds;
             // ToDateTimeSinceUnixEpoch(@this).Ticks / 10000000L;
         }
+        /// <summary>
+        /// Unix时间戳格式到微秒
+        /// </summary>
+        /// <param name="this"></param>
+        /// <returns></returns>
+        public static long ToUnixTimeMicroseconds(this in DateTime @this)
+        {
+            return (long)@this.ToDateTimeSinceUnixEpoch().TotalMicroseconds;
+        }
+        /// <summary>
+        /// Unix时间戳格式到纳秒
+        /// </summary>
+        /// <param name="this"></param>
+        /// <returns></returns>
+        public static long ToUnixTimeNanoseconds(this in DateTime @this)
+        {
+            return (long)@this.ToDateTimeSinceUnixEpoch().TotalNanoseconds;
+        }
+
         /// <summary>
         /// 自 Unix 纪元至今的时间
         /// </summary>
@@ -232,5 +276,6 @@ namespace Hikari.Common.DateTimeExt
         {
             return @this.ToString("yyyy-MM-ddTHH:mm:ss.fffzzz");
         }
+        
     }
 }

@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Hikari.Common.Text.Json;
-using System.Data;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Text.Json;
-using FsLib.TuChuangUtils;
-using Hikari.Common;
-using Hikari.Common.IO;
-using Hikari.Common.Mathematics;
-using Hikari.Common.Net;
+﻿using Hikari.Common.IO;
 using RJCP.IO.Ports;
+using System;
+using System.Data;
+using System.IO;
+using System.Text;
+using Hikari.Common.DateTimeExt;
+using Hikari.Common.IO.FileDetector;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -117,9 +111,11 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            var ran = new Random();
-            ran.StrictNext();
-
+            var now = DateTime.Now;
+            var vv = now.WeeksOfMonth();
+            var v = DateOnly.FromDateTime(now).WeeksOfMonth();
+            DateTimeRange range = new DateTimeRange("(2016-01-01,2016-01-31)");
+            DateOnlyRange range1 = new DateOnlyRange("(2016-01-01,2016-01-31)");
             Assert.True(true);
         }
         [Fact]

@@ -20,20 +20,20 @@ namespace Hikari.Common.DateTimeExt
     /// <summary>
     /// DateTime 帮助类
     /// </summary>
-    public static class DateTimeHelper
+    public class DateTimeHelper
     {
         /// <summary>
         /// 获取某日期所在的周的开始日期和结束日期
         /// </summary>
         /// <param name="dtNow">当前日期（年月日）</param>
         /// <returns>开始日期,结束日期</returns>
-        public static (DateTime firstDay, DateTime lastDay) GetDateWeek(DateTime dtNow)
+        public static DateTimeRange GetDateWeek(DateTime dtNow)
         {
             //今天是星期几
             int iNowOfWeek = (int)dtNow.DayOfWeek;
             DateTime dtWeekSt = dtNow.AddDays(0 - iNowOfWeek).Date;
             DateTime dtWeekEd = dtNow.AddDays(6 - iNowOfWeek).Date;
-            return (dtWeekSt, dtWeekEd);
+            return new DateTimeRange(dtWeekSt, dtWeekEd);
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Hikari.Common.DateTimeExt
         /// <param name="year">当前日期（年月日）</param>
         /// <param name="numWeek">第几周</param>
         /// <returns>开始日期,结束日期</returns>
-        public static (DateTime firstDay, DateTime lastDay) GetDateWeek(int year, int numWeek)
+        public static DateTimeRange GetDateWeek(int year, int numWeek)
         {
             var dt = new DateTime(year, 1, 1);
             dt += new TimeSpan((numWeek - 1) * 7, 0, 0, 0);
@@ -54,23 +54,23 @@ namespace Hikari.Common.DateTimeExt
         /// </summary>
         /// <param name="dtNow">当前日期</param>
         /// <returns>月初,月末</returns>
-        public static (DateTime firstDay, DateTime lastDay) GetDateMonth(DateTime dtNow)
+        public static DateTimeRange GetDateMonth(DateTime dtNow)
         {
             DateTime dtFirstDay = dtNow.AddDays(1 - dtNow.Day).Date;  //本月月初
             DateTime dtLastDay = dtFirstDay.AddMonths(1).AddDays(-1).Date;  //本月月末
             //dtMonthEd = dtMonthSt.AddDays((dtNow.AddMonths(1) - dtNow).Days - 1);  //本月月末
-            return (dtFirstDay, dtLastDay);
+            return new DateTimeRange(dtFirstDay, dtLastDay);
         }
         /// <summary>
         /// 获取某日期所在的季度的开始日期和结束日期
         /// </summary>
         /// <param name="dtNow">当前日期</param>
         /// <returns>本季度初,本季度末</returns>
-        public static (DateTime firstDay, DateTime lastDay) GetDateQuarter(DateTime dtNow)
+        public static DateTimeRange GetDateQuarter(DateTime dtNow)
         {
             var dtQuarterSt = dtNow.AddMonths(0 - (dtNow.Month - 1) % 3).AddDays(1 - dtNow.Day).Date;  //本季度初  
             var dtQuarterEd = dtQuarterSt.AddMonths(3).AddDays(-1).Date;  //本季度末
-            return (dtQuarterSt, dtQuarterEd);
+            return new DateTimeRange(dtQuarterSt, dtQuarterEd);
         }
         /// <summary>
         /// 获取某季度的开始日期和结束日期
@@ -78,13 +78,13 @@ namespace Hikari.Common.DateTimeExt
         /// <param name="quarter">季度</param>
         /// <param name="year">年份，默认为当前年</param>
         /// <returns>本季度初,本季度末</returns>
-        public static (DateTime firstDay, DateTime lastDay) GetDateQuarter(int quarter, int? year = null)
+        public static DateTimeRange GetDateQuarter(int quarter, int? year = null)
         {
             var nowYear = year ?? DateTime.Now.Year;  // 当前年
             var startMonth = quarter * 3 - 2;
             var dtQuarterSt = new DateTime(nowYear, startMonth, 1);  //本季度初  
             var dtQuarterEd = dtQuarterSt.AddMonths(3).AddDays(-1).Date;  //本季度末
-            return (dtQuarterSt, dtQuarterEd);
+            return new DateTimeRange(dtQuarterSt, dtQuarterEd);
         }
         /// <summary>
         /// 获得月份是第几季度
@@ -100,11 +100,11 @@ namespace Hikari.Common.DateTimeExt
         /// </summary>
         /// <param name="dtNow">当前日期</param>
         /// <returns>年初,年末</returns>
-        public static (DateTime firstDay, DateTime lastDay) GetDateYear(DateTime dtNow)
+        public static DateTimeRange GetDateYear(DateTime dtNow)
         {
             var dtYearSt = new DateTime(dtNow.Year, 1, 1);  //本年年初  
             var dtYearEd = new DateTime(dtNow.Year, 12, 31);  //本年年末
-            return (dtYearSt, dtYearEd);
+            return new DateTimeRange(dtYearSt, dtYearEd);
         }
         /// <summary>
         /// 获得一年有几周

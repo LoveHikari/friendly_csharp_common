@@ -2,7 +2,7 @@
 using Asp.Versioning.ApiExplorer;
 using Hikari.Common.Web.AspNetCore.OpenApi.Filter;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace Hikari.Common.Web.AspNetCore.OpenApi
 {

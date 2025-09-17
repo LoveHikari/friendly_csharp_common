@@ -1,8 +1,10 @@
 ﻿using Hikari.Common.IO;
 using RJCP.IO.Ports;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Hikari.Common.DateTimeExt;
 using Hikari.Common.IO.FileDetector;
@@ -152,15 +154,15 @@ namespace XUnitTestProject1
 }
 
 
-//public static class Extensions
-//{
-//    extension(IEnumerable<int> source)
-//    {
-//        public IEnumerable<int> WhereGreaterThan(int threshold)
-//            => source.Where(x => x > threshold);
+public static class Extensions
+{
+    extension(IEnumerable<int> source)
+    {
+        public IEnumerable<int> WhereGreaterThan(int threshold)
+            => source.Where(x => x > threshold);
 
-//        public bool IsEmpty
-//            => !source.Any();
-//    }
-//}
+        public bool IsEmpty
+            => !source.Any();
+    }
+}
 

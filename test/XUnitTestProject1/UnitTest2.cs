@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using Hikari.Common.DateTimeExt;
 using Hikari.Common.IO.FileDetector;
+using Hikari.Common.Net.Http;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -113,11 +114,9 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            var now = DateTime.Now;
-            var vv = now.WeeksOfMonth();
-            var v = DateOnly.FromDateTime(now).WeeksOfMonth();
-            DateTimeRange range = new DateTimeRange("(2016-01-01,2016-01-31)");
-            DateOnlyRange range1 = new DateOnlyRange("(2016-01-01,2016-01-31)");
+            // url取baseAddress
+            
+
             Assert.True(true);
         }
         [Fact]

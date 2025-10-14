@@ -42,7 +42,7 @@ Fixed some bugs</PackageReleaseNotes>
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0-rc.1.25451.107">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="System.Linq.Async.Queryable" Version="6.0.3" />
+		<PackageReference Include="System.Linq.Async.Queryable" Version="7.0.0-preview.1.g24680b5469" />
 	</ItemGroup>
 
 </Project>

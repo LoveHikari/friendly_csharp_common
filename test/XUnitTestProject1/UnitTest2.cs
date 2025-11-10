@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
+using Hikari.Common.Collection;
 using Hikari.Common.DateTimeExt;
 using Hikari.Common.IO.FileDetector;
 using Hikari.Common.Net.Http;
@@ -114,7 +116,8 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            // url取baseAddress
+            var vv = new { a = 1, b = new {b1 = "1", b2 = "2"} };
+            var v = vv.ToDictionary();
             
 
             Assert.True(true);

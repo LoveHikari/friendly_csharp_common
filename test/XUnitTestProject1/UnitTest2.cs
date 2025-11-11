@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
+using Hikari.Common;
 using Hikari.Common.Collection;
 using Hikari.Common.DateTimeExt;
 using Hikari.Common.IO.FileDetector;
@@ -116,9 +117,13 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            var vv = new { a = 1, b = new {b1 = "1", b2 = "2"} };
-            var v = vv.ToDictionary();
-            
+            IdWorker helper = new IdWorker(3,4);
+            for (int i = 0; i < 10; i++)
+            {
+                var v = helper.NextId();
+
+                System.Diagnostics.Debug.WriteLine(v);
+            }
 
             Assert.True(true);
         }

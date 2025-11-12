@@ -11,11 +11,25 @@ namespace Hikari.Common.Collection
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), System.ComponentModel.Browsable(false)]
     public static class IEnumerableExtensions
     {
+        /// <summary>
+        /// Join
+        /// </summary>
+        /// <param name="strs"></param>
+        /// <param name="separate"></param>
+        /// <param name="removeEmptyEntry"></param>
+        /// <returns></returns>
         public static string Join(this IEnumerable<string> strs, string separate = ", ", bool removeEmptyEntry = false)
         {
             return string.Join(separate, removeEmptyEntry ? strs.Where(s => !string.IsNullOrEmpty(s)) : strs);
         }
-
+        /// <summary>
+        /// Join
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="strs"></param>
+        /// <param name="separate"></param>
+        /// <param name="removeEmptyEntry"></param>
+        /// <returns></returns>
         public static string Join<T>(this IEnumerable<T> strs, string separate = ", ", bool removeEmptyEntry = false)
         {
             return string.Join(separate, removeEmptyEntry ? strs.Where(t => t != null) : strs);
@@ -91,7 +105,7 @@ namespace Hikari.Common.Collection
 
             foreach (var entry in dict)
             {
-                (result as ICollection<KeyValuePair<string, object>>).Add(new KeyValuePair<string, object>(entry.Key, entry.Value));
+                (result as ICollection<KeyValuePair<string, object>>)?.Add(new KeyValuePair<string, object>(entry.Key, entry.Value));
             }
 
             return result;
@@ -103,7 +117,7 @@ namespace Hikari.Common.Collection
         /// <typeparam name="TValue"></typeparam>
         /// <param name="dictionaries"></param>
         /// <returns></returns>
-        public static Dictionary<TKey, TValue> Merge<TKey, TValue>(IEnumerable<Dictionary<TKey, TValue>> dictionaries)
+        public static Dictionary<TKey, TValue> Merge<TKey, TValue>(IEnumerable<Dictionary<TKey, TValue>> dictionaries) where TKey : notnull
         {
             //var result = new Dictionary<TKey, TValue>();
             //foreach (var dict in dictionaries)
@@ -130,10 +144,12 @@ namespace Hikari.Common.Collection
             var dic = new Dictionary<object, T2>(menuList.Count);
             foreach (var chapter in menuList)
             {
-
-                dic.Add(chapter.GetValue(idField), chapter.ChangeTypeTo<T2>());
+                if (chapter.GetValue(idField) is not null)
+                {
+                    dic.Add(chapter.GetValue(idField)!, chapter.ChangeTypeTo<T2>());
+                }
             }
-            var ids = new List<string>();
+            var ids = new List<string?>();
             foreach (var chapter in dic.Values)
             {
                 var parentId = chapter.GetValue(parentIdField);
@@ -142,14 +158,14 @@ namespace Hikari.Common.Collection
                 {
                     if (dic[parentId].GetValue(childrenField) == null)
                     {
-                        dic[parentId].GetType().GetProperty(childrenField).SetValue(dic[parentId], new List<T2>());
+                        dic[parentId].GetType().GetProperty(childrenField)?.SetValue(dic[parentId], new List<T2>());
                     }
 
-                    ((List<T2>)dic[parentId].GetValue(childrenField))?.Add(chapter);
-                    ids.Add(chapter.GetValue(idField).ToString());
+                    ((List<T2>)dic[parentId].GetValue(childrenField)!).Add(chapter);
+                    ids.Add(chapter.GetValue(idField)?.ToString());
                 }
             }
-            return dic.Values.Where(t => !ids.Contains(t.GetValue(idField).ToString())).ToList();
+            return dic.Values.Where(t => !ids.Contains(t.GetValue(idField)?.ToString())).ToList();
         }
 
         /// <summary>
@@ -213,7 +229,7 @@ namespace Hikari.Common.Collection
                 {childrenField, tree}
             };
 
-            Traverse(temp.ToEntity<T>(), 0);
+            Traverse(temp!.ToEntity<T>()!, 0);
 
             return nodes;
         }
@@ -254,7 +270,7 @@ namespace Hikari.Common.Collection
             {
                 { childrenField, tree }
             };
-            Traverse(temp.ToEntity<T>(), 0);
+            Traverse(temp!.ToEntity<T>()!, 0);
             return nodes;
         }
         /// <summary>
@@ -284,8 +300,8 @@ namespace Hikari.Common.Collection
                 .Select(CopyNode)
                 .Where(node =>
                 {
-                    var childrenProperty = node.GetType().GetProperty(childrenField);
-                    List<T>? children = childrenProperty.GetValue(node) as List<T>;
+                    var childrenProperty = node?.GetType().GetProperty(childrenField);
+                    List<T>? children = childrenProperty?.GetValue(node) as List<T>;
 
                     children = children != null ? TreeFilter(children, func) : null;
                     return func(node) || children is { Count: > 0 };
@@ -300,9 +316,9 @@ namespace Hikari.Common.Collection
         /// </summary>
         class CompareOnly : IEqualityComparer<string>
         {
-            public bool Equals(string x, string y)
+            public bool Equals(string? x, string? y)
             {
-                return x.ToUpper() == y.ToUpper();
+                return x?.ToUpper() == y?.ToUpper();
             }
 
             public int GetHashCode(string obj)

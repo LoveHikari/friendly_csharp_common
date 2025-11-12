@@ -90,7 +90,7 @@ namespace Hikari.Common.Collection
             {
                 if (chapter[idField] != null)
                 {
-                    dic.Add(chapter[idField], chapter);
+                    dic.Add(chapter[idField]!, chapter);
                 }
 
             }
@@ -108,12 +108,12 @@ namespace Hikari.Common.Collection
 
                     dic[parentId][childrenField] ??= new List<IDictionary<string, object?>>();
 
-                    ((List<IDictionary<string, object?>>)dic[parentId][childrenField]).Add(chapter);
-                    ids.Add(chapter[idField].ToString());
+                    ((List<IDictionary<string, object?>>)dic[parentId][childrenField]!).Add(chapter);
+                    ids.Add(chapter[idField]!.ToString()!);
                 }
             }
 
-            var dicList = dic.Values.Where(t => !ids.Contains(t[idField].ToString()));
+            var dicList = dic.Values.Where(t => !ids.Contains(t[idField]!.ToString()!));
 
             return dicList;
         }
@@ -123,7 +123,7 @@ namespace Hikari.Common.Collection
         /// <param name="treeList">树形列表</param>
         /// <param name="childrenField">指定子项列表字段，默认为Children</param>
         /// <returns>平级list</returns>
-        public static IEnumerable<IDictionary<string, object>> TileTreeList(this IEnumerable<IDictionary<string, object?>> treeList, string childrenField = "Children")
+        public static IEnumerable<IDictionary<string, object?>> TileTreeList(this IEnumerable<IDictionary<string, object?>> treeList, string childrenField = "Children")
         {
             List<IDictionary<string, object?>> list = new();
 

@@ -15,7 +15,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.0-rc.2.25502.107" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.0" />
 		<PackageReference Include="MySql.Data" Version="9.5.0" />
 		<PackageReference Include="Npgsql" Version="10.0.0-rc.1" />
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.0-preview2.25289.6" />

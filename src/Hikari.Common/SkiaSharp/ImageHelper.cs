@@ -13,8 +13,6 @@
  *
  * ***************************************************************************************************************/
 
-using System.Drawing;
-using System.Net.Mime;
 using MetadataExtractor;
 using MetadataExtractor.Formats.Exif;
 using SkiaSharp;
@@ -289,7 +287,7 @@ namespace Hikari.Common.SkiaSharp
 
             var subset = pixmap.ExtractSubset(rectI);
 
-            using var data = subset.Encode(SKPngEncoderOptions.Default);
+            using var data = subset?.Encode(SKPngEncoderOptions.Default);
 
             return SKImage.FromEncodedData(data);
         }

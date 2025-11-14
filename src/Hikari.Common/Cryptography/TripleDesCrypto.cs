@@ -22,8 +22,8 @@ namespace Hikari.Common.Cryptography
         /// <param name="encoding"></param>
         public TripleDesCrypto(string key, string iv = "", CipherMode mode = CipherMode.ECB, PaddingMode padding = PaddingMode.PKCS7, string encoding = "utf-8") : base(encoding)
         {
-            _key = _encoding.GetBytes(key);
-            _iv = !string.IsNullOrWhiteSpace(iv) ? _encoding.GetBytes(iv) : null;
+            _key = Encoding.GetBytes(key);
+            _iv = !string.IsNullOrWhiteSpace(iv) ? Encoding.GetBytes(iv) : null;
             _mode = mode;
             _padding = padding;
         }

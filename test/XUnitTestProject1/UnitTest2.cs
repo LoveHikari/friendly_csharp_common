@@ -1,11 +1,16 @@
 ﻿using Hikari.Common.IO;
 using RJCP.IO.Ports;
 using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
+using Hikari.Common;
+using Hikari.Common.Collection;
+using Hikari.Common.Cryptography;
 using Hikari.Common.DateTimeExt;
 using Hikari.Common.IO.FileDetector;
 using Hikari.Common.Net.Http;
@@ -114,8 +119,14 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            // url取baseAddress
-            
+            CryptoBase crypto = new DesCrypto("ViVueH5");
+            var v = crypto.Encrypt("1349");
+            var v1 = v.ToHexString();
+
+           
+            var vv = crypto.Decrypt(v1.FromHexString());
+            var vv1 = Encoding.UTF8.GetString(vv);
+
 
             Assert.True(true);
         }

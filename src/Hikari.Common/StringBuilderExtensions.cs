@@ -17,49 +17,54 @@
 namespace Hikari.Common
 {
     /// <summary>
-    /// StringBuilder 扩展类
+    /// <see cref="System.Text.StringBuilder"/> 扩展
     /// </summary>
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), System.ComponentModel.Browsable(false)]
     public static class StringBuilderExtensions
-    {
-        /// <summary>
-        /// 向此实例追加指定字符串的副本。
+    {   /// <summary>
+        /// <see cref="System.Text.StringBuilder"/> 扩展
         /// </summary>
         /// <param name="this"></param>
-        /// <param name="spaceNum">空格数</param>
-        /// <param name="text">要追加的字符串</param>
-        /// <returns></returns>
-        public static StringBuilder AppendSpace(this StringBuilder @this, int spaceNum, string text)
+        extension(StringBuilder @this)
         {
-            @this.Append(StringHelper.Space(spaceNum));
-            @this.Append(text);
-            return @this;
+            /// <summary>
+            /// 向此实例追加指定字符串的副本。
+            /// </summary>
+            /// <param name="spaceNum">空格数</param>
+            /// <param name="text">要追加的字符串</param>
+            /// <returns></returns>
+            public StringBuilder AppendSpace(int spaceNum, string text)
+            {
+                @this.Append(StringHelper.Space(spaceNum));
+                @this.Append(text);
+                return @this;
+            }
+
+            /// <summary>
+            /// 将后面跟有默认行终止符的指定字符串的副本追加到当前 StringBuilder 对象的末尾
+            /// </summary>
+            /// <param name="spaceNum">空格数</param>
+            /// <param name="text">要追加的字符串</param>
+            /// <returns></returns>
+            public StringBuilder AppendSpaceLine(int spaceNum, string text)
+            {
+                @this.Append(StringHelper.Space(spaceNum));
+                @this.AppendLine(text);
+                return @this;
+            }
+
+            /// <summary>
+            /// 将后面跟有默认行终止符的指定字符串的副本追加到当前 StringBuilder 对象的末尾
+            /// </summary>
+            /// <param name="format"></param>
+            /// <param name="args"></param>
+            /// <returns></returns>
+            public StringBuilder AppendFormatLine(string format, params object[] args)
+            {
+                @this.AppendFormat(format, args);
+                @this.AppendLine();
+                return @this;
+            }
         }
-        /// <summary>
-        /// 将后面跟有默认行终止符的指定字符串的副本追加到当前 StringBuilder 对象的末尾
-        /// </summary>
-        /// <param name="this"></param>
-        /// <param name="spaceNum">空格数</param>
-        /// <param name="text">要追加的字符串</param>
-        /// <returns></returns>
-        public static StringBuilder AppendSpaceLine(this StringBuilder @this, int spaceNum, string text)
-        {
-            @this.Append(StringHelper.Space(spaceNum));
-            @this.AppendLine(text);
-            return @this;
-        }
-        /// <summary>
-        /// 将后面跟有默认行终止符的指定字符串的副本追加到当前 StringBuilder 对象的末尾
-        /// </summary>
-        /// <param name="this"></param>
-        /// <param name="format"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        public static StringBuilder AppendFormatLine(this StringBuilder @this, string format, params object[] args)
-        {
-            @this.AppendFormat(format, args);
-            @this.AppendLine();
-            return @this;
-        }
-       
     }
 }

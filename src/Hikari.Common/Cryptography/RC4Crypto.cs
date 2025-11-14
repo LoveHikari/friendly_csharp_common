@@ -15,7 +15,7 @@ namespace Hikari.Common.Cryptography
         /// <param name="encoding">编码</param>
         public RC4Crypto(string pass, string encoding = "utf-8") : base(encoding)
         {
-            _pass = _encoding.GetBytes(pass);
+            _pass = Encoding.GetBytes(pass);
         }
         /// <summary>
         /// RC4加解密

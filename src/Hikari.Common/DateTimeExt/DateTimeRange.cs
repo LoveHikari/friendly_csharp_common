@@ -285,8 +285,12 @@ public class DateTimeRange
         };
         return str;
     }
-
-    public override bool Equals(object obj)
+    /// <summary>
+    /// 判断是否相等
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public override bool Equals(object? obj)
     {
         if (obj is DateTimeRange range)
         {
@@ -294,5 +298,13 @@ public class DateTimeRange
         }
 
         return false;
+    }
+    /// <summary>
+    /// 获取哈希码
+    /// </summary>
+    /// <returns></returns>
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
     }
 }

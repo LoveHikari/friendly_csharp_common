@@ -79,7 +79,7 @@ public class CommonEqualityComparer<T, TV> : IEqualityComparer<T>
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <returns></returns>
-    public bool Equals(T x, T y)
+    public bool Equals(T? x, T? y)
     {
         return _comparer.Equals(_keySelector(x), _keySelector(y));
     }

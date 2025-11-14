@@ -44,23 +44,37 @@ namespace Hikari.Common.Collection
             return t;
         }
         /// <summary>
-        /// 实体类转Dictionary
+        /// 将匿名对象或普通对象转Dictionary
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="obj">支持嵌套对象</param>
         /// <returns></returns>
         public static IDictionary<string, object?> ToDictionary<T>(this T obj) where T : class
         {
-            IDictionary<string, object?> dic = new Dictionary<string, object?>();
-            PropertyInfo[] propertys = obj.GetType().GetProperties();
-            foreach (var pi in propertys)
+            var dict = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
+            // 处理 Dictionary 类型
+            if (obj is IDictionary idict)
             {
-                string name = pi.Name;
-                object? value = pi.GetValue(obj, null);
-                dic[name] = value;
-            }
-            return dic;
-        }
+                
+                foreach (DictionaryEntry entry in idict)
+                {
+                    dict[entry.Key?.ToString() ?? ""] = entry.Value;
+                }
 
+                return dict;
+            }
+            // 反射处理普通对象属性
+            PropertyInfo[] propertys = obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            foreach (var prop in propertys)
+            {
+                if (!prop.CanRead) continue;
+
+                var value = prop.GetValue(obj);
+                dict[prop.Name] = value?.ToDictionarySafe();
+            }
+            
+            return dict;
+        }
+        
         /// <summary>
         /// 转化成树结构
         /// </summary>
@@ -76,7 +90,7 @@ namespace Hikari.Common.Collection
             {
                 if (chapter[idField] != null)
                 {
-                    dic.Add(chapter[idField], chapter);
+                    dic.Add(chapter[idField]!, chapter);
                 }
 
             }
@@ -94,12 +108,12 @@ namespace Hikari.Common.Collection
 
                     dic[parentId][childrenField] ??= new List<IDictionary<string, object?>>();
 
-                    ((List<IDictionary<string, object?>>)dic[parentId][childrenField]).Add(chapter);
-                    ids.Add(chapter[idField].ToString());
+                    ((List<IDictionary<string, object?>>)dic[parentId][childrenField]!).Add(chapter);
+                    ids.Add(chapter[idField]!.ToString()!);
                 }
             }
 
-            var dicList = dic.Values.Where(t => !ids.Contains(t[idField].ToString()));
+            var dicList = dic.Values.Where(t => !ids.Contains(t[idField]!.ToString()!));
 
             return dicList;
         }
@@ -109,7 +123,7 @@ namespace Hikari.Common.Collection
         /// <param name="treeList">树形列表</param>
         /// <param name="childrenField">指定子项列表字段，默认为Children</param>
         /// <returns>平级list</returns>
-        public static IEnumerable<IDictionary<string, object>> TileTreeList(this IEnumerable<IDictionary<string, object?>> treeList, string childrenField = "Children")
+        public static IEnumerable<IDictionary<string, object?>> TileTreeList(this IEnumerable<IDictionary<string, object?>> treeList, string childrenField = "Children")
         {
             List<IDictionary<string, object?>> list = new();
 
@@ -267,6 +281,18 @@ namespace Hikari.Common.Collection
             }
 
             return t;
+        }
+
+        private static object? ToDictionarySafe(this object value)
+        {
+            return value switch
+            {
+                null => null,
+                string => value,
+                ValueType => value, // int, bool, DateTime 等
+                IEnumerable => value.ToDictionary(), // 递归处理集合
+                _ => value.ToDictionary() // 递归处理嵌套对象
+            };
         }
     }
 

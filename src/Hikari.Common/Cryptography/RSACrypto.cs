@@ -86,7 +86,7 @@ namespace Hikari.Common.Cryptography
         /// <returns>签名后字符串</returns>
         public string Signature(string content, string signType = "MD5")
         {
-            byte[] data = _encoding.GetBytes(content);
+            byte[] data = Encoding.GetBytes(content);
             using RSACryptoServiceProvider rsa = DecodePemPrivateKey(_pass);
             using HashAlgorithm crypto = signType.ToLower() switch
             {
@@ -109,7 +109,7 @@ namespace Hikari.Common.Cryptography
         /// <returns>true(通过)，false(不通过)</returns>
         public bool Verify(string content, string signedString, string signType = "MD5")
         {
-            byte[] data = _encoding.GetBytes(content);
+            byte[] data = Encoding.GetBytes(content);
             byte[] signData = Convert.FromBase64String(signedString);
             RSAParameters paraPub = ConvertFromPublicKey(_pass);
             using RSACryptoServiceProvider rsaPub = new RSACryptoServiceProvider();
@@ -127,22 +127,16 @@ namespace Hikari.Common.Cryptography
 
 
         #region 私有方法
-        private RSACryptoServiceProvider DecodePemPrivateKey(String pemstr)
+        private RSACryptoServiceProvider? DecodePemPrivateKey(String pemstr)
         {
-            byte[] pkcs8privatekey;
-            pkcs8privatekey = Convert.FromBase64String(pemstr);
-            if (pkcs8privatekey != null)
-            {
-                RSACryptoServiceProvider rsa = DecodePrivateKeyInfo(pkcs8privatekey);
-                return rsa;
-            }
-            else
-                return null;
+            byte[] pkcs8Privatekey = Convert.FromBase64String(pemstr);
+            RSACryptoServiceProvider? rsa = DecodePrivateKeyInfo(pkcs8Privatekey);
+            return rsa;
         }
-        private RSACryptoServiceProvider DecodePrivateKeyInfo(byte[] pkcs8)
+        private RSACryptoServiceProvider? DecodePrivateKeyInfo(byte[] pkcs8)
         {
 
-            byte[] SeqOID = { 0x30, 0x0D, 0x06, 0x09, 0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 0x01, 0x01, 0x01, 0x05, 0x00 };
+            byte[] seqOid = { 0x30, 0x0D, 0x06, 0x09, 0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 0x01, 0x01, 0x01, 0x05, 0x00 };
             byte[] seq = new byte[15];
 
             using (MemoryStream mem = new MemoryStream(pkcs8))
@@ -177,7 +171,7 @@ namespace Hikari.Common.Cryptography
                             return null;
 
                         seq = binr.ReadBytes(15);       //read the Sequence OID
-                        if (!CompareBytearrays(seq, SeqOID))    //make sure Sequence for OID is correct
+                        if (!CompareBytearrays(seq, seqOid))    //make sure Sequence for OID is correct
                             return null;
 
                         bt = binr.ReadByte();

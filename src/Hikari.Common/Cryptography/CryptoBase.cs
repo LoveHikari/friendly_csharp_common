@@ -39,11 +39,22 @@
         /// </summary>
         /// <param name="data">要加密的数据</param>
         /// <returns>密文</returns>
-        public string EncryptBase64(string data)
+        public string EncryptToBase64String(string data)
         {
             byte[] bytes = Encoding.GetBytes(data);
             bytes = this.Encrypt(bytes);
             return Convert.ToBase64String(bytes);
+        }
+        /// <summary>
+        /// 加密
+        /// </summary>
+        /// <param name="data">要加密的数据</param>
+        /// <returns>密文</returns>
+        public string EncryptToHexString(string data)
+        {
+            byte[] bytes = Encoding.GetBytes(data);
+            bytes = this.Encrypt(bytes);
+            return bytes.ToHexString();
         }
         /// <summary>
         /// 解密
@@ -67,9 +78,20 @@
         /// </summary>
         /// <param name="data">要解密的数据</param>
         /// <returns>明文</returns>
-        public string DecryptStr(string data)
+        public string DecryptFromBase64String(string data)
         {
             var bytes = Convert.FromBase64String(data);
+            bytes = Decrypt(bytes);
+            return Encoding.GetString(bytes);
+        }
+        /// <summary>
+        /// 解密
+        /// </summary>
+        /// <param name="data">要解密的数据</param>
+        /// <returns>明文</returns>
+        public string DecryptFromHexString(string data)
+        {
+            var bytes = data.FromHexString();
             bytes = Decrypt(bytes);
             return Encoding.GetString(bytes);
         }

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi;
 
-namespace Hikari.Common.Web.AspNetCore.OpenApi.Filter;
+namespace Hikari.Common.Web.AspNetCore.Swagger.Filter;
 
 public sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvider authenticationSchemeProvider) : IOpenApiDocumentTransformer
 {
@@ -28,7 +28,7 @@ public sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvide
             // Apply it as a requirement for all operations
             foreach (var operation in document.Paths.Values.SelectMany(path => path.Operations))
             {
-                operation.Value.Security?.Add(new OpenApiSecurityRequirement
+                operation.Value.Security.Add(new OpenApiSecurityRequirement
                 {
                    [new OpenApiSecuritySchemeReference("Bearer", document)] = Array.Empty<string>().ToList()
                 });

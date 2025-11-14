@@ -1,62 +1,106 @@
 ﻿using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
-using Hikari.Common.Web.AspNetCore.OpenApi.Filter;
+using Hikari.Common.Web.AspNetCore.Swagger.Filter;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi;
+using Microsoft.OpenApi.Models;
 
-namespace Hikari.Common.Web.AspNetCore.OpenApi
+namespace Hikari.Common.Web.AspNetCore.Swagger
 {
     /// <summary>
-    /// OpenApi文档扩展类
+    /// Swagger文档扩展类
     /// <see cref="IServiceCollection"/> 扩展类
     /// </summary>
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), System.ComponentModel.Browsable(false)]
     public static class SwaggerServiceExtensions
     {
         /// <summary>
-        /// 添加OpenApi
+        /// 添加Swagger
         /// </summary>
         /// <param name="services"></param>
         /// <param name="openApiInfo"></param>
         /// <returns></returns>
-        public static IServiceCollection AddOpenApiCustom(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, OpenApiInfo? openApiInfo = null)
+        public static IServiceCollection AddSwaggerCustom(this IServiceCollection services, OpenApiInfo? openApiInfo = null)
         {
             services.AddApiVersioning(options =>
             {
                 //options.ApiVersionReader = new MediaTypeApiVersionReader();
-                //var builder = new MediaTypeApiVersionReaderBuilder();
+                var builder = new MediaTypeApiVersionReaderBuilder();
 
-                //options.ApiVersionReader = builder.Parameter("v")
-                //                                  .Include("application/json")
-                //                                  .Build();
-                options.ApiVersionReader = new UrlSegmentApiVersionReader();
+                options.ApiVersionReader = builder.Parameter("v")
+                                                  .Include("application/json")
+                                                  .Build();
                 options.AssumeDefaultVersionWhenUnspecified = true;
                 options.ApiVersionSelector = new CurrentImplementationApiVersionSelector(options);
                 options.DefaultApiVersion = new ApiVersion(1, 0);
                 options.ReportApiVersions = true;
             }).AddApiExplorer(o =>
             {
-                o.GroupNameFormat = "'v'VVV";
+                o.GroupNameFormat = "'v'VVVV";
                 o.SubstituteApiVersionInUrl = true;
             });  //添加版本控制、激活媒体类型版本控制
             //注册SwaggerAPI文档服务
-            services.AddOpenApi(options =>
+            services.AddSwaggerGen(options =>
             {
                 var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
                 foreach (var description in provider.ApiVersionDescriptions)
                 {
-                    options.AddDocumentTransformer((document, context, cancellationToken) =>
-                    {
-                        document.Info = CreateInfoForApiVersion(description, openApiInfo);
-                        return Task.CompletedTask;
-                    });
+                    options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description, openApiInfo));
                 }
-                
-                options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
-                options.AddDocumentTransformer<CustomHeaderTransformer>();
+
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Description = "请输入带有Bearer的Token",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    BearerFormat = "JWT",
+                    Scheme = "Bearer"
+                }); // 添加httpHeader参数
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });
+                options.OperationFilter<SwaggerHeaderFilter>();
+                //Set the comments path for the swagger json and ui.
+                System.IO.Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.xml").ToList().ForEach(file =>
+                {
+                    options.IncludeXmlComments(file, true);
+                });
             });
 
             return services;
+        }
+        /// <summary>
+        /// 添加Swagger
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="provider"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseSwaggerCustom(this IApplicationBuilder app, IApiVersionDescriptionProvider provider)
+        {
+            //启用Swagger
+            app.UseSwagger();
+            //启用SwaggerUI
+            app.UseSwaggerUI(options =>
+            {
+                foreach (var description in provider.ApiVersionDescriptions)
+                {
+                    options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                }
+            });
+
+            return app;
         }
 
         /// <summary>

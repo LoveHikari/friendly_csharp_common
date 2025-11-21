@@ -51,7 +51,8 @@ namespace Hikari.Common.Web.AspNetCore.OpenApi
                         return Task.CompletedTask;
                     });
                 }
-                options.OpenApiVersion = Microsoft.OpenApi.OpenApiSpecVersion.OpenApi3_1);
+
+                options.OpenApiVersion = Microsoft.OpenApi.OpenApiSpecVersion.OpenApi3_1;
                 options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
                 options.AddDocumentTransformer<CustomHeaderTransformer>();
             });

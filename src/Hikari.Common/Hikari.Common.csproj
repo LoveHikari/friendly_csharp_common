@@ -9,12 +9,12 @@
 		<Product>Hikari.Common</Product>
 		<Company>5cm R &amp; D department</Company>
 		<Description>公共库 公共庫</Description>
-		<Version>8.1.6</Version>
+		<Version>8.2.0</Version>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<PackageReleaseNotes>
-			修复了一些错误
-			いくつかのバグを修正しました
-			Fixed some bugs
+			更新到.net 10
+			.NET 10にアップデート
+			Updated to .NET 10
 		</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/LoveHikari/friendly_csharp_common</PackageProjectUrl>
 		<PackageTags>common</PackageTags>

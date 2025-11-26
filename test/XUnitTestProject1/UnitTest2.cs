@@ -160,6 +160,13 @@ namespace XUnitTestProject1
             }
             Assert.True(true);
         }
+         [Fact]
+        public void Test6()
+        {
+            var date = DateTimeOffset.UtcNow.DayOfWeek
+            var d = DateTime.Now.ToUnixTimeMilliseconds();
+            Assert.True(true);
+        }
     }
 }
 
@@ -172,7 +179,9 @@ public static class Extensions
             => source.Where(x => x > threshold);
 
         public bool IsEmpty
-            => !source.Any();
+        {
+            get { return !source.Any(); }
+        }
     }
 }
 

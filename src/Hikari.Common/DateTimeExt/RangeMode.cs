@@ -8,17 +8,17 @@ public enum RangeMode
     /// <summary>
     /// 开区间
     /// </summary>
-    Open,
+    Open,  // (a,b)
     /// <summary>
     /// 左闭右开区间
     /// </summary>
-    CloseOpen,
+    CloseOpen, // [a,b)
     /// <summary>
     /// 左开右闭区间
     /// </summary>
-    OpenClose,
+    OpenClose, // (a,b]
     /// <summary>
     /// 闭区间
     /// </summary>
-    Close,
+    Close, // [a,b]
 }

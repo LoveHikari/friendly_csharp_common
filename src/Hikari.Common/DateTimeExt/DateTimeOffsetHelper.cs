@@ -1,7 +1,7 @@
 ﻿/******************************************************************************************************************
  * 
  * 
- * 标  题： DateTime 帮助类(版本：Version1.0.0)
+ * 标  题： DateTimeOffset 帮助类(版本：Version1.0.0)
  * 作  者： YuXiaoWei
  * 日  期： 2016/11/30
  * 修  改：
@@ -13,39 +13,36 @@
  * 
  * ***************************************************************************************************************/
 
-using System;
-
 namespace Hikari.Common.DateTimeExt
 {
     /// <summary>
-    /// DateTime 帮助类
+    /// DateTimeOffset 帮助类
     /// </summary>
-    [Obsolete("请使用DateTimeOffsetHelper", true)]
-    public class DateTimeHelper
+    public class DateTimeOffsetHelper
     {
         /// <summary>
         /// 获取某日期所在的周的开始日期和结束日期
         /// </summary>
         /// <param name="dtNow">当前日期（年月日）</param>
         /// <returns>开始日期,结束日期</returns>
-        public static DateTimeRange GetDateWeek(DateTime dtNow)
+        public static DateTimeOffsetRange GetDateWeek(DateTimeOffset dtNow)
         {
             //今天是星期几
             int iNowOfWeek = (int)dtNow.DayOfWeek;
-            DateTime dtWeekSt = dtNow.AddDays(0 - iNowOfWeek).Date;
-            DateTime dtWeekEd = dtNow.AddDays(6 - iNowOfWeek).Date;
-            return new DateTimeRange(dtWeekSt, dtWeekEd);
+            DateTimeOffset dtWeekSt = dtNow.AddDays(0 - iNowOfWeek).Date;
+            DateTimeOffset dtWeekEd = dtNow.AddDays(6 - iNowOfWeek).Date;
+            return new DateTimeOffsetRange(dtWeekSt, dtWeekEd);
         }
 
         /// <summary>
         /// 获取某年第某周的开始日期和结束日期
         /// </summary>
-        /// <param name="year">当前日期（年月日）</param>
+        /// <param name="year">当前年</param>
         /// <param name="numWeek">第几周</param>
         /// <returns>开始日期,结束日期</returns>
-        public static DateTimeRange GetDateWeek(int year, int numWeek)
+        public static DateTimeOffsetRange GetDateWeek(int year, int numWeek)
         {
-            var dt = new DateTime(year, 1, 1);
+            var dt = new DateTimeOffset(year, 1, 1, 0, 0, 0, TimeSpan.Zero);
             dt += new TimeSpan((numWeek - 1) * 7, 0, 0, 0);
             return GetDateWeek(dt);
         }
@@ -55,23 +52,23 @@ namespace Hikari.Common.DateTimeExt
         /// </summary>
         /// <param name="dtNow">当前日期</param>
         /// <returns>月初,月末</returns>
-        public static DateTimeRange GetDateMonth(DateTime dtNow)
+        public static DateTimeOffsetRange GetDateMonth(DateTimeOffset dtNow)
         {
-            DateTime dtFirstDay = dtNow.AddDays(1 - dtNow.Day).Date;  //本月月初
-            DateTime dtLastDay = dtFirstDay.AddMonths(1).AddDays(-1).Date;  //本月月末
+            DateTimeOffset dtFirstDay = dtNow.AddDays(1 - dtNow.Day).Date;  //本月月初
+            DateTimeOffset dtLastDay = dtFirstDay.AddMonths(1).AddDays(-1).Date;  //本月月末
             //dtMonthEd = dtMonthSt.AddDays((dtNow.AddMonths(1) - dtNow).Days - 1);  //本月月末
-            return new DateTimeRange(dtFirstDay, dtLastDay);
+            return new DateTimeOffsetRange(dtFirstDay, dtLastDay);
         }
         /// <summary>
         /// 获取某日期所在的季度的开始日期和结束日期
         /// </summary>
         /// <param name="dtNow">当前日期</param>
         /// <returns>本季度初,本季度末</returns>
-        public static DateTimeRange GetDateQuarter(DateTime dtNow)
+        public static DateTimeOffsetRange GetDateQuarter(DateTimeOffset dtNow)
         {
             var dtQuarterSt = dtNow.AddMonths(0 - (dtNow.Month - 1) % 3).AddDays(1 - dtNow.Day).Date;  //本季度初  
             var dtQuarterEd = dtQuarterSt.AddMonths(3).AddDays(-1).Date;  //本季度末
-            return new DateTimeRange(dtQuarterSt, dtQuarterEd);
+            return new DateTimeOffsetRange(dtQuarterSt, dtQuarterEd);
         }
         /// <summary>
         /// 获取某季度的开始日期和结束日期
@@ -79,13 +76,13 @@ namespace Hikari.Common.DateTimeExt
         /// <param name="quarter">季度</param>
         /// <param name="year">年份，默认为当前年</param>
         /// <returns>本季度初,本季度末</returns>
-        public static DateTimeRange GetDateQuarter(int quarter, int? year = null)
+        public static DateTimeOffsetRange GetDateQuarter(int quarter, int? year = null)
         {
-            var nowYear = year ?? DateTime.Now.Year;  // 当前年
+            var nowYear = year ?? DateTimeOffset.Now.Year;  // 当前年
             var startMonth = quarter * 3 - 2;
-            var dtQuarterSt = new DateTime(nowYear, startMonth, 1);  //本季度初  
+            var dtQuarterSt = new DateTimeOffset(nowYear, startMonth, 1, 0, 0, 0, TimeSpan.Zero);  //本季度初  
             var dtQuarterEd = dtQuarterSt.AddMonths(3).AddDays(-1).Date;  //本季度末
-            return new DateTimeRange(dtQuarterSt, dtQuarterEd);
+            return new DateTimeOffsetRange(dtQuarterSt, dtQuarterEd);
         }
         /// <summary>
         /// 获得月份是第几季度
@@ -101,11 +98,11 @@ namespace Hikari.Common.DateTimeExt
         /// </summary>
         /// <param name="dtNow">当前日期</param>
         /// <returns>年初,年末</returns>
-        public static DateTimeRange GetDateYear(DateTime dtNow)
+        public static DateTimeOffsetRange GetDateYear(DateTimeOffset dtNow)
         {
-            var dtYearSt = new DateTime(dtNow.Year, 1, 1);  //本年年初  
-            var dtYearEd = new DateTime(dtNow.Year, 12, 31);  //本年年末
-            return new DateTimeRange(dtYearSt, dtYearEd);
+            var dtYearSt = new DateTimeOffset(dtNow.Year, 1, 1, 0, 0, 0, TimeSpan.Zero);  //本年年初
+            var dtYearEd = new DateTimeOffset(dtNow.Year, 12, 31, 23, 59, 59, TimeSpan.MaxValue);  //本年年末
+            return new DateTimeOffsetRange(dtYearSt, dtYearEd);
         }
         /// <summary>
         /// 获得一年有几周
@@ -114,7 +111,7 @@ namespace Hikari.Common.DateTimeExt
         /// <returns></returns>
         public static int GetYearWeekCount(int strYear)
         {
-            System.DateTime fDt = DateTime.Parse(strYear.ToString() + "-01-01");
+            System.DateTimeOffset fDt = DateTimeOffset.Parse(strYear.ToString() + "-01-01");
             int k = Convert.ToInt32(fDt.DayOfWeek);//得到该年的第一天是周几 
             if (k == 0)
             {
@@ -141,10 +138,10 @@ namespace Hikari.Common.DateTimeExt
         public static bool IsWeekSame(string date1, string date2)
         {
 
-            DateTime dt1 = DateTime.Parse(date1);
-            DateTime dt2 = DateTime.Parse(date2);
-            DateTime temp1 = dt1.AddDays(-(int)dt1.DayOfWeek).Date;
-            DateTime temp2 = dt2.AddDays(-(int)dt2.DayOfWeek).Date;
+            DateTimeOffset dt1 = DateTimeOffset.Parse(date1);
+            DateTimeOffset dt2 = DateTimeOffset.Parse(date2);
+            DateTimeOffset temp1 = dt1.AddDays(-(int)dt1.DayOfWeek).Date;
+            DateTimeOffset temp2 = dt2.AddDays(-(int)dt2.DayOfWeek).Date;
             bool result = temp1 == temp2;
             return result;
         }
@@ -157,8 +154,8 @@ namespace Hikari.Common.DateTimeExt
         public static bool IsMonthSame(string date1, string date2)
         {
 
-            DateTime dt1 = DateTime.Parse(date1);
-            DateTime dt2 = DateTime.Parse(date2);
+            DateTimeOffset dt1 = DateTimeOffset.Parse(date1);
+            DateTimeOffset dt2 = DateTimeOffset.Parse(date2);
             int temp1 = dt1.Month;
             int temp2 = dt2.Month;
             bool result = temp1 == temp2;
@@ -167,15 +164,15 @@ namespace Hikari.Common.DateTimeExt
         /// <summary>
         /// 计算时间距离当前时间的时间差
         /// </summary>
-        /// <param name="dateTime"></param>
+        /// <param name="DateTimeOffset"></param>
         /// <returns></returns>
-        public static string GetTimeInterval(DateTime dateTime)
+        public static string GetTimeInterval(DateTimeOffset DateTimeOffset)
         {
-            DateTime nowTime = DateTime.Now;
-            var timeSpan = nowTime - dateTime;
+            DateTimeOffset nowTime = DateTimeOffset.Now;
+            var timeSpan = nowTime - DateTimeOffset;
             if (timeSpan.TotalDays > 30)
             {
-                return dateTime.ToString("yyyy-MM-dd HH:mm:ss");
+                return DateTimeOffset.ToString("yyyy-MM-dd HH:mm:ss");
             }
             if (timeSpan.TotalHours > 24)
             {

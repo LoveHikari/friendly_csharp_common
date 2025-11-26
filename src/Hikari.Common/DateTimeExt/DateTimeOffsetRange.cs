@@ -2,18 +2,17 @@
 /// <summary>
 /// 时间段
 /// </summary>
-[Obsolete("请使用DateTimeOffsetRange", true)]
-public class DateTimeRange
+public class DateTimeOffsetRange
 {
     /// <summary>
     /// 起始时间
     /// </summary>
-    public DateTime Start { get; set; }
+    public DateTimeOffset Start { get; set; }
 
     /// <summary>
     /// 结束时间
     /// </summary>
-    public DateTime End { get; set; }
+    public DateTimeOffset End { get; set; }
     /// <summary>
     /// 模式
     /// </summary>
@@ -21,10 +20,10 @@ public class DateTimeRange
     /// <summary>
     /// 
     /// </summary>
-    public DateTimeRange()
+    public DateTimeOffsetRange()
     {
-        Start = DateTime.MinValue;
-        End = DateTime.MaxValue;
+        Start = DateTimeOffset.MinValue;
+        End = DateTimeOffset.MaxValue;
         Mode = RangeMode.Close;
     }
 
@@ -35,7 +34,7 @@ public class DateTimeRange
     /// <param name="end">结束时间</param>
     /// <param name="mode">模式</param>
     /// <exception cref="Exception"></exception>
-    public DateTimeRange(DateTime start, DateTime end, RangeMode mode = RangeMode.Close)
+    public DateTimeOffsetRange(DateTimeOffset start, DateTimeOffset end, RangeMode mode = RangeMode.Close)
     {
         if (start > end)
         {
@@ -47,28 +46,33 @@ public class DateTimeRange
         Mode = mode;
     }
     /// <summary>
-    /// 
+    /// 支持字符串解析："[2025-01-01 00:00:00+08:00, 2025-01-02 00:00:00+08:00)"
     /// </summary>
     /// <param name="range">[a,b]</param>
-    public DateTimeRange(string range)
+    public DateTimeOffsetRange(string range)
     {
+        if (string.IsNullOrWhiteSpace(range) || range.Length < 5)
+            throw new FormatException("时间范围格式不正确");
         // 取第一个字符
         var startMode = range[0];
         // 取最后一个字符
         var endMode = range[^1];
         // 取剩下的字符
         var timeRange = range.Substring(1, range.Length - 2);
-        RangeMode mode = startMode switch
+        Mode = (startMode, endMode) switch
         {
-            '(' when endMode == ')' => RangeMode.Open,
-            '[' when endMode == ')' => RangeMode.CloseOpen,
-            '(' when endMode == ']' => RangeMode.OpenClose,
-            _ => RangeMode.Close
+            ('(', ')') => RangeMode.Open,
+            ('[', ')') => RangeMode.CloseOpen,
+            ('(', ']') => RangeMode.OpenClose,
+            ('[', ']') => RangeMode.Close,
+            _ => throw new FormatException("不支持的时间范围格式")
         };
         // 根据,分割时间
-        var times = timeRange.Split(',');
-        Start = DateTime.Parse(times[0].Trim(' ').Trim('\'').Trim('\"'));
-        End = DateTime.Parse(times[1].Trim(' ').Trim('\'').Trim('\"'));
+        var parts = timeRange.Split(',', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length != 2)
+            throw new FormatException("时间范围必须包含两个时间点");
+        Start = DateTimeOffset.Parse(parts[0].Trim(' ').Trim('\'').Trim('\"'));
+        End = DateTimeOffset.Parse(parts[1].Trim(' ').Trim('\'').Trim('\"'));
     }
     /// <summary>
     /// 是否相交
@@ -76,9 +80,9 @@ public class DateTimeRange
     /// <param name="start"></param>
     /// <param name="end"></param>
     /// <returns></returns>
-    public bool HasIntersect(DateTime start, DateTime end)
+    public bool HasIntersect(DateTimeOffset start, DateTimeOffset end)
     {
-        return HasIntersect(new DateTimeRange(start, end));
+        return HasIntersect(new DateTimeOffsetRange(start, end));
     }
 
     /// <summary>
@@ -86,7 +90,7 @@ public class DateTimeRange
     /// </summary>
     /// <param name="range"></param>
     /// <returns></returns>
-    public bool HasIntersect(DateTimeRange range)
+    public bool HasIntersect(DateTimeOffsetRange range)
     {
         return Start.In(range.Start, range.End) || End.In(range.Start, range.End);
     }
@@ -96,13 +100,13 @@ public class DateTimeRange
     /// </summary>
     /// <param name="range"></param>
     /// <returns></returns>
-    public DateTimeRange? Intersect(DateTimeRange range)
+    public DateTimeOffsetRange? Intersect(DateTimeOffsetRange range)
     {
         if (HasIntersect(range.Start, range.End))
         {
-            var list = new List<DateTime>() { Start, range.Start, End, range.End };
+            var list = new List<DateTimeOffset>() { Start, range.Start, End, range.End };
             list.Sort();
-            return new DateTimeRange(list[1], list[2]);
+            return new DateTimeOffsetRange(list[1], list[2]);
         }
 
         return null;
@@ -114,16 +118,16 @@ public class DateTimeRange
     /// <param name="start"></param>
     /// <param name="end"></param>
     /// <returns></returns>
-    public DateTimeRange? Intersect(DateTime start, DateTime end)
+    public DateTimeOffsetRange? Intersect(DateTimeOffset start, DateTimeOffset end)
     {
-        return Intersect(new DateTimeRange(start, end));
+        return Intersect(new DateTimeOffsetRange(start, end));
     }
     /// <summary>
     /// 是否包含时间段
     /// </summary>
     /// <param name="range"></param>
     /// <returns></returns>
-    public bool Contains(DateTimeRange range)
+    public bool Contains(DateTimeOffsetRange range)
     {
         return range.Start.In(Start, End) && range.End.In(Start, End);
     }
@@ -134,9 +138,9 @@ public class DateTimeRange
     /// <param name="start"></param>
     /// <param name="end"></param>
     /// <returns></returns>
-    public bool Contains(DateTime start, DateTime end)
+    public bool Contains(DateTimeOffset start, DateTimeOffset end)
     {
-        return Contains(new DateTimeRange(start, end));
+        return Contains(new DateTimeOffsetRange(start, end));
     }
 
     /// <summary>
@@ -144,7 +148,7 @@ public class DateTimeRange
     /// </summary>
     /// <param name="range"></param>
     /// <returns></returns>
-    public bool In(DateTimeRange range)
+    public bool In(DateTimeOffsetRange range)
     {
         return Start.In(range.Start, range.End) && End.In(range.Start, range.End);
     }
@@ -155,9 +159,9 @@ public class DateTimeRange
     /// <param name="start"></param>
     /// <param name="end"></param>
     /// <returns></returns>
-    public bool In(DateTime start, DateTime end)
+    public bool In(DateTimeOffset start, DateTimeOffset end)
     {
-        return In(new DateTimeRange(start, end));
+        return In(new DateTimeOffsetRange(start, end));
     }
 
     /// <summary>
@@ -165,14 +169,14 @@ public class DateTimeRange
     /// </summary>
     /// <param name="range"></param>
     /// <returns></returns>
-    public DateTimeRange Union(DateTimeRange range)
+    public DateTimeOffsetRange Union(DateTimeOffsetRange range)
     {
         if (HasIntersect(range))
         {
             int startMode; // 模式，0：开，1：闭
             int endMode;
-            DateTime start;
-            DateTime end;
+            DateTimeOffset start;
+            DateTimeOffset end;
             if (Start > range.Start)
             {
                 start = range.Start;
@@ -256,7 +260,7 @@ public class DateTimeRange
                 0 when endMode == 1 => RangeMode.OpenClose,
                 _ => RangeMode.Close
             };
-            return new DateTimeRange(start, end, mode);
+            return new DateTimeOffsetRange(start, end, mode);
         }
 
         throw new Exception("不相交的时间段不能合并");
@@ -268,23 +272,19 @@ public class DateTimeRange
     /// <param name="start"></param>
     /// <param name="end"></param>
     /// <returns></returns>
-    public DateTimeRange Union(DateTime start, DateTime end)
+    public DateTimeOffsetRange Union(DateTimeOffset start, DateTimeOffset end)
     {
-        return Union(new DateTimeRange(start, end));
+        return Union(new DateTimeOffsetRange(start, end));
     }
 
     /// <summary>返回一个表示当前对象的 string。</summary>
     /// <returns>表示当前对象的字符串。</returns>
     public override string ToString()
     {
-        string str = Mode switch
-        {
-            RangeMode.Open => $"({Start:yyyy-MM-dd HH:mm:ss}, {End:yyyy-MM-dd HH:mm:ss})",
-            RangeMode.CloseOpen => $"[{Start:yyyy-MM-dd HH:mm:ss}, {End:yyyy-MM-dd HH:mm:ss})",
-            RangeMode.OpenClose => $"({Start:yyyy-MM-dd HH:mm:ss}, {End:yyyy-MM-dd HH:mm:ss}]",
-            _ => $"[{Start:yyyy-MM-dd HH:mm:ss}, {End:yyyy-MM-dd HH:mm:ss}]"
-        };
-        return str;
+        var startBracket = Mode == RangeMode.Open || Mode == RangeMode.OpenClose ? "(" : "[";
+        var endBracket = Mode == RangeMode.Open || Mode == RangeMode.CloseOpen ? ")" : "]";
+
+        return $"{startBracket}{Start:yyyy-MM-dd HH:mm:ss.fffffffzzz}, {End:yyyy-MM-dd HH:mm:ss.fffffffzzz}{endBracket}";
     }
     /// <summary>
     /// 判断是否相等
@@ -293,7 +293,7 @@ public class DateTimeRange
     /// <returns></returns>
     public override bool Equals(object? obj)
     {
-        if (obj is DateTimeRange range)
+        if (obj is DateTimeOffsetRange range)
         {
             return Start == range.Start && End == range.End && Mode == range.Mode;
         }

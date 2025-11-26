@@ -6,6 +6,7 @@ namespace Hikari.Common.DateTimeExt
     /// DateTime扩展类
     /// </summary>
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never), System.ComponentModel.Browsable(false)]
+    [Obsolete("请使用DateTimeOffsetExtensions", true)]
     public static class DateTimeExtensions
     {
         /// <summary>

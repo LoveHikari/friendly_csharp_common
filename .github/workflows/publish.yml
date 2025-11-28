@@ -14,7 +14,7 @@ env:
   # 要发布的类库的路径
   PROJECT_PATH: src/Hikari.Common/Hikari.Common.csproj
   # 对应的单元测试项目的路径
-  TEST_PATH: tests/XUnitTestProject1/XUnitTestProject1.csproj
+  TEST_PATH: test/XUnitTestProject1/XUnitTestProject1.csproj
   # NuGet 包的输出目录
   OUTPUT_DIR: ./nupkgs 
 

@@ -163,7 +163,6 @@ namespace XUnitTestProject1
          [Fact]
         public void Test6()
         {
-            var date = DateTimeOffset.UtcNow.DayOfWeek
             var d = DateTime.Now.ToUnixTimeMilliseconds();
             Assert.True(true);
         }

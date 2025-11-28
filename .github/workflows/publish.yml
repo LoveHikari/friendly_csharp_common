@@ -1,0 +1,72 @@
+name: Publish Specific Library to NuGet
+
+# 触发条件：推送以 'v' 开头的 tag 或手动触发
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+# ----------------------------------------------------
+# 步骤 1: 定义环境变量，方便路径引用
+# ----------------------------------------------------
+env:
+  # 要发布的类库的路径
+  PROJECT_PATH: src/Hikari.Common/Hikari.Common.csproj
+  # 对应的单元测试项目的路径
+  TEST_PATH: tests/XUnitTestProject1/XUnitTestProject1.csproj
+  # NuGet 包的输出目录
+  OUTPUT_DIR: ./nupkgs 
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    # 确保之前设置的 NUGET_API_KEY Secret 已经存在
+    environment: 
+      name: production # 可选，用于环境管理
+
+    steps:
+    - uses: actions/checkout@v4
+
+    # ----------------------------------------------------
+    # 步骤 2: Setup SDKs (不变)
+    # ----------------------------------------------------
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: |
+          6.0.x
+          8.0.x
+          9.0.x
+          10.0.x
+        include-prerelease: true
+
+    # ----------------------------------------------------
+    # 步骤 4: 编译、测试、打包 (关键路径指定)
+    # ----------------------------------------------------
+    
+    # 还原所有依赖 (通常对整个解决方案运行)
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    # 编译指定的类库
+    - name: Build Target Library
+      # 明确指定要编译的 .csproj 文件
+      run: dotnet build ${{ env.PROJECT_PATH }} --configuration Release --no-restore
+
+    # 运行指定的测试项目
+    - name: Run Tests
+      # 明确指定要运行的测试项目路径
+      run: dotnet test ${{ env.TEST_PATH }} --configuration Release --no-build --verbosity normal
+
+    # 打包指定的类库
+    - name: Pack NuGet
+      # 明确指定要打包的 .csproj 文件，并将输出定向到 env.OUTPUT_DIR
+      run: dotnet pack ${{ env.PROJECT_PATH }} --configuration Release --no-build --output ${{ env.OUTPUT_DIR }}
+
+    # ----------------------------------------------------
+    # 步骤 5: 发布
+    # ----------------------------------------------------
+    - name: Push to NuGet
+      # 只推送 OUTPUT_DIR 目录下的 .nupkg 文件
+      run: dotnet nuget push ${{ env.OUTPUT_DIR }}/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate

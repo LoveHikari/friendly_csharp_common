@@ -14,42 +14,50 @@ public static class IntegerExtensions
     /// </summary>
     /// <param name="this"></param>
     /// <returns></returns>
-    public static DateTime FromUnixTimeSeconds(this in long @this)
+    public static DateTimeOffset FromUnixTimeSeconds(this in long @this)
     {
         // DateTime dtStart = TimeZoneInfo.ConvertTime(new System.DateTime(1970, 1, 1), TimeZoneInfo.Local);
-        System.DateTime dtStart = System.TimeZoneInfo.ConvertTime(new System.DateTime(1970, 1, 1, 0, 0, 0, 0), TimeZoneInfo.Utc, TimeZoneInfo.Local);
-        return dtStart + TimeSpan.FromSeconds(@this);
+        //System.DateTime dtStart = System.TimeZoneInfo.ConvertTime(new System.DateTime(1970, 1, 1, 0, 0, 0, 0), TimeZoneInfo.Utc, TimeZoneInfo.Local);
+        //return dtStart + TimeSpan.FromSeconds(@this);
+        var utc = DateTimeOffset.FromUnixTimeSeconds(@this);
+        DateTimeOffset local = utc.ToLocalTime();
+        return local;
     }
     /// <summary>
     /// 秒级时间戳转为UTC时间
     /// </summary>
     /// <param name="this"></param>
     /// <returns></returns>
-    public static DateTime FromUnixTimeSecondsToUtc(this in long @this)
+    public static DateTimeOffset FromUnixTimeSecondsToUtc(this in long @this)
     {
-        DateTime unixEpochDateTimeUtc = new DateTime(621355968000000000L, DateTimeKind.Utc);
-        return unixEpochDateTimeUtc + TimeSpan.FromSeconds(@this);
+        //DateTime unixEpochDateTimeUtc = new DateTime(621355968000000000L, DateTimeKind.Utc);
+        //return unixEpochDateTimeUtc + TimeSpan.FromSeconds(@this);
+        return DateTimeOffset.FromUnixTimeSeconds(@this);
     }
     /// <summary>
     /// 毫秒级时间戳转为本地时间
     /// </summary>
     /// <param name="this"></param>
     /// <returns></returns>
-    public static DateTime FromUnixTimeMilliseconds(this in long @this)
+    public static DateTimeOffset FromUnixTimeMilliseconds(this in long @this)
     {
         // DateTime dtStart = TimeZoneInfo.ConvertTime(new System.DateTime(1970, 1, 1), TimeZoneInfo.Local);
-        System.DateTime dtStart = System.TimeZoneInfo.ConvertTime(new System.DateTime(1970, 1, 1, 0, 0, 0, 0), TimeZoneInfo.Utc, TimeZoneInfo.Local);
-        return dtStart + TimeSpan.FromMilliseconds(@this);
+        //System.DateTime dtStart = System.TimeZoneInfo.ConvertTime(new System.DateTime(1970, 1, 1, 0, 0, 0, 0), TimeZoneInfo.Utc, TimeZoneInfo.Local);
+        //return dtStart + TimeSpan.FromMilliseconds(@this);
+        var utc = DateTimeOffset.FromUnixTimeMilliseconds(@this);
+        DateTimeOffset local = utc.ToLocalTime();
+        return local;
     }
     /// <summary>
     /// 毫秒级时间戳转为UTC时间
     /// </summary>
     /// <param name="this"></param>
     /// <returns></returns>
-    public static DateTime FromUnixTimeMillisecondsToUtc(this in long @this)
+    public static DateTimeOffset FromUnixTimeMillisecondsToUtc(this in long @this)
     {
-        DateTime unixEpochDateTimeUtc = new DateTime(621355968000000000L, DateTimeKind.Utc);
-        return unixEpochDateTimeUtc + TimeSpan.FromMilliseconds(@this);
+        //DateTime unixEpochDateTimeUtc = new DateTime(621355968000000000L, DateTimeKind.Utc);
+        //return unixEpochDateTimeUtc + TimeSpan.FromMilliseconds(@this);
+        return DateTimeOffset.FromUnixTimeMilliseconds(@this);
     }
 
     /// <summary>

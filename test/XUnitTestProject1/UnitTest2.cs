@@ -163,7 +163,8 @@ namespace XUnitTestProject1
          [Fact]
         public void Test6()
         {
-            var d = DateTime.Now.ToUnixTimeMilliseconds();
+            var d = 1764323572L.FromUnixTimeSeconds();
+            var v = 1764323572L.FromUnixTimeSecondsToUtc();
             Assert.True(true);
         }
     }

@@ -67,14 +67,7 @@ jobs:
     - name: Pack NuGet
       # 明确指定要打包的 .csproj 文件，并将输出定向到 env.OUTPUT_DIR
       run: dotnet pack ${{ env.PROJECT_PATH }} --configuration Release --no-build --output ${{ env.OUTPUT_DIR }} --verbosity normal
-      
-    # 检查打包生成的 nupkg 文件
-    - name: List Generated NuGet Packages
-      run: |
-        echo "Listing files in output directory:"
-        ls -la ${{ env.OUTPUT_DIR }}/
-        echo "Looking for .nupkg files:"
-        ls -la ${{ env.OUTPUT_DIR }}/*.nupkg 2>/dev/null || echo "No .nupkg files found"
+     
 
     # ----------------------------------------------------
     # 步骤 5: 发布

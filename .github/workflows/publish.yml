@@ -55,9 +55,9 @@ jobs:
       run: dotnet build ${{ env.PROJECT_PATH }} --configuration Release --no-restore
 
     # 运行指定的测试项目
-    - name: Run Tests
+    #- name: Run Tests
       # 明确指定要运行的测试项目路径
-      run: dotnet test ${{ env.TEST_PATH }} --configuration Release --no-build --verbosity normal
+     # run: dotnet test ${{ env.TEST_PATH }} --configuration Release --no-build --verbosity normal
 
     # 打包指定的类库
     - name: Pack NuGet

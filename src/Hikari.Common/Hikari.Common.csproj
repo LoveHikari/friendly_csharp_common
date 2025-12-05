@@ -6,6 +6,7 @@
 		<Nullable>enable</Nullable>
 		<PackageId>Hikari.Common</PackageId>
 		<Authors>Asanoame</Authors>
+		<IsPackable>true</IsPackable>
 		<Product>Hikari.Common</Product>
 		<Company>5cm R &amp; D department</Company>
 		<Description>公共库 公共庫</Description>

@@ -130,6 +130,14 @@ namespace XUnitTestProject1
 
             Assert.True(true);
         }
+         [Fact]
+        public void Test6()
+        {
+            var v = DateTime.Now;
+            var vvv =DateTime.SpecifyKind(v, DateTimeKind.Unspecified);;
+            var vv = v.ToDateTimeOffset(new TimeSpan(-6, 0, 0));
+            Assert.True(true);
+        }
         [Fact]
         public async void Test5()
         {
@@ -158,13 +166,6 @@ namespace XUnitTestProject1
                 Console.WriteLine("Waiting for data...");
                 Console.ReadLine();
             }
-            Assert.True(true);
-        }
-         [Fact]
-        public void Test6()
-        {
-            var d = 1764323572L.FromUnixTimeSeconds();
-            var v = 1764323572L.FromUnixTimeSecondsToUtc();
             Assert.True(true);
         }
     }

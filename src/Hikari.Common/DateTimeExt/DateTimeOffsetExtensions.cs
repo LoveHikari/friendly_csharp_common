@@ -206,5 +206,4 @@ public static class DateTimeOffsetExtensions
             };
         }
     }
-
 }

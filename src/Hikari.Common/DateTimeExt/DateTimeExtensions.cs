@@ -277,6 +277,22 @@ namespace Hikari.Common.DateTimeExt
         {
             return @this.ToString("yyyy-MM-ddTHH:mm:ss.fffzzz");
         }
-        
+
+        extension(in DateTime @tihs)
+        {
+            /// <summary>
+            /// 转成DateTimeOffset
+            /// </summary>
+            /// <param name="offset">时区偏移,默认为本地时区</param>
+            /// <returns></returns>
+            public DateTimeOffset ToDateTimeOffset(TimeSpan? offset = null)
+            {
+                if (!offset.HasValue)
+                {
+                    return new DateTimeOffset(@tihs, TimeZoneInfo.Local.GetUtcOffset(@tihs));
+                }
+                return new DateTimeOffset(DateTime.SpecifyKind(@tihs, DateTimeKind.Unspecified), offset.Value);
+            }
+        }
     }
 }

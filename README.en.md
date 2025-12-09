@@ -1,8 +1,8 @@
 # Hikari.Common
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
-<img alt="dotnet-version" src="https://img.shields.io/badge/.net-%3E%3D8.0-blue.svg"></img>
+<img alt="dotnet-version" src="https://img.shields.io/badge/.net-%3E%3D10.0-blue.svg"></img>
 <img alt="csharp-version" src="https://img.shields.io/badge/C%23-latest-blue.svg"></img>
-<img alt="IDE-version" src="https://img.shields.io/badge/IDE-vs2022-blue.svg"></img>
+<img alt="IDE-version" src="https://img.shields.io/badge/IDE-vs2026-blue.svg"></img>
 [![MIT Licence](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/mit-license.php)
 <a href="https://github.com/LoveHikari/friendly_csharp_common"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Font_Awesome_5_brands_github.svg/54px-Font_Awesome_5_brands_github.svg.png" height="24"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/GitHub_logo_2013.svg/128px-GitHub_logo_2013.svg.png" height="24"></a>
 
@@ -70,6 +70,130 @@ RamInfo ramInfo = SystemInfo.GetRamInfo();// 获取内存信息
 var cpuSN=SystemInfo.GetCpuInfo()[0].SerialNumber; // CPU序列号
 var driveSN=SystemInfo.GetDiskInfo()[0].SerialNumber; // 硬盘序列号
 ```
+
+### 3.雪花算法(idgenerator)
+第1步，**全局** 初始化（应用程序启动时执行一次）：
+```cs
+// 创建 IdGeneratorOptions 对象，可在构造函数中输入 WorkerId：
+var options = new IdGeneratorOptions(Your_Unique_Worker_Id);
+// options.WorkerIdBitLength = 10; // 默认值6，限定 WorkerId 最大值为2^6-1，即默认最多支持64个节点。
+// options.SeqBitLength = 6; // 默认值6，限制每毫秒生成的ID个数。若生成速度超过5万个/秒，建议加大 SeqBitLength 到 10。
+// options.BaseTime = Your_Base_Time; // 如果要兼容老系统的雪花算法，此处应设置为老系统的BaseTime。
+// ...... 其它参数参考 IdGeneratorOptions 定义。
+
+// 保存参数（务必调用，否则参数设置不生效）：
+YitIdHelper.SetIdGenerator(options);
+
+// 以上过程只需全局一次，且应在生成ID之前完成。
+```
+
+第2步，生成ID：
+```cs
+// 初始化后，在任何需要生成ID的地方，调用以下方法：
+var newId = YitIdHelper.NextId();
+```
+
+### 44. 真实文件类型探测/文本编码检测
+
+```csharp
+var encoding=new FileInfo(filepath).GetEncoding(); // 获取文件编码(扩展调用)
+var encoding=stream.GetEncoding(); // 获取流的编码(扩展调用)
+var encoding=TextEncodingDetector.GetEncoding(filepath); // 获取文件编码(类调用)
+
+// 多种方式，任君调用
+var detector=new FileInfo(filepath).DetectFiletype(); // 扩展调用
+//var detector=File.OpenRead(filepath).DetectFiletype(); // 流扩展调用
+//var detector=FileSignatureDetector.DetectFiletype(filepath); // 类调用
+
+detector.Precondition;//基础文件类型
+detector.Extension;//真实扩展名
+detector.MimeType;//MimeType
+detector.FormatCategories;//格式类别
+```
+
+#### 默认支持的文件类型
+
+|   扩展名   |                              说明                              |
+| :--------: | :-------------------------------------------------------------: |
+|    3GP    |                          3GPP, 3GPP 2                          |
+|     7Z     |                              7-Zip                              |
+|    APK    |                    ZIP based Android Package                    |
+|    AVI    |                     Audio-Video Interleave                     |
+|     SH     |                          Shell Script                          |
+|   BPLIST   |                      Binary Property List                      |
+|  BMP, DIB  |                             Bitmap                             |
+|    BZ2    |                       Bunzip2 Compressed                       |
+|    CAB    |                        Microsoft Cabinet                        |
+|   CLASS   |                          Java Bytecode                          |
+|   CONFIG   |                     .NET Configuration File                     |
+| CRT, CERT |                           Certificate                           |
+|    CUR    |                             Cursor                             |
+|     DB     |              Windows Thumbs.db Thumbnail Database              |
+|    DDS    |                       DirectDraw Surface                       |
+|    DLL    |                 Windows Dynamic Linkage Library                 |
+|    DMG    |                     Apple Disk Mount Image                     |
+|    DMP    |                    Windows Memory Dump File                    |
+|    DOC    |             Microsoft Office Word 97-2003 Document             |
+|    DOCX    |             Microsoft Office Word OpenXML Document             |
+|    EPUB    |                         e-Pub Document                         |
+|    EXE    |                        Windows Executive                        |
+|    FLAC    |                         Loseless Audio                         |
+|    FLV    |                           Flash Video                           |
+|    GIF    |                   Graphics Interchage Format                   |
+|     GZ     |                          GZ Compressed                          |
+|    HDP    |                     HD Photo(JPEG XR) Image                     |
+|    HWP    |                   Legacy HWP, HWPML, CFBF HWP                   |
+|    ICO    |                              Icon                              |
+|    INI    |                       Initialization File                       |
+|    ISO    |                       ISO-9660 Disc Image                       |
+|    LNK    |                      Windows Shortcut Link                      |
+|    JP2    |                         JPEG 2000 Image                         |
+| JPG, JPEG |             Joint Photographic Experts Group Image             |
+|    LZH    |                         LZH Compressed                         |
+|    M4A    |               MP4 Container Contained Audio Only               |
+|    M4V    |                  MP4 Container Contained Video                  |
+|    MID    |                           Midi Sound                           |
+|    MKA    |             Matroska Container Contained Audio Only             |
+|    MKV    |               Matroska Container Contained Video               |
+|    MOV    |                      QuickTime Movie Video                      |
+|    MP4    |                MP4 Container Contained Contents                |
+|    MSI    |                       Microsoft Installer                       |
+|    OGG    |                       OGG Video or Audio                       |
+|    ODF    |                      OpenDocument Formula                      |
+|    ODG    |                      OpenDocument Graphics                      |
+|    ODP    |                    OpenDocument Presentation                    |
+|    ODS    |                    OpenDocument Spreadsheet                    |
+|    ODT    |                        OpenDocument Text                        |
+|    PAK    |                  PAK Archive or Quake Archive                  |
+|    PDB    |                   Microsoft Program Database                   |
+|    PDF    |                    Portable Document Format                    |
+|    PFX    |       Microsoft Personal Information Exchange Certificate       |
+|    PNG    |                 Portable Network Graphics Image                 |
+|    PPT    |          Microsoft Office PowerPoint 97-2003 Document          |
+|    PPTX    |          Microsoft Office PowerPoint OpenXML Document          |
+|    PPSX    | Microsoft Office PowerPoint OpenXML Document for Slideshow only |
+|    PSD    |                       Photoshop Document                       |
+|    RAR    |                        WinRAR Compressed                        |
+|    REG    |                        Windows Registry                        |
+|    RPM    |                 RedHat Package Manager Package                 |
+|    RTF    |                    Rich Text Format Document                    |
+|    SLN    |                Microsoft Visual Studio Solution                |
+|    SRT    |                         SubRip Subtitle                         |
+|    SWF    |                         Shockwave Flash                         |
+| SQLITE, DB |                         SQLite Database                         |
+|    TAR    |             pre-ISO Type and UStar Type TAR Package             |
+|    TIFF    |                 Tagged Image File Format Image                 |
+|    TXT    |                           Plain Text                           |
+|    WAV    |                           Wave Audio                           |
+|    WASM    |                       Binary WebAssembly                       |
+|    WEBM    |                           WebM Video                           |
+|    WEBP    |                           WebP Image                           |
+|    XAR    |                           XAR Package                           |
+|    XLS    |             Microsoft Office Excel 97-2003 Document             |
+|    XLSX    |             Microsoft Office Excep OpenXML Document             |
+|    XML    |               Extensible Markup Language Document               |
+|     Z     |                          Z Compressed                          |
+|    ZIP    |                           ZIP Package                           |
 
 ## 代码包含
 DateTime扩展类

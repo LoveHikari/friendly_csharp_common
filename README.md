@@ -1,8 +1,8 @@
 # Hikari.Common
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
-<img alt="dotnet-version" src="https://img.shields.io/badge/.net-%3E%3D8.0-blue.svg"></img>
+<img alt="dotnet-version" src="https://img.shields.io/badge/.net-%3E%3D10.0-blue.svg"></img>
 <img alt="csharp-version" src="https://img.shields.io/badge/C%23-latest-blue.svg"></img>
-<img alt="IDE-version" src="https://img.shields.io/badge/IDE-vs2022-blue.svg"></img>
+<img alt="IDE-version" src="https://img.shields.io/badge/IDE-vs2026-blue.svg"></img>
 [![MIT Licence](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/mit-license.php)
 <a href="https://github.com/LoveHikari/friendly_csharp_common"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Font_Awesome_5_brands_github.svg/54px-Font_Awesome_5_brands_github.svg.png" height="24"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/GitHub_logo_2013.svg/128px-GitHub_logo_2013.svg.png" height="24"></a>
 
@@ -69,6 +69,28 @@ string osVersion = SystemInfo.GetOsVersion();// 获取操作系统版本
 RamInfo ramInfo = SystemInfo.GetRamInfo();// 获取内存信息
 var cpuSN=SystemInfo.GetCpuInfo()[0].SerialNumber; // CPU序列号
 var driveSN=SystemInfo.GetDiskInfo()[0].SerialNumber; // 硬盘序列号
+```
+
+### 3.雪花算法(idgenerator)
+第1步，**全局** 初始化（应用程序启动时执行一次）：
+```cs
+// 创建 IdGeneratorOptions 对象，可在构造函数中输入 WorkerId：
+var options = new IdGeneratorOptions(Your_Unique_Worker_Id);
+// options.WorkerIdBitLength = 10; // 默认值6，限定 WorkerId 最大值为2^6-1，即默认最多支持64个节点。
+// options.SeqBitLength = 6; // 默认值6，限制每毫秒生成的ID个数。若生成速度超过5万个/秒，建议加大 SeqBitLength 到 10。
+// options.BaseTime = Your_Base_Time; // 如果要兼容老系统的雪花算法，此处应设置为老系统的BaseTime。
+// ...... 其它参数参考 IdGeneratorOptions 定义。
+
+// 保存参数（务必调用，否则参数设置不生效）：
+YitIdHelper.SetIdGenerator(options);
+
+// 以上过程只需全局一次，且应在生成ID之前完成。
+```
+
+第2步，生成ID：
+```cs
+// 初始化后，在任何需要生成ID的地方，调用以下方法：
+var newId = YitIdHelper.NextId();
 ```
 
 ### 44. 真实文件类型探测/文本编码检测

@@ -1,7 +1,7 @@
 ﻿using System;
 using Hikari.Common.DateTimeExt;
 
-namespace Hikari.Common;
+namespace Hikari.Common.IdGenerator;
 /// <summary>
 /// Twitter的分布式自增ID雪花算法
 /// 调用案例：

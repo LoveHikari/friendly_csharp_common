@@ -9,7 +9,7 @@
 		<Product>Hikari.Common</Product>
 		<Company>5cm R &amp; D department</Company>
 		<Description>公共库 公共庫</Description>
-		<Version>8.2.2</Version>
+		<Version>8.2.3</Version>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<PackageReleaseNotes>
 			更新到.net 10
@@ -55,10 +55,10 @@
 		<!--<PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.12">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>-->
-		<PackageReference Include="System.Management" Version="10.0.0">
+		<PackageReference Include="System.Management" Version="10.0.1">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0">
+		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.1">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 	</ItemGroup>

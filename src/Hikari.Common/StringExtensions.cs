@@ -548,6 +548,31 @@ namespace Hikari.Common
             return DateTime.TryParse(@this, out var result) ? result : value;
         }
         /// <summary>
+        /// 转换成时间类型
+        /// </summary>
+        /// <param name="this"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static DateTimeOffset? ToDateTimeOffset(this string @this)
+        {
+            if (string.IsNullOrWhiteSpace(@this)) return null;
+
+            return DateTimeOffset.TryParse(@this, out var result) ? result : null;
+        }
+        /// <summary>
+        /// 转换成时间类型
+        /// </summary>
+        /// <param name="this"></param>
+        /// <param name="value">失败时间</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static DateTimeOffset ToDateTimeOffset(this string @this, DateTimeOffset value)
+        {
+            if (string.IsNullOrWhiteSpace(@this)) return value;
+
+            return DateTimeOffset.TryParse(@this, out var result) ? result : value;
+        }
+        /// <summary>
         /// 转换成日期类型
         /// </summary>
         /// <param name="this"></param>

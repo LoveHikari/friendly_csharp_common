@@ -133,9 +133,8 @@ namespace XUnitTestProject1
          [Fact]
         public void Test6()
         {
-            var v = DateTime.Now;
-            var vvv =DateTime.SpecifyKind(v, DateTimeKind.Unspecified);;
-            var vv = v.ToDateTimeOffset(new TimeSpan(-6, 0, 0));
+            var v = "2025-12-10 22:22:22 +7:00";
+            var vv = v.ToDateTimeOffset();
             Assert.True(true);
         }
         [Fact]

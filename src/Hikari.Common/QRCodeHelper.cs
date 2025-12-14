@@ -50,7 +50,7 @@ namespace Hikari.Common
         /// <param name="errorCorrection">纠错码等级</param>
         /// <param name="characterSet">内容编码</param>
         /// <returns></returns>
-        public static SKBitmap EncodeQrCode(string content, int size = 10, int margin = 2, string errorCorrection = "L", string characterSet = "utf-8")
+        public static Stream EncodeQrCode(string content, int size = 10, int margin = 2, string errorCorrection = "L", string characterSet = "utf-8")
         {
             BarcodeWriter barCodeWriter = new BarcodeWriter();
             barCodeWriter.Format = BarcodeFormat.QR_CODE;
@@ -100,10 +100,14 @@ namespace Hikari.Common
 
             barCodeWriter.Options = options;
             ZXing.Common.BitMatrix bm = barCodeWriter.Encode(content);
-            SKBitmap result = barCodeWriter.Write(bm);
-
-            return result;
-
+            SKBitmap map = barCodeWriter.Write(bm);
+            // 转换为 PNG 并保存
+            using SKImage image = SKImage.FromBitmap(map);
+            using SKData data = image.Encode(SKEncodedImageFormat.Png, 100);
+            var stream = new MemoryStream();
+            data.SaveTo(stream);
+            stream.Position = 0; // 重置位置，便于读取
+            return stream;
         }
         ///// <summary>
         ///// 生成二维码

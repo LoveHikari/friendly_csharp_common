@@ -4,6 +4,8 @@ using System;
 using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.Intrinsics.X86;
@@ -14,8 +16,13 @@ using Hikari.Common.Cryptography;
 using Hikari.Common.DateTimeExt;
 using Hikari.Common.IO.FileDetector;
 using Hikari.Common.Net.Http;
+using SkiaSharp;
 using Xunit;
 using Xunit.Abstractions;
+using ZXing;
+using ZXing.Common;
+using ZXing.QrCode;
+using ZXing.SkiaSharp;
 
 namespace XUnitTestProject1
 {
@@ -133,8 +140,8 @@ namespace XUnitTestProject1
          [Fact]
         public void Test6()
         {
-            var v = "2025-12-10 22:22:22 +7:00";
-            var vv = v.ToDateTimeOffset();
+            var v = QRCodeHelper.EncodeQrCode("1111111");
+            var vv = "data:image/png;base64,"+Convert.ToBase64String(v.ToBytes());
             Assert.True(true);
         }
         [Fact]
@@ -166,6 +173,37 @@ namespace XUnitTestProject1
                 Console.ReadLine();
             }
             Assert.True(true);
+        }
+        /// <summary>
+       /// 生成二维码
+       /// </summary>
+       /// <param name="text">内容</param>
+       /// <param name="width">宽度</param>
+       /// <param name="height">高度</param>
+       /// <returns></returns>
+        public static SKBitmap Generate1(string text, int width, int height)
+        {
+            BarcodeWriter writer = new BarcodeWriter();
+            writer.Format = BarcodeFormat.QR_CODE;
+            QrCodeEncodingOptions options = new QrCodeEncodingOptions()
+            {
+                DisableECI = true,//设置内容编码
+                CharacterSet = "UTF-8",  //设置二维码的宽度和高度
+                Width = width,
+                Height = height,
+                Margin = 1//设置二维码的边距,单位不是固定像素
+            };
+           
+            writer.Options = options;
+            var map = writer.Write(text);
+            // 转换为 PNG 并保存
+            using (SKImage image = SKImage.FromBitmap(map))
+            using (SKData data = image.Encode(SKEncodedImageFormat.Png, 100))
+            using (FileStream stream = File.OpenWrite("D:/qrcode.png"))
+            {
+                data.SaveTo(stream);
+            }
+            return map;
         }
     }
 }

@@ -23,22 +23,22 @@ Fixed some bugs</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.1">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.11">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.1">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.11">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0">
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<!--<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2">
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<!--<PackageReference Include="MySql.EntityFrameworkCore" Version="10.0.0-rc">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>-->
-		<PackageReference Include="MySql.EntityFrameworkCore" Version="10.0.0-rc">
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.1">
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.11">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="System.Linq.Async.Queryable" Version="7.0.0" />

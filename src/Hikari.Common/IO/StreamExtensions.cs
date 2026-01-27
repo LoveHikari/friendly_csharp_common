@@ -62,4 +62,46 @@ public static class StreamExtensions
     {
         return Convert.ToBase64String(@this);
     }
+    /// <summary>
+    /// 保存到文件
+    /// </summary>
+    /// <param name="this"></param>
+    /// <param name="filePath">文件路径</param>
+    /// <returns></returns>
+    public static async Task SaveToFileAsync(this Stream @this, string filePath)
+    {
+        async Task CopyStreamAsync(Stream input, Stream output)
+        {
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = await input.ReadAsync(buffer, 0, buffer.Length)) > 0)
+            {
+                await output.WriteAsync(buffer, 0, len);
+            }
+        }
+
+        await using var fileStream = File.Create(filePath);
+        @this.Seek(0, SeekOrigin.Begin);
+        await CopyStreamAsync(@this, fileStream);
+    }
+    /// <summary>
+    /// 保存到文件
+    /// </summary>
+    /// <param name="this"></param>
+    /// <param name="filePath">文件路径</param>
+    public static void SaveToFile(this Stream @this, string filePath)
+    {
+        void CopyStream(Stream input, Stream output)
+        {
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = input.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                output.Write(buffer, 0, len);
+            }
+        }
+        using var fileStream = File.Create(filePath);
+        @this.Seek(0, SeekOrigin.Begin);
+        CopyStream(@this, fileStream);
+    }
 }

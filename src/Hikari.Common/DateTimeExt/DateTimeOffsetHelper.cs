@@ -164,15 +164,15 @@ namespace Hikari.Common.DateTimeExt
         /// <summary>
         /// 计算时间距离当前时间的时间差
         /// </summary>
-        /// <param name="DateTimeOffset"></param>
+        /// <param name="dateTimeOffset"></param>
         /// <returns></returns>
-        public static string GetTimeInterval(DateTimeOffset DateTimeOffset)
+        public static string GetTimeInterval(DateTimeOffset dateTimeOffset)
         {
             DateTimeOffset nowTime = DateTimeOffset.Now;
-            var timeSpan = nowTime - DateTimeOffset;
+            var timeSpan = nowTime - dateTimeOffset;
             if (timeSpan.TotalDays > 30)
             {
-                return DateTimeOffset.ToString("yyyy-MM-dd HH:mm:ss");
+                return dateTimeOffset.ToString("yyyy-MM-dd HH:mm:ss");
             }
             if (timeSpan.TotalHours > 24)
             {

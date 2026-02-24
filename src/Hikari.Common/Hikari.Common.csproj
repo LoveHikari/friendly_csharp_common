@@ -28,7 +28,7 @@
 		<PackageReference Include="FluentFTP" Version="53.0.2">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="JavaScriptEngineSwitcher.ChakraCore" Version="3.30.4">
+		<PackageReference Include="JavaScriptEngineSwitcher.ChakraCore" Version="3.31.0">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="MetadataExtractor" Version="2.9.0">
@@ -40,7 +40,7 @@
 		<PackageReference Include="SharpZipLib" Version="1.4.2">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="SkiaSharp" Version="3.119.2-preview.2.3">
+		<PackageReference Include="SkiaSharp" Version="3.119.2">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 
@@ -55,10 +55,10 @@
 		<!--<PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.12">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>-->
-		<PackageReference Include="System.Management" Version="10.0.2">
+		<PackageReference Include="System.Management" Version="10.0.3">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.2">
+		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.3">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 	</ItemGroup>

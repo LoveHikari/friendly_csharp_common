@@ -35,6 +35,27 @@ namespace Hikari.Common.Collection
             return string.Join(separate, removeEmptyEntry ? strs.Where(t => t != null) : strs);
         }
 
+        /// <summary>
+        /// 从列表中随机抽取指定数量的元素
+        /// </summary>
+        /// <typeparam name="T">列表中元素的类型</typeparam>
+        /// <param name="list">源列表</param>
+        /// <param name="count">要抽取的数量</param>
+        /// <param name="rnd">随机数生成器（可选参数）</param>
+        /// <returns>包含随机元素的新列表</returns>
+        public static IEnumerable<T> RandomTake<T>(this IEnumerable<T> list, int count, Random? rnd = null)
+        {
+            // 这里使用了 C# 8.0 的空值合并运算符 (??=)。
+            // 如果调用者没有传入自定义的 Random 实例，就使用 .NET 6+ 提供的 Random.Shared。
+            // Random.Shared 是线程安全的，且不需要担心像 new Random() 那样因频繁创建导致种子相同而产生重复序列。
+            rnd ??= Random.Shared;
+
+            // 下面是核心：
+            // 1. OrderBy(_ => rnd.Next())：为列表中的每一个元素分配一个随机的“排序键”，把数据打乱
+            // 2. Take(count)：数据打乱后，就可以从容地取前 N 条数据。
+            return list.OrderBy(_ => rnd.Next()).Take(count);
+        }
+
 
         /// <summary>
         /// 确认序列中是否包含指定元素

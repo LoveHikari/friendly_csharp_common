@@ -8,10 +8,10 @@
 
   <ItemGroup>
     <!--<PackageReference Include="Masuit.Tools.Core" Version="2025.4.4" />-->
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.6.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.7.0" />
     <PackageReference Include="RJCP.SerialPortStream" Version="3.0.5" />
-    <PackageReference Include="SkiaSharp" Version="4.147.0-preview.3.1" />
-    <PackageReference Include="System.Drawing.Common" Version="10.0.8" />
+    <PackageReference Include="SkiaSharp" Version="4.150.0-preview.2.1" />
+    <PackageReference Include="System.Drawing.Common" Version="10.0.9" />
     <PackageReference Include="xunit" Version="2.9.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="4.0.0-pre.4">
       <PrivateAssets>all</PrivateAssets>

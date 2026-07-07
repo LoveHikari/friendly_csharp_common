@@ -40,7 +40,7 @@
 		<PackageReference Include="SharpZipLib" Version="1.4.2">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="SkiaSharp" Version="4.150.0-preview.2.1">
+		<PackageReference Include="SkiaSharp" Version="4.151.0-preview.1.1">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 

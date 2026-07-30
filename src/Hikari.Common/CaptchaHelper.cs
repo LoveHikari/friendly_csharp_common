@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using System.Security.Cryptography;
+using SkiaSharp;
 
 namespace Hikari.Common;
 /// <summary>
@@ -7,10 +8,37 @@ namespace Hikari.Common;
 public class CaptchaHelper
 {
     /// <summary>
-    /// 创建验证码
+    /// 创建由 5 位随机字母和数字组成的图形验证码。
     /// </summary>
-    /// <returns>随机表达式，表达式结果，图片base64</returns>
-    public static (string randomCode, int value, string pic) CreateCaptcha()
+    /// <remarks>
+    /// 字符集排除了易混淆字符（<c>0</c>、<c>O</c>、<c>I</c>、<c>1</c>），
+    /// 并使用加密安全的随机数生成器，防止验证码被预测。
+    /// </remarks>
+    /// <returns>随机验证码字符串和对应 PNG 图片的 Base64 编码。</returns>
+    public static (string randomCode, string pic) CreateRandomCaptcha()
+    {
+        const string captchaCharacters = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+        const int captchaLength = 5;
+
+        // 使用加密安全随机数生成器逐位生成验证码，避免 Random 的可预测性。
+        char[] captchaCodeCharacters = new char[captchaLength];
+        for (int index = 0; index < captchaCodeCharacters.Length; index++)
+        {
+            int characterIndex = RandomNumberGenerator.GetInt32(captchaCharacters.Length);
+            captchaCodeCharacters[index] = captchaCharacters[characterIndex];
+        }
+
+        string randomCode = new string(captchaCodeCharacters);
+        byte[] imageBytes = CreateCaptchaImage(randomCode);
+        string pic = Convert.ToBase64String(imageBytes);
+        return (randomCode, pic);
+    }
+
+    /// <summary>
+    /// 创建算式验证码
+    /// </summary>
+    /// <returns>随机算式，算式结果，图片base64</returns>
+    public static (string randomCode, int value, string pic) CreateArithmeticCaptcha()
     {
         var captchaCode = GetCaptchaCode();
         byte[] bytes = CreateCaptchaImage(captchaCode.randomCode);
@@ -61,80 +89,119 @@ public class CaptchaHelper
     /// <returns>图片</returns>
     private static byte[] CreateCaptchaImage(string randomCode)
     {
-        const int randAngle = 45; //随机转动角度
-        int mapwidth = (int)(randomCode.Length * 16);
-        SKBitmap map = new SKBitmap(mapwidth, 28);//创建图片背景
-        using SKCanvas canvas = new SKCanvas(map);
-        canvas.Clear(SKColors.AliceBlue);//清除画面，填充背景
+        const int CharacterSpacing = 29;
+        const int HorizontalPadding = 12;
+        const int ImageHeight = 48;
+        const int MaximumRotationDegrees = 20;
+        const float FontSize = 27;
+        const float OuterOutlineWidth = 5.4F;
+        const float CharacterStrokeWidth = 2.5F;
+        const int NoisePointCount = 35;
+        int imageWidth = (randomCode.Length * CharacterSpacing) + (HorizontalPadding * 2);
 
-        Random random = new Random();
+        using SKBitmap bitmap = new SKBitmap(imageWidth, ImageHeight);
+        using SKCanvas canvas = new SKCanvas(bitmap);
+        canvas.Clear(SKColors.White);
 
-        //背景噪点生成，为了在白色背景上显示，尽量生成深色
-        int intRed = random.Next(256);
-        int intGreen = random.Next(256);
-        int intBlue = (intRed + intGreen > 400) ? 0 : 400 - intRed - intGreen;
-        intBlue = (intBlue > 255) ? 255 : intBlue;
+        // 此随机数仅用于控制图像外观，不参与验证码文本及其校验。
+        Random random = Random.Shared;
+        DrawBackgroundNoise(canvas, bitmap, random, NoisePointCount);
 
-        var blackPen = new SKColor((byte)intRed, (byte)intGreen, (byte)intBlue);
-        for (int i = 0; i < 50; i++)
+        SKColor[] characterColors =
         {
-            int x = random.Next(0, map.Width);
-            int y = random.Next(0, map.Height);
-            canvas.DrawPoint(x, y, new SKPaint() { Color = blackPen });
-        }
-        //绘制干扰曲线
-        for (int i = 0; i < 2; i++)
+            new SKColor(255, 139, 0),
+            new SKColor(0, 152, 210),
+            new SKColor(27, 174, 89),
+            new SKColor(234, 76, 95),
+            new SKColor(156, 77, 191),
+        };
+        string[] fontFamilies =
         {
-            SKPoint p1 = new SKPoint(0, random.Next(map.Height));
-            SKPoint p2 = new SKPoint(random.Next(map.Width), random.Next(map.Height));
-            SKPoint p3 = new SKPoint(random.Next(map.Width), random.Next(map.Height));
-            SKPoint p4 = new SKPoint(map.Width, random.Next(map.Height));
-            SKPoint[] p = { p1, p2, p3, p4 };
-            using SKPaint pen = new SKPaint { Color = SKColors.Gray, StrokeWidth = 1 };
-            canvas.DrawPoints(SKPointMode.Polygon, p, pen);
-        }
+            "Comic Sans MS",
+            "Arial Rounded MT Bold",
+            "Verdana",
+            "Microsoft Sans Serif",
+        };
 
-        //文字距中
-        using SKPaint paint = new SKPaint { IsAntialias = true };
-        //paint.TextAlign = SKTextAlign.Center;
-        //paint.TextSize = 14;
-
-        //定义颜色
-        SKColor[] colors = { SKColors.Black, SKColors.Red, SKColors.DarkBlue, SKColors.Green, SKColors.Orange, SKColors.Brown, SKColors.DarkCyan, SKColors.Purple };
-        //定义字体
-        string[] fonts = { "Verdana", "Microsoft Sans Serif", "Comic Sans MS", "Arial", "宋体" };
-        int cindex = random.Next(7);
-
-        //验证码旋转，防止机器识别
-        char[] chars = randomCode.ToCharArray();//拆散字符串成单字符数组
-        foreach (char t in chars)
+        // 每个字符独立设置字体、颜色、旋转角度与垂直偏移，形成示例中的活泼手写风格。
+        for (int index = 0; index < randomCode.Length; index++)
         {
-            int findex = random.Next(5);
-            using SKTypeface typeface = SKTypeface.FromFamilyName(fonts[findex], SKFontStyle.Bold);
-            SKFont font = new SKFont(typeface, 14);
-            //paint.Typeface = typeface;
-            paint.Color = colors[cindex];
-            SKPoint dot = new SKPoint(14, 14);
-            float angle = random.NextSingle() * 2 * randAngle - randAngle;  // 转动的度数
-            if (t == '+' || t == '-' || t == '*')
+            float characterX = HorizontalPadding + (CharacterSpacing * index) + (CharacterSpacing / 2F);
+            float characterY = 32 + random.Next(-3, 4);
+            float rotationDegrees = random.Next(-MaximumRotationDegrees, MaximumRotationDegrees + 1);
+            SKColor characterColor = characterColors[random.Next(characterColors.Length)];
+            string fontFamily = fontFamilies[random.Next(fontFamilies.Length)];
+
+            using SKTypeface typeface = SKTypeface.FromFamilyName(fontFamily, SKFontStyle.Bold);
+            using SKFont font = new SKFont(typeface, FontSize);
+            using SKPaint outlinePaint = new SKPaint
             {
-                //加减乘运算符不进行旋转
-                canvas.Translate(dot.X, dot.Y);//移动光标到指定位置
-                canvas.DrawText(t.ToString(), 1, 1, SKTextAlign.Center, font, paint);
-                canvas.Translate(-2, -dot.Y);//移动光标到指定位置，每个字符紧凑显示，避免被软件识别
-            }
-            else
+                Color = SKColors.White,
+                IsAntialias = true,
+                Style = SKPaintStyle.Stroke,
+                StrokeWidth = OuterOutlineWidth,
+                StrokeJoin = SKStrokeJoin.Round,
+            };
+            using SKPaint characterPaint = new SKPaint
             {
-                canvas.Translate(dot.X, dot.Y);//移动光标到指定位置
-                canvas.RotateDegrees(angle);
-                canvas.DrawText(t.ToString(), 1, 1, SKTextAlign.Center, font, paint);
-                canvas.RotateDegrees(-angle);//转回去
-                canvas.Translate(-2, -dot.Y);//移动光标到指定位置，每个字符紧凑显示，避免被软件识别
-            }
+                Color = characterColor,
+                IsAntialias = true,
+                Style = SKPaintStyle.Stroke,
+                StrokeWidth = CharacterStrokeWidth,
+                StrokeJoin = SKStrokeJoin.Round,
+            };
+
+            // 先以白色粗描边分离相邻字符，再叠加彩色描边；不填充字形内部，实现粗体空心效果。
+            canvas.Save();
+            canvas.Translate(characterX, characterY);
+            canvas.RotateDegrees(rotationDegrees);
+            canvas.DrawText(randomCode[index].ToString(), 0, 0, SKTextAlign.Center, font, outlinePaint);
+            canvas.DrawText(randomCode[index].ToString(), 0, 0, SKTextAlign.Center, font, characterPaint);
+            canvas.Restore();
         }
 
-        //生成图片
-        using SKData encodedData = map.Encode(SKEncodedImageFormat.Png, 100);
+        using SKData encodedData = bitmap.Encode(SKEncodedImageFormat.Png, 100);
         return encodedData.ToArray();
+    }
+
+    /// <summary>
+    /// 在白色背景上绘制低对比度噪点和干扰线，增加机器识别难度且不影响人工阅读。
+    /// </summary>
+    /// <param name="canvas">用于绘制验证码的画布。</param>
+    /// <param name="bitmap">用于确定绘制范围的位图。</param>
+    /// <param name="random">仅用于生成视觉样式的随机数生成器。</param>
+    /// <param name="noisePointCount">需要绘制的背景噪点数量。</param>
+    private static void DrawBackgroundNoise(SKCanvas canvas, SKBitmap bitmap, Random random, int noisePointCount)
+    {
+        using SKPaint noisePaint = new SKPaint
+        {
+            Color = new SKColor(210, 220, 230),
+            IsAntialias = true,
+            StrokeWidth = 1,
+        };
+        for (int index = 0; index < noisePointCount; index++)
+        {
+            canvas.DrawCircle(random.Next(bitmap.Width), random.Next(bitmap.Height), 1, noisePaint);
+        }
+
+        // 使用半透明曲线提供视觉干扰，避免深色直线遮挡验证码主体。
+        using SKPaint linePaint = new SKPaint
+        {
+            Color = new SKColor(170, 190, 210, 120),
+            IsAntialias = true,
+            StrokeWidth = 1.2F,
+            Style = SKPaintStyle.Stroke,
+        };
+        for (int index = 0; index < 2; index++)
+        {
+            SKPoint[] points =
+            {
+                new SKPoint(0, random.Next(bitmap.Height)),
+                new SKPoint(bitmap.Width / 3F, random.Next(bitmap.Height)),
+                new SKPoint((bitmap.Width * 2F) / 3F, random.Next(bitmap.Height)),
+                new SKPoint(bitmap.Width, random.Next(bitmap.Height)),
+            };
+            canvas.DrawPoints(SKPointMode.Polygon, points, linePaint);
+        }
     }
 }

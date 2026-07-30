@@ -126,13 +126,7 @@ namespace XUnitTestProject1
         [Fact]
         public async void Test4()
         {
-            CryptoBase crypto = new DesCrypto("ViVueH5");
-            var v = crypto.Encrypt("1349");
-            var v1 = v.ToHexString();
-
-           
-            var vv = crypto.Decrypt(v1.FromHexString());
-            var vv1 = Encoding.UTF8.GetString(vv);
+            var vv = CaptchaHelper.CreateArithmeticCaptcha();
 
 
             Assert.True(true);

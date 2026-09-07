@@ -25,6 +25,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="NPOI" Version="2.8.0" />
+		<PackageReference Include="Spire.Officefor.NETStandard" Version="11.8.0" />
 	</ItemGroup>
 
 </Project>

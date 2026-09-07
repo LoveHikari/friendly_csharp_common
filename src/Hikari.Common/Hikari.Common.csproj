@@ -40,7 +40,7 @@
 		<PackageReference Include="SharpZipLib" Version="1.4.2">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="SkiaSharp" Version="4.151.0-preview.1.1">
+		<PackageReference Include="SkiaSharp" Version="4.151.2">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 
@@ -49,16 +49,16 @@
 		</PackageReference>-->
 
 
-		<PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.22">
+		<PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.24">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<!--<PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.12">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>-->
-		<PackageReference Include="System.Management" Version="10.0.10">
+		<PackageReference Include="System.Management" Version="10.0.11">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.10">
+		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.11">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 	</ItemGroup>

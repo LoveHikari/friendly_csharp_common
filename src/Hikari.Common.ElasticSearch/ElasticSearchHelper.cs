@@ -50,12 +50,12 @@ public class ElasticSearchHelper(string cloudId, string apiKey, string index)
     /// <param name="pageIndex">当前页</param>
     /// <param name="pageSize">每页数量</param>
     /// <returns></returns>
-    public async Task<Pager<T>> GetListAsync<T>(IDictionary<string, string>? query, int pageIndex, int pageSize) where T : class
+    public async Task<Paginated<T>> GetListAsync<T>(IDictionary<string, string>? query, int pageIndex, int pageSize) where T : class
     {
         int size = pageSize;  // 显示应该返回的结果数量
         int from = (pageIndex - 1) * pageSize;  // 显示应该跳过的初始结果数量
 
-        Pager<T> pager = new Pager<T>();
+        Paginated<T> pager = new Paginated<T>();
 
         List<Action<QueryDescriptor<T>>> queryList = new List<Action<QueryDescriptor<T>>>();
         if (query != null)
@@ -79,7 +79,7 @@ public class ElasticSearchHelper(string cloudId, string apiKey, string index)
         if (searchRes.Total > 0)
         {
             var models = searchRes.Documents.ToList();
-            pager.Content = models;
+            pager.Data = models;
             pager.PageCount = Math.Ceiling(searchRes.Total.ToDouble(0) / pageSize).ToInt32();
             pager.PageIndex = pageIndex;
             pager.PageSize = pageSize;
